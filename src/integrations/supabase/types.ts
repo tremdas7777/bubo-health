@@ -14,7 +14,360 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cloaker_config: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      collections: {
+        Row: {
+          active: boolean | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          slug: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          slug: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      funnel_events: {
+        Row: {
+          created_at: string
+          event: string
+          id: string
+          session_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event: string
+          id?: string
+          session_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event?: string
+          id?: string
+          session_id?: string | null
+        }
+        Relationships: []
+      }
+      gateway_config: {
+        Row: {
+          active_gateway: string
+          beehive_public_key: string | null
+          beehive_secret_key: string | null
+          centurionpay_company_id: string | null
+          centurionpay_secret_key: string | null
+          created_at: string
+          id: string
+          ironpay_api_token: string | null
+          pagouai_public_key: string | null
+          pagouai_secret_key: string | null
+          simpayout_client_id: string | null
+          simpayout_client_secret: string | null
+          updated_at: string
+          vennox_company_id: string | null
+          vennox_secret_key: string | null
+        }
+        Insert: {
+          active_gateway?: string
+          beehive_public_key?: string | null
+          beehive_secret_key?: string | null
+          centurionpay_company_id?: string | null
+          centurionpay_secret_key?: string | null
+          created_at?: string
+          id?: string
+          ironpay_api_token?: string | null
+          pagouai_public_key?: string | null
+          pagouai_secret_key?: string | null
+          simpayout_client_id?: string | null
+          simpayout_client_secret?: string | null
+          updated_at?: string
+          vennox_company_id?: string | null
+          vennox_secret_key?: string | null
+        }
+        Update: {
+          active_gateway?: string
+          beehive_public_key?: string | null
+          beehive_secret_key?: string | null
+          centurionpay_company_id?: string | null
+          centurionpay_secret_key?: string | null
+          created_at?: string
+          id?: string
+          ironpay_api_token?: string | null
+          pagouai_public_key?: string | null
+          pagouai_secret_key?: string | null
+          simpayout_client_id?: string | null
+          simpayout_client_secret?: string | null
+          updated_at?: string
+          vennox_company_id?: string | null
+          vennox_secret_key?: string | null
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          amount_cents: number
+          buyer_document: string | null
+          buyer_email: string | null
+          buyer_name: string | null
+          buyer_phone: string | null
+          created_at: string
+          gateway: string | null
+          id: string
+          pix_code: string | null
+          pix_qr_code: string | null
+          qr_code_copied: boolean | null
+          shipping_cost_cents: number | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents?: number
+          buyer_document?: string | null
+          buyer_email?: string | null
+          buyer_name?: string | null
+          buyer_phone?: string | null
+          created_at?: string
+          gateway?: string | null
+          id?: string
+          pix_code?: string | null
+          pix_qr_code?: string | null
+          qr_code_copied?: boolean | null
+          shipping_cost_cents?: number | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          buyer_document?: string | null
+          buyer_email?: string | null
+          buyer_name?: string | null
+          buyer_phone?: string | null
+          created_at?: string
+          gateway?: string | null
+          id?: string
+          pix_code?: string | null
+          pix_qr_code?: string | null
+          qr_code_copied?: boolean | null
+          shipping_cost_cents?: number | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      pixel_config: {
+        Row: {
+          config: Json
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          config?: Json
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          config?: Json
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      product_reviews: {
+        Row: {
+          approved: boolean | null
+          created_at: string
+          id: string
+          product_id: string
+          rating: number
+          review_image_url: string | null
+          review_text: string | null
+          reviewer_name: string
+          verified_purchase: boolean | null
+        }
+        Insert: {
+          approved?: boolean | null
+          created_at?: string
+          id?: string
+          product_id: string
+          rating?: number
+          review_image_url?: string | null
+          review_text?: string | null
+          reviewer_name: string
+          verified_purchase?: boolean | null
+        }
+        Update: {
+          approved?: boolean | null
+          created_at?: string
+          id?: string
+          product_id?: string
+          rating?: number
+          review_image_url?: string | null
+          review_text?: string | null
+          reviewer_name?: string
+          verified_purchase?: boolean | null
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          active: boolean | null
+          category: string | null
+          created_at: string
+          description: string | null
+          description_html: string | null
+          featured: boolean | null
+          id: string
+          image_url: string | null
+          images: string[] | null
+          name: string
+          original_price_cents: number | null
+          price_cents: number
+          slug: string
+          sort_order: number | null
+          updated_at: string
+          variants: Json | null
+        }
+        Insert: {
+          active?: boolean | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          description_html?: string | null
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          images?: string[] | null
+          name: string
+          original_price_cents?: number | null
+          price_cents: number
+          slug: string
+          sort_order?: number | null
+          updated_at?: string
+          variants?: Json | null
+        }
+        Update: {
+          active?: boolean | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          description_html?: string | null
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          images?: string[] | null
+          name?: string
+          original_price_cents?: number | null
+          price_cents?: number
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string
+          variants?: Json | null
+        }
+        Relationships: []
+      }
+      shipping_config: {
+        Row: {
+          created_at: string
+          flat_rate_cents: number
+          flat_rate_enabled: boolean
+          free_shipping_enabled: boolean
+          free_shipping_min_cents: number
+          id: string
+          shipping_options: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          flat_rate_cents?: number
+          flat_rate_enabled?: boolean
+          free_shipping_enabled?: boolean
+          free_shipping_min_cents?: number
+          id?: string
+          shipping_options?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          flat_rate_cents?: number
+          flat_rate_enabled?: boolean
+          free_shipping_enabled?: boolean
+          free_shipping_min_cents?: number
+          id?: string
+          shipping_options?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      webhook_endpoints: {
+        Row: {
+          active: boolean | null
+          created_at: string
+          events: string[] | null
+          id: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string
+          events?: string[] | null
+          id?: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string
+          events?: string[] | null
+          id?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
