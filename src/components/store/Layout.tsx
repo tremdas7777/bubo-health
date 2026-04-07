@@ -3,6 +3,7 @@ import AnnouncementBar from "./AnnouncementBar";
 import Header from "./Header";
 import Footer from "./Footer";
 import CartDrawer from "./CartDrawer";
+import WhatsAppButton from "./WhatsAppButton";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -12,6 +13,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <main className="flex-1">{children}</main>
       <Footer />
       <CartDrawer />
+      <WhatsAppButton />
     </div>
   );
 }
