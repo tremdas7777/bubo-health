@@ -10,11 +10,11 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <img src={logoIcon} alt="Amélia" width={32} height={32} className="w-8 h-8" />
-              <span className="text-lg font-heading font-bold text-lime">Amélia</span>
+              <img src={logoIcon} alt="Bazu" width={32} height={32} className="w-8 h-8" />
+              <span className="text-lg font-heading font-bold text-lime">Bazu</span>
             </div>
             <p className="text-sm opacity-60 leading-relaxed">
-              De utensílios a eletrônicos, tudo que você precisa em um só lugar.
+              De utensílios a eletrônicos, tudo que você precisa em um só lugar. É bazu!
             </p>
           </div>
 
@@ -47,7 +47,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-background/10 mt-8 pt-5 text-center text-[11px] opacity-40">
-          © {new Date().getFullYear()} Amélia. Todos os direitos reservados.
+          © {new Date().getFullYear()} Bazu. Todos os direitos reservados.
         </div>
       </div>
     </footer>

@@ -30,9 +30,9 @@ export default function Header() {
 
           {/* Center: Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <img src={logoIcon} alt="Amélia" width={44} height={44} className="w-11 h-11" />
+            <img src={logoIcon} alt="Bazu" width={44} height={44} className="w-11 h-11" />
             <span className="text-2xl md:text-3xl font-heading font-bold text-primary tracking-tight">
-              Amélia
+              Bazu
             </span>
           </Link>
 
