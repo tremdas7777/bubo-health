@@ -3,7 +3,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getProductsByCategory, getCategoryName, formatPrice, getInstallmentPrice, getDiscountPercent } from "@/data/store";
 import { useCart } from "@/contexts/CartContext";
-import { Button } from "@/components/ui/button";
 
 interface Props {
   category: string;
@@ -18,50 +17,45 @@ export default function CategoryCarousel({ category }: Props) {
 
   const scroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
-    const amount = 300;
-    scrollRef.current.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
+    scrollRef.current.scrollBy({ left: dir === "left" ? -280 : 280, behavior: "smooth" });
   };
 
-  return (
-    <section className="py-10">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl md:text-2xl font-heading font-bold">{getCategoryName(category)}</h2>
-          <Link
-            to={`/colecao/${category}`}
-            className="text-sm text-primary hover:underline font-medium"
-          >
-            Ver todos →
-          </Link>
-        </div>
+  // Double products for continuous scroll feel
+  const displayProducts = [...products, ...products];
 
-        <div className="relative">
-          {/* Left arrow */}
+  return (
+    <section className="py-8 border-t border-border/50">
+      <div className="container mx-auto px-4">
+        <h2 className="text-lg md:text-xl font-heading font-semibold text-center mb-6">
+          {getCategoryName(category)}
+        </h2>
+
+        <div className="relative group/nav">
           <button
             onClick={() => scroll("left")}
-            className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 bg-background border border-border rounded-full p-2 shadow-md hover:bg-muted transition-colors hidden md:flex"
+            className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 bg-background/90 border border-border rounded-full p-1.5 shadow-md opacity-0 group-hover/nav:opacity-100 transition-opacity hidden md:flex"
+            aria-label="Anterior"
           >
-            <ChevronLeft size={20} />
+            <ChevronLeft size={18} />
           </button>
 
-          {/* Products scroll */}
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide pb-2 snap-x snap-mandatory"
+            className="flex gap-3 overflow-x-auto pb-2"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {products.map((product) => {
+            {displayProducts.map((product, idx) => {
               const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
               return (
                 <div
-                  key={product.id}
-                  className="flex-shrink-0 w-[220px] md:w-[250px] snap-start group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all"
+                  key={`${product.id}-${idx}`}
+                  className="flex-shrink-0 w-[200px] md:w-[230px] group/card bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all"
                 >
                   <Link to={`/produto/${product.slug}`} className="block relative overflow-hidden">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full aspect-square object-cover group-hover/card:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
                     {product.badge && (
@@ -70,49 +64,43 @@ export default function CategoryCarousel({ category }: Props) {
                       </span>
                     )}
                   </Link>
-                  <div className="p-3 text-center space-y-1.5">
+                  <div className="p-3 text-center space-y-1">
                     <Link to={`/produto/${product.slug}`}>
-                      <h3 className="font-medium text-sm text-foreground line-clamp-2 hover:text-primary transition-colors min-h-[2.5rem]">
+                      <h3 className="font-normal text-sm text-foreground line-clamp-2 hover:text-primary transition-colors leading-snug min-h-[2.5em]">
                         {product.name}
                       </h3>
                     </Link>
                     <div>
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="text-primary font-bold">{formatPrice(product.price)}</span>
+                      <div className="flex items-baseline justify-center gap-1.5">
+                        <span className="text-primary font-bold text-sm">{formatPrice(product.price)}</span>
                         {hasDiscount && (
-                          <span className="text-muted-foreground text-xs line-through">
+                          <span className="text-muted-foreground text-[11px] line-through">
                             {formatPrice(product.compareAtPrice!)}
                           </span>
                         )}
                       </div>
-                      {hasDiscount && (
-                        <span className="inline-block bg-lime/20 text-accent-foreground text-[10px] font-semibold px-1.5 py-0.5 rounded mt-1">
-                          {getDiscountPercent(product.price, product.compareAtPrice!)}% OFF
-                        </span>
-                      )}
-                      <p className="text-[11px] text-muted-foreground mt-1">
-                        em até 12x de {getInstallmentPrice(product.price)}
+                      <p className="text-[10px] text-muted-foreground mt-0.5">
+                        em até <strong>12x</strong> de <strong>{getInstallmentPrice(product.price)}</strong>
                       </p>
                     </div>
-                    <Button
+                    <button
                       onClick={() => addItem(product)}
-                      size="sm"
-                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-medium"
+                      className="w-full mt-1.5 bg-primary hover:bg-primary/90 text-primary-foreground text-[11px] font-medium rounded py-2 transition-colors"
                     >
                       Adicionar ao carrinho
-                    </Button>
+                    </button>
                   </div>
                 </div>
               );
             })}
           </div>
 
-          {/* Right arrow */}
           <button
             onClick={() => scroll("right")}
-            className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 bg-background border border-border rounded-full p-2 shadow-md hover:bg-muted transition-colors hidden md:flex"
+            className="absolute -right-2 top-1/2 -translate-y-1/2 z-10 bg-background/90 border border-border rounded-full p-1.5 shadow-md opacity-0 group-hover/nav:opacity-100 transition-opacity hidden md:flex"
+            aria-label="Próximo"
           >
-            <ChevronRight size={20} />
+            <ChevronRight size={18} />
           </button>
         </div>
       </div>

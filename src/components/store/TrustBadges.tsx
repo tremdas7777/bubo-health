@@ -9,16 +9,16 @@ const badges = [
 
 export default function TrustBadges() {
   return (
-    <section className="py-12 bg-muted">
+    <section className="py-10 border-t border-border">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {badges.map(({ icon: Icon, title, desc }) => (
             <div key={title} className="flex flex-col items-center text-center space-y-2">
-              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
-                <Icon size={26} className="text-primary" />
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Icon size={22} className="text-primary" />
               </div>
               <h3 className="font-heading font-semibold text-sm">{title}</h3>
-              <p className="text-xs text-muted-foreground">{desc}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>

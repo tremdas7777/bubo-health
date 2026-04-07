@@ -8,45 +8,48 @@ export default function CollectionsCarousel() {
 
   const scroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
-    scrollRef.current.scrollBy({ left: dir === "left" ? -300 : 300, behavior: "smooth" });
+    scrollRef.current.scrollBy({ left: dir === "left" ? -280 : 280, behavior: "smooth" });
   };
 
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-10 md:py-14">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-heading font-bold text-center mb-10">
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-heading font-semibold text-center mb-8">
           Nossas Coleções
         </h2>
 
-        <div className="relative">
+        <div className="relative group/nav">
+          {/* Arrows */}
           <button
             onClick={() => scroll("left")}
-            className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 bg-background border border-border rounded-full p-2 shadow-md hover:bg-muted transition-colors hidden md:flex"
+            className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 bg-background/90 border border-border rounded-full p-1.5 shadow-md opacity-0 group-hover/nav:opacity-100 transition-opacity hidden md:flex"
+            aria-label="Anterior"
           >
-            <ChevronLeft size={20} />
+            <ChevronLeft size={18} />
           </button>
 
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory"
+            className="flex gap-4 overflow-x-auto pb-2"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {collections.map((col) => (
+            {/* Double the collections for infinite feel */}
+            {[...collections, ...collections].map((col, idx) => (
               <Link
-                key={col.id}
+                key={`${col.id}-${idx}`}
                 to={`/colecao/${col.slug}`}
-                className="flex-shrink-0 w-[180px] md:w-[200px] snap-start group"
+                className="flex-shrink-0 w-[160px] md:w-[185px] group/card"
               >
-                <div className="relative overflow-hidden rounded-xl aspect-square">
+                <div className="relative overflow-hidden rounded-xl aspect-[3/4]">
                   <img
                     src={col.image}
                     alt={col.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <h3 className="text-white font-heading font-semibold text-sm text-center">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-0 right-0 px-2">
+                    <h3 className="text-white font-heading font-medium text-sm text-center drop-shadow-sm">
                       {col.name}
                     </h3>
                   </div>
@@ -57,9 +60,10 @@ export default function CollectionsCarousel() {
 
           <button
             onClick={() => scroll("right")}
-            className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 bg-background border border-border rounded-full p-2 shadow-md hover:bg-muted transition-colors hidden md:flex"
+            className="absolute -right-2 top-1/2 -translate-y-1/2 z-10 bg-background/90 border border-border rounded-full p-1.5 shadow-md opacity-0 group-hover/nav:opacity-100 transition-opacity hidden md:flex"
+            aria-label="Próximo"
           >
-            <ChevronRight size={20} />
+            <ChevronRight size={18} />
           </button>
         </div>
       </div>

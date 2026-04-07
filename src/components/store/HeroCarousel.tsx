@@ -1,103 +1,112 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import hero1 from "@/assets/hero-1.jpg";
+import hero2 from "@/assets/hero-2.jpg";
+import hero3 from "@/assets/hero-3.jpg";
 
 const slides = [
   {
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1920&h=700&fit=crop",
+    image: hero1,
     title: "de utensílios\nà eletrônicos",
     subtitle: "tudo que você precisa\nem um só lugar.",
-    link: "/produtos",
   },
   {
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&h=700&fit=crop",
+    image: hero2,
     title: "Ofertas\nImperdíveis",
     subtitle: "até 50% de desconto\nem produtos selecionados.",
-    link: "/produtos",
   },
   {
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1920&h=700&fit=crop",
+    image: hero3,
     title: "Frete Grátis\npara todo Brasil",
     subtitle: "compre agora e receba\nsem custo adicional.",
-    link: "/produtos",
   },
 ];
 
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
+  const [playing, setPlaying] = useState(true);
 
   useEffect(() => {
+    if (!playing) return;
     const timer = setInterval(() => {
       setCurrent((c) => (c + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [playing]);
 
   const prev = () => setCurrent((c) => (c - 1 + slides.length) % slides.length);
   const next = () => setCurrent((c) => (c + 1) % slides.length);
 
   return (
-    <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden bg-primary/10">
+    <div className="relative w-full aspect-[16/7] max-h-[600px] overflow-hidden">
       {slides.map((slide, i) => (
         <div
           key={i}
           className={`absolute inset-0 transition-opacity duration-700 ${
-            i === current ? "opacity-100" : "opacity-0"
+            i === current ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         >
           <img
             src={slide.image}
-            alt={slide.title}
+            alt=""
             className="w-full h-full object-cover"
+            width={1920}
+            height={700}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-transparent" />
-          <div className="absolute inset-0 flex items-center">
-            <div className="container mx-auto px-4">
-              <div className="max-w-lg ml-auto text-right">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-white whitespace-pre-line leading-tight">
-                  {slide.title}
-                </h2>
-                <p className="text-white/80 mt-3 text-sm sm:text-base lg:text-lg whitespace-pre-line">
-                  {slide.subtitle}
-                </p>
-                <Link
-                  to={slide.link}
-                  className="inline-block mt-6 bg-lime text-foreground font-semibold px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
-                >
-                  Ver Ofertas
-                </Link>
-              </div>
+          {/* Text overlay on right side — matching the reference's right-aligned text */}
+          <div className="absolute inset-0 flex items-center justify-end">
+            <div className="pr-8 md:pr-16 lg:pr-24 text-right max-w-[50%]">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-heading font-bold text-white whitespace-pre-line leading-[1.1] drop-shadow-lg">
+                {slide.title}
+              </h2>
+              <p className="text-white/90 mt-2 md:mt-4 text-xs sm:text-sm md:text-base lg:text-lg whitespace-pre-line drop-shadow-md">
+                {slide.subtitle}
+              </p>
             </div>
           </div>
         </div>
       ))}
 
-      {/* Controls */}
+      {/* Navigation arrow — left */}
       <button
         onClick={prev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-2 text-white hover:bg-white/30 transition"
+        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors"
+        aria-label="Slide anterior"
       >
-        <ChevronLeft size={24} />
-      </button>
-      <button
-        onClick={next}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-2 text-white hover:bg-white/30 transition"
-      >
-        <ChevronRight size={24} />
+        <ChevronLeft size={32} />
       </button>
 
-      {/* Dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+      {/* Navigation arrow — right */}
+      <button
+        onClick={next}
+        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors"
+        aria-label="Próximo slide"
+      >
+        <ChevronRight size={32} />
+      </button>
+
+      {/* Dots — bottom center */}
+      <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className={`w-10 h-1 rounded-full transition-all ${
-              i === current ? "bg-white" : "bg-white/40"
+            className={`h-[3px] rounded-full transition-all duration-300 ${
+              i === current ? "w-10 bg-white" : "w-6 bg-white/40"
             }`}
+            aria-label={`Slide ${i + 1}`}
           />
         ))}
       </div>
+
+      {/* Pause/Play button — bottom right like reference */}
+      <button
+        onClick={() => setPlaying(!playing)}
+        className="absolute bottom-4 right-4 z-20 text-white/60 hover:text-white transition-colors"
+        aria-label={playing ? "Pausar" : "Reproduzir"}
+      >
+        {playing ? <Pause size={18} /> : <Play size={18} />}
+      </button>
     </div>
   );
 }

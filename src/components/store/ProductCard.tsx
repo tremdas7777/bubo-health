@@ -12,7 +12,8 @@ export default function ProductCard({ product }: Props) {
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
 
   return (
-    <div className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all duration-300">
+    <div className="group bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col">
+      {/* Image */}
       <Link to={`/produto/${product.slug}`} className="block relative overflow-hidden">
         <img
           src={product.image}
@@ -21,41 +22,43 @@ export default function ProductCard({ product }: Props) {
           loading="lazy"
         />
         {product.badge && (
-          <span className="absolute top-3 right-3 bg-lime text-foreground text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-            ✓ {product.badge}
+          <span className="absolute top-2 right-2 bg-lime text-foreground text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+            <span className="text-primary">✓</span> {product.badge}
           </span>
         )}
       </Link>
 
-      <div className="p-4 text-center space-y-2">
-        <Link to={`/produto/${product.slug}`}>
-          <h3 className="font-medium text-sm text-foreground line-clamp-2 hover:text-primary transition-colors min-h-[2.5rem]">
+      {/* Info */}
+      <div className="p-4 flex flex-col flex-1 text-center">
+        <Link to={`/produto/${product.slug}`} className="flex-1">
+          <h3 className="font-normal text-sm text-foreground line-clamp-2 hover:text-primary transition-colors leading-snug min-h-[2.5em]">
             {product.name}
           </h3>
         </Link>
 
-        <div className="space-y-1">
-          <div className="flex items-center justify-center gap-2">
-            <span className="text-primary font-bold text-lg">{formatPrice(product.price)}</span>
+        <div className="mt-2 space-y-1">
+          {/* Price row */}
+          <div className="flex items-baseline justify-center gap-2">
+            <span className="text-primary font-bold text-base">
+              {formatPrice(product.price)}
+            </span>
             {hasDiscount && (
-              <span className="text-muted-foreground text-sm line-through">
+              <span className="text-muted-foreground text-xs line-through">
                 {formatPrice(product.compareAtPrice!)}
               </span>
             )}
           </div>
-          {hasDiscount && (
-            <span className="inline-block bg-lime/20 text-accent-foreground text-xs font-semibold px-2 py-0.5 rounded">
-              {getDiscountPercent(product.price, product.compareAtPrice!)}% OFF
-            </span>
-          )}
-          <p className="text-xs text-muted-foreground">
-            em até 12x de {getInstallmentPrice(product.price)}
+
+          {/* Installment */}
+          <p className="text-[11px] text-muted-foreground">
+            em até <strong>12x</strong> de <strong>{getInstallmentPrice(product.price)}</strong>
           </p>
         </div>
 
+        {/* Add to cart button — purple filled matching reference */}
         <Button
           onClick={() => addItem(product)}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium mt-2"
+          className="w-full mt-3 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-medium rounded-md py-2.5"
         >
           Adicionar ao carrinho
         </Button>
