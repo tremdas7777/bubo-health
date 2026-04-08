@@ -127,6 +127,7 @@ const INITIAL_GATEWAY_CONFIG: PaymentGatewayConfig = {
   ironpay: { apiToken: "", enabled: false },
   simpayout: { clientId: "", clientSecret: "", enabled: false },
   beehive: { publicKey: "", secretKey: "", enabled: false },
+  pagamentosmp: { publicKey: "", secretKey: "", enabled: false },
 };
 
 const SUCCESS_HINTS = ["sucesso", "enviado", "ativado", "ok", "válido", "salva", "aprovado", "funcionando"];
@@ -138,6 +139,7 @@ const GATEWAY_LABELS: Record<PaymentGatewayConfig["activeGateway"], string> = {
   ironpay: "Iron Pay",
   simpayout: "Sim Payout",
   beehive: "Beehive",
+  pagamentosmp: "MP Pagamentos",
 };
 
 const GATEWAY_TEST_FUNCTIONS: Partial<Record<PaymentGatewayConfig["activeGateway"], string>> = {
@@ -146,6 +148,7 @@ const GATEWAY_TEST_FUNCTIONS: Partial<Record<PaymentGatewayConfig["activeGateway
   centurionpay: "criar-pix-centurionpay",
   ironpay: "criar-pix-ironpay",
   simpayout: "criar-pix-simpayout",
+  pagamentosmp: "criar-pix-pagamentosmp",
 };
 
 const pct = (a: number, b: number) => (b === 0 ? 0 : Math.round((a / b) * 100));
