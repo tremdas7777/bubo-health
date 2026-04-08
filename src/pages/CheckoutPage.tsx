@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp, CreditCard } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { useStoreConfig } from "@/hooks/useStoreConfig";
 import { formatPrice, getInstallmentPrice } from "@/data/store";
 import { trackEvent } from "@/lib/funnelTracking";
 import { supabase } from "@/integrations/supabase/client";
@@ -584,28 +585,13 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Payment method selector */}
-                <div className="grid grid-cols-2 gap-3">
-                  <label
-                    className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                      paymentMethod === "pix" ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
-                    }`}
-                  >
-                    <input type="radio" name="paymentMethod" value="pix" checked={paymentMethod === "pix"} onChange={() => setPaymentMethod("pix")} className="sr-only" />
-                    <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">PIX</span>
-                    <span className="text-lg font-bold text-primary">{formatPrice(subtotal * (1 - PIX_DISCOUNT_RATE) + shippingCost / 100)}</span>
-                    <span className="text-[10px] font-medium text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded">{PIX_DISCOUNT_PERCENT}% OFF</span>
-                  </label>
-                  <label
-                    className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                      paymentMethod === "card" ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
-                    }`}
-                  >
-                    <input type="radio" name="paymentMethod" value="card" checked={paymentMethod === "card"} onChange={() => setPaymentMethod("card")} className="sr-only" />
-                    <CreditCard size={20} className="text-muted-foreground" />
-                    <span className="text-lg font-bold text-foreground">{formatPrice(cardTotal)}</span>
-                    <span className="text-[10px] text-muted-foreground">até 12x de {getInstallmentPrice(cardTotal)}</span>
-                  </label>
-                </div>
+                <CardPaymentSelector
+                  paymentMethod={paymentMethod}
+                  setPaymentMethod={setPaymentMethod}
+                  subtotal={subtotal}
+                  shippingCost={shippingCost}
+                  cardTotal={cardTotal}
+                />
 
                 {/* PIX benefit highlight */}
                 {isPix && (
