@@ -27,20 +27,9 @@ export default memo(function CategoryCarousel({ category }: Props) {
           {getCategoryName(category)}
         </h2>
 
-        <div className="relative group/nav">
-          <button
-            onClick={() => scroll("left")}
-            className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 bg-background/90 border border-border rounded-full p-1.5 shadow-md opacity-0 group-hover/nav:opacity-100 transition-opacity hidden md:flex"
-            aria-label="Anterior"
-          >
-            <ChevronLeft size={18} />
-          </button>
-
-          <div
-            ref={scrollRef}
-            className="flex gap-3 overflow-x-auto pb-2"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
+        {/* Use centered grid for few products, scrollable row for many */}
+        {products.length <= 4 ? (
+          <div className="flex flex-wrap justify-center gap-3">
             {products.map((product) => {
               const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
               return (
