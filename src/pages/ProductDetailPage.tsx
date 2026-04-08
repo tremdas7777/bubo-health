@@ -6,6 +6,7 @@ import DeliveryTimeline from "@/components/store/DeliveryTimeline";
 import CepCalculator from "@/components/store/CepCalculator";
 import ProductCard from "@/components/store/ProductCard";
 import { products, formatPrice, getInstallmentPrice, getDiscountPercent, getProductsByCategory } from "@/data/store";
+import { getPixPrice, getPixSavings, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
 import { useCart } from "@/contexts/CartContext";
 import { trackEvent } from "@/lib/funnelTracking";
 import { Button } from "@/components/ui/button";
@@ -37,7 +38,7 @@ export default function ProductDetailPage() {
   }
 
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
-  const pixPrice = product.price * 0.9;
+  const pixPrice = getPixPrice(product.price);
   const relatedProducts = getProductsByCategory(product.category).filter((p) => p.id !== product.id).slice(0, 4);
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
 
@@ -141,10 +142,10 @@ export default function ProductDetailPage() {
               <div>
                 <p className="text-sm">
                   <strong className="text-foreground">{formatPrice(pixPrice)}</strong> <span className="text-muted-foreground">no pix</span>{" "}
-                  <span className="rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">10% de desconto</span>
+                  <span className="rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">{PIX_DISCOUNT_PERCENT}% de desconto</span>
                 </p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Pague com <strong>PIX</strong> e economize {formatPrice(product.price - pixPrice)}
+                  Pague com <strong>PIX</strong> e economize {formatPrice(getPixSavings(product.price))}
                 </p>
               </div>
             </div>
