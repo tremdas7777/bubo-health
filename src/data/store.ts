@@ -42,7 +42,7 @@ export const products: Product[] = [
   {
     id: "c1", name: "Lâmpada Inteligente", slug: "lampada-inteligente",
     price: 116.90, compareAtPrice: 159.90,
-    image: "https://images.unsplash.com/photo-1550985616-10810253b84d?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=533&h=533&fit=crop",
     category: "casa-e-cozinha",
     description: "Lâmpada inteligente RGB com controle por app e voz. Compatível com Alexa e Google Home. 16 milhões de cores e temperatura ajustável.",
     stock: 18, variants: ["Branca", "RGB"],
@@ -58,7 +58,7 @@ export const products: Product[] = [
   {
     id: "c3", name: "Mini Triturador Manual", slug: "mini-triturador-manual",
     price: 97.90, compareAtPrice: 222.90,
-    image: "https://images.unsplash.com/photo-1585515320310-259814833e62?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1626806819282-2c1dc01a5e0c?w=533&h=533&fit=crop",
     category: "casa-e-cozinha",
     description: "Mini triturador manual multifuncional para alho, cebola, legumes e frutas. Lâminas em aço inox, fácil de limpar e compacto.",
     stock: 30,
@@ -74,7 +74,7 @@ export const products: Product[] = [
   {
     id: "c5", name: "Vaso de Flores Artificiais", slug: "vaso-flores-artificiais",
     price: 79.90, compareAtPrice: 149.90,
-    image: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=533&h=533&fit=crop",
     category: "casa-e-cozinha",
     description: "Vaso decorativo com flores artificiais de alta qualidade. Material premium que imita flores reais. Ideal para sala e escritório.",
     stock: 40,
@@ -84,7 +84,7 @@ export const products: Product[] = [
   {
     id: "e1", name: "Game Portátil X39 IPS FULL HD", slug: "game-portatil-x39",
     price: 236.97, compareAtPrice: 569.90,
-    image: "https://images.unsplash.com/photo-1531525645387-7f14be1bdbbd?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=533&h=533&fit=crop",
     category: "eletronicos",
     description: "Console de jogos portátil com tela IPS Full HD de 4.3 polegadas. Mais de 5000 jogos clássicos incluídos, bateria de longa duração.",
     stock: 15, badge: "Economize 58%",
@@ -116,7 +116,7 @@ export const products: Product[] = [
   {
     id: "e5", name: "IWO 7 Pro", slug: "iwo-7-pro",
     price: 199.90, compareAtPrice: 359.90,
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=533&h=533&fit=crop",
     category: "eletronicos",
     description: "Smartwatch IWO 7 Pro com tela infinita, monitor cardíaco, oxímetro, GPS e mais de 100 modos esportivos. Resistente à água.",
     stock: 18, badge: "Economize 44%",
@@ -126,7 +126,7 @@ export const products: Product[] = [
   {
     id: "s1", name: "Raquete Beach Tênis", slug: "raquete-beach-tenis",
     price: 265.00, compareAtPrice: 597.00,
-    image: "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1617083934551-ac1f1c240d50?w=533&h=533&fit=crop",
     category: "esportes",
     description: "Raquete profissional para beach tennis em fibra de carbono 3K. Núcleo em EVA soft, controle e potência superiores.",
     stock: 12, badge: "Economize 55%",
@@ -134,7 +134,7 @@ export const products: Product[] = [
   {
     id: "s2", name: "Óculos para Natação Profissional", slug: "oculos-natacao",
     price: 137.90, compareAtPrice: 227.90,
-    image: "https://images.unsplash.com/photo-1560089000-7433a4ebbd64?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1622629797619-c100e3e67e2e?w=533&h=533&fit=crop",
     category: "esportes",
     description: "Óculos de natação profissional com lentes antiembaçantes, proteção UV e vedação em silicone macio. Ajuste regulável.",
     stock: 35,
@@ -142,7 +142,7 @@ export const products: Product[] = [
   {
     id: "s3", name: "Tênis Esportivo", slug: "tenis-esportivo",
     price: 119.90, compareAtPrice: 217.90,
-    image: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=533&h=533&fit=crop",
     category: "esportes",
     description: "Tênis esportivo casual com design moderno, solado em borracha antiderrapante e palmilha confortável para uso diário.",
     stock: 40,
@@ -150,7 +150,7 @@ export const products: Product[] = [
   {
     id: "s4", name: "Óculos para Esportes", slug: "oculos-esportes",
     price: 97.90, compareAtPrice: 159.90,
-    image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=533&h=533&fit=crop",
     category: "esportes",
     description: "Óculos esportivo com lentes polarizadas, proteção UV400 e armação flexível resistente a impactos. Ideal para ciclismo e corrida.",
     stock: 28,
@@ -158,7 +158,7 @@ export const products: Product[] = [
   {
     id: "s5", name: "Capacete Ultraleve Ciclismo", slug: "capacete-ciclismo",
     price: 149.90, compareAtPrice: 352.90,
-    image: "https://images.unsplash.com/photo-1557803175-2f6e70e6f906?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=533&h=533&fit=crop&q=80",
     category: "esportes",
     description: "Capacete ultraleve para ciclismo com 18 aberturas de ventilação, ajuste traseiro micrométrico e viseira removível.",
     stock: 15, badge: "Economize 57%",
@@ -168,7 +168,7 @@ export const products: Product[] = [
   {
     id: "t1", name: "Parafusadeira Elétrica", slug: "parafusadeira-eletrica",
     price: 115.90, compareAtPrice: 369.00,
-    image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=533&h=533&fit=crop",
     category: "ferramentas",
     description: "Parafusadeira elétrica sem fio com bateria de lítio recarregável. Kit com 45 bits, LED integrado e maleta de transporte.",
     stock: 20, badge: "Economize 68%",
@@ -192,7 +192,7 @@ export const products: Product[] = [
   {
     id: "t4", name: "Mini Motosserra", slug: "mini-motosserra",
     price: 135.00, compareAtPrice: 296.00,
-    image: "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1616401784845-180882c9de60?w=533&h=533&fit=crop",
     category: "ferramentas",
     description: "Mini motosserra elétrica portátil com bateria de lítio. Ideal para poda de galhos e corte de madeira. 2 baterias incluídas.",
     stock: 10, badge: "Economize 54%",
@@ -200,7 +200,7 @@ export const products: Product[] = [
   {
     id: "t5", name: "Mini Alicate para Friso", slug: "mini-alicate-friso",
     price: 120.00, compareAtPrice: 265.00,
-    image: "https://images.unsplash.com/photo-1530124566582-a45a7e3f4b79?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1609207131001-e7bba5f0be49?w=533&h=533&fit=crop",
     category: "ferramentas",
     description: "Mini alicate para friso profissional em aço cromo-vanádio. Corte preciso e cabo emborrachado para maior aderência.",
     stock: 22, badge: "Economize 54%",
@@ -210,7 +210,7 @@ export const products: Product[] = [
   {
     id: "f1", name: "Joelheira para Treino", slug: "joelheira-treino",
     price: 79.90, compareAtPrice: 235.90,
-    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=533&h=533&fit=crop",
     category: "fitness",
     description: "Joelheira esportiva com suporte de compressão 3D. Proteção anti-impacto, tecido respirável e ajuste anatômico.",
     stock: 55, badge: "Economize 66%",
@@ -218,7 +218,7 @@ export const products: Product[] = [
   {
     id: "f2", name: "Faixas para Treino", slug: "faixas-treino",
     price: 59.90, compareAtPrice: 120.00,
-    image: "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=533&h=533&fit=crop",
     category: "fitness",
     description: "Kit com 5 faixas elásticas de resistência variada. Perfeito para treinos em casa, pilates, yoga e fisioterapia.",
     stock: 75, badge: "Economize 50%",
@@ -234,7 +234,7 @@ export const products: Product[] = [
   {
     id: "f4", name: "Massageador Muscular", slug: "massageador-muscular",
     price: 99.00, compareAtPrice: 219.00,
-    image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=533&h=533&fit=crop",
     category: "fitness",
     description: "Massageador muscular elétrico tipo pistola com 6 cabeças intercambiáveis e 20 níveis de intensidade. Bateria de 6h.",
     stock: 20, badge: "Economize 54%",
@@ -242,7 +242,7 @@ export const products: Product[] = [
   {
     id: "f5", name: "Powerball", slug: "powerball",
     price: 200.00, compareAtPrice: 350.00,
-    image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=533&h=533&fit=crop",
     category: "fitness",
     description: "Powerball giroscópica para fortalecimento de pulso, antebraço e mão. Com LED e contador digital de rotações.",
     stock: 25, badge: "Economize 42%",
@@ -252,7 +252,7 @@ export const products: Product[] = [
   {
     id: "p1", name: "Colete Camuflado para Pesca", slug: "colete-pesca",
     price: 95.90, compareAtPrice: 165.90,
-    image: "https://images.unsplash.com/photo-1564769662533-4f00a87b4056?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1532015617879-58d7e3f5e6ec?w=533&h=533&fit=crop",
     category: "pesca",
     description: "Colete camuflado multibolsos para pesca. Tecido respirável, secagem rápida e múltiplos compartimentos para acessórios.",
     stock: 18,
@@ -260,7 +260,7 @@ export const products: Product[] = [
   {
     id: "p2", name: "Molinete 12 Rolamentos", slug: "molinete-12-rolamentos",
     price: 117.90, compareAtPrice: 237.90,
-    image: "https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1500463959177-e0869687df26?w=533&h=533&fit=crop",
     category: "pesca",
     description: "Molinete profissional com 12 rolamentos de aço inoxidável. Corpo em alumínio, sistema anti-corrosão para água salgada.",
     stock: 22, badge: "Economize 50%",
@@ -268,7 +268,7 @@ export const products: Product[] = [
   {
     id: "p3", name: "Linha para Pesca", slug: "linha-pesca",
     price: 67.90, compareAtPrice: 127.90,
-    image: "https://images.unsplash.com/photo-1504309092620-4d0ec726efa4?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=533&h=533&fit=crop",
     category: "pesca",
     description: "Linha de pesca multifilamento trançada de alta resistência. 300 metros, 4 fios, disponível em várias libragens.",
     stock: 80,
@@ -276,7 +276,7 @@ export const products: Product[] = [
   {
     id: "p4", name: "Carretilha Shimano Profissional", slug: "carretilha-shimano",
     price: 239.90, compareAtPrice: 427.90,
-    image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1504309092620-4d0ec726efa4?w=533&h=533&fit=crop",
     category: "pesca",
     description: "Carretilha profissional com freio magnético, 7 rolamentos e relação 7.2:1. Corpo em alumínio usinado.",
     stock: 10, badge: "Economize 43%",
@@ -284,7 +284,7 @@ export const products: Product[] = [
   {
     id: "p5", name: "Kit Alicates para Pesca", slug: "kit-alicates-pesca",
     price: 97.90, compareAtPrice: 139.90,
-    image: "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1545816250-e12bedba42ba?w=533&h=533&fit=crop",
     category: "pesca",
     description: "Kit com 3 alicates para pesca: bico fino, corte e extrator de anzol. Aço inox com cabo emborrachado e cordão de segurança.",
     stock: 35,
@@ -302,7 +302,7 @@ export const products: Product[] = [
   {
     id: "b2", name: "Batom Popfell", slug: "batom-popfell",
     price: 99.00, compareAtPrice: 169.00,
-    image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=533&h=533&fit=crop",
+    image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=533&h=533&fit=crop",
     category: "saude-e-beleza",
     description: "Kit com 6 batons Popfell em tons variados. Textura matte aveludada, longa duração e fórmula hidratante com vitamina E.",
     stock: 42,
