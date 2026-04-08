@@ -86,6 +86,13 @@ export default function CheckoutPage() {
   const [generating, setGenerating] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
+  // Coupon
+  const [couponCode, setCouponCode] = useState("");
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [couponMessage, setCouponMessage] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState("");
+
   // Timer urgency
   const [timeLeft, setTimeLeft] = useState(15 * 60);
 
@@ -151,8 +158,8 @@ export default function CheckoutPage() {
   const subtotal = totalPrice;
   const isPix = paymentMethod === "pix";
   const pixDiscount = isPix ? subtotal * PIX_DISCOUNT_RATE : 0;
-  const total = subtotal - pixDiscount + shippingCost / 100;
-  const cardTotal = subtotal + shippingCost / 100;
+  const total = subtotal - pixDiscount - couponDiscount + shippingCost / 100;
+  const cardTotal = subtotal - couponDiscount + shippingCost / 100;
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -183,6 +190,58 @@ export default function CheckoutPage() {
   const validateShipping = () => {
     if (!cep.trim() || !address.trim() || !addressNumber.trim() || !neighborhood.trim() || !city.trim() || !state.trim()) return false;
     return true;
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    setCouponMessage("");
+    const code = couponCode.trim().toUpperCase();
+    const { data, error } = await supabase
+      .from("coupons")
+      .select("*")
+      .eq("code", code)
+      .eq("active", true)
+      .maybeSingle();
+
+    if (error || !data) {
+      setCouponMessage("Cupom inválido ou expirado.");
+      setCouponLoading(false);
+      return;
+    }
+
+    if (data.expires_at && new Date(data.expires_at) < new Date()) {
+      setCouponMessage("Este cupom expirou.");
+      setCouponLoading(false);
+      return;
+    }
+    if (data.max_uses && data.used_count >= data.max_uses) {
+      setCouponMessage("Este cupom atingiu o limite de usos.");
+      setCouponLoading(false);
+      return;
+    }
+    const subtotalCents = Math.round(subtotal * 100);
+    if (subtotalCents < data.min_order_cents) {
+      setCouponMessage(`Pedido mínimo: R$ ${(data.min_order_cents / 100).toFixed(2)}`);
+      setCouponLoading(false);
+      return;
+    }
+
+    let discount = 0;
+    if (data.discount_type === "percent") {
+      discount = subtotal * (data.discount_value / 100);
+    } else {
+      discount = data.discount_value / 100;
+    }
+    discount = Math.min(discount, subtotal);
+
+    setCouponDiscount(discount);
+    setAppliedCoupon(code);
+    setCouponMessage(`Cupom ${code} aplicado! -${formatPrice(discount)}`);
+
+    // Increment used_count
+    await supabase.from("coupons").update({ used_count: data.used_count + 1 }).eq("id", data.id);
+    setCouponLoading(false);
   };
 
   const handleGeneratePix = async () => {
@@ -536,9 +595,35 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
+                {/* Coupon */}
+                <div className="border border-border rounded-lg p-3 space-y-2">
+                  <label className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
+                    <Tag size={12} /> Cupom de desconto
+                  </label>
+                  {appliedCoupon ? (
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-emerald-600">{appliedCoupon} aplicado (-{formatPrice(couponDiscount)})</span>
+                      <button onClick={() => { setCouponDiscount(0); setAppliedCoupon(""); setCouponCode(""); setCouponMessage(""); }} className="text-xs text-destructive hover:underline">Remover</button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Input value={couponCode} onChange={(e) => setCouponCode(e.target.value.toUpperCase())} placeholder="CÓDIGO" className="text-xs font-mono flex-1" />
+                      <Button variant="outline" size="sm" onClick={handleApplyCoupon} disabled={couponLoading} className="text-xs">
+                        {couponLoading ? <Loader2 size={14} className="animate-spin" /> : "Aplicar"}
+                      </Button>
+                    </div>
+                  )}
+                  {couponMessage && (
+                    <p className={`text-[10px] font-medium ${couponMessage.includes("aplicado") ? "text-emerald-600" : "text-destructive"}`}>{couponMessage}</p>
+                  )}
+                </div>
+
                 {/* Summary */}
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatPrice(subtotal)}</span></div>
+                  {couponDiscount > 0 && (
+                    <div className="flex justify-between text-emerald-600"><span>Cupom ({appliedCoupon})</span><span>-{formatPrice(couponDiscount)}</span></div>
+                  )}
                   {isPix && (
                     <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
                   )}

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import AdminLogin from "@/pages/AdminLogin";
+import AdminCupons from "@/components/AdminCupons";
 import {
   ArrowDown,
   BarChart3,
@@ -19,6 +21,7 @@ import {
   Settings,
   Shield,
   ShoppingCart,
+  Tag,
   Trash2,
   TrendingUp,
   Truck,
@@ -70,6 +73,7 @@ type Tab =
   | "pedidos"
   | "cloaker"
   | "frete"
+  | "cupons"
   | "config";
 
 interface FunnelStats {
@@ -220,9 +224,22 @@ function GatewayCard({
 }
 
 export default function Admin() {
+  const [authed, setAuthed] = useState<boolean | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [period, setPeriod] = useState(30);
   const [stats, setStats] = useState<FunnelStats>(INITIAL_STATS);
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setAuthed(!!session);
+    });
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setAuthed(!!session);
+    });
+  }, []);
+
+  if (authed === null) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" /></div>;
+  if (!authed) return <AdminLogin onLogin={() => setAuthed(true)} />;
 
   const [pixelConfig, setPixelConfig] = useState<PixelConfig>(() => getPixelConfig() || INITIAL_PIXEL_CONFIG);
   const [pixelMessage, setPixelMessage] = useState("");
@@ -595,6 +612,7 @@ export default function Admin() {
     { id: "utmify", label: "Utmify", icon: <Zap size={14} /> },
     { id: "pagamentos", label: "Pagamentos", icon: <CreditCard size={14} /> },
     { id: "pedidos", label: "Pedidos", icon: <ShoppingCart size={14} /> },
+    { id: "cupons", label: "Cupons", icon: <Tag size={14} /> },
     { id: "config", label: "Config", icon: <Settings size={14} /> },
   ];
 
@@ -606,9 +624,10 @@ export default function Admin() {
             <h1 className="text-sm font-black text-primary-foreground">Painel Admin</h1>
             <p className="text-[10px] text-primary-foreground/60">Gerenciamento da loja</p>
           </div>
-          <Badge variant="secondary" className="text-[10px] font-bold">
-            Kazoom
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="text-[10px] font-bold">Kazoom</Badge>
+            <button onClick={async () => { await supabase.auth.signOut(); setAuthed(false); }} className="text-[10px] text-primary-foreground/60 hover:text-primary-foreground underline">Sair</button>
+          </div>
         </div>
       </div>
 
@@ -634,6 +653,7 @@ export default function Admin() {
         {activeTab === "frete" && <AdminFrete />}
         {activeTab === "financeiro" && <AdminFinanceiro />}
         {activeTab === "leads" && <AdminLeads />}
+        {activeTab === "cupons" && <AdminCupons />}
 
         {activeTab === "analytics" && (
           <div>
