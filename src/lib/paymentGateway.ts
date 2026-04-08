@@ -27,6 +27,11 @@ const defaultConfig: PaymentGatewayConfig = {
 };
 
 let cachedConfig: PaymentGatewayConfig | null = null;
+let adminPassword: string | null = null;
+
+export function setAdminPassword(password: string) {
+  adminPassword = password;
+}
 
 export function getCachedGatewayConfig(): PaymentGatewayConfig {
   return cachedConfig || defaultConfig;
@@ -60,48 +65,27 @@ export interface SaveGatewayConfigResult {
   error?: string;
 }
 
-function normalizeGatewaySaveError(message?: string) {
-  const lower = (message || '').toLowerCase();
-
-  if (lower.includes('row-level security') || lower.includes('permission denied') || lower.includes('42501')) {
-    return 'O painel admin não está autenticado no backend, então o gateway não pôde ser salvo.';
+export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Promise<SaveGatewayConfigResult> {
+  if (!adminPassword) {
+    return { ok: false, error: 'Senha admin não definida. Faça login novamente.' };
   }
 
-  return message || 'Erro desconhecido ao salvar gateway.';
-}
-
-export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Promise<SaveGatewayConfigResult> {
   try {
-    const { data: existing, error: existingError } = await supabase.from('gateway_config').select('id').limit(1).single();
+    const { data, error } = await supabase.functions.invoke('save-gateway-config', {
+      body: { password: adminPassword, config },
+    });
 
-    if (existingError && existingError.code !== 'PGRST116') {
-      return { ok: false, error: normalizeGatewaySaveError(existingError.message) };
+    if (error) {
+      return { ok: false, error: error.message || 'Erro ao salvar gateway' };
     }
 
-    const updateData: Record<string, unknown> = {
-      active_gateway: config.activeGateway,
-      payment_methods: config.paymentMethods,
-      pagouai_public_key: config.pagouai.publicKey, pagouai_secret_key: config.pagouai.secretKey,
-      vennox_secret_key: config.vennox.secretKey, vennox_company_id: config.vennox.companyId,
-      centurionpay_secret_key: config.centurionpay.secretKey, centurionpay_company_id: config.centurionpay.companyId,
-      ironpay_api_token: config.ironpay.apiToken,
-      simpayout_client_id: config.simpayout.clientId, simpayout_client_secret: config.simpayout.clientSecret,
-      beehive_public_key: config.beehive.publicKey, beehive_secret_key: config.beehive.secretKey,
-      pagamentosmp_public_key: config.pagamentosmp.publicKey, pagamentosmp_secret_key: config.pagamentosmp.secretKey,
-      updated_at: new Date().toISOString(),
-    };
-
-    const response = existing?.id
-      ? await supabase.from('gateway_config').update(updateData as any).eq('id', existing.id)
-      : await supabase.from('gateway_config').insert([updateData as any]);
-
-    if (response.error) {
-      return { ok: false, error: normalizeGatewaySaveError(response.error.message) };
+    if (data?.error) {
+      return { ok: false, error: data.error };
     }
 
     cachedConfig = config;
     return { ok: true };
-  } catch (error) {
-    return { ok: false, error: normalizeGatewaySaveError(error instanceof Error ? error.message : undefined) };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : 'Erro desconhecido ao salvar gateway' };
   }
 }
