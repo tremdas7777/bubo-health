@@ -624,9 +624,10 @@ export default function Admin() {
             <h1 className="text-sm font-black text-primary-foreground">Painel Admin</h1>
             <p className="text-[10px] text-primary-foreground/60">Gerenciamento da loja</p>
           </div>
-          <Badge variant="secondary" className="text-[10px] font-bold">
-            Kazoom
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="text-[10px] font-bold">Kazoom</Badge>
+            <button onClick={async () => { await supabase.auth.signOut(); setAuthed(false); }} className="text-[10px] text-primary-foreground/60 hover:text-primary-foreground underline">Sair</button>
+          </div>
         </div>
       </div>
 
