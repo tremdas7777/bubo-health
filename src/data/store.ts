@@ -113,11 +113,11 @@ export const products: Product[] = [
     stock: 45, badge: "Economize 51%",
   },
   {
-    id: "e5", name: "Smartwatch IWO 7 Pro", slug: "iwo-7-pro",
+    id: "e5", name: "Smartwatch Esportivo Pro", slug: "smartwatch-esportivo-pro",
     price: 199.90, compareAtPrice: 359.90,
     image: imgSmartwatch,
     category: "eletronicos",
-    description: "Smartwatch IWO 7 Pro com tela infinita, monitor cardíaco, oxímetro, GPS e mais de 100 modos esportivos. Resistente à água.",
+    description: "Smartwatch esportivo com tela infinita, monitor cardíaco, oxímetro, GPS integrado e mais de 100 modos esportivos. Resistente à água IP68.",
     stock: 18, badge: "Economize 44%",
   },
 
@@ -207,11 +207,11 @@ export const products: Product[] = [
     stock: 20, badge: "Economize 54%",
   },
   {
-    id: "f5", name: "Powerball", slug: "powerball",
+    id: "f5", name: "Bola Giroscópica para Pulso", slug: "bola-giroscopica-pulso",
     price: 200.00, compareAtPrice: 350.00,
     image: imgPowerball,
     category: "fitness",
-    description: "Powerball giroscópica para fortalecimento de pulso, antebraço e mão. Com LED e contador digital de rotações.",
+    description: "Bola giroscópica para fortalecimento de pulso, antebraço e mão. Com LED indicador e contador digital de rotações. Ideal para reabilitação e treino.",
     stock: 25, badge: "Economize 42%",
   },
 
