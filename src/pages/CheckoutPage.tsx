@@ -609,15 +609,8 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                {/* Card info notice */}
-                {paymentMethod === "card" && (
-                  <div className="bg-primary/10 rounded-lg p-3 flex items-center gap-2">
-                    <CreditCard size={14} className="text-primary" />
-                    <span className="text-xs font-medium text-foreground">
-                      Pagamento via cartão de crédito — em breve!
-                    </span>
-                  </div>
-                )}
+
+
 
                 {/* Coupon */}
                 <div className="border border-border rounded-lg p-3 space-y-2">
@@ -678,10 +671,15 @@ export default function CheckoutPage() {
 
                 {paymentMethod === "card" && (
                   <Button
-                    disabled
-                    className="w-full bg-muted text-muted-foreground font-bold py-6 text-sm cursor-not-allowed"
+                    onClick={handleGeneratePix}
+                    disabled={generating}
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                   >
-                    <CreditCard size={16} className="mr-2" /> Gateway de cartão não configurado
+                    {generating ? (
+                      <><Loader2 size={16} className="animate-spin mr-2" /> Processando...</>
+                    ) : (
+                      <><CreditCard size={16} className="mr-2" /> Pagar com Cartão</>
+                    )}
                   </Button>
                 )}
               </div>
