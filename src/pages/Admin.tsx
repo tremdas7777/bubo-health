@@ -248,6 +248,9 @@ export default function Admin() {
   const [cloakerLoading, setCloakerLoading] = useState(false);
   const [cloakerMessage, setCloakerMessage] = useState("");
 
+  const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [configMessage, setConfigMessage] = useState("");
+
   const flashMessage = (setter: (value: string) => void, value: string, duration = 3000) => {
     setter(value);
     window.setTimeout(() => setter(""), duration);
