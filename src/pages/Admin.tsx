@@ -423,7 +423,7 @@ export default function Admin() {
   };
 
   const handlePaymentMethodChange = async (gw: string, method: string) => {
-    const updated = { ...gatewayConfig, paymentMethods: { ...gatewayConfig.paymentMethods, [gw]: method } };
+    const updated: PaymentGatewayConfig = { ...gatewayConfig, paymentMethods: { ...gatewayConfig.paymentMethods, [gw]: method as any } };
     setGatewayConfig(updated);
     await savePaymentGatewayConfig(updated);
     flashMessage(setGatewayMessage, `Métodos de ${gw} atualizados!`);
