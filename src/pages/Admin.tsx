@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { supabase } from "@/integrations/supabase/client";
+import AdminLogin from "@/pages/AdminLogin";
+import AdminCupons from "@/components/AdminCupons";
 import {
   ArrowDown,
   BarChart3,
@@ -70,6 +73,7 @@ type Tab =
   | "pedidos"
   | "cloaker"
   | "frete"
+  | "cupons"
   | "config";
 
 interface FunnelStats {
@@ -220,9 +224,22 @@ function GatewayCard({
 }
 
 export default function Admin() {
+  const [authed, setAuthed] = useState<boolean | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [period, setPeriod] = useState(30);
   const [stats, setStats] = useState<FunnelStats>(INITIAL_STATS);
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setAuthed(!!session);
+    });
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setAuthed(!!session);
+    });
+  }, []);
+
+  if (authed === null) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" /></div>;
+  if (!authed) return <AdminLogin onLogin={() => setAuthed(true)} />;
 
   const [pixelConfig, setPixelConfig] = useState<PixelConfig>(() => getPixelConfig() || INITIAL_PIXEL_CONFIG);
   const [pixelMessage, setPixelMessage] = useState("");
