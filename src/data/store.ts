@@ -184,9 +184,9 @@ export const products: Product[] = [
     id: "t6", name: "Kit Completo Refrigeração e Ar Condicionado com Bomba de Vácuo 7 CFM", slug: "kit-ferramentas-refrigeracao",
     price: 997.00, compareAtPrice: 3868.60,
     image: imgKitRefrigeracao,
-    images: [imgKitRefrigeracao, imgKitRefrigeracao2, imgKitRefrigeracao3, imgKitRefrigeracao5, imgKitRefrigeracao6],
+    images: [imgKitRefrigeracao, imgKitRefrigeracao2, imgKitRefrigeracaoManifold, imgKitRefrigeracaoFlangeador, imgKitRefrigeracaoCurvadoras, imgKitRefrigeracaoUso],
     category: "ferramentas",
-    description: "Kit Profissional Completo para Refrigeração e Ar Condicionado — ideal para técnicos e instaladores. Acompanha Bomba de Vácuo 7 CFM Duplo Estágio, 2 Conjuntos Manifold (R134 e R410), flangeador excêntrico, cortador e alargador de tubos de cobre, escareador, curvadoras de tubo em 5 medidas, multímetro digital com capacímetro, termômetro digital, alicate amperímetro, caneta detectora de tensão, maçarico portátil para solda (até 1.200°C), 2 chaves inglesas, kit chave Allen, mangueiras para R22/R134A/R404A e R32/R410, pasta fluxo, varetas Foscoper e maleta organizadora resistente. Bivolt 110/220V, peso total de 18 kg. Tudo o que você precisa para instalação, limpeza, recarga e manutenção de sistemas de refrigeração e ar condicionado em um único kit.",
+    description: "Pare de perder dinheiro comprando ferramentas avulsas. Este Kit Profissional reúne TUDO para Refrigeração e Ar Condicionado em uma única maleta: Bomba de Vácuo 7 CFM Duplo Estágio de alta performance, 2 Conjuntos Manifold completos (R134 e R410 — compatíveis com R22, R32, R404A e R134a), flangeador excêntrico com rotação 360° para acabamentos perfeitos, cortador e alargador de tubos de cobre, escareador, 5 curvadoras de tubo em medidas diferentes, multímetro digital com capacímetro, termômetro digital, alicate amperímetro, caneta detectora de tensão, maçarico portátil para solda até 1.200°C, 2 chaves inglesas, kit chave Allen completo, mangueiras profissionais para todos os gases, pasta fluxo 50g, varetas Foscoper e maleta organizadora reforçada. São 18 kg de ferramentas profissionais, bivolt 110/220V, prontas para você trabalhar em qualquer instalação, manutenção, limpeza ou recarga. O técnico que tem esse kit na mão não precisa de mais nada.",
     stock: 5, badge: "Economize 74%",
   },
 
