@@ -16,6 +16,28 @@ import {
   QrCode,
   RefreshCw,
   Save,
+  Settings,
+  Shield,
+  ShoppingCart,
+  Trash2,
+  TrendingUp,
+  Truck,
+  Users,
+  Zap,
+  BarChart3,
+  Bell,
+  CheckCircle,
+  Code,
+  Copy,
+  CreditCard,
+  DollarSign,
+  Eye,
+  Loader2,
+  Package,
+  Plus,
+  QrCode,
+  RefreshCw,
+  Save,
   Shield,
   ShoppingCart,
   Trash2,
@@ -68,7 +90,8 @@ type Tab =
   | "pagamentos"
   | "pedidos"
   | "cloaker"
-  | "frete";
+  | "frete"
+  | "config";
 
 interface FunnelStats {
   visitors: number;
@@ -589,6 +612,7 @@ export default function Admin() {
     { id: "utmify", label: "Utmify", icon: <Zap size={14} /> },
     { id: "pagamentos", label: "Pagamentos", icon: <CreditCard size={14} /> },
     { id: "pedidos", label: "Pedidos", icon: <ShoppingCart size={14} /> },
+    { id: "config", label: "Config", icon: <Settings size={14} /> },
   ];
 
   return (
