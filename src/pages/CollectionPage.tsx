@@ -25,8 +25,8 @@ export default function CollectionPage() {
   return (
     <Layout>
       <PageHead
-        title={`${collectionName} | Bazu`}
-        description={`Confira os melhores produtos de ${collectionName} na Bazu. Frete grátis e parcele em até 12x.`}
+        title={`${collectionName} | Kazoom`}
+        description={`Confira os melhores produtos de ${collectionName} na Kazoom. Frete grátis e parcele em até 12x.`}
         canonical={collectionUrl}
       />
       <BreadcrumbJsonLd
