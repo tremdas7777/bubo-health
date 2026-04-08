@@ -195,6 +195,22 @@ export default function CheckoutPage() {
     });
   }, []);
 
+  // Poll for payment status when PIX is generated
+  useEffect(() => {
+    if (!orderId || pollingPayment) return;
+    setPollingPayment(true);
+    const interval = setInterval(async () => {
+      try {
+        const { data } = await supabase.from("orders").select("status").eq("id", orderId).maybeSingle();
+        if (data?.status === "paid" || data?.status === "approved") {
+          clearInterval(interval);
+          navigate(`/obrigado?pedido=${orderId}`);
+        }
+      } catch { /* ignore */ }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [orderId, navigate, pollingPayment]);
+
   const selectedShippingOption = shippingOptions.find((s) => s.id === selectedShipping) || shippingOptions[0];
   const shippingCost = selectedShippingOption?.price_cents || 0;
   const subtotal = totalPrice;
