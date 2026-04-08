@@ -16,6 +16,7 @@ import {
   QrCode,
   RefreshCw,
   Save,
+  Settings,
   Shield,
   ShoppingCart,
   Trash2,
@@ -68,7 +69,8 @@ type Tab =
   | "pagamentos"
   | "pedidos"
   | "cloaker"
-  | "frete";
+  | "frete"
+  | "config";
 
 interface FunnelStats {
   visitors: number;
@@ -246,6 +248,9 @@ export default function Admin() {
   const [cloakerLoading, setCloakerLoading] = useState(false);
   const [cloakerMessage, setCloakerMessage] = useState("");
 
+  const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [configMessage, setConfigMessage] = useState("");
+
   const flashMessage = (setter: (value: string) => void, value: string, duration = 3000) => {
     setter(value);
     window.setTimeout(() => setter(""), duration);
@@ -272,10 +277,11 @@ export default function Admin() {
       setGatewayConfig(dbGatewayConfig || INITIAL_GATEWAY_CONFIG);
       setUtmifyConfig(getUtmifyConfig());
 
-      const { data } = await supabase.from("cloaker_config").select("enabled").limit(1).maybeSingle();
-      if (data) {
-        setCloakerEnabled(data.enabled);
-      }
+      const { data: cloakerData } = await supabase.from("cloaker_config").select("enabled").limit(1).maybeSingle();
+      if (cloakerData) setCloakerEnabled(cloakerData.enabled);
+
+      const { data: storeData } = await supabase.from("store_config").select("whatsapp_number").limit(1).maybeSingle();
+      if (storeData) setWhatsappNumber(storeData.whatsapp_number ?? "");
     };
 
     void loadInitialState();
@@ -589,6 +595,7 @@ export default function Admin() {
     { id: "utmify", label: "Utmify", icon: <Zap size={14} /> },
     { id: "pagamentos", label: "Pagamentos", icon: <CreditCard size={14} /> },
     { id: "pedidos", label: "Pedidos", icon: <ShoppingCart size={14} /> },
+    { id: "config", label: "Config", icon: <Settings size={14} /> },
   ];
 
   return (
@@ -1576,6 +1583,47 @@ export default function Admin() {
               </div>
 
               <StatusMessage msg={cloakerMessage} />
+            </Card>
+          </div>
+        )}
+
+        {activeTab === "config" && (
+          <div className="space-y-4">
+            <div>
+              <h2 className="mb-1 text-xl font-black text-foreground">Configurações da Loja</h2>
+              <p className="text-xs text-muted-foreground">Dados gerais exibidos no site</p>
+            </div>
+
+            <Card className="space-y-4 border border-border p-5">
+              <div>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  Número do WhatsApp
+                </label>
+                <p className="text-[10px] text-muted-foreground mb-1">
+                  Com código do país (ex: 5533999829860). Deixe vazio para ocultar o botão.
+                </p>
+                <Input
+                  value={whatsappNumber}
+                  onChange={(e) => setWhatsappNumber(e.target.value)}
+                  placeholder="5533999829860"
+                  className="mt-1 font-mono text-xs"
+                />
+              </div>
+
+              <Button
+                className="w-full bg-emerald-500 text-xs font-bold text-white hover:bg-emerald-500/90"
+                onClick={async () => {
+                  const { data: existing } = await supabase.from("store_config").select("id").limit(1).maybeSingle();
+                  const result = existing?.id
+                    ? await supabase.from("store_config").update({ whatsapp_number: whatsappNumber, updated_at: new Date().toISOString() }).eq("id", existing.id)
+                    : await supabase.from("store_config").insert({ whatsapp_number: whatsappNumber });
+                  flashMessage(setConfigMessage, result.error ? "Erro ao salvar" : "Configuração salva com sucesso!");
+                }}
+              >
+                <Save size={14} className="mr-1.5" /> Salvar Configurações
+              </Button>
+
+              <StatusMessage msg={configMessage} />
             </Card>
           </div>
         )}

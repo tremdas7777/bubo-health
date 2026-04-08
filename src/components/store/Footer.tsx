@@ -1,8 +1,11 @@
-import { ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoIcon from "@/assets/logo-icon.png";
+import { useStoreConfig } from "@/hooks/useStoreConfig";
 
 export default function Footer() {
+  const { config } = useStoreConfig();
+  const cleanNumber = config.whatsapp_number?.replace(/\D/g, "") || "";
+
   return (
     <footer className="bg-foreground text-background/80">
       <div className="container mx-auto px-4 py-10">
@@ -47,14 +50,16 @@ export default function Footer() {
               <p className="text-xs">CNPJ: 50.301.476/0001-30</p>
               <p className="text-xs">Av. Sete de Setembro, 999, Loja 01 – Centro</p>
               <p className="text-xs">Ipanema – MG, CEP 36950-000</p>
-              <a
-                href="https://wa.me/5533999829860"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-2 bg-[#25D366] text-white px-4 py-2 rounded-lg font-medium text-xs hover:opacity-90 transition-opacity"
-              >
-                Conversar no WhatsApp
-              </a>
+              {cleanNumber && (
+                <a
+                  href={`https://wa.me/${cleanNumber}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-2 bg-[#25D366] text-white px-4 py-2 rounded-lg font-medium text-xs hover:opacity-90 transition-opacity"
+                >
+                  Conversar no WhatsApp
+                </a>
+              )}
             </div>
           </div>
         </div>

@@ -341,6 +341,27 @@ export type Database = {
         }
         Relationships: []
       }
+      store_config: {
+        Row: {
+          created_at: string
+          id: string
+          updated_at: string
+          whatsapp_number: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+          whatsapp_number?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+          whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
       webhook_endpoints: {
         Row: {
           active: boolean | null
