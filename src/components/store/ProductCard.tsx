@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Product, formatPrice, getInstallmentPrice, getDiscountPercent } from "@/data/store";
+import { getPixPrice, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 
@@ -49,8 +50,11 @@ export default function ProductCard({ product }: Props) {
             )}
           </div>
 
-          {/* Installment */}
+          {/* Installment + PIX */}
           <p className="text-[11px] text-muted-foreground">
+            ou <strong>{formatPrice(getPixPrice(product.price))}</strong> no PIX ({PIX_DISCOUNT_PERCENT}% off)
+          </p>
+          <p className="text-[10px] text-muted-foreground">
             em até <strong>12x</strong> de <strong>{getInstallmentPrice(product.price)}</strong>
           </p>
         </div>
