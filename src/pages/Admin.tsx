@@ -277,10 +277,11 @@ export default function Admin() {
       setGatewayConfig(dbGatewayConfig || INITIAL_GATEWAY_CONFIG);
       setUtmifyConfig(getUtmifyConfig());
 
-      const { data } = await supabase.from("cloaker_config").select("enabled").limit(1).maybeSingle();
-      if (data) {
-        setCloakerEnabled(data.enabled);
-      }
+      const { data: cloakerData } = await supabase.from("cloaker_config").select("enabled").limit(1).maybeSingle();
+      if (cloakerData) setCloakerEnabled(cloakerData.enabled);
+
+      const { data: storeData } = await supabase.from("store_config").select("whatsapp_number").limit(1).maybeSingle();
+      if (storeData) setWhatsappNumber(storeData.whatsapp_number ?? "");
     };
 
     void loadInitialState();
