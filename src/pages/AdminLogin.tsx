@@ -2,28 +2,42 @@ import { useState } from "react";
 import { Lock, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
-  onLogin: () => void;
+  onLogin: (password: string) => void;
 }
-
-const ADMIN_PASSWORD = "escalabahia";
 
 export default function AdminLogin({ onLogin }: Props) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    if (password === ADMIN_PASSWORD) {
-      onLogin();
-    } else {
-      setError("Senha inválida.");
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke("verify-admin-password", {
+        body: { password },
+      });
+
+      if (fnError) {
+        setError("Erro ao verificar senha.");
+        setLoading(false);
+        return;
+      }
+
+      if (data?.valid) {
+        onLogin(password);
+      } else {
+        setError("Senha inválida.");
+      }
+    } catch {
+      setError("Erro de conexão.");
     }
+
     setLoading(false);
   };
 
