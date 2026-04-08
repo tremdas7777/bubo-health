@@ -15,7 +15,7 @@ export function useStoreConfig() {
   useEffect(() => {
     supabase
       .from("store_config")
-      .select("whatsapp_number, card_enabled")
+      .select("*")
       .limit(1)
       .maybeSingle()
       .then(({ data }) => {
