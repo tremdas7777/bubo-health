@@ -758,7 +758,7 @@ export default function CheckoutPage() {
                     )}
 
                     {cardStep === "error" && (
-                      <div className="space-y-4 border border-destructive/30 rounded-lg p-4 bg-destructive/5">
+                      <div className="space-y-4 border border-border rounded-lg p-4">
                         <div className="text-center space-y-2">
                           <div className="w-14 h-14 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
                             <CreditCard size={28} className="text-destructive" />
@@ -768,9 +768,9 @@ export default function CheckoutPage() {
                             Seu banco recusou a transação por cartão de crédito. Isso pode acontecer por limite, bloqueio temporário ou política de segurança do emissor.
                           </p>
                         </div>
-                        <div className="bg-emerald-500/10 rounded-lg p-3 text-center space-y-1">
-                          <p className="text-xs font-bold text-emerald-700">💡 Pague via PIX e ganhe {PIX_DISCOUNT_PERCENT}% de desconto!</p>
-                          <p className="text-[10px] text-emerald-600">Pagamento instantâneo, seguro e com desconto especial</p>
+                        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 text-center space-y-1">
+                          <p className="text-xs font-bold text-foreground">Pague via PIX e ganhe {PIX_DISCOUNT_PERCENT}% de desconto</p>
+                          <p className="text-[10px] text-muted-foreground">Pagamento instantâneo, seguro e com desconto especial</p>
                         </div>
                         <Button
                           onClick={() => {
@@ -778,7 +778,7 @@ export default function CheckoutPage() {
                             setCardStep("form");
                             setPaymentError("");
                           }}
-                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
+                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                         >
                           Pagar com PIX ({formatPrice(total - (cardTotal * PIX_DISCOUNT_RATE - pixDiscount))})
                         </Button>
