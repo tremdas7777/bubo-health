@@ -750,9 +750,12 @@ export default function CheckoutPage() {
                   <p className="text-sm text-muted-foreground">Escaneie o QR Code ou copie o código para pagar</p>
                 </div>
 
-                {pixQrCode && (
+                {/* QR Code - client-side generated from PIX code */}
+                {pixCode && (
                   <div className="flex justify-center">
-                    <img src={pixQrCode} alt="QR Code PIX" className="w-48 h-48 rounded-lg border border-border" />
+                    <div className="bg-white p-3 rounded-lg border border-border">
+                      <QRCodeSVG value={pixCode} size={192} />
+                    </div>
                   </div>
                 )}
 

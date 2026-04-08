@@ -24,6 +24,7 @@ const TermsPage = lazy(() => import("./pages/TermsPage"));
 const ReturnPolicyPage = lazy(() => import("./pages/ReturnPolicyPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const WishlistPage = lazy(() => import("./pages/WishlistPage"));
+const ThankYouPage = lazy(() => import("./pages/ThankYouPage"));
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const App = () => {
                     <Route path="/contato" element={<ContactPage />} />
                     <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/favoritos" element={<WishlistPage />} />
+                    <Route path="/obrigado" element={<ThankYouPage />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
