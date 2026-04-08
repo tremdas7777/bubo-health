@@ -97,8 +97,8 @@ export default function CheckoutPage() {
   // Load shipping config from DB
   useEffect(() => {
     supabase.from("shipping_config").select("*").limit(1).maybeSingle().then(({ data }) => {
-      if (data?.shipping_options && Array.isArray(data.shipping_options) && (data.shipping_options as ShippingOption[]).length > 0) {
-        setShippingOptions(data.shipping_options as ShippingOption[]);
+      if (data?.shipping_options && Array.isArray(data.shipping_options) && (data.shipping_options as unknown as ShippingOption[]).length > 0) {
+        setShippingOptions(data.shipping_options as unknown as ShippingOption[]);
       }
     });
   }, []);
