@@ -303,7 +303,7 @@ export default function CheckoutPage() {
           <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft size={16} /> Voltar
           </button>
-          <Link to="/" className="text-xl font-heading font-bold text-primary">Bazu</Link>
+          <Link to="/" className="text-xl font-heading font-bold text-primary">Kazoom</Link>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Lock size={12} /> Seguro
           </div>
