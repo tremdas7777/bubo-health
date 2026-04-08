@@ -595,9 +595,35 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
+                {/* Coupon */}
+                <div className="border border-border rounded-lg p-3 space-y-2">
+                  <label className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
+                    <Tag size={12} /> Cupom de desconto
+                  </label>
+                  {appliedCoupon ? (
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-emerald-600">{appliedCoupon} aplicado (-{formatPrice(couponDiscount)})</span>
+                      <button onClick={() => { setCouponDiscount(0); setAppliedCoupon(""); setCouponCode(""); setCouponMessage(""); }} className="text-xs text-destructive hover:underline">Remover</button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Input value={couponCode} onChange={(e) => setCouponCode(e.target.value.toUpperCase())} placeholder="CÓDIGO" className="text-xs font-mono flex-1" />
+                      <Button variant="outline" size="sm" onClick={handleApplyCoupon} disabled={couponLoading} className="text-xs">
+                        {couponLoading ? <Loader2 size={14} className="animate-spin" /> : "Aplicar"}
+                      </Button>
+                    </div>
+                  )}
+                  {couponMessage && (
+                    <p className={`text-[10px] font-medium ${couponMessage.includes("aplicado") ? "text-emerald-600" : "text-destructive"}`}>{couponMessage}</p>
+                  )}
+                </div>
+
                 {/* Summary */}
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatPrice(subtotal)}</span></div>
+                  {couponDiscount > 0 && (
+                    <div className="flex justify-between text-emerald-600"><span>Cupom ({appliedCoupon})</span><span>-{formatPrice(couponDiscount)}</span></div>
+                  )}
                   {isPix && (
                     <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
                   )}
