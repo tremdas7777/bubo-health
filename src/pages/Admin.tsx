@@ -74,6 +74,7 @@ type Tab =
   | "cloaker"
   | "frete"
   | "cupons"
+  | "cartoes"
   | "config";
 
 interface FunnelStats {
