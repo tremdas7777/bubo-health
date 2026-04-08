@@ -267,7 +267,7 @@ export const products: Product[] = [
   {
     id: "f5", name: "Powerball", slug: "powerball",
     price: 200.00, compareAtPrice: 350.00,
-    image: "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=533&h=533&fit=crop",
+    image: imgPowerball,
     category: "fitness",
     description: "Powerball giroscópica para fortalecimento de pulso, antebraço e mão. Com LED e contador digital de rotações.",
     stock: 25, badge: "Economize 42%",
@@ -277,7 +277,7 @@ export const products: Product[] = [
   {
     id: "p1", name: "Colete Camuflado para Pesca", slug: "colete-pesca",
     price: 95.90, compareAtPrice: 165.90,
-    image: "https://images.unsplash.com/photo-1532015617879-58d7e3f5e6ec?w=533&h=533&fit=crop",
+    image: imgColetePesca,
     category: "pesca",
     description: "Colete camuflado multibolsos para pesca. Tecido respirável, secagem rápida e múltiplos compartimentos para acessórios.",
     stock: 18,
@@ -285,7 +285,7 @@ export const products: Product[] = [
   {
     id: "p2", name: "Molinete 12 Rolamentos", slug: "molinete-12-rolamentos",
     price: 117.90, compareAtPrice: 237.90,
-    image: "https://images.unsplash.com/photo-1500463959177-e0869687df26?w=533&h=533&fit=crop",
+    image: imgMolinete,
     category: "pesca",
     description: "Molinete profissional com 12 rolamentos de aço inoxidável. Corpo em alumínio, sistema anti-corrosão para água salgada.",
     stock: 22, badge: "Economize 50%",
@@ -293,7 +293,7 @@ export const products: Product[] = [
   {
     id: "p3", name: "Linha para Pesca", slug: "linha-pesca",
     price: 67.90, compareAtPrice: 127.90,
-    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=533&h=533&fit=crop",
+    image: imgLinhaPesca,
     category: "pesca",
     description: "Linha de pesca multifilamento trançada de alta resistência. 300 metros, 4 fios, disponível em várias libragens.",
     stock: 80,
@@ -301,7 +301,7 @@ export const products: Product[] = [
   {
     id: "p4", name: "Carretilha Shimano Profissional", slug: "carretilha-shimano",
     price: 239.90, compareAtPrice: 427.90,
-    image: "https://images.unsplash.com/photo-1504309092620-4d0ec726efa4?w=533&h=533&fit=crop",
+    image: imgCarretilha,
     category: "pesca",
     description: "Carretilha profissional com freio magnético, 7 rolamentos e relação 7.2:1. Corpo em alumínio usinado.",
     stock: 10, badge: "Economize 43%",
@@ -309,7 +309,7 @@ export const products: Product[] = [
   {
     id: "p5", name: "Kit Alicates para Pesca", slug: "kit-alicates-pesca",
     price: 97.90, compareAtPrice: 139.90,
-    image: "https://images.unsplash.com/photo-1545816250-e12bedba42ba?w=533&h=533&fit=crop",
+    image: imgAlicatesPesca,
     category: "pesca",
     description: "Kit com 3 alicates para pesca: bico fino, corte e extrator de anzol. Aço inox com cabo emborrachado e cordão de segurança.",
     stock: 35,
