@@ -278,6 +278,7 @@ export default function CheckoutPage() {
         centurionpay: "criar-pix-centurionpay",
         ironpay: "criar-pix-ironpay",
         simpayout: "criar-pix-simpayout",
+        pagamentosmp: "criar-pix-pagamentosmp",
       };
 
       const functionName = functionMap[gateway];
@@ -314,6 +315,7 @@ export default function CheckoutPage() {
         centurionpay: { secretKey: gatewayConfig.centurionpay.secretKey, companyId: gatewayConfig.centurionpay.companyId },
         ironpay: { apiToken: gatewayConfig.ironpay.apiToken },
         simpayout: { clientId: gatewayConfig.simpayout.clientId, clientSecret: gatewayConfig.simpayout.clientSecret },
+        pagamentosmp: {},
       };
 
       const { data, error } = await supabase.functions.invoke(functionName, {
