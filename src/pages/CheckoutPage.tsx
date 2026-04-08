@@ -28,6 +28,38 @@ const DEFAULT_SHIPPING: ShippingOption[] = [
 
 type PaymentMethod = "pix" | "card";
 
+const GATEWAY_LABELS: Record<string, string> = {
+  pagouai: "Pagou.ai",
+  vennox: "Vennox",
+  centurionpay: "Centurion Pay",
+  ironpay: "Iron Pay",
+  simpayout: "Sim Payout",
+  beehive: "Beehive",
+  pagamentosmp: "MP Pagamentos",
+};
+
+async function extractFunctionErrorMessage(error: unknown) {
+  if (error && typeof error === "object" && "context" in error) {
+    const response = (error as { context?: Response }).context;
+
+    if (response instanceof Response) {
+      try {
+        const payload = await response.clone().json() as { error?: string; details?: { refusedReason?: { description?: string } } };
+        return payload.error || payload.details?.refusedReason?.description || "Erro ao processar pagamento";
+      } catch {
+        try {
+          const text = await response.clone().text();
+          if (text) return text;
+        } catch {
+          // ignore
+        }
+      }
+    }
+  }
+
+  return error instanceof Error ? error.message : "Erro desconhecido ao processar pagamento";
+}
+
 function maskCPF(v: string) {
   return v.replace(/\D/g, "").slice(0, 11).replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
 }
@@ -259,19 +291,16 @@ export default function CheckoutPage() {
     try {
       const gatewayConfig = await fetchPaymentGatewayConfig();
       const gateway = gatewayConfig.activeGateway;
+      const gatewayLabel = GATEWAY_LABELS[gateway] || gateway;
 
-      const functionMap: Record<string, string> = {
-        pagouai: "criar-pix",
-        vennox: "criar-pix-vennox",
+      const functionMap: Partial<Record<string, string>> = {
         centurionpay: "criar-pix-centurionpay",
-        ironpay: "criar-pix-ironpay",
-        simpayout: "criar-pix-simpayout",
         pagamentosmp: "criar-pix-pagamentosmp",
       };
 
       const functionName = functionMap[gateway];
       if (!functionName) {
-        setPaymentError("Gateway de pagamento não configurado.");
+        setPaymentError(`${gatewayLabel} ainda não está disponível neste checkout.`);
         setGenerating(false);
         return;
       }
@@ -298,21 +327,28 @@ export default function CheckoutPage() {
 
       // Add gateway-specific keys
       const keyMap: Record<string, Record<string, string>> = {
-        pagouai: { publicKey: gatewayConfig.pagouai.publicKey, secretKey: gatewayConfig.pagouai.secretKey },
-        vennox: { secretKey: gatewayConfig.vennox.secretKey, companyId: gatewayConfig.vennox.companyId },
         centurionpay: { secretKey: gatewayConfig.centurionpay.secretKey, companyId: gatewayConfig.centurionpay.companyId },
-        ironpay: { apiToken: gatewayConfig.ironpay.apiToken },
-        simpayout: { clientId: gatewayConfig.simpayout.clientId, clientSecret: gatewayConfig.simpayout.clientSecret },
-        pagamentosmp: {},
+        pagamentosmp: {
+          publicKey: gatewayConfig.pagamentosmp.publicKey,
+          secretKey: gatewayConfig.pagamentosmp.secretKey,
+        },
       };
 
       const { data, error } = await supabase.functions.invoke(functionName, {
         body: { ...bodyBase, ...keyMap[gateway] },
       });
 
-      if (error) throw error;
+      if (error) {
+        throw new Error(await extractFunctionErrorMessage(error));
+      }
 
-      const result = data as { pix_code?: string; pix_qr_code?: string; order_id?: string } | null;
+      const result = data as { pix_code?: string; pix_qr_code?: string; order_id?: string; error?: string } | null;
+
+      if (result?.error) {
+        setPaymentError(result.error);
+        setGenerating(false);
+        return;
+      }
 
       if (result?.pix_code) {
         setPixCode(result.pix_code);
@@ -336,7 +372,7 @@ export default function CheckoutPage() {
       }
     } catch (err) {
       console.error(err);
-      setPaymentError("Erro ao processar pagamento. Verifique os dados e tente novamente.");
+      setPaymentError(await extractFunctionErrorMessage(err));
     }
 
     setGenerating(false);
