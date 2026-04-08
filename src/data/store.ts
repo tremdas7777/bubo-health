@@ -11,6 +11,7 @@ import imgOculosEsportes from "@/assets/products/oculos-esportes.jpg";
 import imgCapacete from "@/assets/products/capacete-ciclismo.jpg";
 import imgMotosserra from "@/assets/products/mini-motosserra.jpg";
 import imgAlicateFriso from "@/assets/products/mini-alicate-friso.jpg";
+import imgKitRefrigeracao from "@/assets/products/kit-refrigeracao.jpg";
 import imgJoelheira from "@/assets/products/joelheira.jpg";
 import imgFaixas from "@/assets/products/faixas-treino.jpg";
 import imgExercitador from "@/assets/products/exercitador-abdominal.jpg";
