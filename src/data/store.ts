@@ -181,13 +181,13 @@ export const products: Product[] = [
     stock: 22, badge: "Economize 54%",
   },
   {
-    id: "t6", name: "Kit Ferramentas Refrigeração 7 CFM", slug: "kit-ferramentas-refrigeracao",
+    id: "t6", name: "Kit Completo Refrigeração e Ar Condicionado com Bomba de Vácuo 7 CFM", slug: "kit-ferramentas-refrigeracao",
     price: 997.00, compareAtPrice: 3868.60,
     image: imgKitRefrigeracao,
-    images: [imgKitRefrigeracao, imgKitRefrigeracao2, imgKitRefrigeracao3, imgKitRefrigeracao4, imgKitRefrigeracao5, imgKitRefrigeracao6],
+    images: [imgKitRefrigeracao, imgKitRefrigeracao2, imgKitRefrigeracao3, imgKitRefrigeracao5, imgKitRefrigeracao6],
     category: "ferramentas",
-    description: "Kit Profissional Completo para Refrigeração e Ar Condicionado com Bomba de Vácuo 7 CFM Duplo Estágio e 2 Conjuntos Manifold. Inclui: bomba de vácuo 7 CFM, manifold analógico R134 e R410, flangeador excêntrico, cortador de tubos de cobre, alargador, escareador, curvadoras de tubo, multímetro digital com capacímetro, termômetro digital, alicate amperímetro, caneta detectora de tensão, maçarico portátil para solda até 1.200°C, chaves inglesas, kit chave Allen, mangueiras R22/R134A/R404A de 90cm, mangueiras R32/R410 de 90cm, pasta fluxo 50g, varetas Foscoper, molas curvadoras e maleta organizadora. Bivolt 110/220V — 18kg de ferramentas profissionais para instalação, limpeza, recarga e manutenção. Com apenas 3 instalações você já recupera o investimento!",
-    stock: 5, badge: "Economize 74%", noIndex: true,
+    description: "Kit Profissional Completo para Refrigeração e Ar Condicionado — ideal para técnicos e instaladores. Acompanha Bomba de Vácuo 7 CFM Duplo Estágio, 2 Conjuntos Manifold (R134 e R410), flangeador excêntrico, cortador e alargador de tubos de cobre, escareador, curvadoras de tubo em 5 medidas, multímetro digital com capacímetro, termômetro digital, alicate amperímetro, caneta detectora de tensão, maçarico portátil para solda (até 1.200°C), 2 chaves inglesas, kit chave Allen, mangueiras para R22/R134A/R404A e R32/R410, pasta fluxo, varetas Foscoper e maleta organizadora resistente. Bivolt 110/220V, peso total de 18 kg. Tudo o que você precisa para instalação, limpeza, recarga e manutenção de sistemas de refrigeração e ar condicionado em um único kit.",
+    stock: 5, badge: "Economize 74%",
   },
 
   // ========== Fitness ==========
