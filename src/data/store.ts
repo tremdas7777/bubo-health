@@ -175,7 +175,7 @@ export const products: Product[] = [
   {
     id: "s4", name: "Óculos para Esportes", slug: "oculos-esportes",
     price: 97.90, compareAtPrice: 159.90,
-    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=533&h=533&fit=crop",
+    image: imgOculosEsportes,
     category: "esportes",
     description: "Óculos esportivo com lentes polarizadas, proteção UV400 e armação flexível resistente a impactos. Ideal para ciclismo e corrida.",
     stock: 28,
@@ -183,7 +183,7 @@ export const products: Product[] = [
   {
     id: "s5", name: "Capacete Ultraleve Ciclismo", slug: "capacete-ciclismo",
     price: 149.90, compareAtPrice: 352.90,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=533&h=533&fit=crop&q=80",
+    image: imgCapacete,
     category: "esportes",
     description: "Capacete ultraleve para ciclismo com 18 aberturas de ventilação, ajuste traseiro micrométrico e viseira removível.",
     stock: 15, badge: "Economize 57%",
@@ -217,7 +217,7 @@ export const products: Product[] = [
   {
     id: "t4", name: "Mini Motosserra", slug: "mini-motosserra",
     price: 135.00, compareAtPrice: 296.00,
-    image: "https://images.unsplash.com/photo-1616401784845-180882c9de60?w=533&h=533&fit=crop",
+    image: imgMotosserra,
     category: "ferramentas",
     description: "Mini motosserra elétrica portátil com bateria de lítio. Ideal para poda de galhos e corte de madeira. 2 baterias incluídas.",
     stock: 10, badge: "Economize 54%",
@@ -225,7 +225,7 @@ export const products: Product[] = [
   {
     id: "t5", name: "Mini Alicate para Friso", slug: "mini-alicate-friso",
     price: 120.00, compareAtPrice: 265.00,
-    image: "https://images.unsplash.com/photo-1609207131001-e7bba5f0be49?w=533&h=533&fit=crop",
+    image: imgAlicateFriso,
     category: "ferramentas",
     description: "Mini alicate para friso profissional em aço cromo-vanádio. Corte preciso e cabo emborrachado para maior aderência.",
     stock: 22, badge: "Economize 54%",
@@ -235,7 +235,7 @@ export const products: Product[] = [
   {
     id: "f1", name: "Joelheira para Treino", slug: "joelheira-treino",
     price: 79.90, compareAtPrice: 235.90,
-    image: "https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=533&h=533&fit=crop",
+    image: imgJoelheira,
     category: "fitness",
     description: "Joelheira esportiva com suporte de compressão 3D. Proteção anti-impacto, tecido respirável e ajuste anatômico.",
     stock: 55, badge: "Economize 66%",
@@ -243,7 +243,7 @@ export const products: Product[] = [
   {
     id: "f2", name: "Faixas para Treino", slug: "faixas-treino",
     price: 59.90, compareAtPrice: 120.00,
-    image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=533&h=533&fit=crop",
+    image: imgFaixas,
     category: "fitness",
     description: "Kit com 5 faixas elásticas de resistência variada. Perfeito para treinos em casa, pilates, yoga e fisioterapia.",
     stock: 75, badge: "Economize 50%",
@@ -251,7 +251,7 @@ export const products: Product[] = [
   {
     id: "f3", name: "Exercitador Abdominal", slug: "exercitador-abdominal",
     price: 137.50, compareAtPrice: 265.00,
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=533&h=533&fit=crop",
+    image: imgExercitador,
     category: "fitness",
     description: "Roda de exercício abdominal com sistema de retorno automático. Pegadores antiderrapantes e tapete para joelhos incluído.",
     stock: 30, badge: "Economize 48%",
@@ -259,7 +259,7 @@ export const products: Product[] = [
   {
     id: "f4", name: "Massageador Muscular", slug: "massageador-muscular",
     price: 99.00, compareAtPrice: 219.00,
-    image: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=533&h=533&fit=crop",
+    image: imgMassageador,
     category: "fitness",
     description: "Massageador muscular elétrico tipo pistola com 6 cabeças intercambiáveis e 20 níveis de intensidade. Bateria de 6h.",
     stock: 20, badge: "Economize 54%",
