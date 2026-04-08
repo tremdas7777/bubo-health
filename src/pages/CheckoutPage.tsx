@@ -40,8 +40,7 @@ function maskCEP(v: string) {
   return v.replace(/\D/g, "").slice(0, 8).replace(/(\d{5})(\d)/, "$1-$2");
 }
 
-
-
+export default function CheckoutPage() {
   const navigate = useNavigate();
   const { items, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
   const [step, setStep] = useState<Step>("identification");
