@@ -40,7 +40,7 @@ export default function Header() {
           </Link>
 
           {/* Right: account + cart */}
-          <div className="flex items-center gap-3 w-auto justify-end">
+          <div className="flex items-center gap-3 w-[100px] justify-end">
             <button
               onClick={toggleTheme}
               className="text-foreground hover:text-primary transition-colors"
