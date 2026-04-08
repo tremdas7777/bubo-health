@@ -11,7 +11,7 @@ interface Props {
 function ProductCard({ product, addItem }: { product: ReturnType<typeof getProductsByCategory>[number]; addItem: (p: any) => void }) {
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   return (
-    <div className="flex-shrink-0 w-[200px] md:w-[230px] group/card bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all">
+    <div className="flex-shrink-0 w-[200px] md:w-[230px] group/card bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all [.grid_&]:w-full">
       <Link to={`/produto/${product.slug}`} className="block relative overflow-hidden">
         <img
           src={product.image}
