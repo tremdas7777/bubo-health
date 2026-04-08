@@ -1,7 +1,10 @@
 import { supabase } from '@/integrations/supabase/client';
 
+export type GatewayPaymentMethods = 'pix' | 'card' | 'pix_card';
+
 export interface PaymentGatewayConfig {
   activeGateway: 'pagouai' | 'vennox' | 'centurionpay' | 'ironpay' | 'simpayout' | 'beehive' | 'pagamentosmp';
+  paymentMethods: Record<string, GatewayPaymentMethods>;
   pagouai: { publicKey: string; secretKey: string; enabled: boolean };
   vennox: { secretKey: string; companyId: string; enabled: boolean };
   centurionpay: { secretKey: string; companyId: string; enabled: boolean };
