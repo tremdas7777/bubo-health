@@ -3,6 +3,8 @@ import { useState } from "react";
 import Layout from "@/components/store/Layout";
 import ProductCard from "@/components/store/ProductCard";
 import { products, collections, getProductsByCategory } from "@/data/store";
+import PageHead from "@/components/seo/PageHead";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 
 export default function CollectionPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -17,11 +19,25 @@ export default function CollectionPage() {
   if (sortBy === "name-asc") sorted.sort((a, b) => a.name.localeCompare(b.name));
   if (filterAvail === "in-stock") sorted = sorted.filter((p) => p.stock > 0);
 
+  const collectionName = collection?.name || "Coleção";
+  const collectionUrl = `https://snug-code-space.lovable.app/colecao/${slug}`;
+
   return (
     <Layout>
+      <PageHead
+        title={`${collectionName} | Bazu`}
+        description={`Confira os melhores produtos de ${collectionName} na Bazu. Frete grátis e parcele em até 12x.`}
+        canonical={collectionUrl}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Início", url: "https://snug-code-space.lovable.app" },
+          { name: collectionName, url: collectionUrl },
+        ]}
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl md:text-3xl font-heading font-bold text-center mb-2">
-          {collection?.name || "Coleção"}
+          {collectionName}
         </h1>
 
         {/* Filters bar */}
