@@ -2,6 +2,7 @@ import { useState } from "react";
 import Layout from "@/components/store/Layout";
 import ProductCard from "@/components/store/ProductCard";
 import { products } from "@/data/store";
+import PageHead from "@/components/seo/PageHead";
 
 export default function ProductsPage() {
   const [sortBy, setSortBy] = useState("default");
@@ -15,6 +16,11 @@ export default function ProductsPage() {
 
   return (
     <Layout>
+      <PageHead
+        title="Todos os Produtos | Bazu"
+        description="Explore todos os produtos da Bazu. Frete grátis, parcele em até 12x e 5% de desconto no PIX."
+        canonical="https://snug-code-space.lovable.app/produtos"
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl md:text-3xl font-heading font-bold text-center mb-2">
           Produtos
