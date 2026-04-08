@@ -27,7 +27,41 @@ serve(async (req) => {
       );
     }
 
-    const amountCents = Math.round(amount * 100);
+    // Generate unique identifier for this transaction
+    const identifier = crypto.randomUUID().replace(/-/g, "").slice(0, 20);
+
+    // Amount is in BRL (reais), not cents
+    const amountBRL = typeof amount === "number" && amount > 100 ? amount : amount;
+    const shippingFeeBRL = metadata?.shippingCostCents ? metadata.shippingCostCents / 100 : 0;
+
+    // Format document - keep as-is with dots/dashes if present
+    const document = buyerDocument || "";
+    const formattedDoc = document.replace(/\D/g, "").length === 11
+      ? document.replace(/\D/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+      : document;
+
+    // Format phone
+    const phoneClean = (buyerPhone || "").replace(/\D/g, "");
+    const formattedPhone = phoneClean.length === 11
+      ? `(${phoneClean.slice(0, 2)}) ${phoneClean.slice(2, 7)}-${phoneClean.slice(7)}`
+      : phoneClean.length === 10
+      ? `(${phoneClean.slice(0, 2)}) ${phoneClean.slice(2, 6)}-${phoneClean.slice(6)}`
+      : buyerPhone || "";
+
+    const requestBody: Record<string, unknown> = {
+      identifier,
+      amount: amountBRL,
+      shippingFee: shippingFeeBRL,
+      client: {
+        name: buyerName || "Cliente",
+        email: buyerEmail || "",
+        phone: formattedPhone,
+        document: formattedDoc,
+      },
+      metadata: metadata || {},
+    };
+
+    console.log("MP Pagamentos request body:", JSON.stringify(requestBody));
 
     // Create PIX payment via MP Pagamentos API
     const pixResponse = await fetch(`${API_BASE}/gateway/pix/receive`, {
@@ -37,16 +71,7 @@ serve(async (req) => {
         "x-public-key": publicKey,
         "x-secret-key": secretKey,
       },
-      body: JSON.stringify({
-        amount: amountCents,
-        customer: {
-          name: buyerName,
-          email: buyerEmail,
-          document: buyerDocument,
-          phone: buyerPhone,
-        },
-        metadata: metadata || {},
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     const pixData = await pixResponse.json();
@@ -59,9 +84,12 @@ serve(async (req) => {
       );
     }
 
-    // Extract PIX code and QR code from response
-    const pixCode = pixData.pix_code || pixData.qr_code || pixData.brcode || pixData.emv || "";
-    const pixQrCode = pixData.qr_code_base64 || pixData.qr_code_image || pixData.qr_code_url || "";
+    console.log("MP Pagamentos PIX success:", JSON.stringify(pixData));
+
+    // Extract PIX code and QR code from response (pix.code, pix.base64, pix.image)
+    const pixCode = pixData.pix?.code || pixData.pix_code || pixData.brcode || pixData.emv || "";
+    const pixQrCode = pixData.pix?.base64 || pixData.pix?.image || pixData.qr_code_base64 || "";
+    const amountCents = Math.round(amountBRL * 100);
 
     if (!pixCode) {
       console.error("MP Pagamentos: no pix_code in response", JSON.stringify(pixData));
