@@ -1,8 +1,9 @@
 import { Star } from "lucide-react";
-import reviewImg1 from "@/assets/reviews/review-kit-1.jpg";
-import reviewImg2 from "@/assets/reviews/review-kit-2.jpg";
-import reviewImg3 from "@/assets/reviews/review-kit-3.jpg";
-import reviewImg4 from "@/assets/reviews/review-kit-4.jpg";
+import reviewImg1 from "@/assets/reviews/review-kit-1.webp";
+import reviewImg2 from "@/assets/reviews/review-kit-2.webp";
+import reviewImg3 from "@/assets/reviews/review-kit-3.webp";
+import reviewImg4 from "@/assets/reviews/review-kit-4.webp";
+import reviewImg5 from "@/assets/reviews/review-kit-5.webp";
 
 interface Review {
   name: string;
@@ -18,7 +19,7 @@ const defaultReviews: Review[] = [
     name: "Carlos M.",
     rating: 5,
     date: "12/03/2025",
-    text: "Kit completo demais! Chegou tudo certinho na maleta, ferramentas de boa qualidade. A bomba de vácuo funciona perfeitamente. Recomendo para quem trabalha na área.",
+    text: "Kit completo demais! Chegou tudo certinho, ferramentas de boa qualidade. A bomba de vácuo funciona perfeitamente. Recomendo para quem trabalha na área.",
     image: reviewImg1,
     verified: true,
   },
@@ -42,8 +43,16 @@ const defaultReviews: Review[] = [
     name: "Marcos L.",
     rating: 4,
     date: "03/02/2025",
-    text: "Ferramentas muito boas para o preço. Já fiz várias manutenções com o kit. O maçarico é potente e as curvadoras facilitam muito o trabalho.",
+    text: "Ferramentas muito boas para o preço. Bomba de vácuo potente, manifolds bem calibrados. O maçarico é potente e as curvadoras facilitam muito o trabalho.",
     image: reviewImg4,
+    verified: true,
+  },
+  {
+    name: "João V.",
+    rating: 5,
+    date: "20/01/2025",
+    text: "Comprei e não me arrependi! Kit super completo, veio tudo que prometeram. Já estava precisando trocar minhas ferramentas antigas e esse kit resolveu tudo.",
+    image: reviewImg5,
     verified: true,
   },
 ];
@@ -102,8 +111,6 @@ export default function ProductReviews({ productSlug }: { productSlug: string })
                 alt={`Foto do produto por ${review.name}`}
                 className="w-full rounded-lg object-cover aspect-video"
                 loading="lazy"
-                width={512}
-                height={288}
               />
             )}
           </div>
