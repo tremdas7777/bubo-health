@@ -19,6 +19,7 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsPage from "./pages/TermsPage";
 import ReturnPolicyPage from "./pages/ReturnPolicyPage";
+import ContactPage from "./pages/ContactPage";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => {
               <Route path="/politica-de-privacidade" element={<PrivacyPolicyPage />} />
               <Route path="/termos-de-uso" element={<TermsPage />} />
               <Route path="/trocas-e-devolucoes" element={<ReturnPolicyPage />} />
+              <Route path="/contato" element={<ContactPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
