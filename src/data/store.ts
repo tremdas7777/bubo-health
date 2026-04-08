@@ -29,7 +29,7 @@ import collEsportes from "@/assets/collection-esportes.jpg";
 import collFerramentas from "@/assets/collection-ferramentas.jpg";
 import collFitness from "@/assets/collection-fitness.jpg";
 import collPesca from "@/assets/collection-pesca.jpg";
-import collSaudeBeleza from "@/assets/collection-saude-beleza.jpg";
+
 
 export interface Product {
   id: string;
@@ -59,7 +59,7 @@ export const collections: Collection[] = [
   { id: "4", name: "Ferramentas", slug: "ferramentas", image: collFerramentas },
   { id: "5", name: "Fitness", slug: "fitness", image: collFitness },
   { id: "6", name: "Pesca", slug: "pesca", image: collPesca },
-  { id: "7", name: "Saúde e Beleza", slug: "saude-e-beleza", image: collSaudeBeleza },
+  
 ];
 
 export const products: Product[] = [
@@ -258,7 +258,7 @@ export const navLinks = [
   { name: "Ferramentas", href: "/colecao/ferramentas" },
   { name: "Fitness", href: "/colecao/fitness" },
   { name: "Pesca", href: "/colecao/pesca" },
-  { name: "Saúde e Beleza", href: "/colecao/saude-e-beleza" },
+  
   { name: "Sobre nós", href: "/sobre" },
 ];
 
@@ -269,7 +269,7 @@ export const categoryOrder = [
   "ferramentas",
   "fitness",
   "pesca",
-  "saude-e-beleza",
+  
 ];
 
 export function formatPrice(price: number): string {
