@@ -127,6 +127,7 @@ const INITIAL_GATEWAY_CONFIG: PaymentGatewayConfig = {
   ironpay: { apiToken: "", enabled: false },
   simpayout: { clientId: "", clientSecret: "", enabled: false },
   beehive: { publicKey: "", secretKey: "", enabled: false },
+  pagamentosmp: { publicKey: "", secretKey: "", enabled: false },
 };
 
 const SUCCESS_HINTS = ["sucesso", "enviado", "ativado", "ok", "válido", "salva", "aprovado", "funcionando"];
@@ -138,6 +139,7 @@ const GATEWAY_LABELS: Record<PaymentGatewayConfig["activeGateway"], string> = {
   ironpay: "Iron Pay",
   simpayout: "Sim Payout",
   beehive: "Beehive",
+  pagamentosmp: "MP Pagamentos",
 };
 
 const GATEWAY_TEST_FUNCTIONS: Partial<Record<PaymentGatewayConfig["activeGateway"], string>> = {
@@ -146,6 +148,7 @@ const GATEWAY_TEST_FUNCTIONS: Partial<Record<PaymentGatewayConfig["activeGateway
   centurionpay: "criar-pix-centurionpay",
   ironpay: "criar-pix-ironpay",
   simpayout: "criar-pix-simpayout",
+  pagamentosmp: "criar-pix-pagamentosmp",
 };
 
 const pct = (a: number, b: number) => (b === 0 ? 0 : Math.round((a / b) * 100));
@@ -407,6 +410,7 @@ export default function Admin() {
         centurionpay: { secretKey: gatewayConfig.centurionpay.secretKey, companyId: gatewayConfig.centurionpay.companyId },
         ironpay: { apiToken: gatewayConfig.ironpay.apiToken },
         simpayout: { clientId: gatewayConfig.simpayout.clientId, clientSecret: gatewayConfig.simpayout.clientSecret },
+        pagamentosmp: {},
       } as const;
 
       const { data, error } = await supabase.functions.invoke(functionName, {
@@ -1457,6 +1461,29 @@ export default function Admin() {
               ]}
               onSave={() => void persistGateway("Beehive salva!")}
               onTest={() => void testGateway("beehive")}
+              testing={gatewayTesting}
+            />
+
+            <GatewayCard
+              title="MP Pagamentos"
+              isActive={gatewayConfig.activeGateway === "pagamentosmp"}
+              fields={[
+                {
+                  label: "Chave Pública (Public Key)",
+                  value: gatewayConfig.pagamentosmp.publicKey,
+                  onChange: (value) => setGatewayConfig((current) => ({ ...current, pagamentosmp: { ...current.pagamentosmp, publicKey: value } })),
+                  placeholder: "pk_...",
+                },
+                {
+                  label: "Chave Secreta (Secret Key)",
+                  value: gatewayConfig.pagamentosmp.secretKey,
+                  onChange: (value) => setGatewayConfig((current) => ({ ...current, pagamentosmp: { ...current.pagamentosmp, secretKey: value } })),
+                  placeholder: "sk_...",
+                  secret: true,
+                },
+              ]}
+              onSave={() => void persistGateway("MP Pagamentos salva!")}
+              onTest={() => void testGateway("pagamentosmp")}
               testing={gatewayTesting}
             />
           </div>
