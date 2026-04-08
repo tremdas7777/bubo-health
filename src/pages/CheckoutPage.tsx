@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp, CreditCard } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { formatPrice, getInstallmentPrice } from "@/data/store";
 import { trackEvent } from "@/lib/funnelTracking";
@@ -9,6 +9,7 @@ import { fetchPaymentGatewayConfig } from "@/lib/paymentGateway";
 import { fireWebhookEvent } from "@/lib/webhookManager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PIX_DISCOUNT_RATE, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
 
 type Step = "identification" | "shipping" | "payment";
 
@@ -25,7 +26,7 @@ const DEFAULT_SHIPPING: ShippingOption[] = [
   { id: "sedex", name: "SEDEX - Correios", price_cents: 1990, days_min: 3, days_max: 7 },
 ];
 
-const PIX_DISCOUNT = 0.10; // 10% discount
+type PaymentMethod = "pix" | "card";
 
 function maskCPF(v: string) {
   return v.replace(/\D/g, "").slice(0, 11).replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
