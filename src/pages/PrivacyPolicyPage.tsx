@@ -64,7 +64,11 @@ export default function PrivacyPolicyPage() {
           <h2 className="text-lg font-semibold text-foreground">7. Contato</h2>
           <p>
             Para exercer seus direitos ou esclarecer dúvidas sobre esta política, entre em contato
-            pelo e-mail <strong>contato@bazu.com.br</strong> ou pelo nosso WhatsApp.
+            pelo e-mail <strong>tremda77@gmail.com</strong> ou pelo nosso WhatsApp (77) 99138-1192.
+          </p>
+          <p>
+            <strong>Responsável:</strong> 60.105.125 Giovany Matos Dias – CNPJ 60.105.125/0001-08<br />
+            Av. Larissa Cavalcante, 11 – Boa Vista, Vitória da Conquista – BA, CEP 45027-400
           </p>
         </div>
       </div>
