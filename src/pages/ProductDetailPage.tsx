@@ -1,11 +1,13 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Minus, Plus, Truck, Shield } from "lucide-react";
+import { Minus, Plus, Truck, Shield, ShieldCheck, Package, Wrench, Gauge, Flame, Ruler, Zap, CircuitBoard, CheckCircle2, Star, HelpCircle } from "lucide-react";
 import Layout from "@/components/store/Layout";
 import ProductImageGallery from "@/components/store/ProductImageGallery";
 import DeliveryTimeline from "@/components/store/DeliveryTimeline";
 import CepCalculator from "@/components/store/CepCalculator";
 import ProductCard from "@/components/store/ProductCard";
+import ProductReviews from "@/components/store/ProductReviews";
+import ProductFAQ from "@/components/store/ProductFAQ";
 import { products, formatPrice, getInstallmentPrice, getDiscountPercent, getProductsByCategory } from "@/data/store";
 import { getPixPrice, getPixSavings, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
 import { useCart } from "@/contexts/CartContext";
@@ -15,11 +17,25 @@ import ProductJsonLd from "@/components/seo/ProductJsonLd";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import PageHead from "@/components/seo/PageHead";
 
+const productBulletPoints: Record<string, { icon: React.ElementType; text: string }[]> = {
+  "kit-ferramentas-refrigeracao": [
+    { icon: Gauge, text: "Bomba de Vácuo 7 CFM Duplo Estágio de alta performance" },
+    { icon: CircuitBoard, text: "2 Conjuntos Manifold completos (R134 e R410) — compatíveis com R22, R32, R404A e R134a" },
+    { icon: Wrench, text: "Flangeador excêntrico com rotação 360° para acabamentos perfeitos" },
+    { icon: Ruler, text: "Cortador, alargador e escareador de tubos de cobre" },
+    { icon: Wrench, text: "5 curvadoras de tubo em medidas diferentes" },
+    { icon: Zap, text: "Multímetro digital com capacímetro + termômetro digital + alicate amperímetro" },
+    { icon: Flame, text: "Maçarico portátil para solda até 1.200°C" },
+    { icon: Package, text: "2 chaves inglesas, kit chave Allen, mangueiras profissionais, pasta fluxo e maleta organizadora (18 kg)" },
+  ],
+};
+
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const product = products.find((p) => p.slug === slug);
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (product) {
@@ -42,6 +58,12 @@ export default function ProductDetailPage() {
   const pixPrice = getPixPrice(product.price);
   const relatedProducts = getProductsByCategory(product.category).filter((p) => p.id !== product.id).slice(0, 4);
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
+  const bullets = productBulletPoints[product.slug];
+
+  const handleBuyNow = () => {
+    addItem(product, quantity);
+    navigate("/checkout");
+  };
 
   return (
     <Layout>
@@ -77,6 +99,17 @@ export default function ProductDetailPage() {
 
           <div className="space-y-4">
             <h1 className="text-center text-xl font-heading font-bold lg:text-left lg:text-2xl">{product.name}</h1>
+
+            {/* Rating summary */}
+            <div className="flex items-center justify-center gap-2 lg:justify-start">
+              <div className="flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={14} className={i < 5 ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground/30"} />
+                ))}
+              </div>
+              <span className="text-sm font-medium">4.8</span>
+              <span className="text-xs text-muted-foreground">(4 avaliações)</span>
+            </div>
 
             <div className="space-y-1 text-center lg:text-left">
               {hasDiscount && <p className="text-sm text-muted-foreground line-through">{formatPrice(product.compareAtPrice!)}</p>}
@@ -129,10 +162,15 @@ export default function ProductDetailPage() {
                 </button>
               </div>
 
-              <Button onClick={() => addItem(product, quantity)} className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider">
+              <Button onClick={() => addItem(product, quantity)} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
                 Adicionar ao Carrinho
               </Button>
             </div>
+
+            {/* Buy Now Button */}
+            <Button onClick={handleBuyNow} className="w-full py-6 text-sm font-bold uppercase tracking-wider animate-pulse hover:animate-none">
+              Comprar Agora
+            </Button>
 
             <div className="flex items-start gap-3 rounded-lg border border-border bg-card p-4">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-lime/20">
@@ -145,6 +183,17 @@ export default function ProductDetailPage() {
                 </p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
                   Pague com <strong>PIX</strong> e economize {formatPrice(getPixSavings(product.price))}
+                </p>
+              </div>
+            </div>
+
+            {/* Guarantee Badge */}
+            <div className="flex items-start gap-3 rounded-lg border-2 border-lime/50 bg-lime/5 p-4">
+              <ShieldCheck size={28} className="mt-0.5 shrink-0 text-primary" />
+              <div>
+                <p className="text-sm font-semibold text-foreground">Garantia de 30 Dias</p>
+                <p className="text-xs text-muted-foreground">
+                  Se não ficar satisfeito, devolvemos seu dinheiro. Sem burocracia.
                 </p>
               </div>
             </div>
@@ -179,9 +228,55 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
+        {/* Bullet Points Description */}
         <div className="mx-auto mt-12 max-w-3xl border-t border-border pt-8">
           <h3 className="mb-4 text-lg font-heading font-semibold">Descrição do Produto</h3>
-          <p className="text-sm leading-relaxed text-muted-foreground">{product.description}</p>
+          {bullets ? (
+            <div className="space-y-3">
+              <p className="text-sm leading-relaxed text-muted-foreground mb-4">
+                Kit Profissional completo para Refrigeração e Ar Condicionado — tudo que você precisa em uma única maleta:
+              </p>
+              <ul className="space-y-3">
+                {bullets.map((item, i) => {
+                  const Icon = item.icon;
+                  return (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                        <Icon size={16} className="text-primary" />
+                      </div>
+                      <span className="text-sm leading-relaxed text-muted-foreground">{item.text}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className="mt-4 flex items-center gap-2 rounded-lg bg-lime/10 p-3">
+                <CheckCircle2 size={18} className="shrink-0 text-primary" />
+                <p className="text-sm font-medium text-foreground">
+                  Bivolt 110/220V — 18 kg de ferramentas profissionais prontas para uso
+                </p>
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm leading-relaxed text-muted-foreground">{product.description}</p>
+          )}
+        </div>
+
+        {/* Reviews Section */}
+        <div className="mx-auto mt-12 max-w-3xl border-t border-border pt-8">
+          <h3 className="mb-6 flex items-center gap-2 text-lg font-heading font-semibold">
+            <Star size={20} className="fill-yellow-400 text-yellow-400" />
+            Avaliações de Clientes
+          </h3>
+          <ProductReviews productSlug={product.slug} />
+        </div>
+
+        {/* FAQ Section */}
+        <div className="mx-auto mt-12 max-w-3xl border-t border-border pt-8">
+          <h3 className="mb-4 flex items-center gap-2 text-lg font-heading font-semibold">
+            <HelpCircle size={20} className="text-primary" />
+            Perguntas Frequentes
+          </h3>
+          <ProductFAQ />
         </div>
 
         {relatedProducts.length > 0 && (
