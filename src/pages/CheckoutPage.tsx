@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp, CreditCard } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { formatPrice, getInstallmentPrice } from "@/data/store";
 import { trackEvent } from "@/lib/funnelTracking";
@@ -26,7 +26,7 @@ const DEFAULT_SHIPPING: ShippingOption[] = [
   { id: "sedex", name: "SEDEX - Correios", price_cents: 1990, days_min: 3, days_max: 7 },
 ];
 
-type PaymentMethod = "pix";
+type PaymentMethod = "pix" | "card";
 
 function maskCPF(v: string) {
   return v.replace(/\D/g, "").slice(0, 11).replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
@@ -77,7 +77,8 @@ export default function CheckoutPage() {
   const [loadingCep, setLoadingCep] = useState(false);
 
   // Payment
-  const [paymentMethod] = useState<PaymentMethod>("pix");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
+  const [cardEnabled, setCardEnabled] = useState(false);
   const [pixCode, setPixCode] = useState("");
   const [pixQrCode, setPixQrCode] = useState("");
   const [orderId, setOrderId] = useState("");
@@ -130,6 +131,12 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     void trackEvent("checkout");
+    // Load gateway config to check if card is enabled
+    fetchPaymentGatewayConfig().then((cfg) => {
+      const methods = cfg.paymentMethods[cfg.activeGateway] || "pix";
+      setCardEnabled(methods === "card" || methods === "pix_card");
+      if (methods === "card") setPaymentMethod("card");
+    });
   }, []);
 
   useEffect(() => {
@@ -162,6 +169,7 @@ export default function CheckoutPage() {
   const total = subtotal - pixDiscount - couponDiscount + shippingCost / 100;
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
+  const activeGatewayMethods = cardEnabled ? (isPix ? "pix" : "card") : "pix";
 
   const handleCepLookup = async (cepValue: string) => {
     const clean = cepValue.replace(/\D/g, "");
@@ -562,13 +570,54 @@ export default function CheckoutPage() {
                   <button onClick={() => setStep("shipping")} className="text-xs text-primary hover:underline">Editar entrega</button>
                 </div>
 
+                {/* Payment method selector */}
+                {cardEnabled && (
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-muted-foreground block">Forma de pagamento</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => setPaymentMethod("pix")}
+                        className={`flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-bold transition-all ${
+                          paymentMethod === "pix"
+                            ? "border-emerald-500 bg-emerald-500/5 text-emerald-600"
+                            : "border-border text-muted-foreground hover:border-muted-foreground/40"
+                        }`}
+                      >
+                        <Tag size={16} /> PIX
+                      </button>
+                      <button
+                        onClick={() => setPaymentMethod("card")}
+                        className={`flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-bold transition-all ${
+                          paymentMethod === "card"
+                            ? "border-primary bg-primary/5 text-primary"
+                            : "border-border text-muted-foreground hover:border-muted-foreground/40"
+                        }`}
+                      >
+                        <CreditCard size={16} /> Cartão
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 {/* PIX benefit highlight */}
-                <div className="bg-emerald-500/10 rounded-lg p-3 flex items-center gap-2">
-                  <Tag size={14} className="text-emerald-600" />
-                  <span className="text-xs font-medium text-emerald-700">
-                    Você economiza <strong>{formatPrice(subtotal * PIX_DISCOUNT_RATE)}</strong> pagando via PIX!
-                  </span>
-                </div>
+                {isPix && (
+                  <div className="bg-emerald-500/10 rounded-lg p-3 flex items-center gap-2">
+                    <Tag size={14} className="text-emerald-600" />
+                    <span className="text-xs font-medium text-emerald-700">
+                      Você economiza <strong>{formatPrice(subtotal * PIX_DISCOUNT_RATE)}</strong> pagando via PIX!
+                    </span>
+                  </div>
+                )}
+
+                {/* Card info notice */}
+                {paymentMethod === "card" && (
+                  <div className="bg-primary/10 rounded-lg p-3 flex items-center gap-2">
+                    <CreditCard size={14} className="text-primary" />
+                    <span className="text-xs font-medium text-foreground">
+                      Pagamento via cartão de crédito — em breve!
+                    </span>
+                  </div>
+                )}
 
                 {/* Coupon */}
                 <div className="border border-border rounded-lg p-3 space-y-2">
@@ -599,7 +648,9 @@ export default function CheckoutPage() {
                   {couponDiscount > 0 && (
                     <div className="flex justify-between text-emerald-600"><span>Cupom ({appliedCoupon})</span><span>-{formatPrice(couponDiscount)}</span></div>
                   )}
-                  <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
+                  {isPix && (
+                    <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
+                  )}
                   <div className="flex justify-between"><span className="text-muted-foreground">Frete ({selectedShippingOption?.name})</span><span>{shippingCost === 0 ? "Grátis" : formatPrice(shippingCost / 100)}</span></div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
                     <span>Total</span>
@@ -611,17 +662,28 @@ export default function CheckoutPage() {
                   <div className="bg-destructive/10 text-destructive text-xs font-medium rounded-lg p-3 text-center">{paymentError}</div>
                 )}
 
-                <Button
-                  onClick={handleGeneratePix}
-                  disabled={generating}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
-                >
-                  {generating ? (
-                    <><Loader2 size={16} className="animate-spin mr-2" /> Gerando PIX...</>
-                  ) : (
-                    "Gerar QR Code PIX"
-                  )}
-                </Button>
+                {isPix && (
+                  <Button
+                    onClick={handleGeneratePix}
+                    disabled={generating}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
+                  >
+                    {generating ? (
+                      <><Loader2 size={16} className="animate-spin mr-2" /> Gerando PIX...</>
+                    ) : (
+                      "Gerar QR Code PIX"
+                    )}
+                  </Button>
+                )}
+
+                {paymentMethod === "card" && (
+                  <Button
+                    disabled
+                    className="w-full bg-muted text-muted-foreground font-bold py-6 text-sm cursor-not-allowed"
+                  >
+                    <CreditCard size={16} className="mr-2" /> Gateway de cartão não configurado
+                  </Button>
+                )}
               </div>
             )}
 

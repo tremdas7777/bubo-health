@@ -1,7 +1,10 @@
 import { supabase } from '@/integrations/supabase/client';
 
+export type GatewayPaymentMethods = 'pix' | 'card' | 'pix_card';
+
 export interface PaymentGatewayConfig {
   activeGateway: 'pagouai' | 'vennox' | 'centurionpay' | 'ironpay' | 'simpayout' | 'beehive' | 'pagamentosmp';
+  paymentMethods: Record<string, GatewayPaymentMethods>;
   pagouai: { publicKey: string; secretKey: string; enabled: boolean };
   vennox: { secretKey: string; companyId: string; enabled: boolean };
   centurionpay: { secretKey: string; companyId: string; enabled: boolean };
@@ -13,6 +16,7 @@ export interface PaymentGatewayConfig {
 
 const defaultConfig: PaymentGatewayConfig = {
   activeGateway: 'centurionpay',
+  paymentMethods: {},
   pagouai: { publicKey: '', secretKey: '', enabled: false },
   vennox: { secretKey: '', companyId: '', enabled: false },
   centurionpay: { secretKey: '', companyId: '', enabled: false },
@@ -32,8 +36,10 @@ export async function fetchPaymentGatewayConfig(): Promise<PaymentGatewayConfig>
   try {
     const { data, error } = await supabase.from('gateway_config').select('*').limit(1).single();
     if (error || !data) return defaultConfig;
+    const pm = (data as any).payment_methods || {};
     const config: PaymentGatewayConfig = {
       activeGateway: (['pagouai', 'vennox', 'centurionpay', 'ironpay', 'simpayout', 'beehive', 'pagamentosmp'].includes(data.active_gateway) ? data.active_gateway : 'centurionpay') as PaymentGatewayConfig['activeGateway'],
+      paymentMethods: typeof pm === 'object' && pm !== null ? pm : {},
       pagouai: { publicKey: data.pagouai_public_key || '', secretKey: data.pagouai_secret_key || '', enabled: !!(data.pagouai_secret_key) },
       vennox: { secretKey: data.vennox_secret_key || '', companyId: data.vennox_company_id || '', enabled: !!(data.vennox_secret_key && data.vennox_company_id) },
       centurionpay: { secretKey: data.centurionpay_secret_key || '', companyId: data.centurionpay_company_id || '', enabled: !!(data.centurionpay_secret_key && data.centurionpay_company_id) },
@@ -52,8 +58,9 @@ export async function fetchPaymentGatewayConfig(): Promise<PaymentGatewayConfig>
 export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Promise<boolean> {
   try {
     const { data: existing } = await supabase.from('gateway_config').select('id').limit(1).single();
-    const updateData = {
+    const updateData: Record<string, unknown> = {
       active_gateway: config.activeGateway,
+      payment_methods: config.paymentMethods,
       pagouai_public_key: config.pagouai.publicKey, pagouai_secret_key: config.pagouai.secretKey,
       vennox_secret_key: config.vennox.secretKey, vennox_company_id: config.vennox.companyId,
       centurionpay_secret_key: config.centurionpay.secretKey, centurionpay_company_id: config.centurionpay.companyId,
@@ -64,9 +71,9 @@ export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Pr
       updated_at: new Date().toISOString(),
     };
     if (existing?.id) {
-      await supabase.from('gateway_config').update(updateData).eq('id', existing.id);
+      await supabase.from('gateway_config').update(updateData as any).eq('id', existing.id);
     } else {
-      await supabase.from('gateway_config').insert([updateData]);
+      await supabase.from('gateway_config').insert([updateData as any]);
     }
     cachedConfig = config;
     return true;

@@ -193,6 +193,7 @@ export type Database = {
           pagamentosmp_secret_key: string | null
           pagouai_public_key: string | null
           pagouai_secret_key: string | null
+          payment_methods: Json
           simpayout_client_id: string | null
           simpayout_client_secret: string | null
           updated_at: string
@@ -212,6 +213,7 @@ export type Database = {
           pagamentosmp_secret_key?: string | null
           pagouai_public_key?: string | null
           pagouai_secret_key?: string | null
+          payment_methods?: Json
           simpayout_client_id?: string | null
           simpayout_client_secret?: string | null
           updated_at?: string
@@ -231,6 +233,7 @@ export type Database = {
           pagamentosmp_secret_key?: string | null
           pagouai_public_key?: string | null
           pagouai_secret_key?: string | null
+          payment_methods?: Json
           simpayout_client_id?: string | null
           simpayout_client_secret?: string | null
           updated_at?: string

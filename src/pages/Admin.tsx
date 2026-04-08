@@ -120,6 +120,7 @@ const INITIAL_PIXEL_CONFIG: PixelConfig = {
 
 const INITIAL_GATEWAY_CONFIG: PaymentGatewayConfig = {
   activeGateway: "centurionpay",
+  paymentMethods: {},
   pagouai: { publicKey: "", secretKey: "", enabled: false },
   vennox: { secretKey: "", companyId: "", enabled: false },
   centurionpay: { secretKey: "", companyId: "", enabled: false },
@@ -175,6 +176,9 @@ function GatewayCard({
   onSave,
   onTest,
   testing,
+  gatewayKey,
+  paymentMethods,
+  onPaymentMethodChange,
 }: {
   title: string;
   isActive: boolean;
@@ -182,7 +186,15 @@ function GatewayCard({
   onSave: () => void;
   onTest: () => void;
   testing: boolean;
+  gatewayKey: string;
+  paymentMethods: string;
+  onPaymentMethodChange: (gw: string, method: string) => void;
 }) {
+  const PM_OPTIONS = [
+    { value: "pix", label: "Somente PIX" },
+    { value: "card", label: "Somente Cartão" },
+    { value: "pix_card", label: "PIX + Cartão" },
+  ];
   return (
     <Card className="mb-4 border border-border p-5">
       <div className="mb-3 flex items-center gap-3">
@@ -191,9 +203,29 @@ function GatewayCard({
         </div>
         <div className="flex-1">
           <h3 className="text-sm font-black text-foreground">{title}</h3>
-          <p className="text-[11px] text-muted-foreground">Gateway PIX</p>
+          <p className="text-[11px] text-muted-foreground">Gateway de Pagamento</p>
         </div>
         {isActive && <Badge className="border-emerald-500/30 bg-emerald-500/10 text-[10px] text-emerald-500">Ativo</Badge>}
+      </div>
+
+      {/* Payment method selector */}
+      <div className="mb-4">
+        <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1 block">Métodos aceitos</label>
+        <div className="flex gap-2">
+          {PM_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => onPaymentMethodChange(gatewayKey, opt.value)}
+              className={`flex-1 rounded-lg border-2 px-2 py-2 text-[11px] font-bold transition-all ${
+                paymentMethods === opt.value
+                  ? "border-emerald-500 bg-emerald-500/5 text-emerald-500"
+                  : "border-border text-muted-foreground hover:border-muted-foreground/30"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="space-y-3">
@@ -388,6 +420,13 @@ export default function Admin() {
     setMessage(result.message);
     setTesting(false);
     window.setTimeout(() => setMessage(""), 5000);
+  };
+
+  const handlePaymentMethodChange = async (gw: string, method: string) => {
+    const updated: PaymentGatewayConfig = { ...gatewayConfig, paymentMethods: { ...gatewayConfig.paymentMethods, [gw]: method as any } };
+    setGatewayConfig(updated);
+    await savePaymentGatewayConfig(updated);
+    flashMessage(setGatewayMessage, `Métodos de ${gw} atualizados!`);
   };
 
   const persistGateway = async (message: string) => {
@@ -1352,6 +1391,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Pagou.ai salva!")}
               onTest={() => void testGateway("pagouai")}
               testing={gatewayTesting}
+              gatewayKey="pagouai"
+              paymentMethods={gatewayConfig.paymentMethods.pagouai || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1375,6 +1417,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Vennox salva!")}
               onTest={() => void testGateway("vennox")}
               testing={gatewayTesting}
+              gatewayKey="vennox"
+              paymentMethods={gatewayConfig.paymentMethods.vennox || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1400,6 +1445,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Centurion Pay salva!")}
               onTest={() => void testGateway("centurionpay")}
               testing={gatewayTesting}
+              gatewayKey="centurionpay"
+              paymentMethods={gatewayConfig.paymentMethods.centurionpay || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1417,6 +1465,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Iron Pay salva!")}
               onTest={() => void testGateway("ironpay")}
               testing={gatewayTesting}
+              gatewayKey="ironpay"
+              paymentMethods={gatewayConfig.paymentMethods.ironpay || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1441,6 +1492,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Sim Payout salva!")}
               onTest={() => void testGateway("simpayout")}
               testing={gatewayTesting}
+              gatewayKey="simpayout"
+              paymentMethods={gatewayConfig.paymentMethods.simpayout || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1464,6 +1518,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Beehive salva!")}
               onTest={() => void testGateway("beehive")}
               testing={gatewayTesting}
+              gatewayKey="beehive"
+              paymentMethods={gatewayConfig.paymentMethods.beehive || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1487,6 +1544,9 @@ export default function Admin() {
               onSave={() => void persistGateway("MP Pagamentos salva!")}
               onTest={() => void testGateway("pagamentosmp")}
               testing={gatewayTesting}
+              gatewayKey="pagamentosmp"
+              paymentMethods={gatewayConfig.paymentMethods.pagamentosmp || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
           </div>
         )}
