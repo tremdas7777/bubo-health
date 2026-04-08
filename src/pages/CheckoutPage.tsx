@@ -86,8 +86,6 @@ export default function CheckoutPage() {
   const [generating, setGenerating] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
-  // Timer urgency
-  const [timeLeft, setTimeLeft] = useState(15 * 60);
 
   // Email suggestions
   const [emailSuggestions, setEmailSuggestions] = useState<string[]>([]);
@@ -130,12 +128,6 @@ export default function CheckoutPage() {
     }
   }, [items, pixCode, navigate]);
 
-  // Countdown
-  useEffect(() => {
-    if (timeLeft <= 0) return;
-    const t = setInterval(() => setTimeLeft((p) => Math.max(0, p - 1)), 1000);
-    return () => clearInterval(t);
-  }, [timeLeft]);
 
   // Load shipping config from DB
   useEffect(() => {
@@ -155,8 +147,6 @@ export default function CheckoutPage() {
   const cardTotal = subtotal + shippingCost / 100;
   const total = subtotal - pixDiscount + shippingCost / 100;
 
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
 
   const handleCepLookup = async (cepValue: string) => {
     const clean = cepValue.replace(/\D/g, "");
@@ -291,13 +281,6 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-muted/30">
-      {/* Top urgency bar */}
-      <div className="bg-primary text-primary-foreground text-center py-2 px-4">
-        <p className="text-xs font-bold flex items-center justify-center gap-2">
-          <Clock size={14} />
-          Oferta expira em {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")} — Finalize agora!
-        </p>
-      </div>
 
       {/* Header */}
       <header className="bg-background border-b border-border">
@@ -619,12 +602,6 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                <div className="bg-amber-500/10 rounded-lg p-3 text-center">
-                  <p className="text-xs font-medium text-amber-700">
-                    <Clock size={12} className="inline mr-1" />
-                    Pague em até 30 minutos para garantir seu pedido
-                  </p>
-                </div>
 
                 <div className="text-center pt-2">
                   <p className="text-lg font-bold text-primary">{formatPrice(total)}</p>
