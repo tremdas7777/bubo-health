@@ -6,11 +6,12 @@ interface Props {
   canonical?: string;
   ogImage?: string;
   ogType?: string;
+  noIndex?: boolean;
 }
 
 const DEFAULT_OG_IMAGE = "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/61c5f034-ba9c-4f63-92e8-331dd365c01b/id-preview-20d5464f--49403296-0e09-413f-bf28-4e311008ad2a.lovable.app-1775603652267.png";
 
-export default function PageHead({ title, description, canonical, ogImage, ogType = "website" }: Props) {
+export default function PageHead({ title, description, canonical, ogImage, ogType = "website", noIndex = false }: Props) {
   useEffect(() => {
     document.title = title;
 
@@ -27,7 +28,7 @@ export default function PageHead({ title, description, canonical, ogImage, ogTyp
     const href = canonical || window.location.href.split("?")[0].split("#")[0];
 
     setMeta("description", description);
-    setMeta("robots", "index, follow");
+    setMeta("robots", noIndex ? "noindex, nofollow" : "index, follow");
 
     // Open Graph
     setMeta("og:title", title, "property");
