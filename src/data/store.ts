@@ -19,14 +19,22 @@ export interface Collection {
   image: string;
 }
 
+import collCasaCozinha from "@/assets/collection-casa-cozinha.jpg";
+import collEletronicos from "@/assets/collection-eletronicos.jpg";
+import collEsportes from "@/assets/collection-esportes.jpg";
+import collFerramentas from "@/assets/collection-ferramentas.jpg";
+import collFitness from "@/assets/collection-fitness.jpg";
+import collPesca from "@/assets/collection-pesca.jpg";
+import collSaudeBeleza from "@/assets/collection-saude-beleza.jpg";
+
 export const collections: Collection[] = [
-  { id: "1", name: "Casa e Cozinha", slug: "casa-e-cozinha", image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=650&fit=crop" },
-  { id: "2", name: "Eletrônicos", slug: "eletronicos", image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500&h=650&fit=crop" },
-  { id: "3", name: "Esportes", slug: "esportes", image: "https://images.unsplash.com/photo-1461896836934-bd45ba8a0936?w=500&h=650&fit=crop" },
-  { id: "4", name: "Ferramentas", slug: "ferramentas", image: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=500&h=650&fit=crop" },
-  { id: "5", name: "Fitness", slug: "fitness", image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=650&fit=crop" },
-  { id: "6", name: "Pesca", slug: "pesca", image: "https://images.unsplash.com/photo-1504309092620-4d0ec726efa4?w=500&h=650&fit=crop" },
-  { id: "7", name: "Saúde e Beleza", slug: "saude-e-beleza", image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&h=650&fit=crop" },
+  { id: "1", name: "Casa e Cozinha", slug: "casa-e-cozinha", image: collCasaCozinha },
+  { id: "2", name: "Eletrônicos", slug: "eletronicos", image: collEletronicos },
+  { id: "3", name: "Esportes", slug: "esportes", image: collEsportes },
+  { id: "4", name: "Ferramentas", slug: "ferramentas", image: collFerramentas },
+  { id: "5", name: "Fitness", slug: "fitness", image: collFitness },
+  { id: "6", name: "Pesca", slug: "pesca", image: collPesca },
+  { id: "7", name: "Saúde e Beleza", slug: "saude-e-beleza", image: collSaudeBeleza },
 ];
 
 export const products: Product[] = [
