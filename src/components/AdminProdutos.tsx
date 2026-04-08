@@ -75,7 +75,13 @@ export default function AdminProdutos() {
     else { await supabase.from('collections').insert(payload); toast.success('Coleção criada!'); }
     setSaving(false); setEditCollection(null); fetchCollections();
   };
-  const deleteCollection = async (id: string) => { if (!confirm('Excluir?')) return; await supabase.from('collections').delete().eq('id', id); toast.success('Excluída'); fetchCollections(); };
+  const toggleCollectionActive = async (col: Collection) => { await supabase.from('collections').update({ active: !col.active }).eq('id', col.id); fetchCollections(); };
+  const handleColDragDrop = async (fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex) return;
+    const reordered = [...collections]; const [moved] = reordered.splice(fromIndex, 1); reordered.splice(toIndex, 0, moved);
+    await Promise.all(reordered.map((c, i) => supabase.from('collections').update({ sort_order: i }).eq('id', c.id)));
+    fetchCollections(); toast.success('Ordem atualizada!');
+  };
 
   const handleCsvSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return; setCsvFile(file);
