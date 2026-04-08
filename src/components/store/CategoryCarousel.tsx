@@ -78,7 +78,7 @@ export default memo(function CategoryCarousel({ category }: Props) {
         </h2>
 
         {isFew ? (
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 max-w-[960px] mx-auto">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} addItem={addItem} />
             ))}
