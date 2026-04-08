@@ -120,6 +120,7 @@ const INITIAL_PIXEL_CONFIG: PixelConfig = {
 
 const INITIAL_GATEWAY_CONFIG: PaymentGatewayConfig = {
   activeGateway: "centurionpay",
+  paymentMethods: {},
   pagouai: { publicKey: "", secretKey: "", enabled: false },
   vennox: { secretKey: "", companyId: "", enabled: false },
   centurionpay: { secretKey: "", companyId: "", enabled: false },

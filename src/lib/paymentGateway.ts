@@ -71,9 +71,9 @@ export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Pr
       updated_at: new Date().toISOString(),
     };
     if (existing?.id) {
-      await supabase.from('gateway_config').update(updateData).eq('id', existing.id);
+      await supabase.from('gateway_config').update(updateData as any).eq('id', existing.id);
     } else {
-      await supabase.from('gateway_config').insert([updateData]);
+      await supabase.from('gateway_config').insert([updateData as any]);
     }
     cachedConfig = config;
     return true;
