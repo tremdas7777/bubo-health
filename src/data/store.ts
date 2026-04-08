@@ -67,7 +67,7 @@ export const products: Product[] = [
   {
     id: "c1", name: "Lâmpada Inteligente", slug: "lampada-inteligente",
     price: 116.90, compareAtPrice: 159.90,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=533&h=533&fit=crop",
+    image: imgLampada,
     category: "casa-e-cozinha",
     description: "Lâmpada inteligente RGB com controle por app e voz. Compatível com Alexa e Google Home. 16 milhões de cores e temperatura ajustável.",
     stock: 18, variants: ["Branca", "RGB"],
@@ -83,7 +83,7 @@ export const products: Product[] = [
   {
     id: "c3", name: "Mini Triturador Manual", slug: "mini-triturador-manual",
     price: 97.90, compareAtPrice: 222.90,
-    image: "https://images.unsplash.com/photo-1626806819282-2c1dc01a5e0c?w=533&h=533&fit=crop",
+    image: imgTriturador,
     category: "casa-e-cozinha",
     description: "Mini triturador manual multifuncional para alho, cebola, legumes e frutas. Lâminas em aço inox, fácil de limpar e compacto.",
     stock: 30,
@@ -99,7 +99,7 @@ export const products: Product[] = [
   {
     id: "c5", name: "Vaso de Flores Artificiais", slug: "vaso-flores-artificiais",
     price: 79.90, compareAtPrice: 149.90,
-    image: "https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=533&h=533&fit=crop",
+    image: imgVasoFlores,
     category: "casa-e-cozinha",
     description: "Vaso decorativo com flores artificiais de alta qualidade. Material premium que imita flores reais. Ideal para sala e escritório.",
     stock: 40,
@@ -109,7 +109,7 @@ export const products: Product[] = [
   {
     id: "e1", name: "Game Portátil X39 IPS FULL HD", slug: "game-portatil-x39",
     price: 236.97, compareAtPrice: 569.90,
-    image: "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=533&h=533&fit=crop",
+    image: imgGamePortatil,
     category: "eletronicos",
     description: "Console de jogos portátil com tela IPS Full HD de 4.3 polegadas. Mais de 5000 jogos clássicos incluídos, bateria de longa duração.",
     stock: 15, badge: "Economize 58%",
@@ -125,7 +125,7 @@ export const products: Product[] = [
   {
     id: "e3", name: "Despertador Digital Led", slug: "despertador-digital-led",
     price: 67.90, compareAtPrice: 139.90,
-    image: "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=533&h=533&fit=crop",
+    image: imgDespertador,
     category: "eletronicos",
     description: "Despertador digital com display LED grande, espelhado, mostra hora, temperatura e umidade. Modo noturno com brilho ajustável.",
     stock: 45, badge: "Economize 51%",
@@ -141,7 +141,7 @@ export const products: Product[] = [
   {
     id: "e5", name: "IWO 7 Pro", slug: "iwo-7-pro",
     price: 199.90, compareAtPrice: 359.90,
-    image: "https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=533&h=533&fit=crop",
+    image: imgSmartwatch,
     category: "eletronicos",
     description: "Smartwatch IWO 7 Pro com tela infinita, monitor cardíaco, oxímetro, GPS e mais de 100 modos esportivos. Resistente à água.",
     stock: 18, badge: "Economize 44%",
@@ -151,7 +151,7 @@ export const products: Product[] = [
   {
     id: "s1", name: "Raquete Beach Tênis", slug: "raquete-beach-tenis",
     price: 265.00, compareAtPrice: 597.00,
-    image: "https://images.unsplash.com/photo-1617083934551-ac1f1c240d50?w=533&h=533&fit=crop",
+    image: imgRaquete,
     category: "esportes",
     description: "Raquete profissional para beach tennis em fibra de carbono 3K. Núcleo em EVA soft, controle e potência superiores.",
     stock: 12, badge: "Economize 55%",
@@ -159,7 +159,7 @@ export const products: Product[] = [
   {
     id: "s2", name: "Óculos para Natação Profissional", slug: "oculos-natacao",
     price: 137.90, compareAtPrice: 227.90,
-    image: "https://images.unsplash.com/photo-1622629797619-c100e3e67e2e?w=533&h=533&fit=crop",
+    image: imgOculosNatacao,
     category: "esportes",
     description: "Óculos de natação profissional com lentes antiembaçantes, proteção UV e vedação em silicone macio. Ajuste regulável.",
     stock: 35,
