@@ -1,3 +1,36 @@
+// Product image imports
+import imgLampada from "@/assets/products/lampada-inteligente.jpg";
+import imgTriturador from "@/assets/products/mini-triturador.jpg";
+import imgVasoFlores from "@/assets/products/vaso-flores.jpg";
+import imgGamePortatil from "@/assets/products/game-portatil.jpg";
+import imgDespertador from "@/assets/products/despertador-digital.jpg";
+import imgSmartwatch from "@/assets/products/smartwatch.jpg";
+import imgRaquete from "@/assets/products/raquete-beach.jpg";
+import imgOculosNatacao from "@/assets/products/oculos-natacao.jpg";
+import imgOculosEsportes from "@/assets/products/oculos-esportes.jpg";
+import imgCapacete from "@/assets/products/capacete-ciclismo.jpg";
+import imgMotosserra from "@/assets/products/mini-motosserra.jpg";
+import imgAlicateFriso from "@/assets/products/mini-alicate-friso.jpg";
+import imgJoelheira from "@/assets/products/joelheira.jpg";
+import imgFaixas from "@/assets/products/faixas-treino.jpg";
+import imgExercitador from "@/assets/products/exercitador-abdominal.jpg";
+import imgMassageador from "@/assets/products/massageador.jpg";
+import imgPowerball from "@/assets/products/powerball.jpg";
+import imgColetePesca from "@/assets/products/colete-pesca.jpg";
+import imgMolinete from "@/assets/products/molinete.jpg";
+import imgLinhaPesca from "@/assets/products/linha-pesca.jpg";
+import imgCarretilha from "@/assets/products/carretilha.jpg";
+import imgAlicatesPesca from "@/assets/products/alicates-pesca.jpg";
+
+// Collection image imports
+import collCasaCozinha from "@/assets/collection-casa-cozinha.jpg";
+import collEletronicos from "@/assets/collection-eletronicos.jpg";
+import collEsportes from "@/assets/collection-esportes.jpg";
+import collFerramentas from "@/assets/collection-ferramentas.jpg";
+import collFitness from "@/assets/collection-fitness.jpg";
+import collPesca from "@/assets/collection-pesca.jpg";
+import collSaudeBeleza from "@/assets/collection-saude-beleza.jpg";
+
 export interface Product {
   id: string;
   name: string;
@@ -18,14 +51,6 @@ export interface Collection {
   slug: string;
   image: string;
 }
-
-import collCasaCozinha from "@/assets/collection-casa-cozinha.jpg";
-import collEletronicos from "@/assets/collection-eletronicos.jpg";
-import collEsportes from "@/assets/collection-esportes.jpg";
-import collFerramentas from "@/assets/collection-ferramentas.jpg";
-import collFitness from "@/assets/collection-fitness.jpg";
-import collPesca from "@/assets/collection-pesca.jpg";
-import collSaudeBeleza from "@/assets/collection-saude-beleza.jpg";
 
 export const collections: Collection[] = [
   { id: "1", name: "Casa e Cozinha", slug: "casa-e-cozinha", image: collCasaCozinha },
