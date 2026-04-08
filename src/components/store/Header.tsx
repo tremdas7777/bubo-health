@@ -29,8 +29,7 @@ export default function Header() {
           </div>
 
           {/* Center: Logo */}
-          <Link to="/" className="flex items-center gap-1">
-            <img src={logoIcon} alt="Bazu" width={44} height={44} className="w-11 h-11" />
+          <Link to="/" className="flex items-center">
             <span className="text-2xl md:text-3xl font-heading font-bold text-primary tracking-tight">
               Bazu
             </span>
