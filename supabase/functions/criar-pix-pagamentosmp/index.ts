@@ -15,10 +15,14 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { amount, buyerName, buyerEmail, buyerDocument, buyerPhone, metadata } = body;
+    const { amount, buyerName, buyerEmail, buyerDocument, buyerPhone, metadata, publicKey: bodyPublicKey, secretKey: bodySecretKey } = body;
 
-    const publicKey = Deno.env.get("PAGAMENTOSMP_PUBLIC_KEY");
-    const secretKey = Deno.env.get("PAGAMENTOSMP_SECRET_KEY");
+    const publicKey = typeof bodyPublicKey === "string" && bodyPublicKey.trim()
+      ? bodyPublicKey.trim()
+      : Deno.env.get("PAGAMENTOSMP_PUBLIC_KEY");
+    const secretKey = typeof bodySecretKey === "string" && bodySecretKey.trim()
+      ? bodySecretKey.trim()
+      : Deno.env.get("PAGAMENTOSMP_SECRET_KEY");
 
     if (!publicKey || !secretKey) {
       return new Response(
@@ -90,7 +94,7 @@ serve(async (req) => {
     if (!pixResponse.ok) {
       console.error("MP Pagamentos PIX error:", JSON.stringify(pixData));
       return new Response(
-        JSON.stringify({ error: pixData.message || "Erro ao gerar PIX no MP Pagamentos" }),
+        JSON.stringify({ error: pixData.message || pixData.error || "Erro ao gerar PIX no MP Pagamentos", details: pixData }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }

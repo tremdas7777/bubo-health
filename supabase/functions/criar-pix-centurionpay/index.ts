@@ -73,7 +73,7 @@ serve(async (req) => {
 
     if (!response.ok) {
       console.error("CenturionPay error:", JSON.stringify(data));
-      return new Response(JSON.stringify({ error: "Erro na API CenturionPay", details: data }), {
+      return new Response(JSON.stringify({ error: data?.refusedReason?.description || data?.message || "Erro na API CenturionPay", details: data }), {
         status: response.status,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });

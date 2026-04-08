@@ -143,13 +143,31 @@ const GATEWAY_LABELS: Record<PaymentGatewayConfig["activeGateway"], string> = {
 };
 
 const GATEWAY_TEST_FUNCTIONS: Partial<Record<PaymentGatewayConfig["activeGateway"], string>> = {
-  pagouai: "criar-pix",
-  vennox: "criar-pix-vennox",
   centurionpay: "criar-pix-centurionpay",
-  ironpay: "criar-pix-ironpay",
-  simpayout: "criar-pix-simpayout",
   pagamentosmp: "criar-pix-pagamentosmp",
 };
+
+async function extractFunctionErrorMessage(error: unknown) {
+  if (error && typeof error === "object" && "context" in error) {
+    const response = (error as { context?: Response }).context;
+
+    if (response instanceof Response) {
+      try {
+        const payload = await response.clone().json() as { error?: string; details?: { refusedReason?: { description?: string } } };
+        return payload.error || payload.details?.refusedReason?.description || "Erro ao processar gateway";
+      } catch {
+        try {
+          const text = await response.clone().text();
+          if (text) return text;
+        } catch {
+          // ignore
+        }
+      }
+    }
+  }
+
+  return error instanceof Error ? error.message : "Erro desconhecido";
+}
 
 const pct = (a: number, b: number) => (b === 0 ? 0 : Math.round((a / b) * 100));
 
@@ -447,12 +465,11 @@ export default function Admin() {
 
     try {
       const bodyMap = {
-        pagouai: { publicKey: gatewayConfig.pagouai.publicKey, secretKey: gatewayConfig.pagouai.secretKey },
-        vennox: { secretKey: gatewayConfig.vennox.secretKey, companyId: gatewayConfig.vennox.companyId },
         centurionpay: { secretKey: gatewayConfig.centurionpay.secretKey, companyId: gatewayConfig.centurionpay.companyId },
-        ironpay: { apiToken: gatewayConfig.ironpay.apiToken },
-        simpayout: { clientId: gatewayConfig.simpayout.clientId, clientSecret: gatewayConfig.simpayout.clientSecret },
-        pagamentosmp: {},
+        pagamentosmp: {
+          publicKey: gatewayConfig.pagamentosmp.publicKey,
+          secretKey: gatewayConfig.pagamentosmp.secretKey,
+        },
       } as const;
 
       const { data, error } = await supabase.functions.invoke(functionName, {
@@ -477,12 +494,20 @@ export default function Admin() {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        throw new Error(await extractFunctionErrorMessage(error));
+      }
 
-      if ((data as { pix_code?: string; order_id?: string } | null)?.pix_code) {
+      const payload = data as { pix_code?: string; order_id?: string; error?: string } | null;
+
+      if (payload?.error) {
+        throw new Error(payload.error);
+      }
+
+      if (payload?.pix_code) {
         flashMessage(
           setGatewayMessage,
-          `✅ ${GATEWAY_LABELS[gateway]} OK! PIX gerado (pedido ${(data as { order_id?: string }).order_id || "criado"})`,
+          `✅ ${GATEWAY_LABELS[gateway]} OK! PIX gerado (pedido ${payload.order_id || "criado"})`,
           6000,
         );
       } else {
