@@ -229,8 +229,6 @@ export default function Admin() {
   const [period, setPeriod] = useState(30);
   const [stats, setStats] = useState<FunnelStats>(INITIAL_STATS);
 
-  if (!authed) return <AdminLogin onLogin={() => setAuthed(true)} />;
-
   const [pixelConfig, setPixelConfig] = useState<PixelConfig>(() => getPixelConfig() || INITIAL_PIXEL_CONFIG);
   const [pixelMessage, setPixelMessage] = useState("");
 
@@ -271,6 +269,7 @@ export default function Admin() {
   };
 
   useEffect(() => {
+    if (!authed) return;
     const loadInitialState = async () => {
       const [dbPixelConfig, dbWebhookConfig, dbGatewayConfig] = await Promise.all([
         loadPixelConfigFromDb().catch(() => getPixelConfig()),
@@ -292,10 +291,10 @@ export default function Admin() {
     };
 
     void loadInitialState();
-  }, []);
+  }, [authed]);
 
   useEffect(() => {
-    if (activeTab !== "analytics") return;
+    if (!authed || activeTab !== "analytics") return;
 
     let cancelled = false;
 
@@ -313,13 +312,15 @@ export default function Admin() {
       cancelled = true;
       window.clearInterval(interval);
     };
-  }, [activeTab, period]);
+  }, [authed, activeTab, period]);
 
   useEffect(() => {
-    if (activeTab === "pedidos") {
+    if (authed && activeTab === "pedidos") {
       void fetchOrders();
     }
-  }, [activeTab]);
+  }, [authed, activeTab]);
+
+  if (!authed) return <AdminLogin onLogin={() => setAuthed(true)} />;
 
   const handleClearStats = async () => {
     await clearFunnelEvents();
