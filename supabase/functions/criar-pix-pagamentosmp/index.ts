@@ -73,8 +73,19 @@ serve(async (req) => {
       },
       body: JSON.stringify(requestBody),
     });
-
-    const pixData = await pixResponse.json();
+    const responseText = await pixResponse.text();
+    console.log("MP Pagamentos raw response status:", pixResponse.status, "content-type:", pixResponse.headers.get("content-type"));
+    
+    let pixData: any;
+    try {
+      pixData = JSON.parse(responseText);
+    } catch {
+      console.error("MP Pagamentos returned non-JSON:", responseText.slice(0, 500));
+      return new Response(
+        JSON.stringify({ error: "MP Pagamentos retornou resposta inválida. A API pode estar bloqueada por localização ou indisponível." }),
+        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
     if (!pixResponse.ok) {
       console.error("MP Pagamentos PIX error:", JSON.stringify(pixData));
