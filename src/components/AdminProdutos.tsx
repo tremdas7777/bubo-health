@@ -36,6 +36,8 @@ export default function AdminProdutos() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragIdx, setDragIdx] = useState<number | null>(null);
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
+  const [colDragIdx, setColDragIdx] = useState<number | null>(null);
+  const [colDragOverIdx, setColDragOverIdx] = useState<number | null>(null);
 
   const fetchProducts = async () => { setLoading(true); const { data } = await supabase.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false }); setProducts((data as DbProduct[]) || []); setLoading(false); };
   const fetchCollections = async () => { const { data } = await supabase.from('collections').select('*').order('sort_order', { ascending: true }); setCollections((data as Collection[]) || []); };
