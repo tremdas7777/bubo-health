@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp, CreditCard } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 import { useCart } from "@/contexts/CartContext";
 import { formatPrice, getInstallmentPrice } from "@/data/store";
 import { trackEvent } from "@/lib/funnelTracking";
@@ -129,6 +130,7 @@ export default function CheckoutPage() {
 
   // Timer urgency
   const [timeLeft, setTimeLeft] = useState(15 * 60);
+  const [pollingPayment, setPollingPayment] = useState(false);
 
   // Email suggestions
   const [emailSuggestions, setEmailSuggestions] = useState<string[]>([]);
@@ -192,6 +194,22 @@ export default function CheckoutPage() {
       }
     });
   }, []);
+
+  // Poll for payment status when PIX is generated
+  useEffect(() => {
+    if (!orderId || pollingPayment) return;
+    setPollingPayment(true);
+    const interval = setInterval(async () => {
+      try {
+        const { data } = await supabase.from("orders").select("status").eq("id", orderId).maybeSingle();
+        if (data?.status === "paid" || data?.status === "approved") {
+          clearInterval(interval);
+          navigate(`/obrigado?pedido=${orderId}`);
+        }
+      } catch { /* ignore */ }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [orderId, navigate, pollingPayment]);
 
   const selectedShippingOption = shippingOptions.find((s) => s.id === selectedShipping) || shippingOptions[0];
   const shippingCost = selectedShippingOption?.price_cents || 0;
@@ -732,9 +750,12 @@ export default function CheckoutPage() {
                   <p className="text-sm text-muted-foreground">Escaneie o QR Code ou copie o código para pagar</p>
                 </div>
 
-                {pixQrCode && (
+                {/* QR Code - client-side generated from PIX code */}
+                {pixCode && (
                   <div className="flex justify-center">
-                    <img src={pixQrCode} alt="QR Code PIX" className="w-48 h-48 rounded-lg border border-border" />
+                    <div className="bg-white p-3 rounded-lg border border-border">
+                      <QRCodeSVG value={pixCode} size={192} />
+                    </div>
                   </div>
                 )}
 
