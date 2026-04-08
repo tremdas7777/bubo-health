@@ -47,7 +47,7 @@ export default function Footer() {
             <h4 className="font-heading font-semibold text-sm mb-3 text-background">Atendimento</h4>
             <div className="space-y-1.5 text-sm opacity-60">
               <p>Segunda a Sexta: 08h às 18h</p>
-              <p>tremda77@gmail.com</p>
+              <p>suporte@kazoombrasil.com.br</p>
               <p className="text-xs">CNPJ: 60.105.125/0001-08</p>
               <p className="text-xs">Av. Larissa Cavalcante, 11 – Boa Vista</p>
               <p className="text-xs">Vitória da Conquista – BA, CEP 45027-400</p>
