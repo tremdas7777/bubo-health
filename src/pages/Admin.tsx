@@ -1586,6 +1586,47 @@ export default function Admin() {
             </Card>
           </div>
         )}
+
+        {activeTab === "config" && (
+          <div className="space-y-4">
+            <div>
+              <h2 className="mb-1 text-xl font-black text-foreground">Configurações da Loja</h2>
+              <p className="text-xs text-muted-foreground">Dados gerais exibidos no site</p>
+            </div>
+
+            <Card className="space-y-4 border border-border p-5">
+              <div>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  Número do WhatsApp
+                </label>
+                <p className="text-[10px] text-muted-foreground mb-1">
+                  Com código do país (ex: 5533999829860). Deixe vazio para ocultar o botão.
+                </p>
+                <Input
+                  value={whatsappNumber}
+                  onChange={(e) => setWhatsappNumber(e.target.value)}
+                  placeholder="5533999829860"
+                  className="mt-1 font-mono text-xs"
+                />
+              </div>
+
+              <Button
+                className="w-full bg-emerald-500 text-xs font-bold text-white hover:bg-emerald-500/90"
+                onClick={async () => {
+                  const { data: existing } = await supabase.from("store_config").select("id").limit(1).maybeSingle();
+                  const result = existing?.id
+                    ? await supabase.from("store_config").update({ whatsapp_number: whatsappNumber, updated_at: new Date().toISOString() }).eq("id", existing.id)
+                    : await supabase.from("store_config").insert({ whatsapp_number: whatsappNumber });
+                  flashMessage(setConfigMessage, result.error ? "Erro ao salvar" : "Configuração salva com sucesso!");
+                }}
+              >
+                <Save size={14} className="mr-1.5" /> Salvar Configurações
+              </Button>
+
+              <StatusMessage msg={configMessage} />
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );
