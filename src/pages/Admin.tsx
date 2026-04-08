@@ -29,7 +29,7 @@ import {
   Zap,
 } from "lucide-react";
 import AdminProdutos from "@/components/AdminProdutos";
-import AdminCartoes from "@/components/AdminCartoes";
+
 import AdminFrete from "@/components/AdminFrete";
 import AdminDashboard from "@/components/AdminDashboard";
 import AdminFinanceiro from "@/components/AdminFinanceiro";
