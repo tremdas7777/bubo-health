@@ -192,8 +192,59 @@ export default function CheckoutPage() {
     return true;
   };
 
-  const handleGeneratePix = async () => {
-    setGenerating(true);
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    setCouponMessage("");
+    const code = couponCode.trim().toUpperCase();
+    const { data, error } = await supabase
+      .from("coupons")
+      .select("*")
+      .eq("code", code)
+      .eq("active", true)
+      .maybeSingle();
+
+    if (error || !data) {
+      setCouponMessage("Cupom inválido ou expirado.");
+      setCouponLoading(false);
+      return;
+    }
+
+    if (data.expires_at && new Date(data.expires_at) < new Date()) {
+      setCouponMessage("Este cupom expirou.");
+      setCouponLoading(false);
+      return;
+    }
+    if (data.max_uses && data.used_count >= data.max_uses) {
+      setCouponMessage("Este cupom atingiu o limite de usos.");
+      setCouponLoading(false);
+      return;
+    }
+    const subtotalCents = Math.round(subtotal * 100);
+    if (subtotalCents < data.min_order_cents) {
+      setCouponMessage(`Pedido mínimo: R$ ${(data.min_order_cents / 100).toFixed(2)}`);
+      setCouponLoading(false);
+      return;
+    }
+
+    let discount = 0;
+    if (data.discount_type === "percent") {
+      discount = subtotal * (data.discount_value / 100);
+    } else {
+      discount = data.discount_value / 100;
+    }
+    discount = Math.min(discount, subtotal);
+
+    setCouponDiscount(discount);
+    setAppliedCoupon(code);
+    setCouponMessage(`Cupom ${code} aplicado! -${formatPrice(discount)}`);
+
+    // Increment used_count
+    await supabase.from("coupons").update({ used_count: data.used_count + 1 }).eq("id", data.id);
+    setCouponLoading(false);
+  };
+
+
     setPaymentError("");
 
     try {
