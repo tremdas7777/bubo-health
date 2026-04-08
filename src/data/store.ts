@@ -50,6 +50,7 @@ export interface Product {
   stock: number;
   badge?: string;
   variants?: string[];
+  noIndex?: boolean;
 }
 
 export interface Collection {
