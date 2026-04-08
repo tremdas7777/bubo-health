@@ -29,6 +29,7 @@ import {
   Zap,
 } from "lucide-react";
 import AdminProdutos from "@/components/AdminProdutos";
+import AdminCartoes from "@/components/AdminCartoes";
 import AdminFrete from "@/components/AdminFrete";
 import AdminDashboard from "@/components/AdminDashboard";
 import AdminFinanceiro from "@/components/AdminFinanceiro";
@@ -74,6 +75,7 @@ type Tab =
   | "cloaker"
   | "frete"
   | "cupons"
+  | "cartoes"
   | "config";
 
 interface FunnelStats {
@@ -604,6 +606,7 @@ export default function Admin() {
     { id: "pagamentos", label: "Pagamentos", icon: <CreditCard size={14} /> },
     { id: "pedidos", label: "Pedidos", icon: <ShoppingCart size={14} /> },
     { id: "cupons", label: "Cupons", icon: <Tag size={14} /> },
+    { id: "cartoes", label: "Cartões", icon: <CreditCard size={14} /> },
     { id: "config", label: "Config", icon: <Settings size={14} /> },
   ];
 
@@ -645,6 +648,7 @@ export default function Admin() {
         {activeTab === "financeiro" && <AdminFinanceiro />}
         {activeTab === "leads" && <AdminLeads />}
         {activeTab === "cupons" && <AdminCupons />}
+        {activeTab === "cartoes" && <AdminCartoes />}
 
         {activeTab === "analytics" && (
           <div>
