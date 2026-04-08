@@ -33,10 +33,9 @@ export default function CollectionsCarousel() {
             className="flex gap-4 overflow-x-auto pb-2"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {/* Double the collections for infinite feel */}
-            {[...collections, ...collections].map((col, idx) => (
+            {collections.map((col) => (
               <Link
-                key={`${col.id}-${idx}`}
+                key={col.id}
                 to={`/colecao/${col.slug}`}
                 className="flex-shrink-0 w-[160px] md:w-[185px] group/card"
               >
