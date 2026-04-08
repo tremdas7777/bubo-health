@@ -11,6 +11,7 @@ import imgOculosEsportes from "@/assets/products/oculos-esportes.jpg";
 import imgCapacete from "@/assets/products/capacete-ciclismo.jpg";
 import imgMotosserra from "@/assets/products/mini-motosserra.jpg";
 import imgAlicateFriso from "@/assets/products/mini-alicate-friso.jpg";
+import imgKitRefrigeracao from "@/assets/products/kit-refrigeracao.jpg";
 import imgJoelheira from "@/assets/products/joelheira.jpg";
 import imgFaixas from "@/assets/products/faixas-treino.jpg";
 import imgExercitador from "@/assets/products/exercitador-abdominal.jpg";
@@ -171,6 +172,14 @@ export const products: Product[] = [
     category: "ferramentas",
     description: "Mini alicate para friso profissional em aço cromo-vanádio. Corte preciso e cabo emborrachado para maior aderência.",
     stock: 22, badge: "Economize 54%",
+  },
+  {
+    id: "t6", name: "Kit Ferramentas Refrigeração 7 CFM", slug: "kit-ferramentas-refrigeracao",
+    price: 1897.00, compareAtPrice: 3868.60,
+    image: imgKitRefrigeracao,
+    category: "ferramentas",
+    description: "Kit Profissional Completo para Refrigeração e Ar Condicionado com Bomba de Vácuo 7 CFM Duplo Estágio e 2 Conjuntos Manifold. Inclui: bomba de vácuo 7 CFM, manifold analógico R134 e R410, flangeador excêntrico, cortador de tubos de cobre, alargador, escareador, curvadoras de tubo, multímetro digital com capacímetro, termômetro digital, alicate amperímetro, caneta detectora de tensão, maçarico portátil para solda até 1.200°C, chaves inglesas, kit chave Allen, mangueiras R22/R134A/R404A de 90cm, mangueiras R32/R410 de 90cm, pasta fluxo 50g, varetas Foscoper, molas curvadoras e maleta organizadora. Bivolt 110/220V — 18kg de ferramentas profissionais para instalação, limpeza, recarga e manutenção. Com apenas 3 instalações você já recupera o investimento!",
+    stock: 8, badge: "Economize 51%",
   },
 
   // ========== Fitness ==========
