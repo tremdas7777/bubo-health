@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { captureCampaignParams } from "@/lib/campaignParams";
 import { trackEvent } from "@/lib/funnelTracking";
 import { injectPixels, loadPixelConfigFromDb } from "@/lib/pixelManager";
@@ -25,6 +26,8 @@ const ReturnPolicyPage = lazy(() => import("./pages/ReturnPolicyPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const WishlistPage = lazy(() => import("./pages/WishlistPage"));
 const ThankYouPage = lazy(() => import("./pages/ThankYouPage"));
+const AuthPage = lazy(() => import("./pages/AuthPage"));
+const AccountPage = lazy(() => import("./pages/AccountPage"));
 
 const queryClient = new QueryClient();
 
@@ -49,8 +52,9 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <TooltipProvider>
-          <CartProvider>
-            <WishlistProvider>
+          <AuthProvider>
+            <CartProvider>
+              <WishlistProvider>
               <Toaster />
               <Sonner />
               <BrowserRouter>
@@ -68,13 +72,16 @@ const App = () => {
                     <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/favoritos" element={<WishlistPage />} />
                     <Route path="/obrigado" element={<ThankYouPage />} />
+                    <Route path="/entrar" element={<AuthPage />} />
+                    <Route path="/conta" element={<AccountPage />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>
               </BrowserRouter>
-            </WishlistProvider>
-          </CartProvider>
+              </WishlistProvider>
+            </CartProvider>
+          </AuthProvider>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
