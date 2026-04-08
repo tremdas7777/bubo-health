@@ -500,47 +500,91 @@ export default function CheckoutPage() {
             {step === "payment" && !pixCode && (
               <div className="bg-background rounded-xl border border-border p-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-heading font-bold text-foreground">Pagamento via PIX</h2>
+                  <h2 className="text-lg font-heading font-bold text-foreground">Pagamento</h2>
                   <button onClick={() => setStep("shipping")} className="text-xs text-primary hover:underline">Editar entrega</button>
                 </div>
 
-                {/* PIX benefit */}
-                <div className="bg-emerald-500/10 rounded-lg p-4 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Tag size={16} className="text-emerald-600" />
-                    <span className="text-sm font-bold text-emerald-700">10% de desconto no PIX!</span>
-                  </div>
-                  <p className="text-xs text-emerald-600">
-                    Você economiza <strong>{formatPrice(pixDiscount)}</strong> pagando via PIX
-                  </p>
+                {/* Payment method selector */}
+                <div className="grid grid-cols-2 gap-3">
+                  <label
+                    className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                      paymentMethod === "pix" ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
+                    }`}
+                  >
+                    <input type="radio" name="paymentMethod" value="pix" checked={paymentMethod === "pix"} onChange={() => setPaymentMethod("pix")} className="sr-only" />
+                    <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">PIX</span>
+                    <span className="text-lg font-bold text-primary">{formatPrice(subtotal * (1 - PIX_DISCOUNT_RATE) + shippingCost / 100)}</span>
+                    <span className="text-[10px] font-medium text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded">{PIX_DISCOUNT_PERCENT}% OFF</span>
+                  </label>
+                  <label
+                    className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                      paymentMethod === "card" ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
+                    }`}
+                  >
+                    <input type="radio" name="paymentMethod" value="card" checked={paymentMethod === "card"} onChange={() => setPaymentMethod("card")} className="sr-only" />
+                    <CreditCard size={20} className="text-muted-foreground" />
+                    <span className="text-lg font-bold text-foreground">{formatPrice(cardTotal)}</span>
+                    <span className="text-[10px] text-muted-foreground">até 12x de {getInstallmentPrice(cardTotal)}</span>
+                  </label>
                 </div>
 
-                {/* Summary before generating */}
+                {/* PIX benefit highlight */}
+                {isPix && (
+                  <div className="bg-emerald-500/10 rounded-lg p-3 flex items-center gap-2">
+                    <Tag size={14} className="text-emerald-600" />
+                    <span className="text-xs font-medium text-emerald-700">
+                      Você economiza <strong>{formatPrice(subtotal * PIX_DISCOUNT_RATE)}</strong> pagando via PIX!
+                    </span>
+                  </div>
+                )}
+
+                {/* Summary */}
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatPrice(subtotal)}</span></div>
-                  <div className="flex justify-between text-emerald-600"><span>Desconto PIX (10%)</span><span>-{formatPrice(pixDiscount)}</span></div>
+                  {isPix && (
+                    <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
+                  )}
                   <div className="flex justify-between"><span className="text-muted-foreground">Frete ({selectedShippingOption?.name})</span><span>{shippingCost === 0 ? "Grátis" : formatPrice(shippingCost / 100)}</span></div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
                     <span>Total</span>
                     <span className="text-primary">{formatPrice(total)}</span>
                   </div>
+                  {!isPix && (
+                    <p className="text-[10px] text-muted-foreground text-center">
+                      em até 12x de {getInstallmentPrice(total)} sem juros
+                    </p>
+                  )}
                 </div>
 
                 {paymentError && (
                   <div className="bg-destructive/10 text-destructive text-xs font-medium rounded-lg p-3 text-center">{paymentError}</div>
                 )}
 
-                <Button
-                  onClick={handleGeneratePix}
-                  disabled={generating}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
-                >
-                  {generating ? (
-                    <><Loader2 size={16} className="animate-spin mr-2" /> Gerando PIX...</>
-                  ) : (
-                    "Gerar QR Code PIX"
-                  )}
-                </Button>
+                {isPix ? (
+                  <Button
+                    onClick={handleGeneratePix}
+                    disabled={generating}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
+                  >
+                    {generating ? (
+                      <><Loader2 size={16} className="animate-spin mr-2" /> Gerando PIX...</>
+                    ) : (
+                      "Gerar QR Code PIX"
+                    )}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleGeneratePix}
+                    disabled={generating}
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
+                  >
+                    {generating ? (
+                      <><Loader2 size={16} className="animate-spin mr-2" /> Processando...</>
+                    ) : (
+                      <><CreditCard size={16} className="mr-2" /> Pagar com Cartão</>
+                    )}
+                  </Button>
+                )}
               </div>
             )}
 
