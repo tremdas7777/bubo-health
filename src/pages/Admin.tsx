@@ -1656,13 +1656,26 @@ export default function Admin() {
                 />
               </div>
 
+              <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
+                <div>
+                  <p className="text-sm font-bold text-foreground">Pagamento com Cartão</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {cardEnabled
+                      ? "Cartão de crédito habilitado no checkout"
+                      : "Apenas PIX disponível no checkout"}
+                  </p>
+                </div>
+                <Switch checked={cardEnabled} onCheckedChange={setCardEnabled} />
+              </div>
+
               <Button
                 className="w-full bg-emerald-500 text-xs font-bold text-white hover:bg-emerald-500/90"
                 onClick={async () => {
                   const { data: existing } = await supabase.from("store_config").select("id").limit(1).maybeSingle();
+                  const payload = { whatsapp_number: whatsappNumber, card_enabled: cardEnabled, updated_at: new Date().toISOString() } as any;
                   const result = existing?.id
-                    ? await supabase.from("store_config").update({ whatsapp_number: whatsappNumber, updated_at: new Date().toISOString() }).eq("id", existing.id)
-                    : await supabase.from("store_config").insert({ whatsapp_number: whatsappNumber });
+                    ? await supabase.from("store_config").update(payload).eq("id", existing.id)
+                    : await supabase.from("store_config").insert(payload);
                   flashMessage(setConfigMessage, result.error ? "Erro ao salvar" : "Configuração salva com sucesso!");
                 }}
               >
