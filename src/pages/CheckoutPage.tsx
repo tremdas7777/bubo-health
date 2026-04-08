@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp, CreditCard } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 import { useCart } from "@/contexts/CartContext";
 import { formatPrice, getInstallmentPrice } from "@/data/store";
 import { trackEvent } from "@/lib/funnelTracking";
@@ -129,6 +130,7 @@ export default function CheckoutPage() {
 
   // Timer urgency
   const [timeLeft, setTimeLeft] = useState(15 * 60);
+  const [pollingPayment, setPollingPayment] = useState(false);
 
   // Email suggestions
   const [emailSuggestions, setEmailSuggestions] = useState<string[]>([]);
