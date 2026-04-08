@@ -149,7 +149,10 @@ export default function CheckoutPage() {
   const selectedShippingOption = shippingOptions.find((s) => s.id === selectedShipping) || shippingOptions[0];
   const shippingCost = selectedShippingOption?.price_cents || 0;
   const subtotal = totalPrice;
-  const pixDiscount = subtotal * PIX_DISCOUNT;
+  const isPix = paymentMethod === "pix";
+  const pixDiscount = isPix ? subtotal * PIX_DISCOUNT_RATE : 0;
+  const total = subtotal - pixDiscount + shippingCost / 100;
+  const cardTotal = subtotal + shippingCost / 100;
   const total = subtotal - pixDiscount + shippingCost / 100;
 
   const minutes = Math.floor(timeLeft / 60);
