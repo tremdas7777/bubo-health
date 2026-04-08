@@ -289,6 +289,13 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-muted/30">
+      {/* Top urgency bar */}
+      <div className="bg-primary text-primary-foreground text-center py-2 px-4">
+        <p className="text-xs font-bold flex items-center justify-center gap-2">
+          <Clock size={14} />
+          Oferta expira em {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")} — Finalize agora!
+        </p>
+      </div>
 
       {/* Header */}
       <header className="bg-background border-b border-border">
