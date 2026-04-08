@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Minus, Plus, Truck, Shield } from "lucide-react";
 import Layout from "@/components/store/Layout";
+import ProductImageGallery from "@/components/store/ProductImageGallery";
 import DeliveryTimeline from "@/components/store/DeliveryTimeline";
 import CepCalculator from "@/components/store/CepCalculator";
 import ProductCard from "@/components/store/ProductCard";
@@ -68,14 +69,11 @@ export default function ProductDetailPage() {
         </nav>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
-          <div className="relative overflow-hidden rounded-xl bg-muted">
-            <img src={product.image} alt={product.name} className="aspect-square w-full object-cover" />
-            {product.badge && (
-              <span className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-lime px-3 py-1.5 text-xs font-bold text-foreground">
-                ✓ {product.badge}
-              </span>
-            )}
-          </div>
+          <ProductImageGallery
+            images={product.images && product.images.length > 0 ? product.images : [product.image]}
+            name={product.name}
+            badge={product.badge}
+          />
 
           <div className="space-y-4">
             <h1 className="text-center text-xl font-heading font-bold lg:text-left lg:text-2xl">{product.name}</h1>
