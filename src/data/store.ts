@@ -182,7 +182,7 @@ export const products: Product[] = [
   },
   {
     id: "t6", name: "Kit Completo Refrigeração e Ar Condicionado com Bomba de Vácuo 7 CFM", slug: "kit-ferramentas-refrigeracao",
-    price: 997.00, compareAtPrice: 3868.60,
+    price: 347.00, compareAtPrice: 997.00,
     image: imgKitRefrigeracao,
     images: [imgKitRefrigeracao, imgKitRefrigeracao2, imgKitRefrigeracaoManifold, imgKitRefrigeracaoFlangeador, imgKitRefrigeracaoCurvadoras, imgKitRefrigeracaoUso],
     category: "ferramentas",
