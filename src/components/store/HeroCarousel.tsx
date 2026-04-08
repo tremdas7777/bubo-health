@@ -4,23 +4,7 @@ import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
 
-const slides = [
-  {
-    image: hero1,
-    title: "de utensílios\nà eletrônicos",
-    subtitle: "tudo que você precisa\nem um só lugar.",
-  },
-  {
-    image: hero2,
-    title: "Ofertas\nImperdíveis",
-    subtitle: "até 50% de desconto\nem produtos selecionados.",
-  },
-  {
-    image: hero3,
-    title: "Frete Grátis\npara todo Brasil",
-    subtitle: "compre agora e receba\nsem custo adicional.",
-  },
-];
+const slides = [hero1, hero2, hero3];
 
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
@@ -47,23 +31,12 @@ export default function HeroCarousel() {
           }`}
         >
           <img
-            src={slide.image}
+            src={slide}
             alt=""
             className="w-full h-full object-cover"
             width={1920}
             height={864}
           />
-          {/* Text overlay */}
-          <div className="absolute inset-0 bg-black/30 flex items-center z-[5]">
-            <div className="ml-8 md:ml-20 lg:ml-32 max-w-xl">
-              <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight whitespace-pre-line drop-shadow-lg">
-                {slide.title}
-              </h2>
-              <p className="mt-2 md:mt-4 text-sm md:text-lg lg:text-xl text-white/90 whitespace-pre-line drop-shadow-md">
-                {slide.subtitle}
-              </p>
-            </div>
-          </div>
         </div>
       ))}
 
