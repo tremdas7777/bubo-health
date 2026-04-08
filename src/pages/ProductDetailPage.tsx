@@ -9,6 +9,9 @@ import { products, formatPrice, getInstallmentPrice, getDiscountPercent, getProd
 import { useCart } from "@/contexts/CartContext";
 import { trackEvent } from "@/lib/funnelTracking";
 import { Button } from "@/components/ui/button";
+import ProductJsonLd from "@/components/seo/ProductJsonLd";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
+import PageHead from "@/components/seo/PageHead";
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -36,9 +39,23 @@ export default function ProductDetailPage() {
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const pixPrice = product.price * 0.9;
   const relatedProducts = getProductsByCategory(product.category).filter((p) => p.id !== product.id).slice(0, 4);
+  const productUrl = `${window.location.origin}/produto/${product.slug}`;
 
   return (
     <Layout>
+      <PageHead
+        title={`${product.name} | Bazu`}
+        description={product.description.slice(0, 155)}
+        canonical={productUrl}
+      />
+      <ProductJsonLd product={product} url={productUrl} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Início", url: window.location.origin },
+          { name: "Produtos", url: `${window.location.origin}/produtos` },
+          { name: product.name, url: productUrl },
+        ]}
+      />
       <div className="container mx-auto px-4 py-6">
         <nav className="mb-6 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
           <Link to="/" className="hover:text-primary">Início</Link>
