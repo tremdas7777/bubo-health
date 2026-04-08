@@ -4,23 +4,7 @@ import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
 
-const slides = [
-  {
-    image: hero1,
-    title: "de utensílios\nà eletrônicos",
-    subtitle: "tudo que você precisa\nem um só lugar.",
-  },
-  {
-    image: hero2,
-    title: "Ofertas\nImperdíveis",
-    subtitle: "até 50% de desconto\nem produtos selecionados.",
-  },
-  {
-    image: hero3,
-    title: "Frete Grátis\npara todo Brasil",
-    subtitle: "compre agora e receba\nsem custo adicional.",
-  },
-];
+const slides = [hero1, hero2, hero3];
 
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
