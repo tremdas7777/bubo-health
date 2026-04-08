@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { formatPrice } from "@/data/store";
 import { Button } from "@/components/ui/button";
 
 export default function CartDrawer() {
+  const navigate = useNavigate();
   const { items, isOpen, setIsOpen, removeItem, updateQuantity, totalPrice } = useCart();
 
   if (!isOpen) return null;
@@ -81,7 +83,10 @@ export default function CartDrawer() {
             <p className="text-xs text-muted-foreground text-center">
               em até 12x de {formatPrice(totalPrice / 12)}
             </p>
-            <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6">
+            <Button
+              onClick={() => { setIsOpen(false); navigate("/checkout"); }}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6"
+            >
               Finalizar Compra
             </Button>
           </div>
