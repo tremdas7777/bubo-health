@@ -21,6 +21,11 @@ import imgMolinete from "@/assets/products/molinete.jpg";
 import imgLinhaPesca from "@/assets/products/linha-pesca.jpg";
 import imgCarretilha from "@/assets/products/carretilha.jpg";
 import imgAlicatesPesca from "@/assets/products/alicates-pesca.jpg";
+import imgSkinCare from "@/assets/products/skin-care.jpg";
+import imgBatomKit from "@/assets/products/batom-kit.jpg";
+import imgPinceisMaquiagem from "@/assets/products/kit-pinceis-maquiagem.jpg";
+import imgEscovaFacial from "@/assets/products/escova-facial.jpg";
+import imgCabineUnhas from "@/assets/products/cabine-unhas.jpg";
 
 // Collection image imports
 import collCasaCozinha from "@/assets/collection-casa-cozinha.jpg";
@@ -29,6 +34,7 @@ import collEsportes from "@/assets/collection-esportes.jpg";
 import collFerramentas from "@/assets/collection-ferramentas.jpg";
 import collFitness from "@/assets/collection-fitness.jpg";
 import collPesca from "@/assets/collection-pesca.jpg";
+import collSaudeBeleza from "@/assets/collection-saude-beleza.jpg";
 
 
 export interface Product {
@@ -59,7 +65,7 @@ export const collections: Collection[] = [
   { id: "4", name: "Ferramentas", slug: "ferramentas", image: collFerramentas },
   { id: "5", name: "Fitness", slug: "fitness", image: collFitness },
   { id: "6", name: "Pesca", slug: "pesca", image: collPesca },
-  
+  { id: "7", name: "Saúde e Beleza", slug: "saude-e-beleza", image: collSaudeBeleza },
 ];
 
 export const products: Product[] = [
@@ -250,6 +256,48 @@ export const products: Product[] = [
     description: "Kit com 3 alicates para pesca: bico fino, corte e extrator de anzol. Aço inox com cabo emborrachado e cordão de segurança.",
     stock: 35,
   },
+
+  // ========== Saúde e Beleza ==========
+  {
+    id: "sb1", name: "Kit Skin Care Completo", slug: "kit-skin-care",
+    price: 149.90, compareAtPrice: 289.90,
+    image: imgSkinCare,
+    category: "saude-e-beleza",
+    description: "Kit completo de cuidados faciais com sérum vitamina C, creme hidratante e tônico facial. Fórmula vegana e cruelty-free para todos os tipos de pele.",
+    stock: 25, badge: "Economize 48%",
+  },
+  {
+    id: "sb2", name: "Kit Batons Matte", slug: "kit-batons-matte",
+    price: 89.90, compareAtPrice: 159.90,
+    image: imgBatomKit,
+    category: "saude-e-beleza",
+    description: "Kit com 3 batons matte de longa duração em tons nude, vermelho e coral. Textura aveludada, não resseca os lábios. Fórmula hidratante.",
+    stock: 40, badge: "Economize 43%",
+  },
+  {
+    id: "sb3", name: "Kit Pincéis de Maquiagem", slug: "kit-pinceis-maquiagem",
+    price: 119.90, compareAtPrice: 239.90,
+    image: imgPinceisMaquiagem,
+    category: "saude-e-beleza",
+    description: "Kit profissional com 16 pincéis de maquiagem em estojo de couro sintético. Cerdas macias sintéticas, cabos em ouro rosé.",
+    stock: 30, badge: "Economize 50%",
+  },
+  {
+    id: "sb4", name: "Escova de Limpeza Facial", slug: "escova-limpeza-facial",
+    price: 97.90, compareAtPrice: 179.90,
+    image: imgEscovaFacial,
+    category: "saude-e-beleza",
+    description: "Escova elétrica de limpeza facial em silicone macio. 5 modos de vibração, massagem e limpeza profunda dos poros. Recarregável via USB.",
+    stock: 20, badge: "Economize 45%",
+  },
+  {
+    id: "sb5", name: "Cabine LED para Unhas", slug: "cabine-led-unhas",
+    price: 109.90, compareAtPrice: 199.90,
+    image: imgCabineUnhas,
+    category: "saude-e-beleza",
+    description: "Cabine UV/LED portátil para secagem de unhas em gel e esmaltação. Timer automático, seca em 30 segundos. Compacta e leve.",
+    stock: 18, badge: "Economize 45%",
+  },
 ];
 export const navLinks = [
   { name: "Página inicial", href: "/" },
@@ -258,7 +306,7 @@ export const navLinks = [
   { name: "Ferramentas", href: "/colecao/ferramentas" },
   { name: "Fitness", href: "/colecao/fitness" },
   { name: "Pesca", href: "/colecao/pesca" },
-  
+  { name: "Saúde e Beleza", href: "/colecao/saude-e-beleza" },
   { name: "Sobre nós", href: "/sobre" },
 ];
 
@@ -269,7 +317,7 @@ export const categoryOrder = [
   "ferramentas",
   "fitness",
   "pesca",
-  
+  "saude-e-beleza",
 ];
 
 export function formatPrice(price: number): string {
