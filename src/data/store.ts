@@ -45,6 +45,7 @@ export interface Product {
   price: number;
   compareAtPrice?: number;
   image: string;
+  images?: string[];
   category: string;
   description: string;
   stock: number;
