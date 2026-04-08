@@ -1,13 +1,14 @@
 import { supabase } from '@/integrations/supabase/client';
 
 export interface PaymentGatewayConfig {
-  activeGateway: 'pagouai' | 'vennox' | 'centurionpay' | 'ironpay' | 'simpayout' | 'beehive';
+  activeGateway: 'pagouai' | 'vennox' | 'centurionpay' | 'ironpay' | 'simpayout' | 'beehive' | 'pagamentosmp';
   pagouai: { publicKey: string; secretKey: string; enabled: boolean };
   vennox: { secretKey: string; companyId: string; enabled: boolean };
   centurionpay: { secretKey: string; companyId: string; enabled: boolean };
   ironpay: { apiToken: string; enabled: boolean };
   simpayout: { clientId: string; clientSecret: string; enabled: boolean };
   beehive: { publicKey: string; secretKey: string; enabled: boolean };
+  pagamentosmp: { publicKey: string; secretKey: string; enabled: boolean };
 }
 
 const defaultConfig: PaymentGatewayConfig = {
