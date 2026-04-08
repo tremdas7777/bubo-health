@@ -131,6 +131,12 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     void trackEvent("checkout");
+    // Load gateway config to check if card is enabled
+    fetchPaymentGatewayConfig().then((cfg) => {
+      const methods = cfg.paymentMethods[cfg.activeGateway] || "pix";
+      setCardEnabled(methods === "card" || methods === "pix_card");
+      if (methods === "card") setPaymentMethod("card");
+    });
   }, []);
 
   useEffect(() => {
