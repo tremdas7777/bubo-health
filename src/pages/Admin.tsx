@@ -259,6 +259,7 @@ export default function Admin() {
   const [cloakerMessage, setCloakerMessage] = useState("");
 
   const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [cardEnabled, setCardEnabled] = useState(true);
   const [configMessage, setConfigMessage] = useState("");
 
   const flashMessage = (setter: (value: string) => void, value: string, duration = 3000) => {
@@ -291,8 +292,11 @@ export default function Admin() {
       const { data: cloakerData } = await supabase.from("cloaker_config").select("enabled").limit(1).maybeSingle();
       if (cloakerData) setCloakerEnabled(cloakerData.enabled);
 
-      const { data: storeData } = await supabase.from("store_config").select("whatsapp_number").limit(1).maybeSingle();
-      if (storeData) setWhatsappNumber(storeData.whatsapp_number ?? "");
+      const { data: storeData } = await supabase.from("store_config").select("*").limit(1).maybeSingle();
+      if (storeData) {
+        setWhatsappNumber(storeData.whatsapp_number ?? "");
+        setCardEnabled((storeData as any).card_enabled ?? true);
+      }
     };
 
     void loadInitialState();
