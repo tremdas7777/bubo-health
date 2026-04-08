@@ -75,6 +75,7 @@ export default function AdminProdutos() {
     else { await supabase.from('collections').insert(payload); toast.success('Coleção criada!'); }
     setSaving(false); setEditCollection(null); fetchCollections();
   };
+  const deleteCollection = async (id: string) => { if (!confirm('Excluir?')) return; await supabase.from('collections').delete().eq('id', id); toast.success('Excluída'); fetchCollections(); };
   const toggleCollectionActive = async (col: Collection) => { await supabase.from('collections').update({ active: !col.active }).eq('id', col.id); fetchCollections(); };
   const handleColDragDrop = async (fromIndex: number, toIndex: number) => {
     if (fromIndex === toIndex) return;
