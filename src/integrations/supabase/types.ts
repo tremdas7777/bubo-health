@@ -189,6 +189,8 @@ export type Database = {
           created_at: string
           id: string
           ironpay_api_token: string | null
+          pagamentosmp_public_key: string | null
+          pagamentosmp_secret_key: string | null
           pagouai_public_key: string | null
           pagouai_secret_key: string | null
           simpayout_client_id: string | null
@@ -206,6 +208,8 @@ export type Database = {
           created_at?: string
           id?: string
           ironpay_api_token?: string | null
+          pagamentosmp_public_key?: string | null
+          pagamentosmp_secret_key?: string | null
           pagouai_public_key?: string | null
           pagouai_secret_key?: string | null
           simpayout_client_id?: string | null
@@ -223,6 +227,8 @@ export type Database = {
           created_at?: string
           id?: string
           ironpay_api_token?: string | null
+          pagamentosmp_public_key?: string | null
+          pagamentosmp_secret_key?: string | null
           pagouai_public_key?: string | null
           pagouai_secret_key?: string | null
           simpayout_client_id?: string | null
