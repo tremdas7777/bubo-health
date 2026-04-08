@@ -5,7 +5,7 @@ import { formatPrice } from "@/data/store";
 import { Heart, ShoppingBag, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { PageHead } from "@/components/seo/PageHead";
+import PageHead from "@/components/seo/PageHead";
 
 export default function WishlistPage() {
   const { items, removeItem } = useWishlist();
