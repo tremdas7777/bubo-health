@@ -3,9 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 export interface StoreConfig {
   whatsapp_number: string;
+  card_enabled: boolean;
 }
 
-const DEFAULT_CONFIG: StoreConfig = { whatsapp_number: "" };
+const DEFAULT_CONFIG: StoreConfig = { whatsapp_number: "", card_enabled: true };
 
 export function useStoreConfig() {
   const [config, setConfig] = useState<StoreConfig>(DEFAULT_CONFIG);
@@ -14,11 +15,14 @@ export function useStoreConfig() {
   useEffect(() => {
     supabase
       .from("store_config")
-      .select("whatsapp_number")
+      .select("*")
       .limit(1)
       .maybeSingle()
       .then(({ data }) => {
-        if (data) setConfig({ whatsapp_number: data.whatsapp_number ?? "" });
+        if (data) setConfig({
+          whatsapp_number: data.whatsapp_number ?? "",
+          card_enabled: (data as any).card_enabled ?? true,
+        });
         setLoading(false);
       });
   }, []);

@@ -259,6 +259,7 @@ export default function Admin() {
   const [cloakerMessage, setCloakerMessage] = useState("");
 
   const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [cardEnabled, setCardEnabled] = useState(true);
   const [configMessage, setConfigMessage] = useState("");
 
   const flashMessage = (setter: (value: string) => void, value: string, duration = 3000) => {
@@ -291,8 +292,11 @@ export default function Admin() {
       const { data: cloakerData } = await supabase.from("cloaker_config").select("enabled").limit(1).maybeSingle();
       if (cloakerData) setCloakerEnabled(cloakerData.enabled);
 
-      const { data: storeData } = await supabase.from("store_config").select("whatsapp_number").limit(1).maybeSingle();
-      if (storeData) setWhatsappNumber(storeData.whatsapp_number ?? "");
+      const { data: storeData } = await supabase.from("store_config").select("*").limit(1).maybeSingle();
+      if (storeData) {
+        setWhatsappNumber(storeData.whatsapp_number ?? "");
+        setCardEnabled((storeData as any).card_enabled ?? true);
+      }
     };
 
     void loadInitialState();
@@ -1652,13 +1656,26 @@ export default function Admin() {
                 />
               </div>
 
+              <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
+                <div>
+                  <p className="text-sm font-bold text-foreground">Pagamento com Cartão</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {cardEnabled
+                      ? "Cartão de crédito habilitado no checkout"
+                      : "Apenas PIX disponível no checkout"}
+                  </p>
+                </div>
+                <Switch checked={cardEnabled} onCheckedChange={setCardEnabled} />
+              </div>
+
               <Button
                 className="w-full bg-emerald-500 text-xs font-bold text-white hover:bg-emerald-500/90"
                 onClick={async () => {
                   const { data: existing } = await supabase.from("store_config").select("id").limit(1).maybeSingle();
+                  const payload = { whatsapp_number: whatsappNumber, card_enabled: cardEnabled, updated_at: new Date().toISOString() } as any;
                   const result = existing?.id
-                    ? await supabase.from("store_config").update({ whatsapp_number: whatsappNumber, updated_at: new Date().toISOString() }).eq("id", existing.id)
-                    : await supabase.from("store_config").insert({ whatsapp_number: whatsappNumber });
+                    ? await supabase.from("store_config").update(payload).eq("id", existing.id)
+                    : await supabase.from("store_config").insert(payload);
                   flashMessage(setConfigMessage, result.error ? "Erro ao salvar" : "Configuração salva com sucesso!");
                 }}
               >
