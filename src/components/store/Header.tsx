@@ -31,7 +31,7 @@ export default function Header() {
           {/* Center: Logo */}
           <Link to="/" className="flex items-center">
             <span className="text-2xl md:text-3xl font-heading font-bold text-primary tracking-tight">
-              Bazu
+              Kazoom
             </span>
           </Link>
 
@@ -56,7 +56,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Navigation bar — with top border line like reference */}
+      {/* Navigation bar */}
       <div className="border-t border-border">
         <nav className="hidden lg:flex items-center justify-center gap-1 container mx-auto px-4">
           {navLinks.map((link) => (

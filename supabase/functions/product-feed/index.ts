@@ -6,7 +6,7 @@ const corsHeaders = {
 };
 
 const STORE_URL = "https://snug-code-space.lovable.app";
-const STORE_NAME = "Bazu";
+const STORE_NAME = "Kazoom";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {

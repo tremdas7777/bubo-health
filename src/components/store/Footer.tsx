@@ -13,11 +13,11 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <img src={logoIcon} alt="Bazu" width={32} height={32} className="w-8 h-8" />
-              <span className="text-lg font-heading font-bold text-lime">Bazu</span>
+              <img src={logoIcon} alt="Kazoom" width={32} height={32} className="w-8 h-8" />
+              <span className="text-lg font-heading font-bold text-lime">Kazoom</span>
             </div>
             <p className="text-sm opacity-60 leading-relaxed">
-              De utensílios a eletrônicos, tudo que você precisa em um só lugar. É bazu!
+              De utensílios a eletrônicos, tudo que você precisa em um só lugar. É Kazoom!
             </p>
           </div>
 
@@ -47,10 +47,10 @@ export default function Footer() {
             <h4 className="font-heading font-semibold text-sm mb-3 text-background">Atendimento</h4>
             <div className="space-y-1.5 text-sm opacity-60">
               <p>Segunda a Sexta: 08h às 18h</p>
-              <p>cadastrofiscal@escritaonline.cnt.br</p>
-              <p className="text-xs">CNPJ: 50.301.476/0001-30</p>
-              <p className="text-xs">Av. Sete de Setembro, 999, Loja 01 – Centro</p>
-              <p className="text-xs">Ipanema – MG, CEP 36950-000</p>
+              <p>tremda77@gmail.com</p>
+              <p className="text-xs">CNPJ: 60.105.125/0001-08</p>
+              <p className="text-xs">Av. Larissa Cavalcante, 11 – Boa Vista</p>
+              <p className="text-xs">Vitória da Conquista – BA, CEP 45027-400</p>
               {cleanNumber && (
                 <a
                   href={`https://wa.me/${cleanNumber}`}
@@ -66,7 +66,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-background/10 mt-8 pt-5 text-center text-[11px] opacity-40">
-          © {new Date().getFullYear()} Bazu. Todos os direitos reservados.
+          © {new Date().getFullYear()} Kazoom. Todos os direitos reservados.
         </div>
       </div>
     </footer>
