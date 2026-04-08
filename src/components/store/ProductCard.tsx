@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
 import { Product, formatPrice, getInstallmentPrice, getDiscountPercent } from "@/data/store";
 import { getPixPrice, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { Button } from "@/components/ui/button";
 
 interface Props {
@@ -10,7 +12,9 @@ interface Props {
 
 export default function ProductCard({ product }: Props) {
   const { addItem } = useCart();
+  const { isInWishlist, toggleItem } = useWishlist();
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
+  const wishlisted = isInWishlist(product.id);
 
   return (
     <div className="group bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col">
@@ -27,6 +31,13 @@ export default function ProductCard({ product }: Props) {
             <span className="text-primary">✓</span> {product.badge}
           </span>
         )}
+        <button
+          onClick={(e) => { e.preventDefault(); toggleItem(product); }}
+          className="absolute top-2 left-2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 hover:bg-background transition-colors"
+          aria-label={wishlisted ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+        >
+          <Heart size={16} className={wishlisted ? "fill-destructive text-destructive" : "text-muted-foreground"} />
+        </button>
       </Link>
 
       {/* Info */}
