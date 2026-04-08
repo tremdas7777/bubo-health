@@ -28,6 +28,7 @@ export default function Footer() {
               <Link to="/" className="block hover:opacity-100 transition-opacity">Página inicial</Link>
               <Link to="/produtos" className="block hover:opacity-100 transition-opacity">Todos os Produtos</Link>
               <Link to="/sobre" className="block hover:opacity-100 transition-opacity">Sobre nós</Link>
+              <Link to="/contato" className="block hover:opacity-100 transition-opacity">Contato</Link>
             </div>
           </div>
 

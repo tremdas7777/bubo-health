@@ -11,7 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Plus, Trash2, Edit, Upload, Download, Search, GripVertical, Image as ImageIcon, Loader2, RefreshCw, Eye, EyeOff, Star, StarOff, Copy, FolderOpen, Package, X, FileText, Save } from 'lucide-react';
 
-interface DbProduct { id: string; name: string; slug: string; price_cents: number; original_price_cents: number | null; image_url: string | null; images: string[] | null; category: string | null; description: string | null; description_html: string | null; variants: any; featured: boolean | null; active: boolean | null; sort_order: number | null; created_at: string; updated_at: string; }
+interface DbProduct { id: string; name: string; slug: string; price_cents: number; original_price_cents: number | null; image_url: string | null; images: string[] | null; category: string | null; description: string | null; description_html: string | null; variants: any; featured: boolean | null; active: boolean | null; sort_order: number | null; created_at: string; updated_at: string; gtin: string | null; }
 interface Collection { id: string; name: string; slug: string; description: string | null; image_url: string | null; sort_order: number | null; active: boolean | null; created_at: string; }
 type SubTab = 'produtos' | 'colecoes' | 'importar';
 
@@ -49,7 +49,7 @@ export default function AdminProdutos() {
   const saveProduct = async () => {
     if (!editProduct?.name || !editProduct.slug) { toast.error('Nome e slug são obrigatórios'); return; }
     setSaving(true);
-    const payload = { name: editProduct.name, slug: editProduct.slug, price_cents: editProduct.price_cents || 0, original_price_cents: editProduct.original_price_cents || null, image_url: editProduct.image_url || null, images: editProduct.images || [], category: editProduct.category || 'Geral', description: editProduct.description || '', description_html: editProduct.description_html || '', variants: editProduct.variants || [], featured: editProduct.featured || false, active: editProduct.active !== false, sort_order: editProduct.sort_order || 0 };
+    const payload = { name: editProduct.name, slug: editProduct.slug, price_cents: editProduct.price_cents || 0, original_price_cents: editProduct.original_price_cents || null, image_url: editProduct.image_url || null, images: editProduct.images || [], category: editProduct.category || 'Geral', description: editProduct.description || '', description_html: editProduct.description_html || '', variants: editProduct.variants || [], featured: editProduct.featured || false, active: editProduct.active !== false, sort_order: editProduct.sort_order || 0, gtin: editProduct.gtin || null };
     if (editProduct.id) { const { error } = await supabase.from('products').update(payload).eq('id', editProduct.id); if (error) toast.error('Erro: ' + error.message); else toast.success('Produto atualizado!'); }
     else { const { error } = await supabase.from('products').insert(payload); if (error) toast.error('Erro: ' + error.message); else toast.success('Produto criado!'); }
     setSaving(false); setEditProduct(null); fetchProducts();
@@ -216,6 +216,10 @@ export default function AdminProdutos() {
                 <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Preço (R$) *</label><Input type="number" step="0.01" value={editProduct.price_cents ? (editProduct.price_cents / 100).toFixed(2) : ''} onChange={e => setEditProduct(p => ({ ...p, price_cents: Math.round(parseFloat(e.target.value || '0') * 100) }))} className="text-sm mt-1" /></div>
                 <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Preço Original (R$)</label><Input type="number" step="0.01" value={editProduct.original_price_cents ? (editProduct.original_price_cents / 100).toFixed(2) : ''} onChange={e => setEditProduct(p => ({ ...p, original_price_cents: e.target.value ? Math.round(parseFloat(e.target.value) * 100) : null }))} className="text-sm mt-1" /></div>
                 <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Categoria</label><Input value={editProduct.category || ''} onChange={e => setEditProduct(p => ({ ...p, category: e.target.value }))} className="text-sm mt-1" /></div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div><label className="text-[10px] font-bold text-muted-foreground uppercase">GTIN / EAN</label><Input value={editProduct.gtin || ''} onChange={e => setEditProduct(p => ({ ...p, gtin: e.target.value }))} placeholder="Ex: 7891234567890" className="text-sm mt-1 font-mono" /></div>
+                <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Ordem</label><Input type="number" value={editProduct.sort_order || 0} onChange={e => setEditProduct(p => ({ ...p, sort_order: parseInt(e.target.value) || 0 }))} className="text-sm mt-1" /></div>
               </div>
               <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Descrição</label><Textarea value={editProduct.description || ''} onChange={e => setEditProduct(p => ({ ...p, description: e.target.value }))} className="text-sm mt-1" rows={3} /></div>
               <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Descrição HTML</label><Textarea value={editProduct.description_html || ''} onChange={e => setEditProduct(p => ({ ...p, description_html: e.target.value }))} className="text-sm mt-1 font-mono" rows={4} /></div>
