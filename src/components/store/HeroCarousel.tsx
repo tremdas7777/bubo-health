@@ -53,17 +53,6 @@ export default function HeroCarousel() {
             width={1920}
             height={700}
           />
-          {/* Text overlay on right side — matching the reference's right-aligned text */}
-          <div className="absolute inset-0 flex items-center justify-end">
-            <div className="pr-8 md:pr-16 lg:pr-24 text-right max-w-[50%]">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-heading font-bold text-white whitespace-pre-line leading-[1.1] drop-shadow-lg">
-                {slide.title}
-              </h2>
-              <p className="text-white/90 mt-2 md:mt-4 text-xs sm:text-sm md:text-base lg:text-lg whitespace-pre-line drop-shadow-md">
-                {slide.subtitle}
-              </p>
-            </div>
-          </div>
         </div>
       ))}
 
