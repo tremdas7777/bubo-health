@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { supabase } from "@/integrations/supabase/client";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminCupons from "@/components/AdminCupons";
 import {
