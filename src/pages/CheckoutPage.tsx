@@ -169,6 +169,7 @@ export default function CheckoutPage() {
   const total = subtotal - pixDiscount - couponDiscount + shippingCost / 100;
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
+  const activeGatewayMethods = cardEnabled ? (isPix ? "pix" : "card") : "pix";
 
   const handleCepLookup = async (cepValue: string) => {
     const clean = cepValue.replace(/\D/g, "");
