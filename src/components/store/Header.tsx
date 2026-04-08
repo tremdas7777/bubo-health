@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
-import { Search, User, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
+import { Search, User, ShoppingBag, Menu, X, ChevronDown, Heart, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { navLinks } from "@/data/store";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import logoIcon from "@/assets/logo-icon.png";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { totalItems, setIsOpen } = useCart();
+  const { totalItems: wishlistCount } = useWishlist();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <header className="bg-background sticky top-0 z-40">
@@ -36,7 +40,22 @@ export default function Header() {
           </Link>
 
           {/* Right: account + cart */}
-          <div className="flex items-center gap-5 w-[100px] justify-end">
+          <div className="flex items-center gap-3 w-auto justify-end">
+            <button
+              onClick={toggleTheme}
+              className="text-foreground hover:text-primary transition-colors"
+              aria-label="Alternar tema"
+            >
+              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <Link to="/favoritos" className="text-foreground hover:text-primary transition-colors relative hidden sm:block" aria-label="Favoritos">
+              <Heart size={22} />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
             <Link to="/conta" className="text-foreground hover:text-primary transition-colors hidden sm:block" aria-label="Conta">
               <User size={22} />
             </Link>
