@@ -21,11 +21,11 @@ import imgMolinete from "@/assets/products/molinete.jpg";
 import imgLinhaPesca from "@/assets/products/linha-pesca.jpg";
 import imgCarretilha from "@/assets/products/carretilha.jpg";
 import imgAlicatesPesca from "@/assets/products/alicates-pesca.jpg";
-import imgSkinCare from "@/assets/products/skin-care.jpg";
-import imgBatomKit from "@/assets/products/batom-kit.jpg";
-import imgPinceisMaquiagem from "@/assets/products/kit-pinceis-maquiagem.jpg";
-import imgEscovaFacial from "@/assets/products/escova-facial.jpg";
-import imgCabineUnhas from "@/assets/products/cabine-unhas.jpg";
+import imgSombraDelineadora from "@/assets/products/sombra-delineadora.jpg";
+import imgPenteVolumizador from "@/assets/products/pente-volumizador.jpg";
+import imgPreenchedorSobrancelha from "@/assets/products/preenchedor-sobrancelha.jpg";
+import imgEsmalteEspelhado from "@/assets/products/esmalte-espelhado.jpg";
+import imgRimelDefinidor from "@/assets/products/rimel-definidor.jpg";
 
 // Collection image imports
 import collCasaCozinha from "@/assets/collection-casa-cozinha.jpg";
@@ -259,44 +259,44 @@ export const products: Product[] = [
 
   // ========== Saúde e Beleza ==========
   {
-    id: "sb1", name: "Kit Skin Care Completo", slug: "kit-skin-care",
-    price: 149.90, compareAtPrice: 289.90,
-    image: imgSkinCare,
+    id: "sb1", name: "Sombra Delineadora Arábica", slug: "sombra-delineadora-arabica",
+    price: 69.99, compareAtPrice: 239.99,
+    image: imgSombraDelineadora,
     category: "saude-e-beleza",
-    description: "Kit completo de cuidados faciais com sérum vitamina C, creme hidratante e tônico facial. Fórmula vegana e cruelty-free para todos os tipos de pele.",
-    stock: 25, badge: "Economize 48%",
+    description: "Sombra delineadora com pigmentação intensa e acabamento cintilante. Fórmula de longa duração, à prova d'água. Ideal para looks sofisticados e marcantes.",
+    stock: 30, badge: "Economize 70%",
   },
   {
-    id: "sb2", name: "Kit Batons Matte", slug: "kit-batons-matte",
-    price: 89.90, compareAtPrice: 159.90,
-    image: imgBatomKit,
+    id: "sb2", name: "Pente Volumizador", slug: "pente-volumizador",
+    price: 59.99, compareAtPrice: 129.99,
+    image: imgPenteVolumizador,
     category: "saude-e-beleza",
-    description: "Kit com 3 batons matte de longa duração em tons nude, vermelho e coral. Textura aveludada, não resseca os lábios. Fórmula hidratante.",
-    stock: 40, badge: "Economize 43%",
+    description: "Pente volumizador profissional que cria volume instantâneo nos cabelos. Design ergonômico com cerdas flexíveis, ideal para todos os tipos de cabelo.",
+    stock: 35, badge: "Economize 53%",
   },
   {
-    id: "sb3", name: "Kit Pincéis de Maquiagem", slug: "kit-pinceis-maquiagem",
-    price: 119.90, compareAtPrice: 239.90,
-    image: imgPinceisMaquiagem,
+    id: "sb3", name: "Preenchedor de Sobrancelha Profissional", slug: "preenchedor-sobrancelha",
+    price: 59.99, compareAtPrice: 199.99,
+    image: imgPreenchedorSobrancelha,
     category: "saude-e-beleza",
-    description: "Kit profissional com 16 pincéis de maquiagem em estojo de couro sintético. Cerdas macias sintéticas, cabos em ouro rosé.",
-    stock: 30, badge: "Economize 50%",
+    description: "Preenchedor de sobrancelha com ponta micro-fina para traços realistas fio a fio. Resistente à água e ao suor, duração de até 24 horas.",
+    stock: 40, badge: "Economize 70%",
   },
   {
-    id: "sb4", name: "Escova de Limpeza Facial", slug: "escova-limpeza-facial",
-    price: 97.90, compareAtPrice: 179.90,
-    image: imgEscovaFacial,
+    id: "sb4", name: "Esmalte Espelhado", slug: "esmalte-espelhado",
+    price: 49.99, compareAtPrice: 159.99,
+    image: imgEsmalteEspelhado,
     category: "saude-e-beleza",
-    description: "Escova elétrica de limpeza facial em silicone macio. 5 modos de vibração, massagem e limpeza profunda dos poros. Recarregável via USB.",
-    stock: 20, badge: "Economize 45%",
+    description: "Esmalte com efeito espelhado cromado de alta durabilidade. Acabamento metalizado brilhante, secagem rápida e fórmula livre de componentes tóxicos.",
+    stock: 50, badge: "Economize 68%",
   },
   {
-    id: "sb5", name: "Cabine LED para Unhas", slug: "cabine-led-unhas",
-    price: 109.90, compareAtPrice: 199.90,
-    image: imgCabineUnhas,
+    id: "sb5", name: "Rímel Definidor de Cílios", slug: "rimel-definidor-cilios",
+    price: 109.99, compareAtPrice: 219.99,
+    image: imgRimelDefinidor,
     category: "saude-e-beleza",
-    description: "Cabine UV/LED portátil para secagem de unhas em gel e esmaltação. Timer automático, seca em 30 segundos. Compacta e leve.",
-    stock: 18, badge: "Economize 45%",
+    description: "Rímel definidor com escova curvada que alonga e separa cada cílio. Fórmula à prova d'água com fibras de extensão para volume extremo.",
+    stock: 25, badge: "Economize 50%",
   },
 ];
 export const navLinks = [
