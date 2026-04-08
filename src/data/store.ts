@@ -187,7 +187,7 @@ export const products: Product[] = [
     images: [imgKitRefrigeracao, imgKitRefrigeracao2, imgKitRefrigeracaoManifold, imgKitRefrigeracaoFlangeador, imgKitRefrigeracaoCurvadoras, imgKitRefrigeracaoUso],
     category: "ferramentas",
     description: "Pare de perder dinheiro comprando ferramentas avulsas. Este Kit Profissional reúne TUDO para Refrigeração e Ar Condicionado em uma única maleta: Bomba de Vácuo 7 CFM Duplo Estágio de alta performance, 2 Conjuntos Manifold completos (R134 e R410 — compatíveis com R22, R32, R404A e R134a), flangeador excêntrico com rotação 360° para acabamentos perfeitos, cortador e alargador de tubos de cobre, escareador, 5 curvadoras de tubo em medidas diferentes, multímetro digital com capacímetro, termômetro digital, alicate amperímetro, caneta detectora de tensão, maçarico portátil para solda até 1.200°C, 2 chaves inglesas, kit chave Allen completo, mangueiras profissionais para todos os gases, pasta fluxo 50g, varetas Foscoper e maleta organizadora reforçada. São 18 kg de ferramentas profissionais, bivolt 110/220V, prontas para você trabalhar em qualquer instalação, manutenção, limpeza ou recarga. O técnico que tem esse kit na mão não precisa de mais nada.",
-    stock: 5, badge: "Economize 74%",
+    stock: 5, badge: "Economize 65%",
   },
 
   // ========== Fitness ==========
