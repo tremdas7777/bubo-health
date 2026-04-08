@@ -86,6 +86,13 @@ export default function CheckoutPage() {
   const [generating, setGenerating] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
+  // Coupon
+  const [couponCode, setCouponCode] = useState("");
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [couponMessage, setCouponMessage] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState("");
+
   // Timer urgency
   const [timeLeft, setTimeLeft] = useState(15 * 60);
 
