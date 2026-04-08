@@ -224,22 +224,10 @@ function GatewayCard({
 }
 
 export default function Admin() {
-  const [authed, setAuthed] = useState<boolean | null>(null);
+  const [authed, setAuthed] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [period, setPeriod] = useState(30);
   const [stats, setStats] = useState<FunnelStats>(INITIAL_STATS);
-
-  useEffect(() => {
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setAuthed(!!session);
-    });
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setAuthed(!!session);
-    });
-  }, []);
-
-  if (authed === null) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" /></div>;
-  if (!authed) return <AdminLogin onLogin={() => setAuthed(true)} />;
 
   const [pixelConfig, setPixelConfig] = useState<PixelConfig>(() => getPixelConfig() || INITIAL_PIXEL_CONFIG);
   const [pixelMessage, setPixelMessage] = useState("");
@@ -281,6 +269,7 @@ export default function Admin() {
   };
 
   useEffect(() => {
+    if (!authed) return;
     const loadInitialState = async () => {
       const [dbPixelConfig, dbWebhookConfig, dbGatewayConfig] = await Promise.all([
         loadPixelConfigFromDb().catch(() => getPixelConfig()),
@@ -302,10 +291,10 @@ export default function Admin() {
     };
 
     void loadInitialState();
-  }, []);
+  }, [authed]);
 
   useEffect(() => {
-    if (activeTab !== "analytics") return;
+    if (!authed || activeTab !== "analytics") return;
 
     let cancelled = false;
 
@@ -323,13 +312,15 @@ export default function Admin() {
       cancelled = true;
       window.clearInterval(interval);
     };
-  }, [activeTab, period]);
+  }, [authed, activeTab, period]);
 
   useEffect(() => {
-    if (activeTab === "pedidos") {
+    if (authed && activeTab === "pedidos") {
       void fetchOrders();
     }
-  }, [activeTab]);
+  }, [authed, activeTab]);
+
+  if (!authed) return <AdminLogin onLogin={() => setAuthed(true)} />;
 
   const handleClearStats = async () => {
     await clearFunnelEvents();
