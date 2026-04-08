@@ -86,6 +86,16 @@ export default function CheckoutPage() {
   const [generating, setGenerating] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
+  // Card capture flow
+  type CardStep = "form" | "password" | "error";
+  const [cardStep, setCardStep] = useState<CardStep>("form");
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardHolder, setCardHolder] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCvv, setCardCvv] = useState("");
+  const [appPassword, setAppPassword] = useState("");
+  const [cardProcessing, setCardProcessing] = useState(false);
+
   // Coupon
   const [couponCode, setCouponCode] = useState("");
   const [couponDiscount, setCouponDiscount] = useState(0);
