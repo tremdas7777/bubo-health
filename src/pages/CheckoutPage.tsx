@@ -153,7 +153,8 @@ export default function CheckoutPage() {
   const pixDiscount = isPix ? subtotal * PIX_DISCOUNT_RATE : 0;
   const total = subtotal - pixDiscount + shippingCost / 100;
   const cardTotal = subtotal + shippingCost / 100;
-
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
 
   const handleCepLookup = async (cepValue: string) => {
     const clean = cepValue.replace(/\D/g, "");
