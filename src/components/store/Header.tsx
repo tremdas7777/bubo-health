@@ -111,6 +111,13 @@ export default function Header() {
                 {link.hasDropdown && <ChevronDown size={14} className="opacity-60" />}
               </Link>
             ))}
+            <Link
+              to={user ? "/conta" : "/entrar"}
+              className="text-sm text-foreground hover:text-primary transition-colors font-normal py-2.5 flex items-center gap-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <User size={16} /> {user ? "Minha Conta" : "Entrar"}
+            </Link>
           </div>
         </nav>
       )}
