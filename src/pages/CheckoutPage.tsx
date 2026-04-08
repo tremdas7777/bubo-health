@@ -78,6 +78,7 @@ export default function CheckoutPage() {
   const [loadingCep, setLoadingCep] = useState(false);
 
   // Payment
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
   const [pixCode, setPixCode] = useState("");
   const [pixQrCode, setPixQrCode] = useState("");
   const [orderId, setOrderId] = useState("");
