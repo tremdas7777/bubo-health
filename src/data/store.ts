@@ -29,7 +29,7 @@ import collEsportes from "@/assets/collection-esportes.jpg";
 import collFerramentas from "@/assets/collection-ferramentas.jpg";
 import collFitness from "@/assets/collection-fitness.jpg";
 import collPesca from "@/assets/collection-pesca.jpg";
-import collSaudeBeleza from "@/assets/collection-saude-beleza.jpg";
+
 
 export interface Product {
   id: string;
@@ -59,7 +59,7 @@ export const collections: Collection[] = [
   { id: "4", name: "Ferramentas", slug: "ferramentas", image: collFerramentas },
   { id: "5", name: "Fitness", slug: "fitness", image: collFitness },
   { id: "6", name: "Pesca", slug: "pesca", image: collPesca },
-  { id: "7", name: "Saúde e Beleza", slug: "saude-e-beleza", image: collSaudeBeleza },
+  
 ];
 
 export const products: Product[] = [
@@ -73,28 +73,12 @@ export const products: Product[] = [
     stock: 18, variants: ["Branca", "RGB"],
   },
   {
-    id: "c2", name: "Utensílios para Cozinha", slug: "utensilios-cozinha",
-    price: 96.90, compareAtPrice: 139.90,
-    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=533&h=533&fit=crop",
-    category: "casa-e-cozinha",
-    description: "Kit com 6 utensílios de cozinha em silicone e bambu. Antiaderente, resistente ao calor até 230°C e fácil de limpar.",
-    stock: 35,
-  },
-  {
     id: "c3", name: "Mini Triturador Manual", slug: "mini-triturador-manual",
     price: 97.90, compareAtPrice: 222.90,
     image: imgTriturador,
     category: "casa-e-cozinha",
     description: "Mini triturador manual multifuncional para alho, cebola, legumes e frutas. Lâminas em aço inox, fácil de limpar e compacto.",
     stock: 30,
-  },
-  {
-    id: "c4", name: "Difusor de Aroma", slug: "difusor-de-aroma",
-    price: 99.90, compareAtPrice: 199.90,
-    image: "https://images.unsplash.com/photo-1602928321679-560bb453f190?w=533&h=533&fit=crop",
-    category: "casa-e-cozinha",
-    description: "Difusor de aroma ultrassônico com LED colorido. Capacidade de 300ml, timer automático e modo noturno silencioso.",
-    stock: 25, badge: "Economize 50%",
   },
   {
     id: "c5", name: "Vaso de Flores Artificiais", slug: "vaso-flores-artificiais",
@@ -115,14 +99,6 @@ export const products: Product[] = [
     stock: 15, badge: "Economize 58%",
   },
   {
-    id: "e2", name: "Microfone USB para PC", slug: "microfone-usb-pc",
-    price: 197.90, compareAtPrice: 389.90,
-    image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=533&h=533&fit=crop",
-    category: "eletronicos",
-    description: "Microfone condensador USB profissional para streaming, podcast e gravação. Padrão cardioide com filtro anti-pop integrado.",
-    stock: 20, badge: "Economize 49%",
-  },
-  {
     id: "e3", name: "Despertador Digital Led", slug: "despertador-digital-led",
     price: 67.90, compareAtPrice: 139.90,
     image: imgDespertador,
@@ -131,15 +107,7 @@ export const products: Product[] = [
     stock: 45, badge: "Economize 51%",
   },
   {
-    id: "e4", name: "Fone Bluetooth", slug: "fone-bluetooth",
-    price: 149.90, compareAtPrice: 379.90,
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=533&h=533&fit=crop",
-    category: "eletronicos",
-    description: "Fone de ouvido bluetooth over-ear com cancelamento de ruído ativo. Bateria de 30 horas, som Hi-Fi e microfone integrado.",
-    stock: 25, badge: "Economize 60%",
-  },
-  {
-    id: "e5", name: "IWO 7 Pro", slug: "iwo-7-pro",
+    id: "e5", name: "Smartwatch IWO 7 Pro", slug: "iwo-7-pro",
     price: 199.90, compareAtPrice: 359.90,
     image: imgSmartwatch,
     category: "eletronicos",
@@ -165,14 +133,6 @@ export const products: Product[] = [
     stock: 35,
   },
   {
-    id: "s3", name: "Tênis Esportivo", slug: "tenis-esportivo",
-    price: 119.90, compareAtPrice: 217.90,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=533&h=533&fit=crop",
-    category: "esportes",
-    description: "Tênis esportivo casual com design moderno, solado em borracha antiderrapante e palmilha confortável para uso diário.",
-    stock: 40,
-  },
-  {
     id: "s4", name: "Óculos para Esportes", slug: "oculos-esportes",
     price: 97.90, compareAtPrice: 159.90,
     image: imgOculosEsportes,
@@ -190,30 +150,6 @@ export const products: Product[] = [
   },
 
   // ========== Ferramentas ==========
-  {
-    id: "t1", name: "Parafusadeira Elétrica", slug: "parafusadeira-eletrica",
-    price: 115.90, compareAtPrice: 369.00,
-    image: "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=533&h=533&fit=crop",
-    category: "ferramentas",
-    description: "Parafusadeira elétrica sem fio com bateria de lítio recarregável. Kit com 45 bits, LED integrado e maleta de transporte.",
-    stock: 20, badge: "Economize 68%",
-  },
-  {
-    id: "t2", name: "Alicate Multifuncional", slug: "alicate-multifuncional",
-    price: 68.90,
-    image: "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=533&h=533&fit=crop",
-    category: "ferramentas",
-    description: "Alicate multifuncional 14 em 1 com lâmina, serra, chave de fenda, abridor e mais. Aço inox resistente com bainha em nylon.",
-    stock: 50,
-  },
-  {
-    id: "t3", name: "Kit Completo Ferramentas", slug: "kit-completo-ferramentas",
-    price: 235.00, compareAtPrice: 459.00,
-    image: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=533&h=533&fit=crop",
-    category: "ferramentas",
-    description: "Kit completo com mais de 120 peças em maleta de alumínio. Chaves allen, torx, phillips, alicates, martelo, trena e muito mais.",
-    stock: 15, badge: "Economize 48%",
-  },
   {
     id: "t4", name: "Mini Motosserra", slug: "mini-motosserra",
     price: 135.00, compareAtPrice: 296.00,
@@ -299,7 +235,7 @@ export const products: Product[] = [
     stock: 80,
   },
   {
-    id: "p4", name: "Carretilha Shimano Profissional", slug: "carretilha-shimano",
+    id: "p4", name: "Carretilha Profissional", slug: "carretilha-profissional",
     price: 239.90, compareAtPrice: 427.90,
     image: imgCarretilha,
     category: "pesca",
@@ -314,50 +250,7 @@ export const products: Product[] = [
     description: "Kit com 3 alicates para pesca: bico fino, corte e extrator de anzol. Aço inox com cabo emborrachado e cordão de segurança.",
     stock: 35,
   },
-
-  // ========== Saúde e Beleza ==========
-  {
-    id: "b1", name: "Skin Care", slug: "skin-care",
-    price: 136.90, compareAtPrice: 229.90,
-    image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=533&h=533&fit=crop",
-    category: "saude-e-beleza",
-    description: "Kit completo de skincare com limpador facial, tônico, sérum vitamina C, hidratante e protetor solar. Fórmula vegana.",
-    stock: 28,
-  },
-  {
-    id: "b2", name: "Batom Popfell", slug: "batom-popfell",
-    price: 99.00, compareAtPrice: 169.00,
-    image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=533&h=533&fit=crop",
-    category: "saude-e-beleza",
-    description: "Kit com 6 batons Popfell em tons variados. Textura matte aveludada, longa duração e fórmula hidratante com vitamina E.",
-    stock: 42,
-  },
-  {
-    id: "b3", name: "Maleta Maquiagem Profissional", slug: "maleta-maquiagem",
-    price: 223.00, compareAtPrice: 360.00,
-    image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=533&h=533&fit=crop",
-    category: "saude-e-beleza",
-    description: "Maleta profissional completa com paleta de sombras, batons, pincéis, blush, iluminador e corretivos. 88 peças.",
-    stock: 15,
-  },
-  {
-    id: "b4", name: "Kit Depiladores Elétricos", slug: "kit-depiladores",
-    price: 227.99, compareAtPrice: 459.90,
-    image: "https://images.unsplash.com/photo-1522338140262-f46f5913618a?w=533&h=533&fit=crop",
-    category: "saude-e-beleza",
-    description: "Kit 5 em 1 com depilador elétrico, aparador, escova facial, massageador e polidor. Recarregável via USB, à prova d'água.",
-    stock: 20, badge: "Economize 50%",
-  },
-  {
-    id: "b5", name: "Esponja Removedora de Pelos", slug: "esponja-removedora",
-    price: 89.90, compareAtPrice: 135.90,
-    image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=533&h=533&fit=crop",
-    category: "saude-e-beleza",
-    description: "Esponja removedora de pelos indolor com nanotecnologia cristalina. Remove pelos sem irritação, reutilizável e lavável.",
-    stock: 60,
-  },
 ];
-
 export const navLinks = [
   { name: "Página inicial", href: "/" },
   { name: "Casa e Cozinha", href: "/colecao/casa-e-cozinha" },
@@ -365,7 +258,7 @@ export const navLinks = [
   { name: "Ferramentas", href: "/colecao/ferramentas" },
   { name: "Fitness", href: "/colecao/fitness" },
   { name: "Pesca", href: "/colecao/pesca" },
-  { name: "Saúde e Beleza", href: "/colecao/saude-e-beleza" },
+  
   { name: "Sobre nós", href: "/sobre" },
 ];
 
@@ -376,7 +269,7 @@ export const categoryOrder = [
   "ferramentas",
   "fitness",
   "pesca",
-  "saude-e-beleza",
+  
 ];
 
 export function formatPrice(price: number): string {
