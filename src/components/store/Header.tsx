@@ -5,6 +5,7 @@ import { navLinks } from "@/data/store";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useAuth } from "@/contexts/AuthContext";
 import logoIcon from "@/assets/logo-icon.png";
 
 export default function Header() {
@@ -12,6 +13,7 @@ export default function Header() {
   const { totalItems, setIsOpen } = useCart();
   const { totalItems: wishlistCount } = useWishlist();
   const { theme, toggleTheme } = useTheme();
+  const { user } = useAuth();
 
   return (
     <header className="bg-background sticky top-0 z-40">
@@ -56,8 +58,11 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <Link to="/conta" className="text-foreground hover:text-primary transition-colors hidden sm:block" aria-label="Conta">
+            <Link to={user ? "/conta" : "/entrar"} className="text-foreground hover:text-primary transition-colors hidden sm:block relative" aria-label="Conta">
               <User size={22} />
+              {user && (
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-background" />
+              )}
             </Link>
             <button
               onClick={() => setIsOpen(true)}
@@ -106,6 +111,13 @@ export default function Header() {
                 {link.hasDropdown && <ChevronDown size={14} className="opacity-60" />}
               </Link>
             ))}
+            <Link
+              to={user ? "/conta" : "/entrar"}
+              className="text-sm text-foreground hover:text-primary transition-colors font-normal py-2.5 flex items-center gap-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <User size={16} /> {user ? "Minha Conta" : "Entrar"}
+            </Link>
           </div>
         </nav>
       )}
