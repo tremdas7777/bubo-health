@@ -1391,6 +1391,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Pagou.ai salva!")}
               onTest={() => void testGateway("pagouai")}
               testing={gatewayTesting}
+              gatewayKey="pagouai"
+              paymentMethods={gatewayConfig.paymentMethods.pagouai || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1414,6 +1417,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Vennox salva!")}
               onTest={() => void testGateway("vennox")}
               testing={gatewayTesting}
+              gatewayKey="vennox"
+              paymentMethods={gatewayConfig.paymentMethods.vennox || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1439,6 +1445,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Centurion Pay salva!")}
               onTest={() => void testGateway("centurionpay")}
               testing={gatewayTesting}
+              gatewayKey="centurionpay"
+              paymentMethods={gatewayConfig.paymentMethods.centurionpay || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1456,6 +1465,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Iron Pay salva!")}
               onTest={() => void testGateway("ironpay")}
               testing={gatewayTesting}
+              gatewayKey="ironpay"
+              paymentMethods={gatewayConfig.paymentMethods.ironpay || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1480,6 +1492,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Sim Payout salva!")}
               onTest={() => void testGateway("simpayout")}
               testing={gatewayTesting}
+              gatewayKey="simpayout"
+              paymentMethods={gatewayConfig.paymentMethods.simpayout || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
@@ -1503,6 +1518,9 @@ export default function Admin() {
               onSave={() => void persistGateway("Beehive salva!")}
               onTest={() => void testGateway("beehive")}
               testing={gatewayTesting}
+              gatewayKey="beehive"
+              paymentMethods={gatewayConfig.paymentMethods.beehive || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
 
             <GatewayCard
