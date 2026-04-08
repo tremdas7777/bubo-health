@@ -31,23 +31,12 @@ export default function HeroCarousel() {
           }`}
         >
           <img
-            src={slide.image}
+            src={slide}
             alt=""
             className="w-full h-full object-cover"
             width={1920}
             height={864}
           />
-          {/* Text overlay */}
-          <div className="absolute inset-0 bg-black/30 flex items-center z-[5]">
-            <div className="ml-8 md:ml-20 lg:ml-32 max-w-xl">
-              <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight whitespace-pre-line drop-shadow-lg">
-                {slide.title}
-              </h2>
-              <p className="mt-2 md:mt-4 text-sm md:text-lg lg:text-xl text-white/90 whitespace-pre-line drop-shadow-md">
-                {slide.subtitle}
-              </p>
-            </div>
-          </div>
         </div>
       ))}
 
