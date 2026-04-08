@@ -244,7 +244,8 @@ export default function CheckoutPage() {
     setCouponLoading(false);
   };
 
-
+  const handleGeneratePix = async () => {
+    setGenerating(true);
     setPaymentError("");
 
     try {
