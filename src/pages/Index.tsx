@@ -4,10 +4,17 @@ import CollectionsCarousel from "@/components/store/CollectionsCarousel";
 import CategoryCarousel from "@/components/store/CategoryCarousel";
 import TrustBadges from "@/components/store/TrustBadges";
 import { categoryOrder } from "@/data/store";
+import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
+import PageHead from "@/components/seo/PageHead";
 
 const Index = () => {
   return (
     <Layout>
+      <PageHead
+        title="Bazu - Tudo que você precisa em um só lugar"
+        description="De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 12x."
+      />
+      <OrganizationJsonLd />
       <HeroCarousel />
       <CollectionsCarousel />
       {categoryOrder.map((cat) => (

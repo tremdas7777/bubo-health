@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-foreground text-background/80">
       <div className="container mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
@@ -28,12 +28,22 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Policies */}
+          <div>
+            <h4 className="font-heading font-semibold text-sm mb-3 text-background">Institucional</h4>
+            <div className="space-y-1.5 text-sm opacity-60">
+              <Link to="/politica-de-privacidade" className="block hover:opacity-100 transition-opacity">Política de Privacidade</Link>
+              <Link to="/termos-de-uso" className="block hover:opacity-100 transition-opacity">Termos de Uso</Link>
+              <Link to="/trocas-e-devolucoes" className="block hover:opacity-100 transition-opacity">Trocas e Devoluções</Link>
+            </div>
+          </div>
+
           {/* Contact */}
           <div>
             <h4 className="font-heading font-semibold text-sm mb-3 text-background">Atendimento</h4>
             <div className="space-y-1.5 text-sm opacity-60">
               <p>Segunda a Sexta: 08h às 18h</p>
-              <p>contato@amelia.com.br</p>
+              <p>contato@bazu.com.br</p>
               <a
                 href="https://wa.me/5511999999999"
                 target="_blank"

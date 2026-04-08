@@ -15,6 +15,9 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import AboutPage from "./pages/AboutPage";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsPage from "./pages/TermsPage";
+import ReturnPolicyPage from "./pages/ReturnPolicyPage";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +43,9 @@ const App = () => {
               <Route path="/colecao/:slug" element={<CollectionPage />} />
               <Route path="/produto/:slug" element={<ProductDetailPage />} />
               <Route path="/sobre" element={<AboutPage />} />
+              <Route path="/politica-de-privacidade" element={<PrivacyPolicyPage />} />
+              <Route path="/termos-de-uso" element={<TermsPage />} />
+              <Route path="/trocas-e-devolucoes" element={<ReturnPolicyPage />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
