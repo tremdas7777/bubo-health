@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import { useRef, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { collections } from "@/data/store";
 
-export default function CollectionsCarousel() {
+export default memo(function CollectionsCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: "left" | "right") => {
@@ -19,7 +19,6 @@ export default function CollectionsCarousel() {
         </h2>
 
         <div className="relative group/nav">
-          {/* Arrows */}
           <button
             onClick={() => scroll("left")}
             className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 bg-background/90 border border-border rounded-full p-1.5 shadow-md opacity-0 group-hover/nav:opacity-100 transition-opacity hidden md:flex"
@@ -45,6 +44,7 @@ export default function CollectionsCarousel() {
                     alt={col.name}
                     className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
                     loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-0 right-0 px-2">
@@ -68,4 +68,4 @@ export default function CollectionsCarousel() {
       </div>
     </section>
   );
-}
+});

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
@@ -6,7 +6,7 @@ import hero3 from "@/assets/hero-3.jpg";
 
 const slides = [hero1, hero2, hero3];
 
-export default function HeroCarousel() {
+export default memo(function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(true);
 
@@ -36,11 +36,13 @@ export default function HeroCarousel() {
             className="w-full h-full object-cover"
             width={1920}
             height={864}
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding={i === 0 ? "sync" : "async"}
+            fetchPriority={i === 0 ? "high" : "low"}
           />
         </div>
       ))}
 
-      {/* Navigation arrow — left */}
       <button
         onClick={prev}
         className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors"
@@ -49,7 +51,6 @@ export default function HeroCarousel() {
         <ChevronLeft size={32} />
       </button>
 
-      {/* Navigation arrow — right */}
       <button
         onClick={next}
         className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors"
@@ -58,7 +59,6 @@ export default function HeroCarousel() {
         <ChevronRight size={32} />
       </button>
 
-      {/* Dots — bottom center */}
       <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
         {slides.map((_, i) => (
           <button
@@ -72,7 +72,6 @@ export default function HeroCarousel() {
         ))}
       </div>
 
-      {/* Pause/Play button — bottom right like reference */}
       <button
         onClick={() => setPlaying(!playing)}
         className="absolute bottom-4 right-4 z-20 text-white/60 hover:text-white transition-colors"
@@ -82,4 +81,4 @@ export default function HeroCarousel() {
       </button>
     </div>
   );
-}
+});

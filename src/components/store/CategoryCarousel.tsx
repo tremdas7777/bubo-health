@@ -1,14 +1,14 @@
-import { useRef } from "react";
+import { useRef, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { getProductsByCategory, getCategoryName, formatPrice, getInstallmentPrice, getDiscountPercent } from "@/data/store";
+import { getProductsByCategory, getCategoryName, formatPrice, getInstallmentPrice } from "@/data/store";
 import { useCart } from "@/contexts/CartContext";
 
 interface Props {
   category: string;
 }
 
-export default function CategoryCarousel({ category }: Props) {
+export default memo(function CategoryCarousel({ category }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const products = getProductsByCategory(category);
   const { addItem } = useCart();
@@ -19,9 +19,6 @@ export default function CategoryCarousel({ category }: Props) {
     if (!scrollRef.current) return;
     scrollRef.current.scrollBy({ left: dir === "left" ? -280 : 280, behavior: "smooth" });
   };
-
-  // Double products for continuous scroll feel
-  const displayProducts = [...products, ...products];
 
   return (
     <section className="py-8 border-t border-border/50">
@@ -44,11 +41,11 @@ export default function CategoryCarousel({ category }: Props) {
             className="flex gap-3 overflow-x-auto pb-2"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {displayProducts.map((product, idx) => {
+            {products.map((product) => {
               const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
               return (
                 <div
-                  key={`${product.id}-${idx}`}
+                  key={product.id}
                   className="flex-shrink-0 w-[200px] md:w-[230px] group/card bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all"
                 >
                   <Link to={`/produto/${product.slug}`} className="block relative overflow-hidden">
@@ -57,6 +54,7 @@ export default function CategoryCarousel({ category }: Props) {
                       alt={product.name}
                       className="w-full aspect-square object-cover group-hover/card:scale-105 transition-transform duration-500"
                       loading="lazy"
+                      decoding="async"
                     />
                     {product.badge && (
                       <span className="absolute top-2 right-2 bg-lime text-foreground text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -106,4 +104,4 @@ export default function CategoryCarousel({ category }: Props) {
       </div>
     </section>
   );
-}
+});
