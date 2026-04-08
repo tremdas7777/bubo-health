@@ -145,7 +145,6 @@ export default function CheckoutPage() {
   const pixDiscount = isPix ? subtotal * PIX_DISCOUNT_RATE : 0;
   const total = subtotal - pixDiscount + shippingCost / 100;
   const cardTotal = subtotal + shippingCost / 100;
-  const total = subtotal - pixDiscount + shippingCost / 100;
 
 
   const handleCepLookup = async (cepValue: string) => {
