@@ -422,6 +422,13 @@ export default function Admin() {
     window.setTimeout(() => setMessage(""), 5000);
   };
 
+  const handlePaymentMethodChange = async (gw: string, method: string) => {
+    const updated = { ...gatewayConfig, paymentMethods: { ...gatewayConfig.paymentMethods, [gw]: method } };
+    setGatewayConfig(updated);
+    await savePaymentGatewayConfig(updated);
+    flashMessage(setGatewayMessage, `Métodos de ${gw} atualizados!`);
+  };
+
   const persistGateway = async (message: string) => {
     const saved = await savePaymentGatewayConfig(gatewayConfig);
     flashMessage(setGatewayMessage, saved ? message : "Erro ao salvar gateway", 4000);
