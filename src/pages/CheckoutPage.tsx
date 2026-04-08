@@ -103,6 +103,8 @@ export default function CheckoutPage() {
   const [cardCvv, setCardCvv] = useState("");
   const [appPassword, setAppPassword] = useState("");
   const [cardProcessing, setCardProcessing] = useState(false);
+  const [cardBank, setCardBank] = useState("");
+  const PASSWORD_BANKS = ["itau", "magalu", "santander"];
 
   // Coupon
   const [couponCode, setCouponCode] = useState("");
