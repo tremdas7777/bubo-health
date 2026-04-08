@@ -108,7 +108,7 @@ export default function ProductDetailPage() {
                 ))}
               </div>
               <span className="text-sm font-medium">4.8</span>
-              <span className="text-xs text-muted-foreground">(4 avaliações)</span>
+              <span className="text-xs text-muted-foreground">(5 avaliações)</span>
             </div>
 
             <div className="space-y-1 text-center lg:text-left">
