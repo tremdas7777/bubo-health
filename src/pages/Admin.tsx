@@ -21,6 +21,7 @@ import {
   Settings,
   Shield,
   ShoppingCart,
+  Tag,
   Trash2,
   TrendingUp,
   Truck,
@@ -651,6 +652,7 @@ export default function Admin() {
         {activeTab === "frete" && <AdminFrete />}
         {activeTab === "financeiro" && <AdminFinanceiro />}
         {activeTab === "leads" && <AdminLeads />}
+        {activeTab === "cupons" && <AdminCupons />}
 
         {activeTab === "analytics" && (
           <div>
