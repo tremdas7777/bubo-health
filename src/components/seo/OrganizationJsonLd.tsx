@@ -12,20 +12,20 @@ export default function OrganizationJsonLd() {
         "Bazu - De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 12x.",
       address: {
         "@type": "PostalAddress",
-        streetAddress: "Avenida Larissa Cavalcante, 11",
-        addressLocality: "Vitória da Conquista",
-        addressRegion: "BA",
-        postalCode: "45027-400",
+        streetAddress: "Avenida Sete de Setembro, 999, Loja 01",
+        addressLocality: "Ipanema",
+        addressRegion: "MG",
+        postalCode: "36950-000",
         addressCountry: "BR",
       },
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer service",
         availableLanguage: "Portuguese",
-        email: "tremda77@gmail.com",
-        telephone: "+55-77-99138-1192",
+        email: "cadastrofiscal@escritaonline.cnt.br",
+        telephone: "+55-33-99982-9860",
       },
-      taxID: "60.105.125/0001-08",
+      taxID: "50.301.476/0001-30",
       sameAs: [],
     };
 
