@@ -704,10 +704,12 @@ export default function CheckoutPage() {
                     <span className="text-muted-foreground">Subtotal</span>
                     <span>{formatPrice(subtotal)}</span>
                   </div>
-                  <div className="flex justify-between text-emerald-600">
-                    <span>Desconto PIX (10%)</span>
-                    <span>-{formatPrice(pixDiscount)}</span>
-                  </div>
+                  {isPix && (
+                    <div className="flex justify-between text-emerald-600">
+                      <span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span>
+                      <span>-{formatPrice(pixDiscount)}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Frete</span>
                     <span>{shippingCost === 0 ? "Grátis" : formatPrice(shippingCost / 100)}</span>
@@ -717,7 +719,10 @@ export default function CheckoutPage() {
                     <span className="text-primary">{formatPrice(total)}</span>
                   </div>
                   <p className="text-[10px] text-muted-foreground text-center">
-                    ou {formatPrice(subtotal + shippingCost / 100)} em até 12x de {getInstallmentPrice(subtotal + shippingCost / 100)}
+                    {isPix
+                      ? `${PIX_DISCOUNT_PERCENT}% de desconto no PIX`
+                      : `ou em até 12x de ${getInstallmentPrice(total)}`
+                    }
                   </p>
                 </div>
               </div>
