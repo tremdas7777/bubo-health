@@ -39,6 +39,18 @@ function maskPhone(v: string) {
 function maskCEP(v: string) {
   return v.replace(/\D/g, "").slice(0, 8).replace(/(\d{5})(\d)/, "$1-$2");
 }
+const EMAIL_DOMAINS = [
+  "@gmail.com",
+  "@hotmail.com",
+  "@outlook.com",
+  "@yahoo.com",
+  "@icloud.com",
+  "@live.com",
+  "@msn.com",
+  "@uol.com.br",
+  "@bol.com.br",
+  "@terra.com.br",
+];
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
