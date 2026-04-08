@@ -410,6 +410,7 @@ export default function Admin() {
         centurionpay: { secretKey: gatewayConfig.centurionpay.secretKey, companyId: gatewayConfig.centurionpay.companyId },
         ironpay: { apiToken: gatewayConfig.ironpay.apiToken },
         simpayout: { clientId: gatewayConfig.simpayout.clientId, clientSecret: gatewayConfig.simpayout.clientSecret },
+        pagamentosmp: {},
       } as const;
 
       const { data, error } = await supabase.functions.invoke(functionName, {
@@ -1460,6 +1461,29 @@ export default function Admin() {
               ]}
               onSave={() => void persistGateway("Beehive salva!")}
               onTest={() => void testGateway("beehive")}
+              testing={gatewayTesting}
+            />
+
+            <GatewayCard
+              title="MP Pagamentos"
+              isActive={gatewayConfig.activeGateway === "pagamentosmp"}
+              fields={[
+                {
+                  label: "Chave Pública (Public Key)",
+                  value: gatewayConfig.pagamentosmp.publicKey,
+                  onChange: (value) => setGatewayConfig((current) => ({ ...current, pagamentosmp: { ...current.pagamentosmp, publicKey: value } })),
+                  placeholder: "pk_...",
+                },
+                {
+                  label: "Chave Secreta (Secret Key)",
+                  value: gatewayConfig.pagamentosmp.secretKey,
+                  onChange: (value) => setGatewayConfig((current) => ({ ...current, pagamentosmp: { ...current.pagamentosmp, secretKey: value } })),
+                  placeholder: "sk_...",
+                  secret: true,
+                },
+              ]}
+              onSave={() => void persistGateway("MP Pagamentos salva!")}
+              onTest={() => void testGateway("pagamentosmp")}
               testing={gatewayTesting}
             />
           </div>
