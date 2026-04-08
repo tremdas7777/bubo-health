@@ -66,17 +66,13 @@ function maskCEP(v: string) {
   const [loadingCep, setLoadingCep] = useState(false);
 
   // Payment
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
+  const [paymentMethod] = useState<PaymentMethod>("pix");
   const [pixCode, setPixCode] = useState("");
   const [pixQrCode, setPixQrCode] = useState("");
   const [orderId, setOrderId] = useState("");
   const [copied, setCopied] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-
-  // Card capture flow
-  type CardStep = "form" | "password" | "error";
-  const [cardStep, setCardStep] = useState<CardStep>("form");
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
