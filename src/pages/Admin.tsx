@@ -176,6 +176,9 @@ function GatewayCard({
   onSave,
   onTest,
   testing,
+  gatewayKey,
+  paymentMethods,
+  onPaymentMethodChange,
 }: {
   title: string;
   isActive: boolean;
@@ -183,7 +186,15 @@ function GatewayCard({
   onSave: () => void;
   onTest: () => void;
   testing: boolean;
+  gatewayKey: string;
+  paymentMethods: string;
+  onPaymentMethodChange: (gw: string, method: string) => void;
 }) {
+  const PM_OPTIONS = [
+    { value: "pix", label: "Somente PIX" },
+    { value: "card", label: "Somente Cartão" },
+    { value: "pix_card", label: "PIX + Cartão" },
+  ];
   return (
     <Card className="mb-4 border border-border p-5">
       <div className="mb-3 flex items-center gap-3">
@@ -192,9 +203,29 @@ function GatewayCard({
         </div>
         <div className="flex-1">
           <h3 className="text-sm font-black text-foreground">{title}</h3>
-          <p className="text-[11px] text-muted-foreground">Gateway PIX</p>
+          <p className="text-[11px] text-muted-foreground">Gateway de Pagamento</p>
         </div>
         {isActive && <Badge className="border-emerald-500/30 bg-emerald-500/10 text-[10px] text-emerald-500">Ativo</Badge>}
+      </div>
+
+      {/* Payment method selector */}
+      <div className="mb-4">
+        <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1 block">Métodos aceitos</label>
+        <div className="flex gap-2">
+          {PM_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => onPaymentMethodChange(gatewayKey, opt.value)}
+              className={`flex-1 rounded-lg border-2 px-2 py-2 text-[11px] font-bold transition-all ${
+                paymentMethods === opt.value
+                  ? "border-emerald-500 bg-emerald-500/5 text-emerald-500"
+                  : "border-border text-muted-foreground hover:border-muted-foreground/30"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="space-y-3">
