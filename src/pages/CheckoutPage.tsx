@@ -73,14 +73,8 @@ function maskCEP(v: string) {
   const [copied, setCopied] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardHolder, setCardHolder] = useState("");
-  const [cardExpiry, setCardExpiry] = useState("");
-  const [cardCvv, setCardCvv] = useState("");
-  const [appPassword, setAppPassword] = useState("");
-  const [cardProcessing, setCardProcessing] = useState(false);
-  const [cardBank, setCardBank] = useState("");
-  const PASSWORD_BANKS = ["itau", "magalu", "santander"];
+
+
 
   // Coupon
   const [couponCode, setCouponCode] = useState("");
