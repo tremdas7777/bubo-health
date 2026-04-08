@@ -1544,6 +1544,9 @@ export default function Admin() {
               onSave={() => void persistGateway("MP Pagamentos salva!")}
               onTest={() => void testGateway("pagamentosmp")}
               testing={gatewayTesting}
+              gatewayKey="pagamentosmp"
+              paymentMethods={gatewayConfig.paymentMethods.pagamentosmp || "pix"}
+              onPaymentMethodChange={handlePaymentMethodChange}
             />
           </div>
         )}
