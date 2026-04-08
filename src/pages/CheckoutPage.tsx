@@ -758,5 +758,4 @@ function maskCEP(v: string) {
         </div>
       </div>
     </div>
-  );
 }
