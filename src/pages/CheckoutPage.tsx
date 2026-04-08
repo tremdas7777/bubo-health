@@ -617,6 +617,13 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
+                <div className="bg-amber-500/10 rounded-lg p-3 text-center">
+                  <p className="text-xs font-medium text-amber-700">
+                    <Clock size={12} className="inline mr-1" />
+                    Pague em até 30 minutos para garantir seu pedido
+                  </p>
+                </div>
+
 
                 <div className="text-center pt-2">
                   <p className="text-lg font-bold text-primary">{formatPrice(total)}</p>
