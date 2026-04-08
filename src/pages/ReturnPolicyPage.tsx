@@ -5,8 +5,8 @@ export default function ReturnPolicyPage() {
   return (
     <Layout>
       <PageHead
-        title="Política de Trocas e Devoluções | Bazu"
-        description="Saiba como funciona o processo de trocas e devoluções na Bazu."
+        title="Política de Trocas e Devoluções | Kazoom"
+        description="Saiba como funciona o processo de trocas e devoluções na Kazoom."
       />
       <div className="container mx-auto max-w-3xl px-4 py-12">
         <h1 className="mb-8 text-3xl font-heading font-bold">Política de Trocas e Devoluções</h1>
@@ -30,7 +30,7 @@ export default function ReturnPolicyPage() {
 
           <h2 className="text-lg font-semibold text-foreground">3. Como solicitar</h2>
           <ul className="list-disc pl-6 space-y-1">
-            <li>Entre em contato pelo e-mail cadastrofiscal@escritaonline.cnt.br ou WhatsApp (33) 99982-9860</li>
+            <li>Entre em contato pelo e-mail tremda77@gmail.com ou WhatsApp (77) 9138-1192</li>
             <li>Informe o número do pedido e o motivo da solicitação</li>
             <li>Aguarde as instruções de envio da nossa equipe</li>
             <li>Envie o produto de volta conforme as orientações</li>
@@ -45,7 +45,7 @@ export default function ReturnPolicyPage() {
 
           <h2 className="text-lg font-semibold text-foreground">5. Custos de Envio</h2>
           <p>
-            Em caso de defeito ou erro no envio, a Bazu arcará com todos os custos de frete para
+            Em caso de defeito ou erro no envio, a Kazoom arcará com todos os custos de frete para
             devolução. Em caso de arrependimento, o frete de devolução é gratuito (primeira troca).
           </p>
 

@@ -607,7 +607,7 @@ export default function Admin() {
             <p className="text-[10px] text-primary-foreground/60">Gerenciamento da loja</p>
           </div>
           <Badge variant="secondary" className="text-[10px] font-bold">
-            Bazu
+            Kazoom
           </Badge>
         </div>
       </div>

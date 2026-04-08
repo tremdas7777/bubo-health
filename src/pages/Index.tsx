@@ -11,7 +11,7 @@ const Index = () => {
   return (
     <Layout>
       <PageHead
-        title="Bazu - Tudo que você precisa em um só lugar"
+        title="Kazoom - Tudo que você precisa em um só lugar"
         description="De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 12x."
       />
       <OrganizationJsonLd />

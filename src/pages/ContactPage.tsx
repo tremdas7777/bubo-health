@@ -25,7 +25,6 @@ export default function ContactPage() {
       return;
     }
     setSending(true);
-    // Send via WhatsApp as fallback
     const text = `*Contato via Site*\n\n*Nome:* ${name}\n*E-mail:* ${email}\n*Assunto:* ${subject || "Sem assunto"}\n\n*Mensagem:*\n${message}`;
     if (cleanNumber) {
       window.open(`https://wa.me/${cleanNumber}?text=${encodeURIComponent(text)}`, "_blank");
@@ -37,8 +36,8 @@ export default function ContactPage() {
   return (
     <Layout>
       <PageHead
-        title="Contato | Bazu"
-        description="Entre em contato com a Bazu. Atendimento de segunda a sexta, das 08h às 18h."
+        title="Contato | Kazoom"
+        description="Entre em contato com a Kazoom. Atendimento de segunda a sexta, das 08h às 18h."
         canonical="https://snug-code-space.lovable.app/contato"
       />
       <div className="container mx-auto px-4 py-12 max-w-5xl">
@@ -55,8 +54,8 @@ export default function ContactPage() {
                 <Mail size={20} className="text-primary mt-0.5 shrink-0" />
                 <div>
                   <p className="text-sm font-semibold text-foreground">E-mail</p>
-                  <a href="mailto:cadastrofiscal@escritaonline.cnt.br" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    cadastrofiscal@escritaonline.cnt.br
+                  <a href="mailto:tremda77@gmail.com" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    tremda77@gmail.com
                   </a>
                 </div>
               </div>
@@ -86,8 +85,8 @@ export default function ContactPage() {
                 <div>
                   <p className="text-sm font-semibold text-foreground">Endereço</p>
                   <p className="text-sm text-muted-foreground">
-                    Av. Sete de Setembro, 999, Loja 01 – Centro<br />
-                    Ipanema – MG, CEP 36950-000
+                    Av. Larissa Cavalcante, 11 – Boa Vista<br />
+                    Vitória da Conquista – BA, CEP 45027-400
                   </p>
                 </div>
               </div>
@@ -95,8 +94,8 @@ export default function ContactPage() {
 
             <div className="bg-muted/50 rounded-xl p-6">
               <p className="text-sm font-semibold text-foreground mb-2">Dados da Empresa</p>
-              <p className="text-xs text-muted-foreground">Loja Tudo LTDA</p>
-              <p className="text-xs text-muted-foreground">CNPJ: 50.301.476/0001-30</p>
+              <p className="text-xs text-muted-foreground">60.105.125 Giovany Matos Dias</p>
+              <p className="text-xs text-muted-foreground">CNPJ: 60.105.125/0001-08</p>
             </div>
           </div>
 

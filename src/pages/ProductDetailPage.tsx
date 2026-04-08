@@ -45,7 +45,7 @@ export default function ProductDetailPage() {
   return (
     <Layout>
       <PageHead
-        title={`${product.name} | Bazu`}
+        title={`${product.name} | Kazoom`}
         description={product.description.slice(0, 155)}
         canonical={productUrl}
       />

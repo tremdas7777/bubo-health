@@ -26,12 +26,12 @@ export async function testUtmifyToken(token: string): Promise<{ success: boolean
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-token': token },
       body: JSON.stringify({
-        orderId: `test_${Date.now()}`, platform: 'bazu-store', paymentMethod: 'pix', status: 'paid',
+        orderId: `test_${Date.now()}`, platform: 'kazoom-store', paymentMethod: 'pix', status: 'paid',
         createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
         approvedDate: new Date().toISOString().replace('T', ' ').substring(0, 19),
         refundedAt: null,
         customer: { name: 'Teste Integração', email: 'teste@teste.com', phone: null, document: null },
-        products: [{ id: 'test-product', name: 'Teste Bazu', planId: null, planName: null, quantity: 1, priceInCents: 100 }],
+        products: [{ id: 'test-product', name: 'Teste Kazoom', planId: null, planName: null, quantity: 1, priceInCents: 100 }],
         trackingParameters: { src: null, sck: null, utm_source: null, utm_campaign: null, utm_medium: null, utm_content: null, utm_term: null },
         commission: { totalPriceInCents: 100, gatewayFeeInCents: 0, userCommissionInCents: 100, currency: 'BRL' },
         isTest: true,
@@ -50,11 +50,11 @@ export async function sendUtmifySale(data: { orderId: string; customerName: stri
   const tokens = [config.apiToken, config.apiToken2].filter(Boolean);
   if (tokens.length === 0) return false;
   const payload = {
-    orderId: data.orderId, platform: 'bazu-store', paymentMethod: 'pix', status: 'paid',
+    orderId: data.orderId, platform: 'kazoom-store', paymentMethod: 'pix', status: 'paid',
     createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
     approvedDate: new Date().toISOString().replace('T', ' ').substring(0, 19), refundedAt: null,
     customer: { name: data.customerName, email: data.customerEmail, phone: null, document: null },
-    products: [{ id: 'bazu-product', name: data.productName, planId: null, planName: null, quantity: 1, priceInCents: data.priceInCents }],
+    products: [{ id: 'kazoom-product', name: data.productName, planId: null, planName: null, quantity: 1, priceInCents: data.priceInCents }],
     trackingParameters: { src: null, sck: null, utm_source: null, utm_campaign: null, utm_medium: null, utm_content: null, utm_term: null },
     commission: { totalPriceInCents: data.priceInCents, gatewayFeeInCents: 0, userCommissionInCents: data.priceInCents, currency: 'BRL' },
   };

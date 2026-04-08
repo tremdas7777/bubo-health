@@ -19,7 +19,7 @@ export default function ProductJsonLd({ product, url }: Props) {
       sku: product.id,
       brand: {
         "@type": "Brand",
-        name: "Bazu",
+        name: "Kazoom",
       },
       offers: {
         "@type": "Offer",
@@ -38,7 +38,7 @@ export default function ProductJsonLd({ product, url }: Props) {
             : "https://schema.org/OutOfStock",
         seller: {
           "@type": "Organization",
-          name: "Bazu",
+          name: "Kazoom",
         },
         shippingDetails: {
           "@type": "OfferShippingDetails",

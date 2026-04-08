@@ -1,11 +1,10 @@
 const messages = [
-  "BEM VINDO A NOSSA LOJA!",
+  "BEM VINDO À KAZOOM!",
   "FRETE GRÁTIS PARA TODO O BRASIL",
   "PARCELE SUAS COMPRAS EM ATÉ 12X",
 ];
 
 export default function AnnouncementBar() {
-  // Repeat messages enough for seamless loop
   const repeated = [...messages, ...messages, ...messages, ...messages, ...messages, ...messages];
 
   return (

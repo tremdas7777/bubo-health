@@ -12,8 +12,8 @@ const NotFound = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
       <PageHead
-        title="Página não encontrada | Bazu"
-        description="A página que você procura não foi encontrada. Volte para a página inicial da Bazu."
+        title="Página não encontrada | Kazoom"
+        description="A página que você procura não foi encontrada. Volte para a página inicial da Kazoom."
       />
       <div className="text-center">
         <h1 className="mb-4 text-6xl font-heading font-bold text-foreground">404</h1>

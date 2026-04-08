@@ -34,7 +34,7 @@ export default function PageHead({ title, description, canonical, ogImage, ogTyp
     setMeta("og:description", description, "property");
     setMeta("og:url", href, "property");
     setMeta("og:type", ogType, "property");
-    setMeta("og:site_name", "Bazu", "property");
+    setMeta("og:site_name", "Kazoom", "property");
     setMeta("og:locale", "pt_BR", "property");
     setMeta("og:image", ogImage || DEFAULT_OG_IMAGE, "property");
 

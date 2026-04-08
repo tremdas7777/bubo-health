@@ -113,7 +113,7 @@ export default function AdminProdutos() {
     const headers = ['nome', 'slug', 'preco', 'preco_original', 'categoria', 'descricao', 'imagem', 'imagens', 'destaque', 'ativo'];
     const rows = products.map(p => [p.name, p.slug, (p.price_cents / 100).toFixed(2), p.original_price_cents ? (p.original_price_cents / 100).toFixed(2) : '', p.category || '', p.description || '', p.image_url || '', (p.images || []).join('|'), p.featured ? 'sim' : 'nao', p.active ? 'sim' : 'nao']);
     const csv = [headers.join(','), ...rows.map(r => r.map(c => `"${(c || '').replace(/"/g, '""')}"`).join(','))].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `produtos_bazu_${new Date().toISOString().slice(0, 10)}.csv`; a.click(); URL.revokeObjectURL(url); toast.success('CSV exportado!');
+    const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `produtos_kazoom_${new Date().toISOString().slice(0, 10)}.csv`; a.click(); URL.revokeObjectURL(url); toast.success('CSV exportado!');
   };
 
   const subTabs: { id: SubTab; label: string; icon: React.ReactNode }[] = [{ id: 'produtos', label: 'Produtos', icon: <Package size={14} /> }, { id: 'colecoes', label: 'Coleções', icon: <FolderOpen size={14} /> }, { id: 'importar', label: 'Importar/Exportar', icon: <Upload size={14} /> }];

@@ -5,8 +5,8 @@ export default function PrivacyPolicyPage() {
   return (
     <Layout>
       <PageHead
-        title="Política de Privacidade | Bazu"
-        description="Saiba como a Bazu coleta, usa e protege seus dados pessoais."
+        title="Política de Privacidade | Kazoom"
+        description="Saiba como a Kazoom coleta, usa e protege seus dados pessoais."
       />
       <div className="container mx-auto max-w-3xl px-4 py-12">
         <h1 className="mb-8 text-3xl font-heading font-bold">Política de Privacidade</h1>
@@ -64,11 +64,11 @@ export default function PrivacyPolicyPage() {
           <h2 className="text-lg font-semibold text-foreground">7. Contato</h2>
           <p>
             Para exercer seus direitos ou esclarecer dúvidas sobre esta política, entre em contato
-            pelo e-mail <strong>cadastrofiscal@escritaonline.cnt.br</strong> ou pelo nosso WhatsApp (33) 99982-9860.
+            pelo e-mail <strong>tremda77@gmail.com</strong> ou pelo nosso WhatsApp (77) 9138-1192.
           </p>
           <p>
-            <strong>Responsável:</strong> Loja Tudo LTDA – CNPJ 50.301.476/0001-30<br />
-            Av. Sete de Setembro, 999, Loja 01 – Centro, Ipanema – MG, CEP 36950-000
+            <strong>Responsável:</strong> 60.105.125 Giovany Matos Dias – CNPJ 60.105.125/0001-08<br />
+            Av. Larissa Cavalcante, 11 – Boa Vista, Vitória da Conquista – BA, CEP 45027-400
           </p>
         </div>
       </div>

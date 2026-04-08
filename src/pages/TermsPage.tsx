@@ -5,8 +5,8 @@ export default function TermsPage() {
   return (
     <Layout>
       <PageHead
-        title="Termos de Uso | Bazu"
-        description="Termos e condições de uso da loja Bazu."
+        title="Termos de Uso | Kazoom"
+        description="Termos e condições de uso da loja Kazoom."
       />
       <div className="container mx-auto max-w-3xl px-4 py-12">
         <h1 className="mb-8 text-3xl font-heading font-bold">Termos de Uso</h1>
@@ -16,7 +16,7 @@ export default function TermsPage() {
 
           <h2 className="text-lg font-semibold text-foreground">1. Aceitação dos Termos</h2>
           <p>
-            Ao acessar e utilizar o site da Bazu, você concorda com estes Termos de Uso.
+            Ao acessar e utilizar o site da Kazoom, você concorda com estes Termos de Uso.
             Se não concordar com qualquer parte destes termos, não utilize nosso site.
           </p>
 
@@ -44,13 +44,13 @@ export default function TermsPage() {
           <h2 className="text-lg font-semibold text-foreground">5. Propriedade Intelectual</h2>
           <p>
             Todo o conteúdo do site, incluindo textos, imagens, logotipos e layout, é propriedade
-            da Bazu e protegido por leis de propriedade intelectual. É proibida a reprodução sem
+            da Kazoom e protegido por leis de propriedade intelectual. É proibida a reprodução sem
             autorização prévia.
           </p>
 
           <h2 className="text-lg font-semibold text-foreground">6. Limitação de Responsabilidade</h2>
           <p>
-            A Bazu não se responsabiliza por danos indiretos decorrentes do uso do site.
+            A Kazoom não se responsabiliza por danos indiretos decorrentes do uso do site.
             Faremos o possível para manter o site disponível, mas não garantimos acesso
             ininterrupto.
           </p>
