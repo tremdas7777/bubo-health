@@ -181,7 +181,7 @@ export const products: Product[] = [
     stock: 22, badge: "Economize 54%",
   },
   {
-    id: "t6", name: "Kit Completo Refrigeração e Ar Condicionado com Bomba de Vácuo 7 CFM", slug: "kit-ferramentas-refrigeracao",
+    id: "t6", name: "Kit Profissional HVAC 18kg — Bomba de Vácuo 7 CFM + Manifold + Maleta Completa", slug: "kit-ferramentas-refrigeracao",
     price: 597.00, compareAtPrice: 997.00,
     image: imgKitRefrigeracao,
     images: [imgKitRefrigeracao, imgKitRefrigeracao2, imgKitRefrigeracaoManifold, imgKitRefrigeracaoFlangeador, imgKitRefrigeracaoCurvadoras, imgKitRefrigeracaoUso],
