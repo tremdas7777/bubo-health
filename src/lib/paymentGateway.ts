@@ -55,9 +55,29 @@ export async function fetchPaymentGatewayConfig(): Promise<PaymentGatewayConfig>
   }
 }
 
-export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Promise<boolean> {
+export interface SaveGatewayConfigResult {
+  ok: boolean;
+  error?: string;
+}
+
+function normalizeGatewaySaveError(message?: string) {
+  const lower = (message || '').toLowerCase();
+
+  if (lower.includes('row-level security') || lower.includes('permission denied') || lower.includes('42501')) {
+    return 'O painel admin não está autenticado no backend, então o gateway não pôde ser salvo.';
+  }
+
+  return message || 'Erro desconhecido ao salvar gateway.';
+}
+
+export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Promise<SaveGatewayConfigResult> {
   try {
-    const { data: existing } = await supabase.from('gateway_config').select('id').limit(1).single();
+    const { data: existing, error: existingError } = await supabase.from('gateway_config').select('id').limit(1).single();
+
+    if (existingError && existingError.code !== 'PGRST116') {
+      return { ok: false, error: normalizeGatewaySaveError(existingError.message) };
+    }
+
     const updateData: Record<string, unknown> = {
       active_gateway: config.activeGateway,
       payment_methods: config.paymentMethods,
@@ -70,14 +90,18 @@ export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Pr
       pagamentosmp_public_key: config.pagamentosmp.publicKey, pagamentosmp_secret_key: config.pagamentosmp.secretKey,
       updated_at: new Date().toISOString(),
     };
-    if (existing?.id) {
-      await supabase.from('gateway_config').update(updateData as any).eq('id', existing.id);
-    } else {
-      await supabase.from('gateway_config').insert([updateData as any]);
+
+    const response = existing?.id
+      ? await supabase.from('gateway_config').update(updateData as any).eq('id', existing.id)
+      : await supabase.from('gateway_config').insert([updateData as any]);
+
+    if (response.error) {
+      return { ok: false, error: normalizeGatewaySaveError(response.error.message) };
     }
+
     cachedConfig = config;
-    return true;
-  } catch {
-    return false;
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, error: normalizeGatewaySaveError(error instanceof Error ? error.message : undefined) };
   }
 }
