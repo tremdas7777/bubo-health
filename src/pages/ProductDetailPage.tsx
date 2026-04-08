@@ -48,6 +48,7 @@ export default function ProductDetailPage() {
         title={`${product.name} | Kazoom`}
         description={product.description.slice(0, 155)}
         canonical={productUrl}
+        noIndex={product.noIndex}
       />
       <ProductJsonLd product={product} url={productUrl} />
       <BreadcrumbJsonLd
