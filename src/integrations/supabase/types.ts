@@ -439,18 +439,21 @@ export type Database = {
       }
       store_config: {
         Row: {
+          card_enabled: boolean
           created_at: string
           id: string
           updated_at: string
           whatsapp_number: string | null
         }
         Insert: {
+          card_enabled?: boolean
           created_at?: string
           id?: string
           updated_at?: string
           whatsapp_number?: string | null
         }
         Update: {
+          card_enabled?: boolean
           created_at?: string
           id?: string
           updated_at?: string
