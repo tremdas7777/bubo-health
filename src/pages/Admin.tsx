@@ -425,13 +425,13 @@ export default function Admin() {
   const handlePaymentMethodChange = async (gw: string, method: string) => {
     const updated: PaymentGatewayConfig = { ...gatewayConfig, paymentMethods: { ...gatewayConfig.paymentMethods, [gw]: method as any } };
     setGatewayConfig(updated);
-    await savePaymentGatewayConfig(updated);
-    flashMessage(setGatewayMessage, `Métodos de ${gw} atualizados!`);
+    const result = await savePaymentGatewayConfig(updated);
+    flashMessage(setGatewayMessage, result.ok ? `Métodos de ${gw} atualizados!` : result.error || "Erro ao salvar gateway", 5000);
   };
 
   const persistGateway = async (message: string) => {
-    const saved = await savePaymentGatewayConfig(gatewayConfig);
-    flashMessage(setGatewayMessage, saved ? message : "Erro ao salvar gateway", 4000);
+    const result = await savePaymentGatewayConfig(gatewayConfig);
+    flashMessage(setGatewayMessage, result.ok ? message : result.error || "Erro ao salvar gateway", 5000);
   };
 
   const testGateway = async (gateway: PaymentGatewayConfig["activeGateway"]) => {
@@ -1354,8 +1354,8 @@ export default function Admin() {
                     onClick={async () => {
                       const updatedConfig = { ...gatewayConfig, activeGateway: gateway };
                       setGatewayConfig(updatedConfig);
-                      await savePaymentGatewayConfig(updatedConfig);
-                      flashMessage(setGatewayMessage, `Gateway ativo: ${GATEWAY_LABELS[gateway]}`);
+                      const result = await savePaymentGatewayConfig(updatedConfig);
+                      flashMessage(setGatewayMessage, result.ok ? `Gateway ativo: ${GATEWAY_LABELS[gateway]}` : result.error || "Erro ao salvar gateway", 5000);
                     }}
                     className={`min-w-[80px] flex-1 rounded-lg border-2 px-3 py-2.5 text-xs font-bold transition-all ${
                       gatewayConfig.activeGateway === gateway
