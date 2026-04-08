@@ -258,6 +258,7 @@ export type Database = {
           shipping_cost_cents: number | null
           status: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           amount_cents?: number
@@ -274,6 +275,7 @@ export type Database = {
           shipping_cost_cents?: number | null
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           amount_cents?: number
@@ -290,6 +292,7 @@ export type Database = {
           shipping_cost_cents?: number | null
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -404,6 +407,60 @@ export type Database = {
           sort_order?: number | null
           updated_at?: string
           variants?: Json | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          address_city: string | null
+          address_complement: string | null
+          address_neighborhood: string | null
+          address_number: string | null
+          address_state: string | null
+          address_street: string | null
+          address_zip: string | null
+          cpf: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address_city?: string | null
+          address_complement?: string | null
+          address_neighborhood?: string | null
+          address_number?: string | null
+          address_state?: string | null
+          address_street?: string | null
+          address_zip?: string | null
+          cpf?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address_city?: string | null
+          address_complement?: string | null
+          address_neighborhood?: string | null
+          address_number?: string | null
+          address_state?: string | null
+          address_street?: string | null
+          address_zip?: string | null
+          cpf?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
