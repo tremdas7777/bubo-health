@@ -22,7 +22,7 @@ export default function OrganizationJsonLd() {
         "@type": "ContactPoint",
         contactType: "customer service",
         availableLanguage: "Portuguese",
-        email: "tremda77@gmail.com",
+        email: "suporte@kazoombrasil.com.br",
         telephone: "+55-77-9138-1192",
       },
       taxID: "60.105.125/0001-08",
