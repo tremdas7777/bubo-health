@@ -168,9 +168,21 @@ export default function AdminProdutos() {
         <div>
           <Button onClick={() => setEditCollection({ name: '', slug: '', description: '', active: true, sort_order: 0 })} size="sm" className="text-xs mb-4"><Plus size={14} className="mr-1" /> Nova Coleção</Button>
           {collections.length === 0 ? <Card className="p-8 text-center border border-border"><FolderOpen size={40} className="mx-auto text-muted-foreground mb-3" /><p className="text-sm text-muted-foreground">Nenhuma coleção criada</p></Card> : (
-            <div className="space-y-2">{collections.map(col => (
-              <Card key={col.id} className={`p-4 border ${col.active ? 'border-border' : 'border-border opacity-50'}`}>
-                <div className="flex items-center justify-between"><div><p className="text-sm font-bold text-foreground">{col.name}</p><p className="text-[10px] text-muted-foreground">/{col.slug}</p></div><div className="flex gap-1"><button onClick={() => setEditCollection({ ...col })} className="p-1.5 rounded hover:bg-muted"><Edit size={14} className="text-primary" /></button><button onClick={() => deleteCollection(col.id)} className="p-1.5 rounded hover:bg-muted"><Trash2 size={14} className="text-destructive" /></button></div></div>
+            <div className="space-y-1">{collections.map((col, idx) => (
+              <Card key={col.id} draggable onDragStart={() => setColDragIdx(idx)} onDragOver={(e) => { e.preventDefault(); setColDragOverIdx(idx); }} onDragLeave={() => setColDragOverIdx(null)} onDrop={(e) => { e.preventDefault(); if (colDragIdx !== null) handleColDragDrop(colDragIdx, idx); setColDragIdx(null); setColDragOverIdx(null); }} onDragEnd={() => { setColDragIdx(null); setColDragOverIdx(null); }} className={`p-3 border transition-all cursor-grab ${!col.active ? 'opacity-50 border-border' : 'border-border hover:border-primary/30'} ${colDragIdx === idx ? 'opacity-40 scale-95' : ''} ${colDragOverIdx === idx && colDragIdx !== idx ? 'border-primary border-2 bg-primary/5' : ''}`}>
+                <div className="flex items-center gap-3">
+                  <GripVertical size={18} className="text-muted-foreground shrink-0" />
+                  <div className="w-10 h-10 rounded bg-muted overflow-hidden shrink-0">{col.image_url ? <img src={col.image_url} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><FolderOpen size={16} className="text-muted-foreground" /></div>}</div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-foreground truncate">{col.name}</p>
+                    <p className="text-[10px] text-muted-foreground">/{col.slug}</p>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <button onClick={() => toggleCollectionActive(col)} className="p-1.5 rounded hover:bg-muted">{col.active ? <Eye size={14} className="text-emerald-500" /> : <EyeOff size={14} className="text-muted-foreground" />}</button>
+                    <button onClick={() => setEditCollection({ ...col })} className="p-1.5 rounded hover:bg-muted"><Edit size={14} className="text-primary" /></button>
+                    <button onClick={() => deleteCollection(col.id)} className="p-1.5 rounded hover:bg-muted"><Trash2 size={14} className="text-destructive" /></button>
+                  </div>
+                </div>
               </Card>
             ))}</div>
           )}
