@@ -58,7 +58,7 @@ import {
   type WebhookEntry,
 } from "@/lib/webhookManager";
 import { getUtmifyConfig, saveUtmifyConfig, testUtmifyToken, type UtmifyConfig } from "@/lib/utmifyManager";
-import { fetchPaymentGatewayConfig, savePaymentGatewayConfig, type PaymentGatewayConfig } from "@/lib/paymentGateway";
+import { fetchPaymentGatewayConfig, savePaymentGatewayConfig, setAdminPassword, type PaymentGatewayConfig } from "@/lib/paymentGateway";
 import { supabase } from "@/integrations/supabase/client";
 
 type Tab =
@@ -360,7 +360,7 @@ export default function Admin() {
     }
   }, [authed, activeTab]);
 
-  if (!authed) return <AdminLogin onLogin={() => setAuthed(true)} />;
+  if (!authed) return <AdminLogin onLogin={(pwd) => { setAdminPassword(pwd); setAuthed(true); }} />;
 
   const handleClearStats = async () => {
     await clearFunnelEvents();
