@@ -107,7 +107,7 @@ export default function ProductsPage() {
         {filtered.length === 0 ? (
           <p className="text-center text-muted-foreground py-12">Nenhum produto encontrado para "{searchQuery}"</p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
             {filtered.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

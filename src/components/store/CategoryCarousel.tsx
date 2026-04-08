@@ -11,7 +11,7 @@ interface Props {
 function ProductCard({ product, addItem }: { product: ReturnType<typeof getProductsByCategory>[number]; addItem: (p: any) => void }) {
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   return (
-    <div className="flex-shrink-0 w-[200px] md:w-[230px] group/card bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all">
+    <div className="flex-shrink-0 w-[200px] md:w-[230px] group/card bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all [.grid_&]:w-full">
       <Link to={`/produto/${product.slug}`} className="block relative overflow-hidden">
         <img
           src={product.image}
@@ -78,7 +78,7 @@ export default memo(function CategoryCarousel({ category }: Props) {
         </h2>
 
         {isFew ? (
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 max-w-[960px] mx-auto">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} addItem={addItem} />
             ))}
