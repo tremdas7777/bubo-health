@@ -4,6 +4,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import CartDrawer from "./CartDrawer";
 import WhatsAppButton from "./WhatsAppButton";
+import CartAbandonmentDetector from "./CartAbandonmentDetector";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -14,6 +15,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <Footer />
       <CartDrawer />
       <WhatsAppButton />
+      <CartAbandonmentDetector />
     </div>
   );
 }
