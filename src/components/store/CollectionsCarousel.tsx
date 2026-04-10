@@ -84,7 +84,6 @@ export default memo(function CollectionsCarousel() {
                 className="flex-shrink-0 w-[160px] md:w-[185px] group/card"
                 onClickCapture={onClickCapture}
                 draggable={false}
-                style={{ scrollSnapAlign: "start" }}
               >
                 <div className="relative overflow-hidden rounded-xl aspect-[3/4]">
                   <img
