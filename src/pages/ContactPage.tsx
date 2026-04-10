@@ -38,7 +38,7 @@ export default function ContactPage() {
       <PageHead
         title="Contato | Kazoom"
         description="Entre em contato com a Kazoom. Atendimento de segunda a sexta, das 08h às 18h."
-        canonical="https://snug-code-space.lovable.app/contato"
+        canonical="https://snuggle-stuff-source.lovable.app/contato"
       />
       <div className="container mx-auto px-4 py-12 max-w-5xl">
         <h1 className="text-3xl font-heading font-bold mb-2 text-center">Fale Conosco</h1>

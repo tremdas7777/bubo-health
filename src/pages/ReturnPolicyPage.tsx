@@ -30,7 +30,7 @@ export default function ReturnPolicyPage() {
 
           <h2 className="text-lg font-semibold text-foreground">3. Como solicitar</h2>
           <ul className="list-disc pl-6 space-y-1">
-            <li>Entre em contato pelo e-mail suporte@kazoombrasil.com.br ou WhatsApp (77) 9138-1192</li>
+            <li>Entre em contato pelo e-mail suporte@kazoombrasil.com.br ou WhatsApp (77) 99138-1192</li>
             <li>Informe o número do pedido e o motivo da solicitação</li>
             <li>Aguarde as instruções de envio da nossa equipe</li>
             <li>Envie o produto de volta conforme as orientações</li>

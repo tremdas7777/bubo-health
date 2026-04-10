@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const STORE_URL = "https://snug-code-space.lovable.app";
+const STORE_URL = "https://snuggle-stuff-source.lovable.app";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {

@@ -8,6 +8,17 @@ const corsHeaders = {
 const STORE_URL = "https://snuggle-stuff-source.lovable.app";
 const STORE_NAME = "Kazoom";
 
+// Map product categories to Google product categories
+const GOOGLE_CATEGORIES: Record<string, string> = {
+  "casa-e-cozinha": "Home & Garden > Kitchen & Dining",
+  "eletronicos": "Electronics",
+  "esportes": "Sporting Goods",
+  "ferramentas": "Hardware > Tools",
+  "fitness": "Sporting Goods > Exercise & Fitness",
+  "pesca": "Sporting Goods > Outdoor Recreation > Fishing",
+  "saude-e-beleza": "Health & Beauty",
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -36,6 +47,7 @@ Deno.serve(async (req) => {
     const link = `${STORE_URL}/produto/${p.slug}`;
     const availability = "in_stock";
     const condition = "new";
+    const googleCategory = GOOGLE_CATEGORIES[p.category] || "General";
 
     let additionalImages = "";
     if (p.images && Array.isArray(p.images)) {
@@ -48,6 +60,20 @@ Deno.serve(async (req) => {
         .join("\n      ");
     }
 
+    // Sale price handling
+    let salePriceBlock = "";
+    if (p.original_price_cents && p.original_price_cents > p.price_cents) {
+      const originalPrice = (p.original_price_cents / 100).toFixed(2);
+      const now = new Date();
+      const future = new Date(Date.now() + 30 * 86400000);
+      const startDate = now.toISOString();
+      const endDate = future.toISOString();
+      salePriceBlock = `
+      <g:price>${originalPrice} BRL</g:price>
+      <g:sale_price>${price} BRL</g:sale_price>
+      <g:sale_price_effective_date>${startDate}/${endDate}</g:sale_price_effective_date>`;
+    }
+
     return `
     <item>
       <g:id>${escapeXml(p.id)}</g:id>
@@ -56,12 +82,12 @@ Deno.serve(async (req) => {
       <g:link>${escapeXml(link)}</g:link>
       <g:image_link>${escapeXml(imageUrl)}</g:image_link>
       ${additionalImages}
-      <g:price>${price} BRL</g:price>
-      ${p.original_price_cents ? `<g:sale_price>${price} BRL</g:sale_price>\n      <g:sale_price_effective_date>${new Date().toISOString().split("T")[0]}/${new Date(Date.now() + 30 * 86400000).toISOString().split("T")[0]}</g:sale_price_effective_date>` : ""}
+      ${salePriceBlock || `<g:price>${price} BRL</g:price>`}
       <g:availability>${availability}</g:availability>
       <g:condition>${condition}</g:condition>
       <g:brand>${STORE_NAME}</g:brand>
       ${p.gtin ? `<g:gtin>${escapeXml(p.gtin)}</g:gtin>` : "<g:identifier_exists>false</g:identifier_exists>"}
+      <g:google_product_category>${escapeXml(googleCategory)}</g:google_product_category>
       <g:product_type>${escapeXml(p.category || "Geral")}</g:product_type>
       <g:shipping>
         <g:country>BR</g:country>
