@@ -121,6 +121,12 @@ export default function CheckoutPage() {
   const [generating, setGenerating] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
+  // Card fields
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardHolder, setCardHolder] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCvv, setCardCvv] = useState("");
+
 
 
   // Coupon
