@@ -11,7 +11,7 @@ import { fetchPaymentGatewayConfig } from "@/lib/paymentGateway";
 import { fireWebhookEvent } from "@/lib/webhookManager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PIX_DISCOUNT_RATE, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
+import { PIX_DISCOUNT_RATE, PIX_DISCOUNT_PERCENT, getTotalWithInterest, getInstallmentValue } from "@/lib/pricing";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Step = "identification" | "shipping" | "payment";
@@ -902,11 +902,16 @@ export default function CheckoutPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {Array.from({ length: 6 }, (_, i) => i + 1).map((n) => (
-                            <SelectItem key={n} value={String(n)}>
-                              {n}x de {formatPrice(total / n)} {n === 1 ? "(à vista)" : "sem juros"}
-                            </SelectItem>
-                          ))}
+                          {Array.from({ length: 6 }, (_, i) => i + 1).map((n) => {
+                            const installmentVal = getInstallmentValue(total, n);
+                            const totalWithInterest = getTotalWithInterest(total, n);
+                            const hasInterest = n > 1;
+                            return (
+                              <SelectItem key={n} value={String(n)}>
+                                {n}x de {formatPrice(installmentVal)} {hasInterest ? `(total ${formatPrice(totalWithInterest)})` : "(à vista)"}
+                              </SelectItem>
+                            );
+                          })}
                         </SelectContent>
                       </Select>
                     </div>
