@@ -89,6 +89,7 @@ const EMAIL_DOMAINS = [
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { items, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
+  const { user } = useAuth();
   const [step, setStep] = useState<Step>("identification");
   const [showOrderSummary, setShowOrderSummary] = useState(false);
 
