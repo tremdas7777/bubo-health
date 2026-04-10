@@ -197,6 +197,27 @@ export default function CheckoutPage() {
     });
   }, []);
 
+  // Pre-fill from profile when logged in
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle().then(({ data }) => {
+      if (!data) return;
+      if (data.full_name && !name) setName(data.full_name);
+      if (data.email && !email) setEmail(data.email);
+      if (data.phone && !phone) setPhone(data.phone);
+      if (data.cpf && !cpf) setCpf(data.cpf);
+      if (data.address_zip && !cep) {
+        setCep(maskCEP(data.address_zip));
+        if (data.address_street) setAddress(data.address_street);
+        if (data.address_number) setAddressNumber(data.address_number);
+        if (data.address_complement) setComplement(data.address_complement);
+        if (data.address_neighborhood) setNeighborhood(data.address_neighborhood);
+        if (data.address_city) setCity(data.address_city);
+        if (data.address_state) setState(data.address_state);
+      }
+    });
+  }, [user]);
+
   // Poll for payment status when PIX is generated
   useEffect(() => {
     if (!orderId || pollingPayment) return;
