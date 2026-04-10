@@ -113,10 +113,34 @@ export default function AuthPage() {
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
+            <div className="mt-6 space-y-3 text-center">
+              {isLogin && (
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!email) {
+                      toast({ title: "Digite seu email", description: "Informe o email para recuperar a senha", variant: "destructive" });
+                      return;
+                    }
+                    setLoading(true);
+                    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                      redirectTo: `${window.location.origin}/redefinir-senha`,
+                    });
+                    setLoading(false);
+                    if (error) {
+                      toast({ title: "Erro", description: error.message, variant: "destructive" });
+                    } else {
+                      toast({ title: "Email enviado!", description: "Verifique sua caixa de entrada para redefinir a senha." });
+                    }
+                  }}
+                  className="text-sm text-muted-foreground hover:text-primary hover:underline"
+                >
+                  Esqueci minha senha
+                </button>
+              )}
               <button
                 onClick={() => setIsLogin(!isLogin)}
-                className="text-sm text-primary hover:underline"
+                className="text-sm text-primary hover:underline block mx-auto"
               >
                 {isLogin ? "Não tem conta? Cadastre-se" : "Já tem conta? Faça login"}
               </button>
