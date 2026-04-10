@@ -70,7 +70,6 @@ export default memo(function CollectionsCarousel() {
               scrollbarWidth: "none",
               msOverflowStyle: "none",
               cursor: "grab",
-              scrollSnapType: "x mandatory",
               WebkitOverflowScrolling: "touch",
             }}
             onPointerDown={onPointerDown}
