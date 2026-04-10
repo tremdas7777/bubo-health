@@ -1710,6 +1710,16 @@ export default function Admin() {
                       >
                         <Save size={10} className="mr-1" /> Salvar
                       </Button>
+                      {order.tracking_code && order.buyer_phone && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-7 px-2 text-[10px] font-bold text-emerald-500 border-emerald-500/30 hover:bg-emerald-500/10"
+                          onClick={() => handleSendTrackingWhatsApp(order)}
+                        >
+                          <Zap size={10} className="mr-1" /> WhatsApp
+                        </Button>
+                      )}
                     </div>
                   </Card>
                 ))}
