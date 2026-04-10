@@ -543,8 +543,28 @@ export default function Admin() {
       gateway: order.gateway,
     });
 
+    // Send WhatsApp notification to buyer
+    if (order.buyer_phone) {
+      const phone = order.buyer_phone.replace(/\D/g, "");
+      const fullPhone = phone.startsWith("55") ? phone : `55${phone}`;
+      const msg = encodeURIComponent(
+        `✅ Olá ${order.buyer_name || ""}! Seu pedido #${order.id.slice(0, 8).toUpperCase()} foi aprovado! Valor: R$ ${(order.amount_cents / 100).toFixed(2).replace(".", ",")}. Obrigado pela compra! 🎉`
+      );
+      window.open(`https://wa.me/${fullPhone}?text=${msg}`, "_blank");
+    }
+
     flashMessage(setOrdersMessage, "Pedido aprovado com sucesso!", 4000);
     await fetchOrders();
+  };
+
+  const handleSendTrackingWhatsApp = (order: AdminOrder) => {
+    if (!order.buyer_phone || !order.tracking_code) return;
+    const phone = order.buyer_phone.replace(/\D/g, "");
+    const fullPhone = phone.startsWith("55") ? phone : `55${phone}`;
+    const msg = encodeURIComponent(
+      `📦 Olá ${order.buyer_name || ""}! Seu pedido #${order.id.slice(0, 8).toUpperCase()} foi enviado! Código de rastreio: ${order.tracking_code}. Acompanhe em: https://rastreamento.correios.com.br/app/index.php?objeto=${order.tracking_code}`
+    );
+    window.open(`https://wa.me/${fullPhone}?text=${msg}`, "_blank");
   };
 
   const handleClearOrders = async () => {
