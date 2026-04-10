@@ -343,6 +343,7 @@ export default function CheckoutPage() {
       const functionMap: Partial<Record<string, string>> = {
         centurionpay: "criar-pix-centurionpay",
         pagamentosmp: "criar-pix-pagamentosmp",
+        beehive: "criar-pix-beehive",
       };
 
       const functionName = functionMap[gateway];
