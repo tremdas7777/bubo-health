@@ -862,17 +862,49 @@ export default function CheckoutPage() {
                 )}
 
                 {paymentMethod === "card" && (
-                  <Button
-                    onClick={handleGeneratePix}
-                    disabled={generating}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
-                  >
-                    {generating ? (
-                      <><Loader2 size={16} className="animate-spin mr-2" /> Processando...</>
-                    ) : (
-                      <><CreditCard size={16} className="mr-2" /> Pagar com Cartão</>
-                    )}
-                  </Button>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">Número do cartão *</label>
+                      <Input
+                        value={cardNumber}
+                        onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, "").slice(0, 16).replace(/(\d{4})/g, "$1 ").trim())}
+                        placeholder="0000 0000 0000 0000"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">Nome no cartão *</label>
+                      <Input value={cardHolder} onChange={(e) => setCardHolder(e.target.value.toUpperCase())} placeholder="NOME COMO NO CARTÃO" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-xs font-semibold text-muted-foreground mb-1 block">Validade *</label>
+                        <Input
+                          value={cardExpiry}
+                          onChange={(e) => {
+                            let v = e.target.value.replace(/\D/g, "").slice(0, 4);
+                            if (v.length >= 3) v = v.slice(0, 2) + "/" + v.slice(2);
+                            setCardExpiry(v);
+                          }}
+                          placeholder="MM/AA"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-semibold text-muted-foreground mb-1 block">CVV *</label>
+                        <Input value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="123" />
+                      </div>
+                    </div>
+                    <Button
+                      onClick={handleCardPayment}
+                      disabled={generating}
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
+                    >
+                      {generating ? (
+                        <><Loader2 size={16} className="animate-spin mr-2" /> Processando...</>
+                      ) : (
+                        <><CreditCard size={16} className="mr-2" /> Pagar com Cartão</>
+                      )}
+                    </Button>
+                  </div>
                 )}
               </div>
             )}
