@@ -380,6 +380,9 @@ export default function CheckoutPage() {
           publicKey: gatewayConfig.pagamentosmp.publicKey,
           secretKey: gatewayConfig.pagamentosmp.secretKey,
         },
+        beehive: {
+          secretKey: gatewayConfig.beehive.secretKey,
+        },
       };
 
       const { data, error } = await supabase.functions.invoke(functionName, {
