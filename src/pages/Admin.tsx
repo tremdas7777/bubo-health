@@ -97,6 +97,7 @@ interface AdminOrder {
   gateway: string | null;
   created_at: string;
   updated_at: string;
+  tracking_code: string | null;
 }
 
 const INITIAL_STATS: FunnelStats = {
@@ -1663,6 +1664,32 @@ export default function Admin() {
                         )}
                         <span className="text-[10px] text-muted-foreground">{new Date(order.created_at).toLocaleString("pt-BR")}</span>
                       </div>
+                    </div>
+
+                    {/* Tracking code */}
+                    <div className="mt-2 flex items-center gap-2 border-t border-border pt-2">
+                      <Truck size={12} className="text-muted-foreground shrink-0" />
+                      <Input
+                        placeholder="Código de rastreio"
+                        value={order.tracking_code || ""}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setOrders((prev) => prev.map((o) => o.id === order.id ? { ...o, tracking_code: val } : o));
+                        }}
+                        className="h-7 text-xs flex-1"
+                      />
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-7 px-2 text-[10px] font-bold"
+                        onClick={async () => {
+                          const code = orders.find((o) => o.id === order.id)?.tracking_code || null;
+                          const { error } = await supabase.from("orders").update({ tracking_code: code }).eq("id", order.id);
+                          flashMessage(setOrdersMessage, error ? "Erro ao salvar rastreio" : "Código de rastreio salvo com sucesso!");
+                        }}
+                      >
+                        <Save size={10} className="mr-1" /> Salvar
+                      </Button>
                     </div>
                   </Card>
                 ))}
