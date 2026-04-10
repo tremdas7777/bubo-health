@@ -19,20 +19,18 @@ export default memo(function CollectionsCarousel() {
     if (!scrollRef.current) return;
     isDragging.current = true;
     hasMoved.current = false;
-    startX.current = e.pageX - scrollRef.current.offsetLeft;
+    startX.current = e.clientX;
     scrollLeft.current = scrollRef.current.scrollLeft;
     scrollRef.current.setPointerCapture(e.pointerId);
     scrollRef.current.style.cursor = "grabbing";
-    scrollRef.current.style.scrollSnapType = "none";
   }, []);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (!isDragging.current || !scrollRef.current) return;
     e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.5;
-    if (Math.abs(walk) > 5) hasMoved.current = true;
-    scrollRef.current.scrollLeft = scrollLeft.current - walk;
+    const delta = e.clientX - startX.current;
+    if (Math.abs(delta) > 5) hasMoved.current = true;
+    scrollRef.current.scrollLeft = scrollLeft.current - delta;
   }, []);
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
@@ -40,7 +38,6 @@ export default memo(function CollectionsCarousel() {
     isDragging.current = false;
     scrollRef.current.releasePointerCapture(e.pointerId);
     scrollRef.current.style.cursor = "grab";
-    scrollRef.current.style.scrollSnapType = "x mandatory";
   }, []);
 
   const onClickCapture = useCallback((e: React.MouseEvent) => {
@@ -73,7 +70,6 @@ export default memo(function CollectionsCarousel() {
               scrollbarWidth: "none",
               msOverflowStyle: "none",
               cursor: "grab",
-              scrollSnapType: "x mandatory",
               WebkitOverflowScrolling: "touch",
             }}
             onPointerDown={onPointerDown}
@@ -88,7 +84,6 @@ export default memo(function CollectionsCarousel() {
                 className="flex-shrink-0 w-[160px] md:w-[185px] group/card"
                 onClickCapture={onClickCapture}
                 draggable={false}
-                style={{ scrollSnapAlign: "start" }}
               >
                 <div className="relative overflow-hidden rounded-xl aspect-[3/4]">
                   <img
