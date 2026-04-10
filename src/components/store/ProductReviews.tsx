@@ -72,6 +72,11 @@ function Stars({ count }: { count: number }) {
 }
 
 export default function ProductReviews({ productSlug }: { productSlug: string }) {
+  // Reviews with photos are only for the kit product
+  if (productSlug !== "kit-ferramentas-refrigeracao") {
+    return null;
+  }
+
   const reviews = defaultReviews;
   const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
 
