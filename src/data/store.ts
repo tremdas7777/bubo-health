@@ -342,8 +342,10 @@ export function formatPrice(price: number): string {
 }
 
 export function getInstallmentPrice(price: number, installments: number = 6): string {
-  const { getInstallmentValue } = require("@/lib/pricing");
-  return formatPrice(getInstallmentValue(price, installments));
+  if (installments <= 1) return formatPrice(price);
+  const RATE = 0.0249;
+  const totalWithInterest = price * Math.pow(1 + RATE, installments);
+  return formatPrice(totalWithInterest / installments);
 }
 
 export function getDiscountPercent(price: number, compareAt: number): number {
