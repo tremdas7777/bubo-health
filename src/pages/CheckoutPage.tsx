@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp, CreditCard } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { formatPrice, getInstallmentPrice } from "@/data/store";
 import { trackEvent } from "@/lib/funnelTracking";
 import { supabase } from "@/integrations/supabase/client";
