@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { formatPrice } from "@/data/store";
 import {
-  User, Package, LogOut, Save, Loader2, MapPin, Phone, FileText, Clock, CheckCircle2, AlertCircle
+  User, Package, LogOut, Save, Loader2, MapPin, Phone, FileText, Clock, CheckCircle2, AlertCircle, Truck
 } from "lucide-react";
 
 interface Profile {
@@ -33,6 +33,7 @@ interface Order {
   buyer_name: string | null;
   gateway: string | null;
   shipping_cost_cents: number | null;
+  tracking_code: string | null;
 }
 
 const STATUS_MAP: Record<string, { label: string; color: string; icon: React.ElementType }> = {
@@ -94,7 +95,7 @@ export default function AccountPage() {
     const fetchOrders = async () => {
       const { data } = await supabase
         .from("orders")
-        .select("id, amount_cents, status, created_at, buyer_name, gateway, shipping_cost_cents")
+        .select("id, amount_cents, status, created_at, buyer_name, gateway, shipping_cost_cents, tracking_code")
         .order("created_at", { ascending: false });
       setOrders((data as Order[]) || []);
       setLoadingOrders(false);
@@ -203,6 +204,22 @@ export default function AccountPage() {
                           {statusInfo.label}
                         </div>
                       </div>
+                      {order.tracking_code && (
+                        <div className="mt-3 flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2">
+                          <Truck size={14} className="text-primary shrink-0" />
+                          <div>
+                            <p className="text-[10px] font-semibold text-muted-foreground">Rastreamento</p>
+                            <a
+                              href={`https://rastreamento.correios.com.br/app/index.php?objeto=${order.tracking_code}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs font-bold text-primary hover:underline"
+                            >
+                              {order.tracking_code}
+                            </a>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   );
                 })
