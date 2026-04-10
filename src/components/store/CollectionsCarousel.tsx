@@ -1,15 +1,54 @@
-import { useRef, memo } from "react";
+import { useRef, useState, useCallback, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { collections } from "@/data/store";
 
 export default memo(function CollectionsCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+  const hasMoved = useRef(false);
 
   const scroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
     scrollRef.current.scrollBy({ left: dir === "left" ? -280 : 280, behavior: "smooth" });
   };
+
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    if (!scrollRef.current) return;
+    isDragging.current = true;
+    hasMoved.current = false;
+    startX.current = e.pageX - scrollRef.current.offsetLeft;
+    scrollLeft.current = scrollRef.current.scrollLeft;
+    scrollRef.current.setPointerCapture(e.pointerId);
+    scrollRef.current.style.cursor = "grabbing";
+    scrollRef.current.style.scrollSnapType = "none";
+  }, []);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.5;
+    if (Math.abs(walk) > 5) hasMoved.current = true;
+    scrollRef.current.scrollLeft = scrollLeft.current - walk;
+  }, []);
+
+  const onPointerUp = useCallback((e: React.PointerEvent) => {
+    if (!scrollRef.current) return;
+    isDragging.current = false;
+    scrollRef.current.releasePointerCapture(e.pointerId);
+    scrollRef.current.style.cursor = "grab";
+    scrollRef.current.style.scrollSnapType = "x mandatory";
+  }, []);
+
+  const onClickCapture = useCallback((e: React.MouseEvent) => {
+    if (hasMoved.current) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, []);
 
   return (
     <section className="py-10 md:py-14">
@@ -29,22 +68,36 @@ export default memo(function CollectionsCarousel() {
 
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto pb-2"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            className="flex gap-4 overflow-x-auto pb-2 select-none"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              cursor: "grab",
+              scrollSnapType: "x mandatory",
+              WebkitOverflowScrolling: "touch",
+            }}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerLeave={onPointerUp}
           >
             {collections.map((col) => (
               <Link
                 key={col.id}
                 to={`/colecao/${col.slug}`}
                 className="flex-shrink-0 w-[160px] md:w-[185px] group/card"
+                onClickCapture={onClickCapture}
+                draggable={false}
+                style={{ scrollSnapAlign: "start" }}
               >
                 <div className="relative overflow-hidden rounded-xl aspect-[3/4]">
                   <img
                     src={col.image}
                     alt={col.name}
-                    className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500 pointer-events-none"
                     loading="lazy"
                     decoding="async"
+                    draggable={false}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-0 right-0 px-2">
