@@ -341,8 +341,9 @@ export function formatPrice(price: number): string {
   return `R$ ${price.toFixed(2).replace('.', ',')}`;
 }
 
-export function getInstallmentPrice(price: number, installments: number = 12): string {
-  return formatPrice(price / installments);
+export function getInstallmentPrice(price: number, installments: number = 6): string {
+  const { getInstallmentValue } = require("@/lib/pricing");
+  return formatPrice(getInstallmentValue(price, installments));
 }
 
 export function getDiscountPercent(price: number, compareAt: number): number {

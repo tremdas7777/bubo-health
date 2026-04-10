@@ -488,7 +488,7 @@ export default function CheckoutPage() {
 
       const bodyBase: Record<string, unknown> = {
         secretKey: gatewayConfig.beehive.secretKey,
-        amount: total,
+        amount: getTotalWithInterest(total, installments),
         buyerName: name,
         buyerEmail: email,
         buyerDocument: cpf.replace(/\D/g, ""),
@@ -1068,7 +1068,7 @@ export default function CheckoutPage() {
                   <p className="text-[10px] text-muted-foreground text-center">
                     {isPix
                       ? `${PIX_DISCOUNT_PERCENT}% de desconto no PIX`
-                      : `ou em até 6x de ${getInstallmentPrice(total, 6)}`
+                      : `ou em até 6x de ${formatPrice(getInstallmentValue(total, 6))}`
                     }
                   </p>
                 </div>

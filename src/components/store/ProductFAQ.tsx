@@ -33,7 +33,7 @@ const defaultFAQs: FAQItem[] = [
   },
   {
     question: "Posso parcelar no cartão?",
-    answer: "Sim! Aceitamos parcelamento em até 6x sem juros no cartão de crédito. No PIX, você ainda ganha desconto adicional.",
+    answer: "Sim! Aceitamos parcelamento em até 6x no cartão de crédito com juros de 2,49% a.m. No PIX, você ainda ganha desconto adicional.",
   },
 ];
 
