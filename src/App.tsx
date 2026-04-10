@@ -28,6 +28,7 @@ const WishlistPage = lazy(() => import("./pages/WishlistPage"));
 const ThankYouPage = lazy(() => import("./pages/ThankYouPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 const AccountPage = lazy(() => import("./pages/AccountPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 
 const queryClient = new QueryClient();
 
@@ -74,6 +75,7 @@ const App = () => {
                     <Route path="/obrigado" element={<ThankYouPage />} />
                     <Route path="/entrar" element={<AuthPage />} />
                     <Route path="/conta" element={<AccountPage />} />
+                    <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>

@@ -1,0 +1,1 @@
+ALTER TABLE public.orders ADD COLUMN tracking_code text DEFAULT NULL;

@@ -257,6 +257,7 @@ export type Database = {
           qr_code_copied: boolean | null
           shipping_cost_cents: number | null
           status: string
+          tracking_code: string | null
           updated_at: string
           user_id: string | null
         }
@@ -274,6 +275,7 @@ export type Database = {
           qr_code_copied?: boolean | null
           shipping_cost_cents?: number | null
           status?: string
+          tracking_code?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -291,6 +293,7 @@ export type Database = {
           qr_code_copied?: boolean | null
           shipping_cost_cents?: number | null
           status?: string
+          tracking_code?: string | null
           updated_at?: string
           user_id?: string | null
         }

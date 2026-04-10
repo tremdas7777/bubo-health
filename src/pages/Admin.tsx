@@ -97,6 +97,7 @@ interface AdminOrder {
   gateway: string | null;
   created_at: string;
   updated_at: string;
+  tracking_code: string | null;
 }
 
 const INITIAL_STATS: FunnelStats = {
@@ -542,8 +543,28 @@ export default function Admin() {
       gateway: order.gateway,
     });
 
+    // Send WhatsApp notification to buyer
+    if (order.buyer_phone) {
+      const phone = order.buyer_phone.replace(/\D/g, "");
+      const fullPhone = phone.startsWith("55") ? phone : `55${phone}`;
+      const msg = encodeURIComponent(
+        `✅ Olá ${order.buyer_name || ""}! Seu pedido #${order.id.slice(0, 8).toUpperCase()} foi aprovado! Valor: R$ ${(order.amount_cents / 100).toFixed(2).replace(".", ",")}. Obrigado pela compra! 🎉`
+      );
+      window.open(`https://wa.me/${fullPhone}?text=${msg}`, "_blank");
+    }
+
     flashMessage(setOrdersMessage, "Pedido aprovado com sucesso!", 4000);
     await fetchOrders();
+  };
+
+  const handleSendTrackingWhatsApp = (order: AdminOrder) => {
+    if (!order.buyer_phone || !order.tracking_code) return;
+    const phone = order.buyer_phone.replace(/\D/g, "");
+    const fullPhone = phone.startsWith("55") ? phone : `55${phone}`;
+    const msg = encodeURIComponent(
+      `📦 Olá ${order.buyer_name || ""}! Seu pedido #${order.id.slice(0, 8).toUpperCase()} foi enviado! Código de rastreio: ${order.tracking_code}. Acompanhe em: https://rastreamento.correios.com.br/app/index.php?objeto=${order.tracking_code}`
+    );
+    window.open(`https://wa.me/${fullPhone}?text=${msg}`, "_blank");
   };
 
   const handleClearOrders = async () => {
@@ -1663,6 +1684,42 @@ export default function Admin() {
                         )}
                         <span className="text-[10px] text-muted-foreground">{new Date(order.created_at).toLocaleString("pt-BR")}</span>
                       </div>
+                    </div>
+
+                    {/* Tracking code */}
+                    <div className="mt-2 flex items-center gap-2 border-t border-border pt-2">
+                      <Truck size={12} className="text-muted-foreground shrink-0" />
+                      <Input
+                        placeholder="Código de rastreio"
+                        value={order.tracking_code || ""}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setOrders((prev) => prev.map((o) => o.id === order.id ? { ...o, tracking_code: val } : o));
+                        }}
+                        className="h-7 text-xs flex-1"
+                      />
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-7 px-2 text-[10px] font-bold"
+                        onClick={async () => {
+                          const code = orders.find((o) => o.id === order.id)?.tracking_code || null;
+                          const { error } = await supabase.from("orders").update({ tracking_code: code }).eq("id", order.id);
+                          flashMessage(setOrdersMessage, error ? "Erro ao salvar rastreio" : "Código de rastreio salvo com sucesso!");
+                        }}
+                      >
+                        <Save size={10} className="mr-1" /> Salvar
+                      </Button>
+                      {order.tracking_code && order.buyer_phone && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-7 px-2 text-[10px] font-bold text-emerald-500 border-emerald-500/30 hover:bg-emerald-500/10"
+                          onClick={() => handleSendTrackingWhatsApp(order)}
+                        >
+                          <Zap size={10} className="mr-1" /> WhatsApp
+                        </Button>
+                      )}
                     </div>
                   </Card>
                 ))}
