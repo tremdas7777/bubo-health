@@ -42,7 +42,7 @@ function ProductCard({ product, addItem }: { product: ReturnType<typeof getProdu
             )}
           </div>
           <p className="text-[10px] text-muted-foreground mt-0.5">
-            em até <strong>12x</strong> de <strong>{getInstallmentPrice(product.price)}</strong>
+            em até <strong>6x</strong> de <strong>{getInstallmentPrice(product.price, 6)}</strong>
           </p>
         </div>
         <button

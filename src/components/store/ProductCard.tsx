@@ -64,7 +64,7 @@ export default memo(function ProductCard({ product }: Props) {
             ou <strong>{formatPrice(getPixPrice(product.price))}</strong> no PIX ({PIX_DISCOUNT_PERCENT}% off)
           </p>
           <p className="text-[10px] text-muted-foreground">
-            em até <strong>12x</strong> de <strong>{getInstallmentPrice(product.price)}</strong>
+            em até <strong>6x</strong> de <strong>{getInstallmentPrice(product.price, 6)}</strong>
           </p>
         </div>
 

@@ -12,7 +12,7 @@ const Index = () => {
     <Layout>
       <PageHead
         title="Kazoom - Tudo que você precisa em um só lugar"
-        description="De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 12x."
+        description="De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 6x."
       />
       <OrganizationJsonLd />
       <HeroCarousel />

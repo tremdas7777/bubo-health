@@ -2,7 +2,7 @@ import { Truck, CreditCard, Shield, Headphones } from "lucide-react";
 
 const badges = [
   { icon: Truck, title: "Frete Grátis", desc: "Frete Grátis para todo o Brasil!" },
-  { icon: CreditCard, title: "Pagamento Facilitado", desc: "Parcele suas compras em até 12x no cartão" },
+  { icon: CreditCard, title: "Pagamento Facilitado", desc: "Parcele suas compras em até 6x no cartão" },
   { icon: Shield, title: "Pagamento Seguro", desc: "Ambiente Seguro para compras online" },
   { icon: Headphones, title: "Suporte", desc: "Atendimento de Segunda a Sexta das 08h às 18h" },
 ];

@@ -9,7 +9,7 @@ export default function OrganizationJsonLd() {
       url: window.location.origin,
       logo: `${window.location.origin}/logo-icon.png`,
       description:
-        "Kazoom - De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 12x.",
+        "Kazoom - De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 6x.",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Avenida Larissa Cavalcante, 11",

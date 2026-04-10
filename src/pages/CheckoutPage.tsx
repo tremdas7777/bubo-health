@@ -12,6 +12,7 @@ import { fireWebhookEvent } from "@/lib/webhookManager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PIX_DISCOUNT_RATE, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Step = "identification" | "shipping" | "payment";
 
@@ -126,6 +127,7 @@ export default function CheckoutPage() {
   const [cardHolder, setCardHolder] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
+  const [installments, setInstallments] = useState(1);
 
 
 
@@ -492,7 +494,7 @@ export default function CheckoutPage() {
         buyerDocument: cpf.replace(/\D/g, ""),
         buyerPhone: phone.replace(/\D/g, ""),
         cardHash,
-        installments: 1,
+        installments,
         metadata: {
           address,
           addressNumber,
@@ -893,6 +895,21 @@ export default function CheckoutPage() {
                         <Input value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="123" />
                       </div>
                     </div>
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">Parcelas *</label>
+                      <Select value={String(installments)} onValueChange={(v) => setInstallments(Number(v))}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Array.from({ length: 6 }, (_, i) => i + 1).map((n) => (
+                            <SelectItem key={n} value={String(n)}>
+                              {n}x de {formatPrice(total / n)} {n === 1 ? "(à vista)" : "sem juros"}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <Button
                       onClick={handleCardPayment}
                       disabled={generating}
@@ -1046,7 +1063,7 @@ export default function CheckoutPage() {
                   <p className="text-[10px] text-muted-foreground text-center">
                     {isPix
                       ? `${PIX_DISCOUNT_PERCENT}% de desconto no PIX`
-                      : `ou em até 12x de ${getInstallmentPrice(total)}`
+                      : `ou em até 6x de ${getInstallmentPrice(total, 6)}`
                     }
                   </p>
                 </div>
