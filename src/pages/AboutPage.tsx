@@ -19,7 +19,7 @@ export default function AboutPage() {
           </p>
           <p>
             Trabalhamos com as melhores marcas e garantimos frete grátis para todo o Brasil,
-            além de parcelamento em até 12x no cartão e desconto especial no PIX.
+            além de parcelamento em até 6x no cartão e desconto especial no PIX.
           </p>
           <p>
             Nosso compromisso é com a sua satisfação. Conte com nosso suporte de segunda a sexta,

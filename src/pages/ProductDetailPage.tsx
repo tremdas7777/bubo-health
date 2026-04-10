@@ -121,7 +121,7 @@ export default function ProductDetailPage() {
                   </span>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground">em até 12x de {getInstallmentPrice(product.price)}</p>
+              <p className="text-sm text-muted-foreground">em até 6x de {getInstallmentPrice(product.price, 6)}</p>
             </div>
 
             {product.variants && product.variants.length > 0 && (
