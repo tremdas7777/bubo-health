@@ -441,6 +441,111 @@ export default function CheckoutPage() {
     } catch { /* ignore */ }
   };
 
+  const handleCardPayment = async () => {
+    setGenerating(true);
+    setPaymentError("");
+
+    try {
+      const gatewayConfig = await fetchPaymentGatewayConfig();
+      const gateway = gatewayConfig.activeGateway;
+      const gatewayLabel = GATEWAY_LABELS[gateway] || gateway;
+
+      if (gateway !== "beehive") {
+        setPaymentError(`Pagamento por cartão ainda não disponível para ${gatewayLabel}.`);
+        setGenerating(false);
+        return;
+      }
+
+      // Validate card fields
+      if (!cardNumber || !cardHolder || !cardExpiry || !cardCvv) {
+        setPaymentError("Preencha todos os dados do cartão.");
+        setGenerating(false);
+        return;
+      }
+
+      // Tokenize card using Beehive JS library
+      if (typeof BeehivePay === "undefined") {
+        setPaymentError("Biblioteca de pagamento não carregada. Recarregue a página.");
+        setGenerating(false);
+        return;
+      }
+
+      BeehivePay.setPublicKey(gatewayConfig.beehive.publicKey);
+      BeehivePay.setTestMode(false);
+
+      const [expMonth, expYear] = cardExpiry.split("/").map((s) => parseInt(s.trim(), 10));
+      const fullYear = expYear < 100 ? 2000 + expYear : expYear;
+
+      const cardHash = await BeehivePay.encrypt({
+        number: cardNumber.replace(/\D/g, ""),
+        holderName: cardHolder,
+        expMonth,
+        expYear: fullYear,
+        cvv: cardCvv,
+      });
+
+      const bodyBase: Record<string, unknown> = {
+        secretKey: gatewayConfig.beehive.secretKey,
+        amount: total,
+        buyerName: name,
+        buyerEmail: email,
+        buyerDocument: cpf.replace(/\D/g, ""),
+        buyerPhone: phone.replace(/\D/g, ""),
+        cardHash,
+        installments: 1,
+        metadata: {
+          address,
+          addressNumber,
+          complement,
+          neighborhood,
+          city,
+          state,
+          cep: cep.replace(/\D/g, ""),
+          shippingMethod: selectedShipping,
+          shippingCostCents: shippingCost,
+        },
+      };
+
+      const { data, error } = await supabase.functions.invoke("criar-cartao-beehive", {
+        body: bodyBase,
+      });
+
+      if (error) {
+        throw new Error(await extractFunctionErrorMessage(error));
+      }
+
+      const result = data as { order_id?: string; status?: string; error?: string } | null;
+
+      if (result?.error) {
+        setPaymentError(result.error);
+        setGenerating(false);
+        return;
+      }
+
+      if (result?.status === "paid") {
+        await fireWebhookEvent("venda_aprovada", {
+          source: "checkout",
+          buyerName: name,
+          buyerEmail: email,
+          buyerPhone: phone,
+          amount: total,
+          orderId: result.order_id,
+          gateway,
+        });
+        void trackEvent("purchase");
+        navigate(`/obrigado?pedido=${result.order_id}`);
+      } else {
+        setOrderId(result?.order_id || "");
+        setPaymentError("Pagamento não aprovado. Verifique os dados do cartão.");
+      }
+    } catch (err) {
+      console.error(err);
+      setPaymentError(await extractFunctionErrorMessage(err));
+    }
+
+    setGenerating(false);
+  };
+
   const stepIndex = step === "identification" ? 0 : step === "shipping" ? 1 : 2;
 
   return (
