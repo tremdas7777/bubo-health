@@ -3,11 +3,14 @@ import HeroCarousel from "@/components/store/HeroCarousel";
 import CollectionsCarousel from "@/components/store/CollectionsCarousel";
 import CategoryCarousel from "@/components/store/CategoryCarousel";
 import TrustBadges from "@/components/store/TrustBadges";
-import { categoryOrder } from "@/data/store";
+import { useDbCollections } from "@/hooks/useProducts";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import PageHead from "@/components/seo/PageHead";
 
 const Index = () => {
+  const { data: collections = [] } = useDbCollections();
+  const categoryOrder = collections.map((c) => c.slug);
+
   return (
     <Layout>
       <PageHead

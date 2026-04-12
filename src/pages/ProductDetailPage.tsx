@@ -8,7 +8,7 @@ import CepCalculator from "@/components/store/CepCalculator";
 import ProductCard from "@/components/store/ProductCard";
 import ProductReviews from "@/components/store/ProductReviews";
 import ProductFAQ from "@/components/store/ProductFAQ";
-import { products, formatPrice, getInstallmentPrice, getDiscountPercent, getProductsByCategory } from "@/data/store";
+import { formatPrice, getInstallmentPrice, getDiscountPercent } from "@/data/store";
 import { getPixPrice, getPixSavings, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
 import { useCart } from "@/contexts/CartContext";
 import { trackEvent } from "@/lib/funnelTracking";
@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import ProductJsonLd from "@/components/seo/ProductJsonLd";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import PageHead from "@/components/seo/PageHead";
+import { useDbProducts, filterByCategory } from "@/hooks/useProducts";
 
 const productBulletPoints: Record<string, { icon: React.ElementType; text: string }[]> = {
   "kit-ferramentas-refrigeracao": [
@@ -32,6 +33,7 @@ const productBulletPoints: Record<string, { icon: React.ElementType; text: strin
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
+  const { data: products = [], isLoading } = useDbProducts();
   const product = products.find((p) => p.slug === slug);
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
@@ -42,6 +44,16 @@ export default function ProductDetailPage() {
       void trackEvent("product_view");
     }
   }, [product]);
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-20 text-center">
+          <p className="text-muted-foreground">Carregando produto...</p>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!product) {
     return (
@@ -56,7 +68,7 @@ export default function ProductDetailPage() {
 
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const pixPrice = getPixPrice(product.price);
-  const relatedProducts = getProductsByCategory(product.category).filter((p) => p.id !== product.id).slice(0, 4);
+  const relatedProducts = filterByCategory(products, product.category).filter((p) => p.id !== product.id).slice(0, 4);
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
   const bullets = productBulletPoints[product.slug];
 

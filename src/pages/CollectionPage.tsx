@@ -2,14 +2,16 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import Layout from "@/components/store/Layout";
 import ProductCard from "@/components/store/ProductCard";
-import { products, collections, getProductsByCategory } from "@/data/store";
+import { useDbProducts, useDbCollections, filterByCategory } from "@/hooks/useProducts";
 import PageHead from "@/components/seo/PageHead";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 
 export default function CollectionPage() {
   const { slug } = useParams<{ slug: string }>();
+  const { data: products = [] } = useDbProducts();
+  const { data: collections = [] } = useDbCollections();
   const collection = collections.find((c) => c.slug === slug);
-  const filtered = getProductsByCategory(slug || "");
+  const filtered = filterByCategory(products, slug || "");
   const [sortBy, setSortBy] = useState("default");
   const [filterAvail, setFilterAvail] = useState("all");
 
@@ -40,7 +42,6 @@ export default function CollectionPage() {
           {collectionName}
         </h1>
 
-        {/* Filters bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 my-6 border-y border-border py-4">
           <div className="flex items-center gap-4 text-sm">
             <span className="text-muted-foreground">Filtrar:</span>
