@@ -1,10 +1,11 @@
 import { useRef, useState, useCallback, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { collections } from "@/data/store";
+import { useDbCollections } from "@/hooks/useProducts";
 
 export default memo(function CollectionsCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { data: collections = [] } = useDbCollections();
   const isDragging = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
@@ -46,6 +47,8 @@ export default memo(function CollectionsCarousel() {
       e.stopPropagation();
     }
   }, []);
+
+  if (collections.length === 0) return null;
 
   return (
     <section className="py-10 md:py-14">

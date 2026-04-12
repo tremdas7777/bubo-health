@@ -1,14 +1,16 @@
 import { useRef, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { getProductsByCategory, getCategoryName, formatPrice, getInstallmentPrice } from "@/data/store";
+import { formatPrice, getInstallmentPrice, getCategoryName } from "@/data/store";
 import { useCart } from "@/contexts/CartContext";
+import { useDbProducts, filterByCategory } from "@/hooks/useProducts";
+import type { Product } from "@/data/store";
 
 interface Props {
   category: string;
 }
 
-function ProductCard({ product, addItem }: { product: ReturnType<typeof getProductsByCategory>[number]; addItem: (p: any) => void }) {
+function ProductCardInline({ product, addItem }: { product: Product; addItem: (p: any) => void }) {
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   return (
     <div className="flex-shrink-0 w-[200px] md:w-[230px] group/card bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all [.grid_&]:w-full">
@@ -58,7 +60,8 @@ function ProductCard({ product, addItem }: { product: ReturnType<typeof getProdu
 
 export default memo(function CategoryCarousel({ category }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const products = getProductsByCategory(category);
+  const { data: allProducts = [] } = useDbProducts();
+  const products = filterByCategory(allProducts, category);
   const { addItem } = useCart();
 
   if (products.length === 0) return null;
@@ -80,7 +83,7 @@ export default memo(function CategoryCarousel({ category }: Props) {
         {isFew ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 max-w-[960px] mx-auto">
             {products.map((product) => (
-              <ProductCard key={product.id} product={product} addItem={addItem} />
+              <ProductCardInline key={product.id} product={product} addItem={addItem} />
             ))}
           </div>
         ) : (
@@ -99,7 +102,7 @@ export default memo(function CategoryCarousel({ category }: Props) {
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} addItem={addItem} />
+                <ProductCardInline key={product.id} product={product} addItem={addItem} />
               ))}
             </div>
 

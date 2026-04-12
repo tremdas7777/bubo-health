@@ -2,11 +2,13 @@ import { useState, useMemo } from "react";
 import { Search } from "lucide-react";
 import Layout from "@/components/store/Layout";
 import ProductCard from "@/components/store/ProductCard";
-import { products, collections } from "@/data/store";
+import { useDbProducts, useDbCollections } from "@/hooks/useProducts";
 import PageHead from "@/components/seo/PageHead";
 import { Input } from "@/components/ui/input";
 
 export default function ProductsPage() {
+  const { data: products = [] } = useDbProducts();
+  const { data: collections = [] } = useDbCollections();
   const [sortBy, setSortBy] = useState("default");
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterPriceRange, setFilterPriceRange] = useState("all");
@@ -15,7 +17,6 @@ export default function ProductsPage() {
   const filtered = useMemo(() => {
     let list = [...products];
 
-    // Search
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       list = list.filter(
@@ -26,23 +27,20 @@ export default function ProductsPage() {
       );
     }
 
-    // Category
     if (filterCategory !== "all") {
       list = list.filter((p) => p.category === filterCategory);
     }
 
-    // Price range
     if (filterPriceRange === "0-100") list = list.filter((p) => p.price <= 100);
     else if (filterPriceRange === "100-200") list = list.filter((p) => p.price > 100 && p.price <= 200);
     else if (filterPriceRange === "200+") list = list.filter((p) => p.price > 200);
 
-    // Sort
     if (sortBy === "price-asc") list.sort((a, b) => a.price - b.price);
     if (sortBy === "price-desc") list.sort((a, b) => b.price - a.price);
     if (sortBy === "name-asc") list.sort((a, b) => a.name.localeCompare(b.name));
 
     return list;
-  }, [sortBy, filterCategory, filterPriceRange, searchQuery]);
+  }, [products, sortBy, filterCategory, filterPriceRange, searchQuery]);
 
   return (
     <Layout>
@@ -54,7 +52,6 @@ export default function ProductsPage() {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl md:text-3xl font-heading font-bold text-center mb-2">Produtos</h1>
 
-        {/* Search bar */}
         <div className="relative max-w-md mx-auto my-6">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
@@ -65,7 +62,6 @@ export default function ProductsPage() {
           />
         </div>
 
-        {/* Filters bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 my-6 border-y border-border py-4">
           <div className="flex items-center gap-3 text-sm flex-wrap">
             <select
