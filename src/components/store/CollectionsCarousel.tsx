@@ -97,12 +97,13 @@ export default memo(function CollectionsCarousel() {
                 onClickCapture={onClickCapture}
                 draggable={false}
               >
-                <div className="relative overflow-hidden rounded-xl aspect-[3/4]">
-                  <img
-                    src={col.image}
-                    alt={col.name}
-                    className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500 pointer-events-none"
-                    loading="lazy"
+                <div className="relative overflow-hidden rounded-xl aspect-[3/4] bg-muted">
+                  {(col.image || fallbackImages[col.slug]) ? (
+                    <img
+                      src={col.image || fallbackImages[col.slug]}
+                      alt={col.name}
+                      className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500 pointer-events-none"
+                      loading="lazy"
                     decoding="async"
                     draggable={false}
                   />
