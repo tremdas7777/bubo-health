@@ -6,6 +6,15 @@ import { useDbCollections, useDbProducts } from "@/hooks/useProducts";
 export default memo(function CollectionsCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { data: collections = [] } = useDbCollections();
+  const { data: products = [] } = useDbProducts();
+
+  // Build a map: collection slug -> first product image as fallback
+  const fallbackImages: Record<string, string> = {};
+  for (const p of products) {
+    if (p.category && !fallbackImages[p.category] && p.image) {
+      fallbackImages[p.category] = p.image;
+    }
+  }
   const isDragging = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
