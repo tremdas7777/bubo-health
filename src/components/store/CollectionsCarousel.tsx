@@ -1,7 +1,7 @@
-import { useRef, useState, useCallback, memo } from "react";
+import { useRef, useCallback, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useDbCollections } from "@/hooks/useProducts";
+import { useDbCollections, useDbProducts } from "@/hooks/useProducts";
 
 export default memo(function CollectionsCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
