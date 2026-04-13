@@ -98,15 +98,16 @@ export default memo(function CollectionsCarousel() {
                 draggable={false}
               >
                 <div className="relative overflow-hidden rounded-xl aspect-[3/4] bg-muted">
-                  {(col.image || fallbackImages[col.slug]) ? (
+                  {(col.image || fallbackImages[col.slug]) && (
                     <img
                       src={col.image || fallbackImages[col.slug]}
                       alt={col.name}
                       className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500 pointer-events-none"
                       loading="lazy"
-                    decoding="async"
-                    draggable={false}
-                  />
+                      decoding="async"
+                      draggable={false}
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-0 right-0 px-2">
                     <h3 className="text-white font-heading font-medium text-sm text-center drop-shadow-sm">
