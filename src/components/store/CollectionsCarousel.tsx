@@ -1,11 +1,20 @@
-import { useRef, useState, useCallback, memo } from "react";
+import { useRef, useCallback, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useDbCollections } from "@/hooks/useProducts";
+import { useDbCollections, useDbProducts } from "@/hooks/useProducts";
 
 export default memo(function CollectionsCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { data: collections = [] } = useDbCollections();
+  const { data: products = [] } = useDbProducts();
+
+  // Build a map: collection slug -> first product image as fallback
+  const fallbackImages: Record<string, string> = {};
+  for (const p of products) {
+    if (p.category && !fallbackImages[p.category] && p.image) {
+      fallbackImages[p.category] = p.image;
+    }
+  }
   const isDragging = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
@@ -88,15 +97,17 @@ export default memo(function CollectionsCarousel() {
                 onClickCapture={onClickCapture}
                 draggable={false}
               >
-                <div className="relative overflow-hidden rounded-xl aspect-[3/4]">
-                  <img
-                    src={col.image}
-                    alt={col.name}
-                    className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500 pointer-events-none"
-                    loading="lazy"
-                    decoding="async"
-                    draggable={false}
-                  />
+                <div className="relative overflow-hidden rounded-xl aspect-[3/4] bg-muted">
+                  {(col.image || fallbackImages[col.slug]) && (
+                    <img
+                      src={col.image || fallbackImages[col.slug]}
+                      alt={col.name}
+                      className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500 pointer-events-none"
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-0 right-0 px-2">
                     <h3 className="text-white font-heading font-medium text-sm text-center drop-shadow-sm">
