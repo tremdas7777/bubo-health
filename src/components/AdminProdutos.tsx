@@ -42,6 +42,60 @@ export default function AdminProdutos() {
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
   const [colDragIdx, setColDragIdx] = useState<number | null>(null);
   const [colDragOverIdx, setColDragOverIdx] = useState<number | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const imgUploadRef = useRef<HTMLInputElement>(null);
+  const colImgUploadRef = useRef<HTMLInputElement>(null);
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    const adminPassword = getAdminPassword();
+    if (!adminPassword) { toast.error('Sessão expirada'); return null; }
+    const formData = new FormData();
+    formData.append('password', adminPassword);
+    formData.append('file', file);
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const res = await fetch(`${supabaseUrl}/functions/v1/upload-product-image`, {
+      method: 'POST',
+      headers: { 'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY },
+      body: formData,
+    });
+    const data = await res.json();
+    if (data.error) { toast.error('Erro no upload: ' + data.error); return null; }
+    return data.url;
+  };
+
+  const handleProductImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    const urls: string[] = [];
+    for (const file of Array.from(files)) {
+      const url = await uploadImage(file);
+      if (url) urls.push(url);
+    }
+    if (urls.length > 0) {
+      setEditProduct(p => {
+        const current = p?.images || [];
+        const updated = [...current, ...urls];
+        return { ...p, images: updated, image_url: updated[0] || '' };
+      });
+      toast.success(`${urls.length} imagem(ns) enviada(s)!`);
+    }
+    setUploading(false);
+    if (imgUploadRef.current) imgUploadRef.current.value = '';
+  };
+
+  const handleCollectionImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const url = await uploadImage(file);
+    if (url) {
+      setEditCollection(c => ({ ...c, image_url: url }));
+      toast.success('Imagem enviada!');
+    }
+    setUploading(false);
+    if (colImgUploadRef.current) colImgUploadRef.current.value = '';
+  };
 
   const fetchProducts = async () => { setLoading(true); const { data } = await supabase.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false }); setProducts((data as DbProduct[]) || []); setLoading(false); };
   const fetchCollections = async () => { const { data } = await supabase.from('collections').select('*').order('sort_order', { ascending: true }); setCollections((data as Collection[]) || []); };
@@ -256,7 +310,11 @@ export default function AdminProdutos() {
                 <label className="text-[10px] font-bold text-muted-foreground uppercase mb-1 block">Imagens ({(editProduct.images || []).length})</label>
                 <div className="space-y-2">
                   {(editProduct.images || []).map((url, i) => (<div key={i} className="flex items-center gap-2"><div className="w-10 h-10 bg-muted rounded overflow-hidden shrink-0"><img src={url} alt="" className="w-full h-full object-cover" onError={e => (e.currentTarget.style.display = 'none')} /></div><Input value={url} onChange={e => { const imgs = [...(editProduct.images || [])]; imgs[i] = e.target.value; setEditProduct(p => ({ ...p, images: imgs, image_url: imgs[0] || '' })); }} className="text-xs font-mono flex-1" /><button onClick={() => { const imgs = (editProduct.images || []).filter((_, j) => j !== i); setEditProduct(p => ({ ...p, images: imgs, image_url: imgs[0] || '' })); }} className="p-1 text-destructive"><X size={14} /></button></div>))}
-                  <Button variant="outline" size="sm" className="text-xs" onClick={() => setEditProduct(p => ({ ...p, images: [...(p?.images || []), ''] }))}><Plus size={14} className="mr-1" /> Adicionar Imagem</Button>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" className="text-xs" onClick={() => setEditProduct(p => ({ ...p, images: [...(p?.images || []), ''] }))}><Plus size={14} className="mr-1" /> URL</Button>
+                    <input ref={imgUploadRef} type="file" accept="image/*" multiple onChange={handleProductImageUpload} className="hidden" />
+                    <Button variant="outline" size="sm" className="text-xs" onClick={() => imgUploadRef.current?.click()} disabled={uploading}>{uploading ? <Loader2 size={14} className="mr-1 animate-spin" /> : <Upload size={14} className="mr-1" />} Upload do PC</Button>
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-6">
@@ -280,7 +338,15 @@ export default function AdminProdutos() {
               <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Nome *</label><Input value={editCollection.name || ''} onChange={e => { const name = e.target.value; setEditCollection(c => ({ ...c, name, slug: c?.id ? c.slug : slugify(name) })); }} className="text-sm mt-1" /></div>
               <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Slug *</label><Input value={editCollection.slug || ''} onChange={e => setEditCollection(c => ({ ...c, slug: e.target.value }))} className="text-sm mt-1 font-mono" /></div>
               <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Descrição</label><Textarea value={editCollection.description || ''} onChange={e => setEditCollection(c => ({ ...c, description: e.target.value }))} className="text-sm mt-1" rows={3} /></div>
-              <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Imagem URL</label><Input value={editCollection.image_url || ''} onChange={e => setEditCollection(c => ({ ...c, image_url: e.target.value }))} className="text-sm mt-1 font-mono" /></div>
+              <div>
+                <label className="text-[10px] font-bold text-muted-foreground uppercase">Imagem</label>
+                <div className="flex gap-2 mt-1">
+                  <Input value={editCollection.image_url || ''} onChange={e => setEditCollection(c => ({ ...c, image_url: e.target.value }))} placeholder="URL da imagem" className="text-sm font-mono flex-1" />
+                  <input ref={colImgUploadRef} type="file" accept="image/*" onChange={handleCollectionImageUpload} className="hidden" />
+                  <Button variant="outline" size="sm" className="text-xs shrink-0" onClick={() => colImgUploadRef.current?.click()} disabled={uploading}>{uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}</Button>
+                </div>
+                {editCollection.image_url && <div className="w-16 h-16 mt-2 bg-muted rounded overflow-hidden"><img src={editCollection.image_url} alt="" className="w-full h-full object-cover" /></div>}
+              </div>
               <div className="flex items-center gap-4"><div className="flex items-center gap-2"><Switch checked={editCollection.active !== false} onCheckedChange={v => setEditCollection(c => ({ ...c, active: v }))} /><span className="text-xs font-medium">Ativa</span></div></div>
               <div className="flex gap-2"><Button onClick={saveCollection} disabled={saving} className="flex-1 text-xs">{saving ? <Loader2 size={14} className="mr-1 animate-spin" /> : <Save size={14} className="mr-1" />}{editCollection.id ? 'Salvar' : 'Criar'}</Button><Button variant="outline" onClick={() => setEditCollection(null)} className="text-xs">Cancelar</Button></div>
             </div>
