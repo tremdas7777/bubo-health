@@ -15,6 +15,7 @@ interface Review {
 }
 
 const defaultReviews: Review[] = [
+  // — Com foto (sempre primeiro) —
   {
     name: "Carlos M.",
     rating: 5,
@@ -55,8 +56,64 @@ const defaultReviews: Review[] = [
     image: reviewImg5,
     verified: true,
   },
+  // — Sem foto —
+  {
+    name: "Fernando R.",
+    rating: 5,
+    date: "10/01/2025",
+    text: "Entrega rápida e bem embalado. As ferramentas são robustas e de boa qualidade. O flangeador é muito superior ao que eu usava antes. Nota 10!",
+    verified: true,
+  },
+  {
+    name: "Diego A.",
+    rating: 5,
+    date: "05/01/2025",
+    text: "Sou técnico há 8 anos e esse kit me surpreendeu. Tudo que preciso no dia a dia está aqui. O multímetro com capacímetro é um diferencial enorme.",
+    verified: true,
+  },
+  {
+    name: "Leandro F.",
+    rating: 4,
+    date: "28/12/2024",
+    text: "Kit muito bom, só achei a maleta um pouco pesada, mas é porque vem muita coisa mesmo. Curvadoras e cortador de tubo excelentes.",
+    verified: true,
+  },
+  {
+    name: "Thiago B.",
+    rating: 5,
+    date: "20/12/2024",
+    text: "Melhor investimento que fiz para minha oficina. Parei de ficar pedindo ferramenta emprestada. Tudo funcionando perfeitamente após 2 meses de uso intenso.",
+    verified: true,
+  },
+  {
+    name: "Roberto C.",
+    rating: 5,
+    date: "15/12/2024",
+    text: "Produto excelente! Fiz 5 instalações de split com esse kit e não tive nenhum problema. A bomba de vácuo é silenciosa e eficiente.",
+    verified: true,
+  },
+  {
+    name: "Gustavo N.",
+    rating: 4,
+    date: "10/12/2024",
+    text: "Bom custo-benefício. As mangueiras são de boa qualidade e os manifolds vêm bem calibrados. Recomendo para quem está começando na área.",
+    verified: true,
+  },
+  {
+    name: "Paulo H.",
+    rating: 5,
+    date: "01/12/2024",
+    text: "Comprei para meu filho que está fazendo curso de refrigeração. Ele ficou impressionado com a qualidade. Kit profissional de verdade.",
+    verified: true,
+  },
+  {
+    name: "Edson M.",
+    rating: 5,
+    date: "25/11/2024",
+    text: "Já é meu segundo kit, comprei outro para um funcionário. Durabilidade excelente, uso diariamente há mais de 6 meses sem problemas.",
+    verified: true,
+  },
 ];
-
 function Stars({ count }: { count: number }) {
   return (
     <div className="flex gap-0.5">
