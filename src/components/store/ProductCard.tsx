@@ -22,10 +22,12 @@ export default memo(function ProductCard({ product }: Props) {
       <Link to={`/produto/${product.slug}`} className="block relative overflow-hidden">
         <img
           src={product.image}
-          alt={product.name}
+          alt={`${product.name} - Comprar na Kazoom com frete grátis`}
           className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
           decoding="async"
+          width="400"
+          height="400"
         />
         {product.badge && (
           <span className="absolute top-2 right-2 bg-lime text-foreground text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
