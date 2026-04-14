@@ -5,6 +5,7 @@ import CategoryCarousel from "@/components/store/CategoryCarousel";
 import TrustBadges from "@/components/store/TrustBadges";
 import { useDbCollections } from "@/hooks/useProducts";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
+import WebSiteJsonLd from "@/components/seo/WebSiteJsonLd";
 import PageHead from "@/components/seo/PageHead";
 
 const Index = () => {
@@ -18,6 +19,7 @@ const Index = () => {
         description="De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 6x."
       />
       <OrganizationJsonLd />
+      <WebSiteJsonLd />
       <HeroCarousel />
       <CollectionsCarousel />
       {categoryOrder.map((cat) => (
