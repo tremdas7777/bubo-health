@@ -338,7 +338,15 @@ export default function AdminProdutos() {
               <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Nome *</label><Input value={editCollection.name || ''} onChange={e => { const name = e.target.value; setEditCollection(c => ({ ...c, name, slug: c?.id ? c.slug : slugify(name) })); }} className="text-sm mt-1" /></div>
               <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Slug *</label><Input value={editCollection.slug || ''} onChange={e => setEditCollection(c => ({ ...c, slug: e.target.value }))} className="text-sm mt-1 font-mono" /></div>
               <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Descrição</label><Textarea value={editCollection.description || ''} onChange={e => setEditCollection(c => ({ ...c, description: e.target.value }))} className="text-sm mt-1" rows={3} /></div>
-              <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Imagem URL</label><Input value={editCollection.image_url || ''} onChange={e => setEditCollection(c => ({ ...c, image_url: e.target.value }))} className="text-sm mt-1 font-mono" /></div>
+              <div>
+                <label className="text-[10px] font-bold text-muted-foreground uppercase">Imagem</label>
+                <div className="flex gap-2 mt-1">
+                  <Input value={editCollection.image_url || ''} onChange={e => setEditCollection(c => ({ ...c, image_url: e.target.value }))} placeholder="URL da imagem" className="text-sm font-mono flex-1" />
+                  <input ref={colImgUploadRef} type="file" accept="image/*" onChange={handleCollectionImageUpload} className="hidden" />
+                  <Button variant="outline" size="sm" className="text-xs shrink-0" onClick={() => colImgUploadRef.current?.click()} disabled={uploading}>{uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}</Button>
+                </div>
+                {editCollection.image_url && <div className="w-16 h-16 mt-2 bg-muted rounded overflow-hidden"><img src={editCollection.image_url} alt="" className="w-full h-full object-cover" /></div>}
+              </div>
               <div className="flex items-center gap-4"><div className="flex items-center gap-2"><Switch checked={editCollection.active !== false} onCheckedChange={v => setEditCollection(c => ({ ...c, active: v }))} /><span className="text-xs font-medium">Ativa</span></div></div>
               <div className="flex gap-2"><Button onClick={saveCollection} disabled={saving} className="flex-1 text-xs">{saving ? <Loader2 size={14} className="mr-1 animate-spin" /> : <Save size={14} className="mr-1" />}{editCollection.id ? 'Salvar' : 'Criar'}</Button><Button variant="outline" onClick={() => setEditCollection(null)} className="text-xs">Cancelar</Button></div>
             </div>
