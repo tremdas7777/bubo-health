@@ -1,6 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Minus, Plus, Truck, Shield, ShieldCheck, Package, Wrench, Gauge, Flame, Ruler, Zap, CircuitBoard, CheckCircle2, Star, HelpCircle } from "lucide-react";
+import Breadcrumbs from "@/components/store/Breadcrumbs";
 import Layout from "@/components/store/Layout";
 import ProductImageGallery from "@/components/store/ProductImageGallery";
 import DeliveryTimeline from "@/components/store/DeliveryTimeline";
@@ -94,13 +95,12 @@ export default function ProductDetailPage() {
         ]}
       />
       <div className="container mx-auto px-4 py-6">
-        <nav className="mb-6 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
-          <Link to="/" className="hover:text-primary">Início</Link>
-          <span>/</span>
-          <Link to="/produtos" className="hover:text-primary">Produtos</Link>
-          <span>/</span>
-          <span className="text-foreground">{product.name}</span>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { label: "Produtos", href: "/produtos" },
+            { label: product.name },
+          ]}
+        />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
           <ProductImageGallery
