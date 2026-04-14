@@ -1,10 +1,34 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { z } from "npm:zod@3.25.76";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+
+const ProductPayloadSchema = z.object({
+  id: z.string().uuid().optional().nullable(),
+  name: z.string().min(1).max(255),
+  slug: z.string().min(1).max(255),
+  price_cents: z.number().int().nonnegative(),
+  original_price_cents: z.number().int().nonnegative().nullable().optional(),
+  image_url: z.string().min(1).nullable().optional(),
+  images: z.array(z.string().min(1)).optional(),
+  category: z.string().max(255).nullable().optional(),
+  description: z.string().nullable().optional(),
+  description_html: z.string().nullable().optional(),
+  variants: z.array(z.any()).optional(),
+  featured: z.boolean().optional(),
+  active: z.boolean().optional(),
+  sort_order: z.number().int().nullable().optional(),
+  gtin: z.string().max(255).nullable().optional(),
+});
+
+const BodySchema = z.object({
+  password: z.string().min(1),
+  product: ProductPayloadSchema,
+});
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -12,19 +36,20 @@ serve(async (req) => {
   }
 
   try {
-    const { password, product } = await req.json();
+    const parsed = BodySchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const { password, product } = parsed.data;
 
     const adminPassword = Deno.env.get("ADMIN_PASSWORD");
     if (!adminPassword || password !== adminPassword) {
       return new Response(JSON.stringify({ error: "Senha inválida" }), {
         status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    if (!product || typeof product !== "object" || !product.name || !product.slug) {
-      return new Response(JSON.stringify({ error: "Produto inválido" }), {
-        status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
