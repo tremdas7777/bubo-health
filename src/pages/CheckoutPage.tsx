@@ -375,18 +375,8 @@ export default function CheckoutPage() {
         },
       };
 
-      // Add gateway-specific keys
-      const keyMap: Record<string, Record<string, string>> = {
-        centurionpay: { secretKey: gatewayConfig.centurionpay.secretKey, companyId: gatewayConfig.centurionpay.companyId },
-        pagamentosmp: {
-          publicKey: gatewayConfig.pagamentosmp.publicKey,
-          secretKey: gatewayConfig.pagamentosmp.secretKey,
-        },
-        beehive: {},
-      };
-
       const { data, error } = await supabase.functions.invoke(functionName, {
-        body: { ...bodyBase, ...keyMap[gateway] },
+        body: bodyBase,
       });
 
       if (error) {
