@@ -42,6 +42,60 @@ export default function AdminProdutos() {
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
   const [colDragIdx, setColDragIdx] = useState<number | null>(null);
   const [colDragOverIdx, setColDragOverIdx] = useState<number | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const imgUploadRef = useRef<HTMLInputElement>(null);
+  const colImgUploadRef = useRef<HTMLInputElement>(null);
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    const adminPassword = getAdminPassword();
+    if (!adminPassword) { toast.error('Sessão expirada'); return null; }
+    const formData = new FormData();
+    formData.append('password', adminPassword);
+    formData.append('file', file);
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const res = await fetch(`${supabaseUrl}/functions/v1/upload-product-image`, {
+      method: 'POST',
+      headers: { 'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY },
+      body: formData,
+    });
+    const data = await res.json();
+    if (data.error) { toast.error('Erro no upload: ' + data.error); return null; }
+    return data.url;
+  };
+
+  const handleProductImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    const urls: string[] = [];
+    for (const file of Array.from(files)) {
+      const url = await uploadImage(file);
+      if (url) urls.push(url);
+    }
+    if (urls.length > 0) {
+      setEditProduct(p => {
+        const current = p?.images || [];
+        const updated = [...current, ...urls];
+        return { ...p, images: updated, image_url: updated[0] || '' };
+      });
+      toast.success(`${urls.length} imagem(ns) enviada(s)!`);
+    }
+    setUploading(false);
+    if (imgUploadRef.current) imgUploadRef.current.value = '';
+  };
+
+  const handleCollectionImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const url = await uploadImage(file);
+    if (url) {
+      setEditCollection(c => ({ ...c, image_url: url }));
+      toast.success('Imagem enviada!');
+    }
+    setUploading(false);
+    if (colImgUploadRef.current) colImgUploadRef.current.value = '';
+  };
 
   const fetchProducts = async () => { setLoading(true); const { data } = await supabase.from('products').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false }); setProducts((data as DbProduct[]) || []); setLoading(false); };
   const fetchCollections = async () => { const { data } = await supabase.from('collections').select('*').order('sort_order', { ascending: true }); setCollections((data as Collection[]) || []); };
