@@ -15,14 +15,21 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { amount, buyerName, buyerEmail, buyerDocument, buyerPhone, metadata, publicKey: bodyPublicKey, secretKey: bodySecretKey } = body;
+    const { amount, buyerName, buyerEmail, buyerDocument, buyerPhone, metadata } = body;
 
-    const publicKey = typeof bodyPublicKey === "string" && bodyPublicKey.trim()
-      ? bodyPublicKey.trim()
-      : Deno.env.get("PAGAMENTOSMP_PUBLIC_KEY");
-    const secretKey = typeof bodySecretKey === "string" && bodySecretKey.trim()
-      ? bodySecretKey.trim()
-      : Deno.env.get("PAGAMENTOSMP_SECRET_KEY");
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Read keys from gateway_config (server-side) or fallback to env
+    const { data: gwConfig } = await supabase
+      .from("gateway_config")
+      .select("pagamentosmp_public_key, pagamentosmp_secret_key")
+      .limit(1)
+      .single();
+
+    const publicKey = gwConfig?.pagamentosmp_public_key || Deno.env.get("PAGAMENTOSMP_PUBLIC_KEY") || "";
+    const secretKey = gwConfig?.pagamentosmp_secret_key || Deno.env.get("PAGAMENTOSMP_SECRET_KEY") || "";
 
     if (!publicKey || !secretKey) {
       return new Response(
@@ -34,17 +41,14 @@ serve(async (req) => {
     // Generate unique identifier for this transaction
     const identifier = crypto.randomUUID().replace(/-/g, "").slice(0, 20);
 
-    // Amount is in BRL (reais), not cents
     const amountBRL = typeof amount === "number" && amount > 100 ? amount : amount;
     const shippingFeeBRL = metadata?.shippingCostCents ? metadata.shippingCostCents / 100 : 0;
 
-    // Format document - keep as-is with dots/dashes if present
     const document = buyerDocument || "";
     const formattedDoc = document.replace(/\D/g, "").length === 11
       ? document.replace(/\D/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
       : document;
 
-    // Format phone
     const phoneClean = (buyerPhone || "").replace(/\D/g, "");
     const formattedPhone = phoneClean.length === 11
       ? `(${phoneClean.slice(0, 2)}) ${phoneClean.slice(2, 7)}-${phoneClean.slice(7)}`
@@ -67,7 +71,6 @@ serve(async (req) => {
 
     console.log("MP Pagamentos request body:", JSON.stringify(requestBody));
 
-    // Create PIX payment via MP Pagamentos API
     const pixResponse = await fetch(`${API_BASE}/gateway/pix/receive`, {
       method: "POST",
       headers: {
@@ -101,7 +104,6 @@ serve(async (req) => {
 
     console.log("MP Pagamentos PIX success:", JSON.stringify(pixData));
 
-    // Extract PIX code and QR code from response (pix.code, pix.base64, pix.image)
     const pixCode = pixData.pix?.code || pixData.pix_code || pixData.brcode || pixData.emv || "";
     const pixQrCode = pixData.pix?.base64 || pixData.pix?.image || pixData.qr_code_base64 || "";
     const amountCents = Math.round(amountBRL * 100);
@@ -113,11 +115,6 @@ serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-
-    // Save order to Supabase
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
 
     const { data: order, error: orderError } = await supabase
       .from("orders")
