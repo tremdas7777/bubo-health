@@ -138,33 +138,43 @@ export default function AdminProdutos() {
     setEditProduct(null);
   };
 
-  const deleteProduct = async (id: string) => { if (!confirm('Excluir este produto?')) return; await supabase.from('products').delete().eq('id', id); toast.success('Produto excluído'); fetchProducts(); };
-  const duplicateProduct = async (product: DbProduct) => { const { id, created_at, updated_at, ...rest } = product; await supabase.from('products').insert({ ...rest, slug: rest.slug + '-copia-' + Date.now().toString(36), name: rest.name + ' (Cópia)' }); toast.success('Duplicado!'); fetchProducts(); };
-  const toggleActive = async (product: DbProduct) => { await supabase.from('products').update({ active: !product.active }).eq('id', product.id); fetchProducts(); };
-  const toggleFeatured = async (product: DbProduct) => { await supabase.from('products').update({ featured: !product.featured }).eq('id', product.id); fetchProducts(); };
+  const adminAction = async (action: string, id?: string, data?: any) => {
+    const pw = getAdminPassword();
+    if (!pw) { toast.error('Sessão expirada'); return false; }
+    const { data: res, error } = await supabase.functions.invoke('admin-action', {
+      body: { password: pw, action, id, data },
+    });
+    if (error || res?.error) { toast.error(error?.message || res?.error || 'Erro'); return false; }
+    return true;
+  };
+
+  const deleteProduct = async (id: string) => { if (!confirm('Excluir este produto?')) return; if (await adminAction('delete', id)) { toast.success('Produto excluído'); fetchProducts(); } };
+  const duplicateProduct = async (product: DbProduct) => { if (await adminAction('duplicate', product.id)) { toast.success('Duplicado!'); fetchProducts(); } };
+  const toggleActive = async (product: DbProduct) => { if (await adminAction('toggle-active', product.id, { active: !product.active })) fetchProducts(); };
+  const toggleFeatured = async (product: DbProduct) => { if (await adminAction('toggle-featured', product.id, { featured: !product.featured })) fetchProducts(); };
 
   const handleDragDrop = async (fromIndex: number, toIndex: number) => {
     if (fromIndex === toIndex) return;
     const reordered = [...filtered]; const [moved] = reordered.splice(fromIndex, 1); reordered.splice(toIndex, 0, moved);
-    await Promise.all(reordered.map((p, i) => supabase.from('products').update({ sort_order: i }).eq('id', p.id)));
-    fetchProducts(); toast.success('Ordem atualizada!');
+    if (await adminAction('reorder', undefined, { items: reordered.map((p, i) => ({ id: p.id, sort_order: i })) })) { fetchProducts(); toast.success('Ordem atualizada!'); }
   };
 
   const saveCollection = async () => {
     if (!editCollection?.name || !editCollection.slug) { toast.error('Nome e slug são obrigatórios'); return; }
     setSaving(true);
-    const payload = { name: editCollection.name, slug: editCollection.slug, description: editCollection.description || '', image_url: editCollection.image_url || null, sort_order: editCollection.sort_order || 0, active: editCollection.active !== false };
-    if (editCollection.id) { await supabase.from('collections').update(payload).eq('id', editCollection.id); toast.success('Coleção atualizada!'); }
-    else { await supabase.from('collections').insert(payload); toast.success('Coleção criada!'); }
-    setSaving(false); setEditCollection(null); fetchCollections();
+    const payload = { id: editCollection.id, name: editCollection.name, slug: editCollection.slug, description: editCollection.description || '', image_url: editCollection.image_url || null, sort_order: editCollection.sort_order || 0, active: editCollection.active !== false };
+    if (await adminAction('save-collection', undefined, payload)) {
+      toast.success(editCollection.id ? 'Coleção atualizada!' : 'Coleção criada!');
+      setEditCollection(null); fetchCollections();
+    }
+    setSaving(false);
   };
-  const deleteCollection = async (id: string) => { if (!confirm('Excluir?')) return; await supabase.from('collections').delete().eq('id', id); toast.success('Excluída'); fetchCollections(); };
-  const toggleCollectionActive = async (col: Collection) => { await supabase.from('collections').update({ active: !col.active }).eq('id', col.id); fetchCollections(); };
+  const deleteCollection = async (id: string) => { if (!confirm('Excluir?')) return; if (await adminAction('delete-collection', id)) { toast.success('Excluída'); fetchCollections(); } };
+  const toggleCollectionActive = async (col: Collection) => { if (await adminAction('toggle-collection-active', col.id, { active: !col.active })) fetchCollections(); };
   const handleColDragDrop = async (fromIndex: number, toIndex: number) => {
     if (fromIndex === toIndex) return;
     const reordered = [...collections]; const [moved] = reordered.splice(fromIndex, 1); reordered.splice(toIndex, 0, moved);
-    await Promise.all(reordered.map((c, i) => supabase.from('collections').update({ sort_order: i }).eq('id', c.id)));
-    fetchCollections(); toast.success('Ordem atualizada!');
+    if (await adminAction('reorder-collections', undefined, { items: reordered.map((c, i) => ({ id: c.id, sort_order: i })) })) { fetchCollections(); toast.success('Ordem atualizada!'); }
   };
 
   const handleCsvSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -176,6 +186,8 @@ export default function AdminProdutos() {
 
   const importCsv = async () => {
     if (csvPreview.length === 0) return; setImporting(true); let success = 0; let errors = 0;
+    const pw = getAdminPassword();
+    if (!pw) { toast.error('Sessão expirada'); setImporting(false); return; }
     for (const row of csvPreview) {
       const name = row['nome'] || row['name'] || ''; if (!name) { errors++; continue; }
       const slug = row['slug'] || slugify(name);
@@ -186,8 +198,9 @@ export default function AdminProdutos() {
       const image_url = row['imagem'] || row['image'] || '';
       const imagesStr = row['imagens'] || row['images'] || '';
       const images = imagesStr ? imagesStr.split('|').map((u: string) => u.trim()).filter(Boolean) : (image_url ? [image_url] : []);
-      const { error } = await supabase.from('products').insert({ name, slug, price_cents, original_price_cents, category, description: row['descricao'] || '', image_url: image_url || null, images, featured: ['sim', 'true'].includes((row['destaque'] || '').toLowerCase()), active: !['nao', 'false'].includes((row['ativo'] || 'true').toLowerCase()), sort_order: success });
-      if (error) errors++; else success++;
+      const product = { name, slug, price_cents, original_price_cents, category, description: row['descricao'] || '', image_url: image_url || null, images, featured: ['sim', 'true'].includes((row['destaque'] || '').toLowerCase()), active: !['nao', 'false'].includes((row['ativo'] || 'true').toLowerCase()), sort_order: success };
+      const { data, error } = await supabase.functions.invoke('save-admin-product', { body: { password: pw, product } });
+      if (error || data?.error) errors++; else success++;
     }
     toast.success(`${success} importados, ${errors} erros`); setImporting(false); setCsvFile(null); setCsvPreview([]); fetchProducts();
   };
