@@ -382,9 +382,7 @@ export default function CheckoutPage() {
           publicKey: gatewayConfig.pagamentosmp.publicKey,
           secretKey: gatewayConfig.pagamentosmp.secretKey,
         },
-        beehive: {
-          secretKey: gatewayConfig.beehive.secretKey,
-        },
+        beehive: {},
       };
 
       const { data, error } = await supabase.functions.invoke(functionName, {
@@ -487,7 +485,6 @@ export default function CheckoutPage() {
       });
 
       const bodyBase: Record<string, unknown> = {
-        secretKey: gatewayConfig.beehive.secretKey,
         amount: getTotalWithInterest(total, installments),
         buyerName: name,
         buyerEmail: email,

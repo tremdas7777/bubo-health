@@ -13,12 +13,12 @@ serve(async (req) => {
 
   try {
     const {
-      secretKey, amount, buyerName, buyerEmail, buyerDocument, buyerPhone,
+      amount, buyerName, buyerEmail, buyerDocument, buyerPhone,
       cardHash, installments, metadata,
     } = await req.json();
 
-    if (!secretKey || !amount || !cardHash) {
-      return new Response(JSON.stringify({ error: "secretKey, amount e cardHash são obrigatórios" }), {
+    if (!amount || !cardHash) {
+      return new Response(JSON.stringify({ error: "amount e cardHash são obrigatórios" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -28,6 +28,22 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // Read secret key from gateway_config (server-side, bypasses RLS with service role)
+    const { data: gwConfig, error: gwError } = await supabase
+      .from("gateway_config")
+      .select("beehive_secret_key")
+      .limit(1)
+      .single();
+
+    if (gwError || !gwConfig?.beehive_secret_key) {
+      console.error("Gateway config error:", gwError);
+      return new Response(JSON.stringify({ error: "Chave Beehive não configurada" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const secretKey = gwConfig.beehive_secret_key;
     const authHeader = "Basic " + btoa(`${secretKey}:x`);
     const amountCents = Math.round(amount * 100);
 
@@ -63,7 +79,6 @@ serve(async (req) => {
       };
     }
 
-    // Add shipping address if available
     if (metadata?.address) {
       body.shipping = {
         address: {
@@ -108,7 +123,6 @@ serve(async (req) => {
 
     const status = data.status === "paid" ? "paid" : data.status || "pending";
 
-    // Save order
     const { data: orderData, error: orderError } = await supabase.from("orders").insert({
       amount_cents: amountCents,
       status,
