@@ -186,6 +186,8 @@ export default function AdminProdutos() {
 
   const importCsv = async () => {
     if (csvPreview.length === 0) return; setImporting(true); let success = 0; let errors = 0;
+    const pw = getAdminPassword();
+    if (!pw) { toast.error('Sessão expirada'); setImporting(false); return; }
     for (const row of csvPreview) {
       const name = row['nome'] || row['name'] || ''; if (!name) { errors++; continue; }
       const slug = row['slug'] || slugify(name);
@@ -196,8 +198,9 @@ export default function AdminProdutos() {
       const image_url = row['imagem'] || row['image'] || '';
       const imagesStr = row['imagens'] || row['images'] || '';
       const images = imagesStr ? imagesStr.split('|').map((u: string) => u.trim()).filter(Boolean) : (image_url ? [image_url] : []);
-      const { error } = await supabase.from('products').insert({ name, slug, price_cents, original_price_cents, category, description: row['descricao'] || '', image_url: image_url || null, images, featured: ['sim', 'true'].includes((row['destaque'] || '').toLowerCase()), active: !['nao', 'false'].includes((row['ativo'] || 'true').toLowerCase()), sort_order: success });
-      if (error) errors++; else success++;
+      const product = { name, slug, price_cents, original_price_cents, category, description: row['descricao'] || '', image_url: image_url || null, images, featured: ['sim', 'true'].includes((row['destaque'] || '').toLowerCase()), active: !['nao', 'false'].includes((row['ativo'] || 'true').toLowerCase()), sort_order: success };
+      const { data, error } = await supabase.functions.invoke('save-admin-product', { body: { password: pw, product } });
+      if (error || data?.error) errors++; else success++;
     }
     toast.success(`${success} importados, ${errors} erros`); setImporting(false); setCsvFile(null); setCsvPreview([]); fetchProducts();
   };
