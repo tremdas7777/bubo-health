@@ -310,7 +310,11 @@ export default function AdminProdutos() {
                 <label className="text-[10px] font-bold text-muted-foreground uppercase mb-1 block">Imagens ({(editProduct.images || []).length})</label>
                 <div className="space-y-2">
                   {(editProduct.images || []).map((url, i) => (<div key={i} className="flex items-center gap-2"><div className="w-10 h-10 bg-muted rounded overflow-hidden shrink-0"><img src={url} alt="" className="w-full h-full object-cover" onError={e => (e.currentTarget.style.display = 'none')} /></div><Input value={url} onChange={e => { const imgs = [...(editProduct.images || [])]; imgs[i] = e.target.value; setEditProduct(p => ({ ...p, images: imgs, image_url: imgs[0] || '' })); }} className="text-xs font-mono flex-1" /><button onClick={() => { const imgs = (editProduct.images || []).filter((_, j) => j !== i); setEditProduct(p => ({ ...p, images: imgs, image_url: imgs[0] || '' })); }} className="p-1 text-destructive"><X size={14} /></button></div>))}
-                  <Button variant="outline" size="sm" className="text-xs" onClick={() => setEditProduct(p => ({ ...p, images: [...(p?.images || []), ''] }))}><Plus size={14} className="mr-1" /> Adicionar Imagem</Button>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" className="text-xs" onClick={() => setEditProduct(p => ({ ...p, images: [...(p?.images || []), ''] }))}><Plus size={14} className="mr-1" /> URL</Button>
+                    <input ref={imgUploadRef} type="file" accept="image/*" multiple onChange={handleProductImageUpload} className="hidden" />
+                    <Button variant="outline" size="sm" className="text-xs" onClick={() => imgUploadRef.current?.click()} disabled={uploading}>{uploading ? <Loader2 size={14} className="mr-1 animate-spin" /> : <Upload size={14} className="mr-1" />} Upload do PC</Button>
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-6">
