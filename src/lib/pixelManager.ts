@@ -184,12 +184,14 @@ async function buildFacebookUserData(userData?: { email?: string; phone?: string
 }
 
 export function fireConversionEvent(eventName: string, data?: Record<string, unknown>, userData?: { email?: string; phone?: string }, eventId?: string) {
+  // Generate a single dedup ID upfront so client + CAPI always match
+  const dedupId = eventId || `${eventName}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   if (!pixelsReady) {
-    eventQueue.push({ eventName, data, userData, eventId });
-    _fireCAPIOnly(eventName, data, userData, eventId);
+    eventQueue.push({ eventName, data, userData, eventId: dedupId });
+    _fireCAPIOnly(eventName, data, userData, dedupId);
     return;
   }
-  _fireConversionEventNow(eventName, data, userData, eventId);
+  _fireConversionEventNow(eventName, data, userData, dedupId);
 }
 
 function _fireCAPIOnly(eventName: string, data?: Record<string, unknown>, userData?: { email?: string; phone?: string }, eventId?: string) {
