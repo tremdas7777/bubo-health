@@ -12,10 +12,10 @@ serve(async (req) => {
   }
 
   try {
-    const { secretKey, companyId, amount, buyerName, buyerEmail, buyerDocument, buyerPhone, externalRef, metadata } = await req.json();
+    const { amount, buyerName, buyerEmail, buyerDocument, buyerPhone, externalRef, metadata } = await req.json();
 
-    if (!secretKey || !companyId || !amount) {
-      return new Response(JSON.stringify({ error: "secretKey, companyId e amount são obrigatórios" }), {
+    if (!amount) {
+      return new Response(JSON.stringify({ error: "amount é obrigatório" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -24,6 +24,24 @@ serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Read keys from gateway_config (server-side)
+    const { data: gwConfig, error: gwError } = await supabase
+      .from("gateway_config")
+      .select("centurionpay_secret_key, centurionpay_company_id")
+      .limit(1)
+      .single();
+
+    if (gwError || !gwConfig?.centurionpay_secret_key || !gwConfig?.centurionpay_company_id) {
+      console.error("Gateway config error:", gwError);
+      return new Response(JSON.stringify({ error: "Chaves CenturionPay não configuradas" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const secretKey = gwConfig.centurionpay_secret_key;
+    const companyId = gwConfig.centurionpay_company_id;
 
     const webhookUrl = `${supabaseUrl}/functions/v1/payment-webhook`;
     const authHeader = "Basic " + btoa(`${secretKey}:${companyId}`);
