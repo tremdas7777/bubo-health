@@ -2,6 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Product, Collection } from "@/data/store";
 
+export const DB_PRODUCTS_QUERY_KEY = ["db-products"] as const;
+export const DB_COLLECTIONS_QUERY_KEY = ["db-collections"] as const;
+
 interface DbProduct {
   id: string;
   name: string;
@@ -61,7 +64,7 @@ function mapDbCollection(db: DbCollection): Collection {
 
 export function useDbProducts() {
   return useQuery({
-    queryKey: ["db-products"],
+    queryKey: DB_PRODUCTS_QUERY_KEY,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
@@ -78,7 +81,7 @@ export function useDbProducts() {
 
 export function useDbCollections() {
   return useQuery({
-    queryKey: ["db-collections"],
+    queryKey: DB_COLLECTIONS_QUERY_KEY,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("collections")

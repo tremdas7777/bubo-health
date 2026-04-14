@@ -33,6 +33,10 @@ export function setAdminPassword(password: string) {
   adminPassword = password;
 }
 
+export function getAdminPassword() {
+  return adminPassword;
+}
+
 export function getCachedGatewayConfig(): PaymentGatewayConfig {
   return cachedConfig || defaultConfig;
 }

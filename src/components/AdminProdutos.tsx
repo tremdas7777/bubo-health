@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
+import { DB_PRODUCTS_QUERY_KEY } from '@/hooks/useProducts';
+import { getAdminPassword } from '@/lib/paymentGateway';
 import { toast } from 'sonner';
 import { Plus, Trash2, Edit, Upload, Download, Search, GripVertical, Image as ImageIcon, Loader2, RefreshCw, Eye, EyeOff, Star, StarOff, Copy, FolderOpen, Package, X, FileText, Save } from 'lucide-react';
 
@@ -20,6 +23,7 @@ const defaultProduct: Partial<DbProduct> = { name: '', slug: '', price_cents: 0,
 function slugify(text: string): string { return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
 
 export default function AdminProdutos() {
+  const queryClient = useQueryClient();
   const [products, setProducts] = useState<DbProduct[]>([]);
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
@@ -48,11 +52,36 @@ export default function AdminProdutos() {
 
   const saveProduct = async () => {
     if (!editProduct?.name || !editProduct.slug) { toast.error('Nome e slug são obrigatórios'); return; }
+    const adminPassword = getAdminPassword();
+    if (!adminPassword) { toast.error('Sua sessão do admin expirou. Entre novamente.'); return; }
+
     setSaving(true);
     const payload = { name: editProduct.name, slug: editProduct.slug, price_cents: editProduct.price_cents || 0, original_price_cents: editProduct.original_price_cents || null, image_url: editProduct.image_url || null, images: editProduct.images || [], category: editProduct.category || 'Geral', description: editProduct.description || '', description_html: editProduct.description_html || '', variants: editProduct.variants || [], featured: editProduct.featured || false, active: editProduct.active !== false, sort_order: editProduct.sort_order || 0, gtin: editProduct.gtin || null };
-    if (editProduct.id) { const { error } = await supabase.from('products').update(payload).eq('id', editProduct.id); if (error) toast.error('Erro: ' + error.message); else toast.success('Produto atualizado!'); }
-    else { const { error } = await supabase.from('products').insert(payload); if (error) toast.error('Erro: ' + error.message); else toast.success('Produto criado!'); }
-    setSaving(false); setEditProduct(null); fetchProducts();
+
+    const { data, error } = await supabase.functions.invoke('save-admin-product', {
+      body: {
+        password: adminPassword,
+        product: {
+          id: editProduct.id,
+          ...payload,
+        },
+      },
+    });
+
+    if (error || data?.error) {
+      toast.error('Erro: ' + (error?.message || data?.error || 'Falha ao salvar produto'));
+      setSaving(false);
+      return;
+    }
+
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: DB_PRODUCTS_QUERY_KEY }),
+      fetchProducts(),
+    ]);
+
+    toast.success(editProduct.id ? 'Produto atualizado!' : 'Produto criado!');
+    setSaving(false);
+    setEditProduct(null);
   };
 
   const deleteProduct = async (id: string) => { if (!confirm('Excluir este produto?')) return; await supabase.from('products').delete().eq('id', id); toast.success('Produto excluído'); fetchProducts(); };
