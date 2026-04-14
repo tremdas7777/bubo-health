@@ -12,10 +12,10 @@ serve(async (req) => {
   }
 
   try {
-    const { secretKey, amount, buyerName, buyerEmail, buyerDocument, buyerPhone, metadata } = await req.json();
+    const { amount, buyerName, buyerEmail, buyerDocument, buyerPhone, metadata } = await req.json();
 
-    if (!secretKey || !amount) {
-      return new Response(JSON.stringify({ error: "secretKey e amount são obrigatórios" }), {
+    if (!amount) {
+      return new Response(JSON.stringify({ error: "amount é obrigatório" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -25,7 +25,22 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Beehive uses Basic Auth: base64(SECRET_KEY:x)
+    // Read secret key from gateway_config (server-side, bypasses RLS with service role)
+    const { data: gwConfig, error: gwError } = await supabase
+      .from("gateway_config")
+      .select("beehive_secret_key")
+      .limit(1)
+      .single();
+
+    if (gwError || !gwConfig?.beehive_secret_key) {
+      console.error("Gateway config error:", gwError);
+      return new Response(JSON.stringify({ error: "Chave Beehive não configurada" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const secretKey = gwConfig.beehive_secret_key;
     const authHeader = "Basic " + btoa(`${secretKey}:x`);
     const amountCents = Math.round(amount * 100);
 
@@ -86,11 +101,9 @@ serve(async (req) => {
 
     console.log("Beehive PIX success:", JSON.stringify(data));
 
-    // Extract PIX code from response
     const pixCode = data.pix?.qrcode || data.pix?.qr_code || data.pix?.emv || data.pix?.code || "";
     const pixQrCode = data.pix?.qrcodeBase64 || data.pix?.qr_code_base64 || "";
 
-    // Save order
     const { data: orderData, error: orderError } = await supabase.from("orders").insert({
       amount_cents: amountCents,
       status: data.status || "pending",
