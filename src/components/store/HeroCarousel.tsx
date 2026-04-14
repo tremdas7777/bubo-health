@@ -1,14 +1,21 @@
 import { useState, useEffect, memo } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
+import hero1Mobile from "@/assets/hero-1-mobile.jpg";
+import hero2Mobile from "@/assets/hero-2-mobile.jpg";
+import hero3Mobile from "@/assets/hero-3-mobile.jpg";
 
-const slides = [hero1, hero2, hero3];
+const desktopSlides = [hero1, hero2, hero3];
+const mobileSlides = [hero1Mobile, hero2Mobile, hero3Mobile];
 
 export default memo(function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(true);
+  const isMobile = useIsMobile();
+  const slides = isMobile ? mobileSlides : desktopSlides;
 
   useEffect(() => {
     if (!playing) return;
@@ -16,13 +23,13 @@ export default memo(function HeroCarousel() {
       setCurrent((c) => (c + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [playing]);
+  }, [playing, slides.length]);
 
   const prev = () => setCurrent((c) => (c - 1 + slides.length) % slides.length);
   const next = () => setCurrent((c) => (c + 1) % slides.length);
 
   return (
-    <div className="relative w-full aspect-[16/7] max-h-[600px] overflow-hidden">
+    <div className={`relative w-full overflow-hidden ${isMobile ? "aspect-[9/16] max-h-[85vh]" : "aspect-[16/7] max-h-[600px]"}`}>
       {slides.map((slide, i) => (
         <div
           key={i}
@@ -34,8 +41,8 @@ export default memo(function HeroCarousel() {
             src={slide}
             alt=""
             className="w-full h-full object-cover"
-            width={1920}
-            height={864}
+            width={isMobile ? 768 : 1920}
+            height={isMobile ? 1365 : 864}
             loading={i === 0 ? "eager" : "lazy"}
             decoding={i === 0 ? "sync" : "async"}
             fetchPriority={i === 0 ? "high" : "low"}
