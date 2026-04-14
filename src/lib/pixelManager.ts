@@ -138,8 +138,19 @@ export function injectPixels(config?: PixelConfig) {
     document.head.appendChild(gtagInit);
   }
 
-  if (hasAnyPixel) { setTimeout(() => markPixelsReady(), 500); }
-  else { markPixelsReady(); }
+  if (hasAnyPixel) {
+    // Poll every 50ms instead of waiting a fixed 500ms
+    let attempts = 0;
+    const check = () => {
+      const fbReady = !cfg.facebookPixels.some(fb => fb.pixelId) || typeof (window as any).fbq === 'function';
+      const ttReady = !cfg.tiktokPixels.some(tt => tt.pixelId) || typeof (window as any).ttq?.track === 'function';
+      const gtagReady = gtagIds.length === 0 || typeof (window as any).gtag === 'function';
+      if ((fbReady && ttReady && gtagReady) || attempts >= 40) { markPixelsReady(); return; }
+      attempts++;
+      setTimeout(check, 50);
+    };
+    check();
+  } else { markPixelsReady(); }
 }
 
 function getCookie(name: string): string | undefined {
