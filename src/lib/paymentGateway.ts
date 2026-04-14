@@ -41,21 +41,49 @@ export function getCachedGatewayConfig(): PaymentGatewayConfig {
   return cachedConfig || defaultConfig;
 }
 
+// Public: reads only safe fields from the view (no secrets exposed)
 export async function fetchPaymentGatewayConfig(): Promise<PaymentGatewayConfig> {
   try {
-    const { data, error } = await supabase.from('gateway_config').select('*').limit(1).single();
+    const { data, error } = await supabase.from('gateway_config_public' as any).select('*').limit(1).single();
     if (error || !data) return defaultConfig;
     const pm = (data as any).payment_methods || {};
     const config: PaymentGatewayConfig = {
-      activeGateway: (['pagouai', 'vennox', 'centurionpay', 'ironpay', 'simpayout', 'beehive', 'pagamentosmp'].includes(data.active_gateway) ? data.active_gateway : 'centurionpay') as PaymentGatewayConfig['activeGateway'],
+      activeGateway: (['pagouai', 'vennox', 'centurionpay', 'ironpay', 'simpayout', 'beehive', 'pagamentosmp'].includes((data as any).active_gateway) ? (data as any).active_gateway : 'centurionpay') as PaymentGatewayConfig['activeGateway'],
       paymentMethods: typeof pm === 'object' && pm !== null ? pm : {},
-      pagouai: { publicKey: data.pagouai_public_key || '', secretKey: data.pagouai_secret_key || '', enabled: !!(data.pagouai_secret_key) },
-      vennox: { secretKey: data.vennox_secret_key || '', companyId: data.vennox_company_id || '', enabled: !!(data.vennox_secret_key && data.vennox_company_id) },
-      centurionpay: { secretKey: data.centurionpay_secret_key || '', companyId: data.centurionpay_company_id || '', enabled: !!(data.centurionpay_secret_key && data.centurionpay_company_id) },
-      ironpay: { apiToken: (data as any).ironpay_api_token || '', enabled: !!((data as any).ironpay_api_token) },
-      simpayout: { clientId: (data as any).simpayout_client_id || '', clientSecret: (data as any).simpayout_client_secret || '', enabled: !!((data as any).simpayout_client_id && (data as any).simpayout_client_secret) },
-      beehive: { publicKey: (data as any).beehive_public_key || '', secretKey: (data as any).beehive_secret_key || '', enabled: !!((data as any).beehive_public_key && (data as any).beehive_secret_key) },
-      pagamentosmp: { publicKey: (data as any).pagamentosmp_public_key || '', secretKey: (data as any).pagamentosmp_secret_key || '', enabled: !!((data as any).pagamentosmp_public_key && (data as any).pagamentosmp_secret_key) },
+      pagouai: { publicKey: '', secretKey: '', enabled: false },
+      vennox: { secretKey: '', companyId: '', enabled: false },
+      centurionpay: { secretKey: '', companyId: '', enabled: false },
+      ironpay: { apiToken: '', enabled: false },
+      simpayout: { clientId: '', clientSecret: '', enabled: false },
+      beehive: { publicKey: '', secretKey: '', enabled: false },
+      pagamentosmp: { publicKey: '', secretKey: '', enabled: false },
+    };
+    cachedConfig = config;
+    return config;
+  } catch {
+    return defaultConfig;
+  }
+}
+
+// Admin: reads full config via edge function (requires admin password)
+export async function fetchFullGatewayConfig(password: string): Promise<PaymentGatewayConfig> {
+  try {
+    const { data: resp, error } = await supabase.functions.invoke('read-gateway-config', {
+      body: { password },
+    });
+    if (error || resp?.error || !resp?.data) return defaultConfig;
+    const d = resp.data;
+    const pm = d.payment_methods || {};
+    const config: PaymentGatewayConfig = {
+      activeGateway: (['pagouai', 'vennox', 'centurionpay', 'ironpay', 'simpayout', 'beehive', 'pagamentosmp'].includes(d.active_gateway) ? d.active_gateway : 'centurionpay') as PaymentGatewayConfig['activeGateway'],
+      paymentMethods: typeof pm === 'object' && pm !== null ? pm : {},
+      pagouai: { publicKey: d.pagouai_public_key || '', secretKey: d.pagouai_secret_key || '', enabled: !!(d.pagouai_secret_key) },
+      vennox: { secretKey: d.vennox_secret_key || '', companyId: d.vennox_company_id || '', enabled: !!(d.vennox_secret_key && d.vennox_company_id) },
+      centurionpay: { secretKey: d.centurionpay_secret_key || '', companyId: d.centurionpay_company_id || '', enabled: !!(d.centurionpay_secret_key && d.centurionpay_company_id) },
+      ironpay: { apiToken: d.ironpay_api_token || '', enabled: !!(d.ironpay_api_token) },
+      simpayout: { clientId: d.simpayout_client_id || '', clientSecret: d.simpayout_client_secret || '', enabled: !!(d.simpayout_client_id && d.simpayout_client_secret) },
+      beehive: { publicKey: d.beehive_public_key || '', secretKey: d.beehive_secret_key || '', enabled: !!(d.beehive_public_key && d.beehive_secret_key) },
+      pagamentosmp: { publicKey: d.pagamentosmp_public_key || '', secretKey: d.pagamentosmp_secret_key || '', enabled: !!(d.pagamentosmp_public_key && d.pagamentosmp_secret_key) },
     };
     cachedConfig = config;
     return config;
