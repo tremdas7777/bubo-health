@@ -553,7 +553,30 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      gateway_config_public: {
+        Row: {
+          active_gateway: string | null
+          created_at: string | null
+          id: string | null
+          payment_methods: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          active_gateway?: string | null
+          created_at?: string | null
+          id?: string | null
+          payment_methods?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          active_gateway?: string | null
+          created_at?: string | null
+          id?: string | null
+          payment_methods?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
