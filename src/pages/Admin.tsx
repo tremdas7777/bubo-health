@@ -58,7 +58,7 @@ import {
   type WebhookEntry,
 } from "@/lib/webhookManager";
 import { getUtmifyConfig, saveUtmifyConfig, testUtmifyToken, type UtmifyConfig } from "@/lib/utmifyManager";
-import { fetchPaymentGatewayConfig, savePaymentGatewayConfig, setAdminPassword, type PaymentGatewayConfig } from "@/lib/paymentGateway";
+import { fetchFullGatewayConfig, savePaymentGatewayConfig, setAdminPassword, getAdminPassword, type PaymentGatewayConfig } from "@/lib/paymentGateway";
 import { supabase } from "@/integrations/supabase/client";
 
 type Tab =
@@ -330,7 +330,7 @@ export default function Admin() {
       const [dbPixelConfig, dbWebhookConfig, dbGatewayConfig] = await Promise.all([
         loadPixelConfigFromDb().catch(() => getPixelConfig()),
         loadWebhooksFromDb().catch(() => getWebhookConfig()),
-        fetchPaymentGatewayConfig().catch(() => INITIAL_GATEWAY_CONFIG),
+        fetchFullGatewayConfig(getAdminPassword() || '').catch(() => INITIAL_GATEWAY_CONFIG),
       ]);
 
       setPixelConfig(dbPixelConfig || INITIAL_PIXEL_CONFIG);
