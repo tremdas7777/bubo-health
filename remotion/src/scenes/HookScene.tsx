@@ -1,4 +1,4 @@
-import { AbsoluteFill, useCurrentFrame, interpolate, spring, useVideoConfig } from "remotion";
+import { AbsoluteFill, useCurrentFrame, interpolate, spring, useVideoConfig, Img, staticFile } from "remotion";
 
 export const HookScene = () => {
   const frame = useCurrentFrame();
@@ -11,6 +11,10 @@ export const HookScene = () => {
   const flashOpacity = interpolate(frame, [0, 6], [0.7, 0], { extrapolateRight: "clamp" });
   const exitOpacity = interpolate(frame, [60, 75], [1, 0], { extrapolateRight: "clamp" });
 
+  // Product image animation
+  const imgScale = spring({ frame: frame - 5, fps, config: { damping: 12, stiffness: 150 } });
+  const imgFloat = Math.sin(frame * 0.08) * 8;
+
   // Shake effect
   const shakeX = frame < 10 ? Math.sin(frame * 8) * (10 - frame) : 0;
 
@@ -18,15 +22,38 @@ export const HookScene = () => {
     <AbsoluteFill style={{ opacity: exitOpacity }}>
       <AbsoluteFill style={{ background: "white", opacity: flashOpacity }} />
 
+      {/* Product image - always visible at bottom */}
       <div
         style={{
           position: "absolute",
-          top: "38%",
+          bottom: 180,
+          left: "50%",
+          transform: `translateX(-50%) scale(${imgScale}) translateY(${imgFloat}px)`,
+          width: 550,
+          height: 550,
+          borderRadius: 24,
+          overflow: "hidden",
+          border: "3px solid rgba(124,58,237,0.4)",
+          boxShadow: "0 0 80px rgba(124,58,237,0.3), 0 20px 60px rgba(0,0,0,0.5)",
+        }}
+      >
+        <Img
+          src={staticFile("images/product-0.webp")}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      </div>
+
+      {/* Text overlay on top */}
+      <div
+        style={{
+          position: "absolute",
+          top: "15%",
           left: "50%",
           transform: `translate(-50%, -50%) scale(${pareScale}) translateX(${shakeX}px)`,
           opacity: pareOpacity,
           textAlign: "center",
           width: "90%",
+          zIndex: 2,
         }}
       >
         <div
@@ -61,17 +88,17 @@ export const HookScene = () => {
       {["🔧", "⚡", "🔩", "💰"].map((emoji, i) => {
         const s = spring({ frame: frame - 8 - i * 4, fps, config: { damping: 8 } });
         const angle = (i * 90 + 45) * (Math.PI / 180);
-        const radius = 280;
         return (
           <div
             key={i}
             style={{
               position: "absolute",
-              top: `${38 + Math.sin(angle) * 15}%`,
+              top: `${15 + Math.sin(angle) * 12}%`,
               left: `${50 + Math.cos(angle) * 25}%`,
               fontSize: 60,
               transform: `scale(${s}) rotate(${i * 20 - 30}deg)`,
               opacity: s,
+              zIndex: 3,
             }}
           >
             {emoji}
