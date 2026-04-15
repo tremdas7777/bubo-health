@@ -6,7 +6,7 @@ import BestSellers from "@/components/store/BestSellers";
 import HomeReviews from "@/components/store/HomeReviews";
 import Newsletter from "@/components/store/Newsletter";
 import TrustBadges from "@/components/store/TrustBadges";
-import WelcomePopup from "@/components/store/WelcomePopup";
+
 import { useDbCollections } from "@/hooks/useProducts";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import WebSiteJsonLd from "@/components/seo/WebSiteJsonLd";
@@ -18,7 +18,7 @@ const Index = () => {
 
   return (
     <Layout>
-      <WelcomePopup />
+      
       <PageHead
         title="Kazoom - Tudo que você precisa em um só lugar"
         description="De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 6x."
