@@ -127,16 +127,8 @@ export default function ProductDetailPage() {
           <div className="space-y-4">
             <h1 className="text-center text-xl font-heading font-bold lg:text-left lg:text-2xl">{product.name}</h1>
 
-            {/* Rating summary */}
-            <div className="flex items-center justify-center gap-2 lg:justify-start">
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} size={14} className={i < 5 ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground/30"} />
-                ))}
-              </div>
-              <span className="text-sm font-medium">4.8</span>
-              <span className="text-xs text-muted-foreground">(5 avaliações)</span>
-            </div>
+            {/* Rating summary - dynamic from DB */}
+            <ProductRatingSummary productId={product.id} />
 
             <div className="space-y-1 text-center lg:text-left">
               {hasDiscount && <p className="text-sm text-muted-foreground line-through">{formatPrice(product.compareAtPrice!)}</p>}
