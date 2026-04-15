@@ -1,4 +1,4 @@
-import { useRef, useCallback, memo } from "react";
+import { useRef, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useDbCollections, useDbProducts } from "@/hooks/useProducts";
@@ -8,54 +8,17 @@ export default memo(function CollectionsCarousel() {
   const { data: collections = [] } = useDbCollections();
   const { data: products = [] } = useDbProducts();
 
-  // Build a map: collection slug -> first product image as fallback
   const fallbackImages: Record<string, string> = {};
   for (const p of products) {
     if (p.category && !fallbackImages[p.category] && p.image) {
       fallbackImages[p.category] = p.image;
     }
   }
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
-  const hasMoved = useRef(false);
 
   const scroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
     scrollRef.current.scrollBy({ left: dir === "left" ? -280 : 280, behavior: "smooth" });
   };
-
-  const onPointerDown = useCallback((e: React.PointerEvent) => {
-    if (!scrollRef.current) return;
-    isDragging.current = true;
-    hasMoved.current = false;
-    startX.current = e.clientX;
-    scrollLeft.current = scrollRef.current.scrollLeft;
-    scrollRef.current.setPointerCapture(e.pointerId);
-    scrollRef.current.style.cursor = "grabbing";
-  }, []);
-
-  const onPointerMove = useCallback((e: React.PointerEvent) => {
-    if (!isDragging.current || !scrollRef.current) return;
-    e.preventDefault();
-    const delta = e.clientX - startX.current;
-    if (Math.abs(delta) > 5) hasMoved.current = true;
-    scrollRef.current.scrollLeft = scrollLeft.current - delta;
-  }, []);
-
-  const onPointerUp = useCallback((e: React.PointerEvent) => {
-    if (!scrollRef.current) return;
-    isDragging.current = false;
-    scrollRef.current.releasePointerCapture(e.pointerId);
-    scrollRef.current.style.cursor = "grab";
-  }, []);
-
-  const onClickCapture = useCallback((e: React.MouseEvent) => {
-    if (hasMoved.current) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }, []);
 
   if (collections.length === 0) return null;
 
@@ -77,32 +40,25 @@ export default memo(function CollectionsCarousel() {
 
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto pb-2 select-none"
+            className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory"
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",
-              cursor: "grab",
               WebkitOverflowScrolling: "touch",
             }}
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerLeave={onPointerUp}
           >
             {collections.map((col) => (
               <Link
                 key={col.id}
                 to={`/colecao/${col.slug}`}
-                className="flex-shrink-0 w-[160px] md:w-[185px] group/card"
-                onClickCapture={onClickCapture}
-                draggable={false}
+                className="flex-shrink-0 w-[160px] md:w-[185px] group/card snap-start"
               >
                 <div className="relative overflow-hidden rounded-xl aspect-[3/4] bg-muted">
                   {(col.image || fallbackImages[col.slug]) && (
                     <img
                       src={col.image || fallbackImages[col.slug]}
                       alt={col.name}
-                      className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500 pointer-events-none"
+                      className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
                       loading="lazy"
                       decoding="async"
                       draggable={false}
