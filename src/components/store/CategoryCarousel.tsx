@@ -76,9 +76,17 @@ export default memo(function CategoryCarousel({ category }: Props) {
   return (
     <section className="py-8 border-t border-border/50">
       <div className="container mx-auto px-4">
-        <h2 className="text-lg md:text-xl font-heading font-semibold text-center mb-6">
-          {getCategoryName(category)}
-        </h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg md:text-xl font-heading font-semibold">
+            {getCategoryName(category)}
+          </h2>
+          <Link
+            to={`/colecao/${category}`}
+            className="text-primary text-sm font-medium hover:underline transition-colors"
+          >
+            Ver tudo →
+          </Link>
+        </div>
 
         {isFew ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 max-w-[960px] mx-auto">

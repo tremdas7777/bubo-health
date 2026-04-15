@@ -34,6 +34,11 @@ export default memo(function ProductCard({ product }: Props) {
             <span className="text-primary">✓</span> {product.badge}
           </span>
         )}
+        {product.stock <= 10 && (
+          <span className="absolute bottom-2 left-2 bg-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+            Últimas {product.stock} unidades!
+          </span>
+        )}
         <button
           onClick={(e) => { e.preventDefault(); toggleItem(product); }}
           className="absolute top-2 left-2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 hover:bg-background transition-colors"

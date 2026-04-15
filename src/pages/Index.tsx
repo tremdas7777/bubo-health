@@ -2,6 +2,9 @@ import Layout from "@/components/store/Layout";
 import HeroCarousel from "@/components/store/HeroCarousel";
 import CollectionsCarousel from "@/components/store/CollectionsCarousel";
 import CategoryCarousel from "@/components/store/CategoryCarousel";
+import BestSellers from "@/components/store/BestSellers";
+import HomeReviews from "@/components/store/HomeReviews";
+import Newsletter from "@/components/store/Newsletter";
 import TrustBadges from "@/components/store/TrustBadges";
 import { useDbCollections } from "@/hooks/useProducts";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
@@ -22,9 +25,12 @@ const Index = () => {
       <WebSiteJsonLd />
       <HeroCarousel />
       <CollectionsCarousel />
+      <BestSellers />
       {categoryOrder.map((cat) => (
         <CategoryCarousel key={cat} category={cat} />
       ))}
+      <HomeReviews />
+      <Newsletter />
       <TrustBadges />
     </Layout>
   );
