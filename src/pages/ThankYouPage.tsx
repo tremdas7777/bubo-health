@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { CheckCircle, Package, Truck, Home, ShoppingBag } from "lucide-react";
+import { CheckCircle, Package, Truck, Home, ShoppingBag, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/store/Layout";
 import { useCart } from "@/contexts/CartContext";
@@ -8,6 +8,8 @@ import { useCart } from "@/contexts/CartContext";
 export default function ThankYouPage() {
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get("pedido") || "";
+  const method = searchParams.get("metodo") || "card";
+  const isPix = method === "pix";
   const { clearCart } = useCart();
 
   useEffect(() => {
@@ -20,18 +22,20 @@ export default function ThankYouPage() {
         <div className="max-w-lg w-full text-center space-y-6">
           {/* Success animation */}
           <div className="relative mx-auto w-24 h-24">
-            <div className="absolute inset-0 bg-emerald-500/20 rounded-full animate-ping" />
-            <div className="relative w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center">
-              <CheckCircle size={48} className="text-emerald-600" />
+            <div className={`absolute inset-0 rounded-full animate-ping ${isPix ? "bg-amber-500/20" : "bg-emerald-500/20"}`} />
+            <div className={`relative w-24 h-24 rounded-full flex items-center justify-center ${isPix ? "bg-amber-500/10" : "bg-emerald-500/10"}`}>
+              {isPix ? <Clock size={48} className="text-amber-600" /> : <CheckCircle size={48} className="text-emerald-600" />}
             </div>
           </div>
 
           <div className="space-y-2">
             <h1 className="text-2xl sm:text-3xl font-heading font-bold text-foreground">
-              Pagamento confirmado!
+              {isPix ? "PIX gerado com sucesso!" : "Pagamento confirmado!"}
             </h1>
             <p className="text-muted-foreground text-sm">
-              Obrigado pela sua compra. Seu pedido está sendo preparado.
+              {isPix
+                ? "Seu pedido será confirmado assim que identificarmos o pagamento do PIX."
+                : "Obrigado pela sua compra. Seu pedido está sendo preparado."}
             </p>
           </div>
 
@@ -47,19 +51,25 @@ export default function ThankYouPage() {
             <h2 className="text-sm font-heading font-bold text-foreground">Próximos passos</h2>
             <div className="space-y-3">
               {[
-                { icon: CheckCircle, label: "Pagamento aprovado", desc: "Seu pagamento foi confirmado com sucesso", done: true },
+                {
+                  icon: isPix ? Clock : CheckCircle,
+                  label: isPix ? "Aguardando pagamento PIX" : "Pagamento aprovado",
+                  desc: isPix ? "Efetue o pagamento do PIX para confirmar o pedido" : "Seu pagamento foi confirmado com sucesso",
+                  done: !isPix,
+                  pending: isPix,
+                },
                 { icon: Package, label: "Preparando pedido", desc: "Estamos separando seus produtos", done: false },
                 { icon: Truck, label: "Enviado", desc: "Você receberá o código de rastreio por e-mail", done: false },
                 { icon: Home, label: "Entregue", desc: "Produto entregue no seu endereço", done: false },
               ].map((step, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    step.done ? "bg-emerald-500/10 text-emerald-600" : "bg-muted text-muted-foreground"
+                    step.done ? "bg-emerald-500/10 text-emerald-600" : step.pending ? "bg-amber-500/10 text-amber-600" : "bg-muted text-muted-foreground"
                   }`}>
                     <step.icon size={16} />
                   </div>
                   <div>
-                    <p className={`text-sm font-medium ${step.done ? "text-foreground" : "text-muted-foreground"}`}>{step.label}</p>
+                    <p className={`text-sm font-medium ${step.done ? "text-foreground" : step.pending ? "text-amber-600" : "text-muted-foreground"}`}>{step.label}</p>
                     <p className="text-xs text-muted-foreground">{step.desc}</p>
                   </div>
                 </div>
