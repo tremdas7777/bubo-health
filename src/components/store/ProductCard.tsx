@@ -16,6 +16,8 @@ export default memo(function ProductCard({ product }: Props) {
   const { isInWishlist, toggleItem } = useWishlist();
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const wishlisted = isInWishlist(product.id);
+  // Stable pseudo-random sales count based on product id
+  const salesCount = ((product.id.charCodeAt(0) * 7 + product.id.charCodeAt(1) * 13) % 80) + 20;
 
   return (
     <div className="group bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col">
@@ -40,7 +42,7 @@ export default memo(function ProductCard({ product }: Props) {
           </span>
         )}
         <span className="absolute bottom-2 right-2 bg-foreground/80 text-background text-[9px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-0.5">
-          🔥 {Math.floor(Math.random() * 80 + 20)} vendidos
+          🔥 {salesCount} vendidos
         </span>
         <button
           onClick={(e) => { e.preventDefault(); toggleItem(product); }}
