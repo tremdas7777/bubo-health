@@ -395,6 +395,11 @@ export default function CheckoutPage() {
         setPixQrCode(result.pix_qr_code || "");
         setOrderId(result.order_id || "");
 
+        // Save order items
+        if (result.order_id) {
+          await saveOrderItems(result.order_id);
+        }
+
         // Fire webhook
         await fireWebhookEvent("venda_pendente", {
           source: "checkout",
@@ -511,6 +516,10 @@ export default function CheckoutPage() {
       }
 
       if (result?.status === "paid") {
+        // Save order items
+        if (result.order_id) {
+          await saveOrderItems(result.order_id);
+        }
         await fireWebhookEvent("venda_aprovada", {
           source: "checkout",
           buyerName: name,
