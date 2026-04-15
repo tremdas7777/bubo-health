@@ -556,22 +556,31 @@ export type Database = {
       gateway_config_public: {
         Row: {
           active_gateway: string | null
+          beehive_public_key: string | null
           created_at: string | null
           id: string | null
+          pagamentosmp_public_key: string | null
+          pagouai_public_key: string | null
           payment_methods: Json | null
           updated_at: string | null
         }
         Insert: {
           active_gateway?: string | null
+          beehive_public_key?: string | null
           created_at?: string | null
           id?: string | null
+          pagamentosmp_public_key?: string | null
+          pagouai_public_key?: string | null
           payment_methods?: Json | null
           updated_at?: string | null
         }
         Update: {
           active_gateway?: string | null
+          beehive_public_key?: string | null
           created_at?: string | null
           id?: string | null
+          pagamentosmp_public_key?: string | null
+          pagouai_public_key?: string | null
           payment_methods?: Json | null
           updated_at?: string | null
         }
