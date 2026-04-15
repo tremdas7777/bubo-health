@@ -51,7 +51,7 @@ const FAQPage = () => {
         description="Tire suas dúvidas sobre entrega, pagamento, trocas e devoluções na Kazoom."
       />
       <FAQJsonLd
-        questions={faqs.map((f) => ({
+        items={faqs.map((f) => ({
           question: f.question,
           answer: f.answer,
         }))}
