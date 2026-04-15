@@ -50,6 +50,7 @@ export default function Footer() {
               <Link to="/politica-de-privacidade" className="block hover:opacity-100 transition-opacity">Política de Privacidade</Link>
               <Link to="/termos-de-uso" className="block hover:opacity-100 transition-opacity">Termos de Uso</Link>
               <Link to="/trocas-e-devolucoes" className="block hover:opacity-100 transition-opacity">Trocas e Devoluções</Link>
+              <Link to="/faq" className="block hover:opacity-100 transition-opacity">Perguntas Frequentes</Link>
             </div>
           </div>
 
