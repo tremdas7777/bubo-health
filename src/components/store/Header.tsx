@@ -90,7 +90,6 @@ export default function Header() {
               className="text-[13px] text-foreground hover:text-primary transition-colors font-normal px-3 py-3 flex items-center gap-1"
             >
               {link.name}
-              {link.hasDropdown && <ChevronDown size={12} className="opacity-60" />}
             </Link>
           ))}
         </nav>
@@ -108,7 +107,6 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.name}
-                {link.hasDropdown && <ChevronDown size={14} className="opacity-60" />}
               </Link>
             ))}
             <Link
