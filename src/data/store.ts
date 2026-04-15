@@ -320,6 +320,7 @@ export const navLinks = [
   { name: "Página inicial", href: "/" },
   { name: "Casa e Cozinha", href: "/colecao/casa-e-cozinha" },
   { name: "Eletrônicos", href: "/colecao/eletronicos" },
+  { name: "Esportes", href: "/colecao/esportes" },
   { name: "Ferramentas", href: "/colecao/ferramentas" },
   { name: "Fitness", href: "/colecao/fitness" },
   { name: "Pesca", href: "/colecao/pesca" },
