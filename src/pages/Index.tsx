@@ -6,6 +6,7 @@ import BestSellers from "@/components/store/BestSellers";
 import HomeReviews from "@/components/store/HomeReviews";
 import Newsletter from "@/components/store/Newsletter";
 import TrustBadges from "@/components/store/TrustBadges";
+import WelcomePopup from "@/components/store/WelcomePopup";
 import { useDbCollections } from "@/hooks/useProducts";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import WebSiteJsonLd from "@/components/seo/WebSiteJsonLd";
