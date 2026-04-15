@@ -10,15 +10,11 @@ export default memo(function BestSellers() {
   const { data: allProducts = [] } = useDbProducts();
   const { addItem } = useCart();
 
-  // Pick featured products or highest-discount products
-  const bestSellers = allProducts
-    .filter((p) => p.compareAtPrice && p.compareAtPrice > p.price)
-    .sort((a, b) => {
-      const discA = ((a.compareAtPrice! - a.price) / a.compareAtPrice!) * 100;
-      const discB = ((b.compareAtPrice! - b.price) / b.compareAtPrice!) * 100;
-      return discB - discA;
-    })
-    .slice(0, 8);
+  // Curated best sellers
+  const bestSellerSlugs = ["kit-ferramentas-refrigeracao", "maquina-solda-laser-portatil", "mini-motosserra"];
+  const bestSellers = bestSellerSlugs
+    .map((slug) => allProducts.find((p) => p.slug === slug))
+    .filter(Boolean) as Product[];
 
   if (bestSellers.length === 0) return null;
 
