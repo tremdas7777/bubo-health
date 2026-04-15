@@ -235,7 +235,7 @@ export default function CheckoutPage() {
         const { data } = await supabase.from("orders").select("status").eq("id", orderId).maybeSingle();
         if (data?.status === "paid" || data?.status === "approved") {
           clearInterval(interval);
-          navigate(`/obrigado?pedido=${orderId}`);
+          navigate(`/obrigado?pedido=${orderId}&metodo=pix`);
         }
       } catch { /* ignore */ }
     }, 5000);
@@ -328,8 +328,7 @@ export default function CheckoutPage() {
     setAppliedCoupon(code);
     setCouponMessage(`Cupom ${code} aplicado! -${formatPrice(discount)}`);
 
-    // Increment used_count
-    await supabase.from("coupons").update({ used_count: data.used_count + 1 }).eq("id", data.id);
+    // Note: coupon usage will be incremented server-side after payment confirmation
     setCouponLoading(false);
   };
 
@@ -522,7 +521,7 @@ export default function CheckoutPage() {
           gateway,
         });
         void trackEvent("purchase");
-        navigate(`/obrigado?pedido=${result.order_id}`);
+        navigate(`/obrigado?pedido=${result.order_id}&metodo=card`);
       } else {
         setOrderId(result?.order_id || "");
         setPaymentError("Pagamento não aprovado. Verifique os dados do cartão.");
