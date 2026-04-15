@@ -48,6 +48,39 @@ const productBulletPoints: Record<string, { icon: React.ElementType; text: strin
   ],
 };
 
+function ProductRatingSummary({ productId }: { productId: string }) {
+  const [avg, setAvg] = useState(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    supabase
+      .from("product_reviews")
+      .select("rating")
+      .eq("product_id", productId)
+      .eq("approved", true)
+      .then(({ data }) => {
+        if (data && data.length > 0) {
+          setCount(data.length);
+          setAvg(data.reduce((s, r) => s + r.rating, 0) / data.length);
+        }
+      });
+  }, [productId]);
+
+  if (count === 0) return null;
+
+  return (
+    <div className="flex items-center justify-center gap-2 lg:justify-start">
+      <div className="flex gap-0.5">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star key={i} size={14} className={i < Math.round(avg) ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground/30"} />
+        ))}
+      </div>
+      <span className="text-sm font-medium">{avg.toFixed(1)}</span>
+      <span className="text-xs text-muted-foreground">({count} avaliações)</span>
+    </div>
+  );
+}
+
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: products = [], isLoading } = useDbProducts();
