@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Search, User, ShoppingBag, Menu, X, ChevronDown, Heart, Moon, Sun } from "lucide-react";
+import { Search, User, ShoppingBag, Menu, X, Heart, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { navLinks } from "@/data/store";
 import { useCart } from "@/contexts/CartContext";
