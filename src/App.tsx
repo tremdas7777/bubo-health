@@ -77,6 +77,7 @@ const App = () => {
                     <Route path="/entrar" element={<AuthPage />} />
                     <Route path="/conta" element={<AccountPage />} />
                     <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
+                    <Route path="/faq" element={<FAQPage />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
