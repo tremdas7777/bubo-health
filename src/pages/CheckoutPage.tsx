@@ -252,6 +252,21 @@ export default function CheckoutPage() {
   const seconds = timeLeft % 60;
   const activeGatewayMethods = cardEnabled ? (isPix ? "pix" : "card") : "pix";
 
+  const saveOrderItems = async (oid: string) => {
+    try {
+      const rows = items.map((i) => ({
+        order_id: oid,
+        product_id: i.product.id,
+        product_name: i.product.name,
+        quantity: i.quantity,
+        price_cents: Math.round(i.product.price * 100),
+      }));
+      await supabase.from("order_items").insert(rows);
+    } catch (e) {
+      console.error("Failed to save order items", e);
+    }
+  };
+
   const handleCepLookup = async (cepValue: string) => {
     const clean = cepValue.replace(/\D/g, "");
     if (clean.length !== 8) return;
