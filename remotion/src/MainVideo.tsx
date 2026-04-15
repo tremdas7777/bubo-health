@@ -1,4 +1,4 @@
-import { AbsoluteFill, Sequence, useCurrentFrame, interpolate, staticFile } from "remotion";
+import { AbsoluteFill, Sequence, useCurrentFrame, interpolate } from "remotion";
 import { HookScene } from "./scenes/HookScene";
 import { ShowcaseScene } from "./scenes/ShowcaseScene";
 import { PriceScene } from "./scenes/PriceScene";
@@ -7,32 +7,26 @@ import { CTAScene } from "./scenes/CTAScene";
 export const MainVideo = () => {
   const frame = useCurrentFrame();
 
-  // Persistent animated background
   const bgHue = interpolate(frame, [0, 300], [260, 280]);
-  const bgGrad = `linear-gradient(135deg, hsl(${bgHue}, 60%, 8%) 0%, hsl(${bgHue + 20}, 50%, 12%) 50%, hsl(${bgHue}, 70%, 6%) 100%)`;
+  const bgGrad = `linear-gradient(180deg, hsl(${bgHue}, 60%, 8%) 0%, hsl(${bgHue + 20}, 50%, 14%) 50%, hsl(${bgHue}, 70%, 6%) 100%)`;
 
   return (
     <AbsoluteFill style={{ background: bgGrad }}>
-      {/* Floating accent shapes */}
       <PersistentAccents frame={frame} />
 
-      {/* Scene 1: Hook (0-80) */}
-      <Sequence from={0} durationInFrames={80}>
+      <Sequence from={0} durationInFrames={75}>
         <HookScene />
       </Sequence>
 
-      {/* Scene 2: Product Showcase (70-190) */}
-      <Sequence from={70} durationInFrames={120}>
+      <Sequence from={65} durationInFrames={115}>
         <ShowcaseScene />
       </Sequence>
 
-      {/* Scene 3: Price Anchor (180-260) */}
-      <Sequence from={180} durationInFrames={80}>
+      <Sequence from={170} durationInFrames={85}>
         <PriceScene />
       </Sequence>
 
-      {/* Scene 4: CTA (250-300) */}
-      <Sequence from={250} durationInFrames={50}>
+      <Sequence from={245} durationInFrames={55}>
         <CTAScene />
       </Sequence>
     </AbsoluteFill>
@@ -42,30 +36,29 @@ export const MainVideo = () => {
 function PersistentAccents({ frame }: { frame: number }) {
   const y1 = Math.sin(frame * 0.02) * 30;
   const y2 = Math.cos(frame * 0.015) * 40;
-  const x1 = Math.cos(frame * 0.01) * 20;
 
   return (
     <>
       <div
         style={{
           position: "absolute",
-          top: 80 + y1,
-          right: 60 + x1,
-          width: 200,
-          height: 200,
+          top: 150 + y1,
+          right: -50,
+          width: 250,
+          height: 250,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(124,58,237,0.3) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%)",
         }}
       />
       <div
         style={{
           position: "absolute",
-          bottom: 100 + y2,
-          left: 80,
+          bottom: 200 + y2,
+          left: -60,
           width: 300,
           height: 300,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(132,204,22,0.15) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(132,204,22,0.12) 0%, transparent 70%)",
         }}
       />
     </>
