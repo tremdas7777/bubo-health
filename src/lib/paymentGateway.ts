@@ -47,16 +47,17 @@ export async function fetchPaymentGatewayConfig(): Promise<PaymentGatewayConfig>
     const { data, error } = await supabase.from('gateway_config_public' as any).select('*').limit(1).single();
     if (error || !data) return defaultConfig;
     const pm = (data as any).payment_methods || {};
+    const d = data as any;
     const config: PaymentGatewayConfig = {
-      activeGateway: (['pagouai', 'vennox', 'centurionpay', 'ironpay', 'simpayout', 'beehive', 'pagamentosmp'].includes((data as any).active_gateway) ? (data as any).active_gateway : 'centurionpay') as PaymentGatewayConfig['activeGateway'],
+      activeGateway: (['pagouai', 'vennox', 'centurionpay', 'ironpay', 'simpayout', 'beehive', 'pagamentosmp'].includes(d.active_gateway) ? d.active_gateway : 'centurionpay') as PaymentGatewayConfig['activeGateway'],
       paymentMethods: typeof pm === 'object' && pm !== null ? pm : {},
-      pagouai: { publicKey: '', secretKey: '', enabled: false },
+      pagouai: { publicKey: d.pagouai_public_key || '', secretKey: '', enabled: false },
       vennox: { secretKey: '', companyId: '', enabled: false },
       centurionpay: { secretKey: '', companyId: '', enabled: false },
       ironpay: { apiToken: '', enabled: false },
       simpayout: { clientId: '', clientSecret: '', enabled: false },
-      beehive: { publicKey: '', secretKey: '', enabled: false },
-      pagamentosmp: { publicKey: '', secretKey: '', enabled: false },
+      beehive: { publicKey: d.beehive_public_key || '', secretKey: '', enabled: !!(d.beehive_public_key) },
+      pagamentosmp: { publicKey: d.pagamentosmp_public_key || '', secretKey: '', enabled: false },
     };
     cachedConfig = config;
     return config;
