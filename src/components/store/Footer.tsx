@@ -108,20 +108,6 @@ export default function Footer() {
                 <path d="M29.3 21.3l-4.6-4.6a1 1 0 00-1.4 0l-4.6 4.6a3.5 3.5 0 01-2.5 1h-.7l5.8-5.8a2.5 2.5 0 013.4 0l5.8 5.8h-.7a3.5 3.5 0 01-2.5-1z" fill="#32BCAD"/>
               </svg>
             </div>
-            {/* Boleto */}
-            <div className="bg-white rounded-md px-2.5 py-1.5 flex items-center justify-center h-8 w-12">
-              <svg viewBox="0 0 48 32" className="h-4 w-auto" xmlns="http://www.w3.org/2000/svg">
-                <rect x="8" y="6" width="2" height="20" fill="#333"/>
-                <rect x="12" y="6" width="1" height="20" fill="#333"/>
-                <rect x="15" y="6" width="3" height="20" fill="#333"/>
-                <rect x="20" y="6" width="1" height="20" fill="#333"/>
-                <rect x="23" y="6" width="2" height="20" fill="#333"/>
-                <rect x="27" y="6" width="1" height="20" fill="#333"/>
-                <rect x="30" y="6" width="3" height="20" fill="#333"/>
-                <rect x="35" y="6" width="1" height="20" fill="#333"/>
-                <rect x="38" y="6" width="2" height="20" fill="#333"/>
-              </svg>
-            </div>
           </div>
         </div>
 

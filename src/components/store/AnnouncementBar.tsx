@@ -1,7 +1,7 @@
 const messages = [
   "BEM VINDO À KAZOOM!",
   "FRETE GRÁTIS PARA TODO O BRASIL",
-  "PARCELE SUAS COMPRAS EM ATÉ 12X",
+  "PARCELE SUAS COMPRAS EM ATÉ 6X",
 ];
 
 export default function AnnouncementBar() {

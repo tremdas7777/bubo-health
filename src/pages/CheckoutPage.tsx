@@ -235,7 +235,7 @@ export default function CheckoutPage() {
         const { data } = await supabase.from("orders").select("status").eq("id", orderId).maybeSingle();
         if (data?.status === "paid" || data?.status === "approved") {
           clearInterval(interval);
-          navigate(`/obrigado?pedido=${orderId}`);
+          navigate(`/obrigado?pedido=${orderId}&metodo=pix`);
         }
       } catch { /* ignore */ }
     }, 5000);
@@ -251,6 +251,21 @@ export default function CheckoutPage() {
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
   const activeGatewayMethods = cardEnabled ? (isPix ? "pix" : "card") : "pix";
+
+  const saveOrderItems = async (oid: string) => {
+    try {
+      const rows = items.map((i) => ({
+        order_id: oid,
+        product_id: i.product.id,
+        product_name: i.product.name,
+        quantity: i.quantity,
+        price_cents: Math.round(i.product.price * 100),
+      }));
+      await supabase.from("order_items").insert(rows);
+    } catch (e) {
+      console.error("Failed to save order items", e);
+    }
+  };
 
   const handleCepLookup = async (cepValue: string) => {
     const clean = cepValue.replace(/\D/g, "");
@@ -328,8 +343,7 @@ export default function CheckoutPage() {
     setAppliedCoupon(code);
     setCouponMessage(`Cupom ${code} aplicado! -${formatPrice(discount)}`);
 
-    // Increment used_count
-    await supabase.from("coupons").update({ used_count: data.used_count + 1 }).eq("id", data.id);
+    // Note: coupon usage will be incremented server-side after payment confirmation
     setCouponLoading(false);
   };
 
@@ -395,6 +409,11 @@ export default function CheckoutPage() {
         setPixCode(result.pix_code);
         setPixQrCode(result.pix_qr_code || "");
         setOrderId(result.order_id || "");
+
+        // Save order items
+        if (result.order_id) {
+          await saveOrderItems(result.order_id);
+        }
 
         // Fire webhook
         await fireWebhookEvent("venda_pendente", {
@@ -512,6 +531,10 @@ export default function CheckoutPage() {
       }
 
       if (result?.status === "paid") {
+        // Save order items
+        if (result.order_id) {
+          await saveOrderItems(result.order_id);
+        }
         await fireWebhookEvent("venda_aprovada", {
           source: "checkout",
           buyerName: name,
@@ -522,7 +545,7 @@ export default function CheckoutPage() {
           gateway,
         });
         void trackEvent("purchase");
-        navigate(`/obrigado?pedido=${result.order_id}`);
+        navigate(`/obrigado?pedido=${result.order_id}&metodo=card`);
       } else {
         setOrderId(result?.order_id || "");
         setPaymentError("Pagamento não aprovado. Verifique os dados do cartão.");

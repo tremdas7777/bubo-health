@@ -319,7 +319,7 @@ export const products: Product[] = [
 export const navLinks = [
   { name: "Página inicial", href: "/" },
   { name: "Casa e Cozinha", href: "/colecao/casa-e-cozinha" },
-  { name: "Eletrônicos", href: "/colecao/eletronicos", hasDropdown: true },
+  { name: "Eletrônicos", href: "/colecao/eletronicos" },
   { name: "Ferramentas", href: "/colecao/ferramentas" },
   { name: "Fitness", href: "/colecao/fitness" },
   { name: "Pesca", href: "/colecao/pesca" },
