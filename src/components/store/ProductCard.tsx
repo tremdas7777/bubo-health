@@ -39,6 +39,9 @@ export default memo(function ProductCard({ product }: Props) {
             Últimas {product.stock} unidades!
           </span>
         )}
+        <span className="absolute bottom-2 right-2 bg-foreground/80 text-background text-[9px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-0.5">
+          🔥 {Math.floor(Math.random() * 80 + 20)} vendidos
+        </span>
         <button
           onClick={(e) => { e.preventDefault(); toggleItem(product); }}
           className="absolute top-2 left-2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 hover:bg-background transition-colors"
