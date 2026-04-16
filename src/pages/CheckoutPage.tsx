@@ -879,7 +879,7 @@ export default function CheckoutPage() {
                       {generating ? (
                         <><Loader2 size={16} className="animate-spin mr-2" /> Processando...</>
                       ) : (
-                        <><CreditCard size={16} className="mr-2" /> Pagar com Cartão</>
+                        "Comprar Agora"
                       )}
                     </Button>
                   </div>
