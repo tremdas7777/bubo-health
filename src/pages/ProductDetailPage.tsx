@@ -354,7 +354,7 @@ export default function ProductDetailPage() {
             <Star size={20} className="fill-yellow-400 text-yellow-400" />
             Avaliações de Clientes
           </h3>
-          <ProductReviews productSlug={product.slug} />
+          <ProductReviews productSlug={product.slug} productId={product.id} />
         </div>
 
         {/* FAQ Section */}
