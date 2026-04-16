@@ -343,6 +343,11 @@ export default function ProductDetailPage() {
                 </p>
               </div>
             </div>
+          ) : product.descriptionHtml ? (
+            <div
+              className="product-description-html text-sm leading-relaxed text-muted-foreground [&_h1]:text-xl [&_h1]:font-bold [&_h1]:text-foreground [&_h1]:mt-6 [&_h1]:mb-3 [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-foreground [&_h2]:mt-5 [&_h2]:mb-2 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-4 [&_h3]:mb-2 [&_p]:mb-3 [&_ul]:mb-3 [&_ul]:space-y-1.5 [&_li]:flex [&_li]:items-start [&_li]:gap-2 [&_strong]:text-foreground [&_strong]:font-semibold [&_img]:rounded-lg [&_img]:my-4 [&_img]:mx-auto [&_img]:max-w-full [&_img]:h-auto [&_img]:shadow-sm"
+              dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+            />
           ) : (
             <p className="text-sm leading-relaxed text-muted-foreground">{product.description}</p>
           )}
