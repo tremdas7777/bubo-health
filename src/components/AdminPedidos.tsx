@@ -198,6 +198,8 @@ export default function AdminPedidos() {
         }).catch(e => console.error("Auto tracking email error:", e));
       }
     }
+
+    flash("Código de rastreio salvo com sucesso!");
   };
 
   const handleSendEmail = async (order: Order, type: "status" | "tracking") => {
