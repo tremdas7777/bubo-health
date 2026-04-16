@@ -1,3 +1,5 @@
+import { supabase } from "@/integrations/supabase/client";
+
 export interface UtmifyConfig {
   apiToken: string;
   apiToken2: string;
@@ -17,6 +19,34 @@ export function getUtmifyConfig(): UtmifyConfig {
 
 export function saveUtmifyConfig(config: UtmifyConfig): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+  // Sincroniza tokens com o backend para disparo server-side
+  void syncUtmifyConfigToDb(config);
+}
+
+export async function syncUtmifyConfigToDb(config: UtmifyConfig): Promise<void> {
+  try {
+    const { data: existing } = await supabase
+      .from("gateway_config")
+      .select("id")
+      .limit(1)
+      .maybeSingle();
+    if (existing?.id) {
+      await supabase
+        .from("gateway_config")
+        .update({
+          utmify_api_token: config.apiToken || "",
+          utmify_api_token_2: config.apiToken2 || "",
+        })
+        .eq("id", existing.id);
+    } else {
+      await supabase.from("gateway_config").insert({
+        utmify_api_token: config.apiToken || "",
+        utmify_api_token_2: config.apiToken2 || "",
+      });
+    }
+  } catch (e) {
+    console.error("Falha ao sincronizar tokens Utmify com o backend", e);
+  }
 }
 
 export async function testUtmifyToken(token: string): Promise<{ success: boolean; message: string }> {
@@ -45,21 +75,26 @@ export async function testUtmifyToken(token: string): Promise<{ success: boolean
   }
 }
 
-export async function sendUtmifySale(data: { orderId: string; customerName: string; customerEmail: string; productName: string; priceInCents: number; }): Promise<boolean> {
-  const config = getUtmifyConfig();
-  const tokens = [config.apiToken, config.apiToken2].filter(Boolean);
-  if (tokens.length === 0) return false;
-  const payload = {
-    orderId: data.orderId, platform: 'kazoom-store', paymentMethod: 'pix', status: 'paid',
-    createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
-    approvedDate: new Date().toISOString().replace('T', ' ').substring(0, 19), refundedAt: null,
-    customer: { name: data.customerName, email: data.customerEmail, phone: null, document: null },
-    products: [{ id: 'kazoom-product', name: data.productName, planId: null, planName: null, quantity: 1, priceInCents: data.priceInCents }],
-    trackingParameters: { src: null, sck: null, utm_source: null, utm_campaign: null, utm_medium: null, utm_content: null, utm_term: null },
-    commission: { totalPriceInCents: data.priceInCents, gatewayFeeInCents: 0, userCommissionInCents: data.priceInCents, currency: 'BRL' },
-  };
-  const results = await Promise.all(tokens.map(async t => {
-    try { await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-api-token': t }, body: JSON.stringify(payload) }); return true; } catch { return false; }
-  }));
-  return results.some(Boolean);
+export async function notifyUtmifyServerSide(data: {
+  orderId: string;
+  status: "waiting_payment" | "paid";
+  paymentMethod: "pix" | "credit_card";
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string | null;
+  customerDocument?: string | null;
+  productName?: string;
+  priceInCents: number;
+  trackingParameters?: Record<string, string | null>;
+}): Promise<void> {
+  try {
+    await supabase.functions.invoke("notify-utmify", { body: data });
+  } catch (e) {
+    console.error("notify-utmify invoke error", e);
+  }
+}
+
+// Mantido por compatibilidade (não usado — preferir notifyUtmifyServerSide)
+export async function sendUtmifySale(_data: { orderId: string; customerName: string; customerEmail: string; productName: string; priceInCents: number; }): Promise<boolean> {
+  return false;
 }

@@ -197,6 +197,8 @@ export type Database = {
           simpayout_client_id: string | null
           simpayout_client_secret: string | null
           updated_at: string
+          utmify_api_token: string | null
+          utmify_api_token_2: string | null
           vennox_company_id: string | null
           vennox_secret_key: string | null
         }
@@ -217,6 +219,8 @@ export type Database = {
           simpayout_client_id?: string | null
           simpayout_client_secret?: string | null
           updated_at?: string
+          utmify_api_token?: string | null
+          utmify_api_token_2?: string | null
           vennox_company_id?: string | null
           vennox_secret_key?: string | null
         }
@@ -237,6 +241,8 @@ export type Database = {
           simpayout_client_id?: string | null
           simpayout_client_secret?: string | null
           updated_at?: string
+          utmify_api_token?: string | null
+          utmify_api_token_2?: string | null
           vennox_company_id?: string | null
           vennox_secret_key?: string | null
         }
