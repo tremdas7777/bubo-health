@@ -86,6 +86,7 @@ export default function ProductDetailPage() {
   const { data: products = [], isLoading } = useDbProducts();
   const product = products.find((p) => p.slug === slug);
   const [quantity, setQuantity] = useState(1);
+  const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
   const { addItem } = useCart();
   const navigate = useNavigate();
 
@@ -179,12 +180,17 @@ export default function ProductDetailPage() {
 
             {product.variants && product.variants.length > 0 && (
               <div className="space-y-2">
-                <p className="text-sm font-medium">Opções:</p>
+                <p className="text-sm font-medium">Cor:</p>
                 <div className="flex gap-2">
                   {product.variants.map((variant) => (
                     <button
                       key={variant}
-                      className="rounded-lg border border-primary px-4 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                      onClick={() => setSelectedVariant(variant)}
+                      className={`rounded-lg border px-4 py-1.5 text-sm font-medium transition-colors ${
+                        selectedVariant === variant
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "border-primary text-primary hover:bg-primary/10"
+                      }`}
                     >
                       {variant}
                     </button>
