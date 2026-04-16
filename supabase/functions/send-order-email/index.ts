@@ -12,7 +12,7 @@ const STORE_NAME = "Kazoom";
 const STORE_URL = "https://snuggle-stuff-source.lovable.app";
 const FROM_EMAIL = "Kazoom <noreply@kazoombrasil.com.br>";
 const SUPPORT_EMAIL = "suporte@kazoombrasil.com.br";
-const WHATSAPP = "(77) 99138-1192";
+const WHATSAPP = "(11) 99153-7247";
 
 // Brand colors
 const PURPLE = "#A855F7";

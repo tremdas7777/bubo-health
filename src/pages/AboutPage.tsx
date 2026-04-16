@@ -34,7 +34,7 @@ export default function AboutPage() {
             <li><strong>CNPJ:</strong> 60.105.125/0001-08</li>
             <li><strong>Endereço:</strong> Av. Larissa Cavalcante, 11 – Boa Vista, Vitória da Conquista – BA, CEP 45027-400</li>
             <li><strong>E-mail:</strong> suporte@kazoombrasil.com.br</li>
-            <li><strong>Telefone:</strong> (77) 99138-1192</li>
+            <li><strong>Telefone:</strong> (11) 99153-7247</li>
           </ul>
         </div>
       </div>
