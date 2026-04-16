@@ -81,24 +81,25 @@ export default function Footer() {
         {/* Payment Flags */}
         <div className="border-t border-background/10 mt-8 pt-6 pb-2">
           <p className="text-center text-[10px] uppercase tracking-widest opacity-40 mb-3 font-semibold">Formas de pagamento</p>
-          <div className="flex flex-wrap items-center justify-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             {/* Visa */}
-            <div className="bg-white rounded-md px-2.5 py-1.5 flex items-center justify-center h-8 w-12">
-              <svg viewBox="0 0 48 32" className="h-5 w-auto" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19.5 10.2l-3.2 11.6h-2.6l-1.6-9.3c-.1-.4-.2-.5-.5-.7A11 11 0 008 10.5l.1-.3h4.2c.5 0 1 .4 1.1.9l1 5.5 2.6-6.4h2.5zm10 7.8c0-3-4.2-3.2-4.2-4.6 0-.4.4-.8 1.3-.9a5.7 5.7 0 013 .5l.5-2.4a8.2 8.2 0 00-2.8-.5c-3 0-5 1.6-5 3.8 0 1.7 1.5 2.6 2.6 3.1 1.1.6 1.5 1 1.5 1.5 0 .8-1 1.2-1.8 1.2a6.3 6.3 0 01-3.1-.7l-.5 2.5a8.8 8.8 0 003.3.6c3.2 0 5.2-1.6 5.2-3.9zm7.9 3.8H40l-2.2-11.6h-2.1a1.1 1.1 0 00-1.1.7L30.4 21.8h2.5l.5-1.4h3.1l.3 1.4zm-2.7-3.3l1.3-3.5.7 3.5h-2zm-10-8.3l-2 11.6h-2.4l2-11.6h2.4z" fill="#1A1F71"/>
+            <div className="bg-white rounded-md flex items-center justify-center h-9 w-14 shadow-sm">
+              <svg viewBox="0 0 780 500" className="h-6 w-10" xmlns="http://www.w3.org/2000/svg">
+                <path d="M293.2 348.7l33.4-195.8h53.4l-33.4 195.8h-53.4zm246.8-191c-10.6-4-27.2-8.3-47.9-8.3-52.8 0-90 26.6-90.2 64.7-.3 28.2 26.5 43.9 46.8 53.3 20.8 9.6 27.8 15.8 27.7 24.4-.1 13.2-16.6 19.2-32 19.2-21.4 0-32.8-3-50.3-10.2l-6.9-3.1-7.5 44c12.5 5.5 35.6 10.2 59.6 10.5 56.1 0 92.5-26.3 92.9-67 .2-22.3-14-39.3-44.8-53.3-18.6-9.1-30-15.1-29.9-24.3 0-8.1 9.7-16.8 30.5-16.8 17.4-.3 30 3.5 39.8 7.5l4.8 2.3 7.2-42.8zm137.1 3.8h-41.3c-12.8 0-22.4 3.5-28 16.3l-79.4 179.9h56.1l11.2-29.4h68.6l6.5 29.4h49.5l-43.2-196.2zm-65.9 126.6c4.4-11.3 21.5-54.7 21.5-54.7-.3.5 4.4-11.5 7.1-18.9l3.6 17.1s10.3 47.3 12.5 57.2h-44.7v-.7zM327.1 152.9L273.6 287l-5.7-27.8c-9.9-31.8-40.8-66.3-75.3-83.5l47.8 171h56.5l84.1-194.8h-54z" fill="#1A1F71"/>
+                <path d="M206.4 152.9h-86.1l-.7 3.5c67 16.2 111.4 55.4 129.7 102.4l-18.7-89.7c-3.2-12.3-12.8-15.8-24.2-16.2z" fill="#F9A533"/>
               </svg>
             </div>
             {/* Mastercard */}
-            <div className="bg-white rounded-md px-2.5 py-1.5 flex items-center justify-center h-8 w-12">
-              <svg viewBox="0 0 48 32" className="h-5 w-auto" xmlns="http://www.w3.org/2000/svg">
+            <div className="bg-white rounded-md flex items-center justify-center h-9 w-14 shadow-sm">
+              <svg viewBox="0 0 48 32" className="h-6 w-10" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="19" cy="16" r="9" fill="#EB001B"/>
                 <circle cx="29" cy="16" r="9" fill="#F79E1B"/>
                 <path d="M24 9.2a9 9 0 013.4 6.8A9 9 0 0124 22.8a9 9 0 01-3.4-6.8A9 9 0 0124 9.2z" fill="#FF5F00"/>
               </svg>
             </div>
             {/* Elo */}
-            <div className="bg-white rounded-md px-2.5 py-1.5 flex items-center justify-center h-8 w-12">
-              <svg viewBox="0 0 48 32" className="h-5 w-auto" xmlns="http://www.w3.org/2000/svg">
+            <div className="bg-white rounded-md flex items-center justify-center h-9 w-14 shadow-sm">
+              <svg viewBox="0 0 48 32" className="h-6 w-10" xmlns="http://www.w3.org/2000/svg">
                 <path d="M14.5 12.5a4.5 4.5 0 013.3-1.5 4.5 4.5 0 014.2 3l3-1a7.5 7.5 0 00-7.2-5 7.5 7.5 0 00-5.5 2.4l2.2 2.1z" fill="#FFF100"/>
                 <path d="M12.3 14.6A7.5 7.5 0 0012 16.5a7.5 7.5 0 00.3 2l3-.8a4.5 4.5 0 010-2.3l-3-.8z" fill="#00A3DF"/>
                 <path d="M14.5 20.5a4.5 4.5 0 01-1.7-2.5l-3 .8a7.5 7.5 0 005.5 4.6l.8-3a4.5 4.5 0 01-1.6-.9z" fill="#EE4023"/>
@@ -107,18 +108,19 @@ export default function Footer() {
               </svg>
             </div>
             {/* American Express */}
-            <div className="bg-[#006FCF] rounded-md px-2.5 py-1.5 flex items-center justify-center h-8 w-12">
-              <span className="text-white font-black text-[8px] leading-[1.1] text-center">AMEX</span>
+            <div className="bg-[#006FCF] rounded-md flex items-center justify-center h-9 w-14 shadow-sm">
+              <span className="text-white font-black text-[9px] leading-[1.1] text-center tracking-tight">AMEX</span>
             </div>
             {/* Hipercard */}
-            <div className="bg-[#822124] rounded-md px-2.5 py-1.5 flex items-center justify-center h-8 w-12">
-              <span className="text-white font-bold text-[7px] leading-tight text-center">HIPER<br/>CARD</span>
+            <div className="bg-[#822124] rounded-md flex items-center justify-center h-9 w-14 shadow-sm">
+              <span className="text-white font-bold text-[8px] leading-tight text-center">HIPER<br/>CARD</span>
             </div>
             {/* PIX */}
-            <div className="bg-white rounded-md px-2.5 py-1.5 flex items-center justify-center h-8 w-12">
-              <svg viewBox="0 0 48 32" className="h-5 w-auto" xmlns="http://www.w3.org/2000/svg">
-                <path d="M29.3 10.7l-4.6 4.6a1 1 0 01-1.4 0l-4.6-4.6a3.5 3.5 0 00-2.5-1h-.7l5.8 5.8a2.5 2.5 0 003.4 0l5.8-5.8h-.7a3.5 3.5 0 00-2.5 1z" fill="#32BCAD"/>
-                <path d="M29.3 21.3l-4.6-4.6a1 1 0 00-1.4 0l-4.6 4.6a3.5 3.5 0 01-2.5 1h-.7l5.8-5.8a2.5 2.5 0 013.4 0l5.8 5.8h-.7a3.5 3.5 0 01-2.5-1z" fill="#32BCAD"/>
+            <div className="bg-white rounded-md flex items-center justify-center h-9 w-14 shadow-sm">
+              <svg viewBox="0 0 512 512" className="h-6 w-6" xmlns="http://www.w3.org/2000/svg">
+                <path d="M382.6 349.5c-16.5 0-32-6.4-43.7-18.1l-68.3-68.3c-5.5-5.3-14.8-5.4-20.4 0l-68.6 68.6c-11.7 11.7-27.2 18.1-43.7 18.1h-11.6l86.6 86.6c24.1 24.1 63.2 24.1 87.3 0l86.8-86.8h-4.4z" fill="#32BCAD"/>
+                <path d="M137.9 162.5c16.5 0 32 6.4 43.7 18.1l68.6 68.6c5.8 5.8 14.6 5.8 20.4 0l68.3-68.3c11.7-11.7 27.2-18.1 43.7-18.1h4.4l-86.8-86.8c-24.1-24.1-63.2-24.1-87.3 0l-86.6 86.6h11.6z" fill="#32BCAD"/>
+                <path d="M436.4 213.1l-41.2-41.2c-1.4.5-2.9.8-4.5.8h-8.1c-12.2 0-23.8 4.8-32.5 13.5l-68.3 68.3c-8 8-18.5 12-29 12s-21-4-29-12l-68.6-68.6c-8.6-8.6-20.2-13.3-32.2-13.3h-14.5c-1.2 0-2.3-.2-3.4-.5L64 213.2c-24.1 24.1-24.1 63.2 0 87.3l41.5 41.5c1.1-.3 2.2-.5 3.4-.5H123c12 0 23.6-4.7 32.2-13.3l68.6-68.6c7.7-7.7 18.5-12 29-12s21.3 4.3 29 12l68.3 68.3c8.7 8.7 20.3 13.5 32.5 13.5h8.1c1.6 0 3.1.3 4.5.8l41.2-41.2c24.2-24.2 24.2-63.3 0-87.4z" fill="#32BCAD"/>
               </svg>
             </div>
           </div>
