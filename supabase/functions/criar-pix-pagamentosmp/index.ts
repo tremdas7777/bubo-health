@@ -129,6 +129,7 @@ serve(async (req) => {
         buyer_phone: buyerPhone,
         gateway: "pagamentosmp",
         shipping_cost_cents: metadata?.shippingCostCents || 0,
+        shipping_method: metadata?.shippingMethod || null,
       })
       .select("id")
       .single();
