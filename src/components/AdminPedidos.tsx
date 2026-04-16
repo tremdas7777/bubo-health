@@ -150,6 +150,22 @@ export default function AdminPedidos() {
       });
     }
 
+    // Auto send email on status change
+    if (order.buyer_email && ["paid", "shipped", "delivered", "cancelled"].includes(newStatus)) {
+      supabase.functions.invoke("send-order-email", {
+        body: {
+          orderId: order.id,
+          buyerEmail: order.buyer_email,
+          buyerName: order.buyer_name || "Cliente",
+          status: newStatus,
+          trackingCode: order.tracking_code,
+          amountCents: order.amount_cents,
+          type: newStatus === "shipped" && order.tracking_code ? "tracking" : "status",
+          items: (order.items || []).map(i => ({ name: i.product_name, quantity: i.quantity, priceCents: i.price_cents })),
+        },
+      }).catch(e => console.error("Auto email error:", e));
+    }
+
     flash(`Status atualizado para "${STATUS_OPTIONS.find((s) => s.value === newStatus)?.label}"!`);
   };
 
