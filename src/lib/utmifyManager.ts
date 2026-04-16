@@ -28,6 +28,7 @@ export async function syncUtmifyConfigToDb(config: UtmifyConfig): Promise<void> 
     const { data: existing } = await supabase
       .from("gateway_config")
       .select("id")
+      .order("updated_at", { ascending: false })
       .limit(1)
       .maybeSingle();
     if (existing?.id) {
