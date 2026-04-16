@@ -7,9 +7,11 @@ import { useWishlist } from "@/contexts/WishlistContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import logoIcon from "@/assets/logo-icon.png";
+import SearchOverlay from "./SearchOverlay";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { totalItems, setIsOpen } = useCart();
   const { totalItems: wishlistCount } = useWishlist();
   const { theme, toggleTheme } = useTheme();
@@ -29,7 +31,7 @@ export default function Header() {
             >
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
-            <button className="text-foreground hover:text-primary transition-colors" aria-label="Buscar">
+            <button onClick={() => setSearchOpen(true)} className="text-foreground hover:text-primary transition-colors" aria-label="Buscar">
               <Search size={22} />
             </button>
           </div>
@@ -119,6 +121,8 @@ export default function Header() {
           </div>
         </nav>
       )}
+
+      <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }
