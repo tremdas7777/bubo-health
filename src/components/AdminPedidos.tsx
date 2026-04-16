@@ -71,7 +71,7 @@ export default function AdminPedidos() {
     setLoading(true);
     const { data } = await supabase
       .from("orders")
-      .select("id, buyer_name, buyer_email, buyer_phone, buyer_document, amount_cents, shipping_cost_cents, status, gateway, tracking_code, qr_code_copied, created_at, updated_at")
+      .select("id, buyer_name, buyer_email, buyer_phone, buyer_document, amount_cents, shipping_cost_cents, shipping_method, status, gateway, tracking_code, qr_code_copied, created_at, updated_at")
       .order("created_at", { ascending: false })
       .limit(100);
 
