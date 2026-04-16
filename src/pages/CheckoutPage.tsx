@@ -359,6 +359,19 @@ export default function CheckoutPage() {
           await saveOrderItems(result.order_id);
         }
 
+        // Send order confirmation email (pending)
+        supabase.functions.invoke("send-order-email", {
+          body: {
+            orderId: result.order_id,
+            buyerEmail: email,
+            buyerName: name,
+            status: "pending",
+            amountCents: Math.round(total * 100),
+            type: "status",
+            items: items.map(i => ({ name: i.product.name, quantity: i.quantity, priceCents: Math.round(i.product.price * 100) })),
+          },
+        }).catch(e => console.error("Email error:", e));
+
         // Fire webhook
         await fireWebhookEvent("venda_pendente", {
           source: "checkout",
