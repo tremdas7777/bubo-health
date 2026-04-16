@@ -53,6 +53,8 @@ function BestSellerCard({ product, addItem }: { product: Product; addItem: (p: a
           className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
           decoding="async"
+          width="400"
+          height="400"
         />
         {discountPercent > 0 && (
           <span className="absolute top-2 left-2 bg-destructive text-destructive-foreground text-[10px] font-bold px-2 py-0.5 rounded-full">

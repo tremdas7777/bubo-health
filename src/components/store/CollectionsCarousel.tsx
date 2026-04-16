@@ -62,6 +62,8 @@ export default memo(function CollectionsCarousel() {
                       loading="lazy"
                       decoding="async"
                       draggable={false}
+                      width="185"
+                      height="247"
                     />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
