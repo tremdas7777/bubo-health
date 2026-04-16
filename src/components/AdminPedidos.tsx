@@ -30,6 +30,7 @@ interface Order {
   buyer_document: string | null;
   amount_cents: number;
   shipping_cost_cents: number | null;
+  shipping_method: string | null;
   status: string;
   gateway: string | null;
   tracking_code: string | null;
