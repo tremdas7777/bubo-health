@@ -189,6 +189,11 @@ export default function AdminPedidos() {
           trackingCode: order.tracking_code,
           amountCents: order.amount_cents,
           type,
+          items: (order.items || []).map(i => ({
+            name: i.product_name,
+            quantity: i.quantity,
+            priceCents: i.price_cents,
+          })),
         },
       });
 
