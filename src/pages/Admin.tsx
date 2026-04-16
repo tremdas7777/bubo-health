@@ -29,6 +29,7 @@ import {
   Zap,
 } from "lucide-react";
 import AdminProdutos from "@/components/AdminProdutos";
+import AdminPedidos from "@/components/AdminPedidos";
 
 import AdminFrete from "@/components/AdminFrete";
 import AdminDashboard from "@/components/AdminDashboard";
@@ -1597,138 +1598,7 @@ export default function Admin() {
           </div>
         )}
 
-        {activeTab === "pedidos" && (
-          <div>
-            <div className="mb-4 flex items-center justify-between">
-              <div>
-                <h2 className="mb-1 text-xl font-black text-foreground">Pedidos</h2>
-                <p className="text-xs text-muted-foreground">Visualize os pedidos gerados via PIX</p>
-              </div>
-              <div className="flex gap-2">
-                <Button onClick={() => void handleClearOrders()} variant="outline" size="sm" className="text-xs font-bold text-destructive hover:bg-destructive/10">
-                  <Trash2 size={14} className="mr-1" /> Limpar
-                </Button>
-                <Button onClick={() => void fetchOrders()} variant="outline" size="sm" className="text-xs font-bold" disabled={ordersLoading}>
-                  <RefreshCw size={14} className={`mr-1 ${ordersLoading ? "animate-spin" : ""}`} /> Atualizar
-                </Button>
-              </div>
-            </div>
-
-            {orders.length === 0 && !ordersLoading && (
-              <Card className="border border-border p-8 text-center">
-                <ShoppingCart size={32} className="mx-auto mb-3 text-muted-foreground" />
-                <p className="text-sm font-bold text-foreground">Nenhum pedido ainda</p>
-                <p className="mt-1 text-xs text-muted-foreground">Os pedidos aparecerão aqui quando clientes gerarem PIX</p>
-              </Card>
-            )}
-
-            {ordersLoading && (
-              <div className="flex justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-              </div>
-            )}
-
-            {orders.length > 0 && (
-              <div className="space-y-3">
-                {orders.map((order) => (
-                  <Card key={order.id} className="border border-border p-4">
-                    <div className="mb-2 flex items-start justify-between">
-                      <div>
-                        <p className="text-xs font-black text-foreground">{order.buyer_name || "Sem nome"}</p>
-                        <p className="text-[10px] text-muted-foreground">{order.buyer_email || "Sem email"}</p>
-                        {order.buyer_phone && <p className="text-[10px] text-muted-foreground">{order.buyer_phone}</p>}
-                      </div>
-
-                      <div className="flex flex-col items-end gap-1">
-                        <Badge
-                          className={`text-[10px] ${
-                            order.status === "paid"
-                              ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500"
-                              : "border-amber-500/30 bg-amber-500/10 text-amber-500"
-                          }`}
-                        >
-                          {order.status === "paid" ? "Pago" : "Pendente"}
-                        </Badge>
-                        <Badge
-                          variant="outline"
-                          className={`text-[10px] ${
-                            order.qr_code_copied
-                              ? "border-emerald-500/30 text-emerald-500"
-                              : "border-muted-foreground/30 text-muted-foreground"
-                          }`}
-                        >
-                          <Copy size={10} className="mr-1" /> {order.qr_code_copied ? "Copiado" : "Não copiado"}
-                        </Badge>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between border-t border-border pt-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-foreground">
-                          R$ {(order.amount_cents / 100).toFixed(2).replace(".", ",")}
-                        </span>
-                        <Badge variant="outline" className="text-[9px]">
-                          {order.gateway || "Sem gateway"}
-                        </Badge>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        {order.status !== "paid" && (
-                          <Button
-                            size="sm"
-                            className="h-6 bg-emerald-500 px-2 text-[10px] font-bold text-white hover:bg-emerald-500/90"
-                            onClick={() => void handleApproveOrder(order)}
-                          >
-                            <CheckCircle size={10} className="mr-1" /> Aprovar
-                          </Button>
-                        )}
-                        <span className="text-[10px] text-muted-foreground">{new Date(order.created_at).toLocaleString("pt-BR")}</span>
-                      </div>
-                    </div>
-
-                    {/* Tracking code */}
-                    <div className="mt-2 flex items-center gap-2 border-t border-border pt-2">
-                      <Truck size={12} className="text-muted-foreground shrink-0" />
-                      <Input
-                        placeholder="Código de rastreio"
-                        value={order.tracking_code || ""}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setOrders((prev) => prev.map((o) => o.id === order.id ? { ...o, tracking_code: val } : o));
-                        }}
-                        className="h-7 text-xs flex-1"
-                      />
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-7 px-2 text-[10px] font-bold"
-                        onClick={async () => {
-                          const code = orders.find((o) => o.id === order.id)?.tracking_code || null;
-                          const { error } = await supabase.from("orders").update({ tracking_code: code }).eq("id", order.id);
-                          flashMessage(setOrdersMessage, error ? "Erro ao salvar rastreio" : "Código de rastreio salvo com sucesso!");
-                        }}
-                      >
-                        <Save size={10} className="mr-1" /> Salvar
-                      </Button>
-                      {order.tracking_code && order.buyer_phone && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="h-7 px-2 text-[10px] font-bold text-emerald-500 border-emerald-500/30 hover:bg-emerald-500/10"
-                          onClick={() => handleSendTrackingWhatsApp(order)}
-                        >
-                          <Zap size={10} className="mr-1" /> WhatsApp
-                        </Button>
-                      )}
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            )}
-
-            <StatusMessage msg={ordersMessage} />
-          </div>
-        )}
+        {activeTab === "pedidos" && <AdminPedidos />}
 
         {activeTab === "cloaker" && (
           <div className="space-y-4">
