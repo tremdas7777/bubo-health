@@ -228,7 +228,11 @@ export default function CheckoutPage() {
     setPollingPayment(true);
     const interval = setInterval(async () => {
       try {
-        const { data } = await supabase.from("orders").select("status").eq("id", orderId).maybeSingle();
+        const { data } = await supabase
+          .from("orders")
+          .select("status, amount_cents, buyer_name, buyer_email, buyer_phone, buyer_document")
+          .eq("id", orderId)
+          .maybeSingle();
         if (data?.status === "paid" || data?.status === "approved") {
           clearInterval(interval);
           // Utmify: notifica venda aprovada (PIX confirmado)
@@ -236,12 +240,12 @@ export default function CheckoutPage() {
             orderId,
             status: "paid",
             paymentMethod: "pix",
-            customerName: name,
-            customerEmail: email,
-            customerPhone: phone || null,
-            customerDocument: cpf?.replace(/\D/g, "") || null,
-            productName: items[0]?.product?.name || "Pedido Kazoom",
-            priceInCents: Math.round(total * 100),
+            customerName: data.buyer_name || "Cliente",
+            customerEmail: data.buyer_email || "",
+            customerPhone: data.buyer_phone || null,
+            customerDocument: data.buyer_document || null,
+            productName: "Pedido Kazoom",
+            priceInCents: data.amount_cents || 0,
             trackingParameters: getCampaignParams(),
           });
           navigate(`/obrigado?pedido=${orderId}&metodo=pix`);
@@ -249,7 +253,7 @@ export default function CheckoutPage() {
       } catch { /* ignore */ }
     }, 5000);
     return () => clearInterval(interval);
-  }, [orderId, navigate, pollingPayment, name, email, phone, cpf, items, total]);
+  }, [orderId, navigate, pollingPayment]);
 
   const selectedShippingOption = shippingOptions.find((s) => s.id === selectedShipping) || shippingOptions[0];
   const shippingCost = selectedShippingOption?.price_cents || 0;
