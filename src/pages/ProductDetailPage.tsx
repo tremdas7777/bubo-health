@@ -363,7 +363,7 @@ export default function ProductDetailPage() {
             <HelpCircle size={20} className="text-primary" />
             Perguntas Frequentes
           </h3>
-          <ProductFAQ />
+          <ProductFAQ productName={product.name} productDescription={product.description || ""} />
         </div>
 
         {relatedProducts.length > 0 && (
