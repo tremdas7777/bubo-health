@@ -231,12 +231,25 @@ export default function CheckoutPage() {
         const { data } = await supabase.from("orders").select("status").eq("id", orderId).maybeSingle();
         if (data?.status === "paid" || data?.status === "approved") {
           clearInterval(interval);
+          // Utmify: notifica venda aprovada (PIX confirmado)
+          void notifyUtmifyServerSide({
+            orderId,
+            status: "paid",
+            paymentMethod: "pix",
+            customerName: name,
+            customerEmail: email,
+            customerPhone: phone || null,
+            customerDocument: cpf?.replace(/\D/g, "") || null,
+            productName: items[0]?.product?.name || "Pedido Kazoom",
+            priceInCents: Math.round(total * 100),
+            trackingParameters: getCampaignParams(),
+          });
           navigate(`/obrigado?pedido=${orderId}&metodo=pix`);
         }
       } catch { /* ignore */ }
     }, 5000);
     return () => clearInterval(interval);
-  }, [orderId, navigate, pollingPayment]);
+  }, [orderId, navigate, pollingPayment, name, email, phone, cpf, items, total]);
 
   const selectedShippingOption = shippingOptions.find((s) => s.id === selectedShipping) || shippingOptions[0];
   const shippingCost = selectedShippingOption?.price_cents || 0;
@@ -385,6 +398,20 @@ export default function CheckoutPage() {
           gateway,
         });
 
+        // Utmify: notifica venda pendente (PIX gerado)
+        void notifyUtmifyServerSide({
+          orderId: result.order_id || "",
+          status: "waiting_payment",
+          paymentMethod: "pix",
+          customerName: name,
+          customerEmail: email,
+          customerPhone: phone || null,
+          customerDocument: cpf?.replace(/\D/g, "") || null,
+          productName: items[0]?.product?.name || "Pedido Kazoom",
+          priceInCents: Math.round(total * 100),
+          trackingParameters: getCampaignParams(),
+        });
+
         void trackEvent("purchase");
       } else {
         setPaymentError("Erro ao gerar PIX. Tente novamente.");
@@ -516,6 +543,21 @@ export default function CheckoutPage() {
           orderId: result.order_id,
           gateway,
         });
+
+        // Utmify: notifica venda aprovada (cartão)
+        void notifyUtmifyServerSide({
+          orderId: result.order_id || "",
+          status: "paid",
+          paymentMethod: "credit_card",
+          customerName: name,
+          customerEmail: email,
+          customerPhone: phone || null,
+          customerDocument: cpf?.replace(/\D/g, "") || null,
+          productName: items[0]?.product?.name || "Pedido Kazoom",
+          priceInCents: Math.round(total * 100),
+          trackingParameters: getCampaignParams(),
+        });
+
         void trackEvent("purchase");
         navigate(`/obrigado?pedido=${result.order_id}&metodo=card`);
       } else {
