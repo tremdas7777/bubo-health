@@ -9,6 +9,8 @@ import { trackEvent } from "@/lib/funnelTracking";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchPaymentGatewayConfig } from "@/lib/paymentGateway";
 import { fireWebhookEvent } from "@/lib/webhookManager";
+import { notifyUtmifyServerSide } from "@/lib/utmifyManager";
+import { getCampaignParams } from "@/lib/campaignParams";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PIX_DISCOUNT_RATE, PIX_DISCOUNT_PERCENT, getTotalWithInterest, getInstallmentValue } from "@/lib/pricing";
