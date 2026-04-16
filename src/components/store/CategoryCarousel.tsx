@@ -21,6 +21,8 @@ function ProductCardInline({ product, addItem }: { product: Product; addItem: (p
           className="w-full aspect-square object-cover group-hover/card:scale-105 transition-transform duration-500"
           loading="lazy"
           decoding="async"
+          width="400"
+          height="400"
         />
         {product.badge && (
           <span className="absolute top-2 right-2 bg-lime text-foreground text-[10px] font-bold px-2 py-0.5 rounded-full">
