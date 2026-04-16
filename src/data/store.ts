@@ -53,6 +53,7 @@ export interface Product {
   images?: string[];
   category: string;
   description: string;
+  descriptionHtml?: string;
   stock: number;
   badge?: string;
   variants?: string[];

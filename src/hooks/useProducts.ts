@@ -53,6 +53,7 @@ function mapDbProduct(db: DbProduct): Product {
     images: db.images && db.images.length > 0 ? db.images : undefined,
     category: db.category || "Geral",
     description: db.description || "",
+    descriptionHtml: db.description_html || undefined,
     stock: 50, // DB doesn't track stock yet, default
     variants: variants.length > 0 ? variants : undefined,
   };
