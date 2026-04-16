@@ -812,9 +812,9 @@ export default function CheckoutPage() {
                     className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
                   >
                     {generating ? (
-                      <><Loader2 size={16} className="animate-spin mr-2" /> Gerando PIX...</>
+                      <><Loader2 size={16} className="animate-spin mr-2" /> Processando...</>
                     ) : (
-                      "Gerar QR Code PIX"
+                      "Comprar Agora"
                     )}
                   </Button>
                 )}
@@ -879,7 +879,7 @@ export default function CheckoutPage() {
                       {generating ? (
                         <><Loader2 size={16} className="animate-spin mr-2" /> Processando...</>
                       ) : (
-                        <><CreditCard size={16} className="mr-2" /> Pagar com Cartão</>
+                        "Comprar Agora"
                       )}
                     </Button>
                   </div>
