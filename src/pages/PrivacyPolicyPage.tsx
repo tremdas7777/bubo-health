@@ -64,7 +64,7 @@ export default function PrivacyPolicyPage() {
           <h2 className="text-lg font-semibold text-foreground">7. Contato</h2>
           <p>
             Para exercer seus direitos ou esclarecer dúvidas sobre esta política, entre em contato
-            pelo e-mail <strong>suporte@kazoombrasil.com.br</strong> ou pelo nosso WhatsApp (77) 99138-1192.
+            pelo e-mail <strong>suporte@kazoombrasil.com.br</strong> ou pelo nosso WhatsApp (11) 99153-7247.
           </p>
           <p>
             <strong>Responsável:</strong> 60.105.125 Giovany Matos Dias – CNPJ 60.105.125/0001-08<br />

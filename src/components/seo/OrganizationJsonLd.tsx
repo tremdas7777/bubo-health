@@ -23,7 +23,7 @@ export default function OrganizationJsonLd() {
         contactType: "customer service",
         availableLanguage: "Portuguese",
         email: "suporte@kazoombrasil.com.br",
-        telephone: "+55-77-99138-1192",
+        telephone: "+55-11-99153-7247",
       },
       taxID: "60.105.125/0001-08",
       sameAs: [],
