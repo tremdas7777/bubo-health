@@ -300,6 +300,8 @@ export type Database = {
           pix_code: string | null
           pix_qr_code: string | null
           qr_code_copied: boolean | null
+          recovery_email_sent: boolean | null
+          recovery_email_sent_at: string | null
           shipping_cost_cents: number | null
           shipping_method: string | null
           status: string
@@ -319,6 +321,8 @@ export type Database = {
           pix_code?: string | null
           pix_qr_code?: string | null
           qr_code_copied?: boolean | null
+          recovery_email_sent?: boolean | null
+          recovery_email_sent_at?: string | null
           shipping_cost_cents?: number | null
           shipping_method?: string | null
           status?: string
@@ -338,6 +342,8 @@ export type Database = {
           pix_code?: string | null
           pix_qr_code?: string | null
           qr_code_copied?: boolean | null
+          recovery_email_sent?: boolean | null
+          recovery_email_sent_at?: string | null
           shipping_cost_cents?: number | null
           shipping_method?: string | null
           status?: string
