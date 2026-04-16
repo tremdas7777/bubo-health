@@ -123,6 +123,34 @@ export default function ProductDetailPage() {
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
   const bullets = productBulletPoints[product.slug];
 
+  // Filter images based on selected variant (color)
+  const getFilteredImages = () => {
+    const allImages = product.images && product.images.length > 0 ? product.images : [product.image];
+    if (!selectedVariant || !product.variants) return allImages;
+    
+    const variantLower = selectedVariant.toLowerCase();
+    // Map variant names to URL keywords
+    const colorKeywords: Record<string, string[]> = {
+      "amarelo": ["amarela", "amarelo"],
+      "azul": ["azul"],
+    };
+    const keywords = colorKeywords[variantLower] || [variantLower];
+    
+    // Get images matching this variant + shared images (accessories, parts, etc.)
+    const variantImages = allImages.filter((img) => {
+      const imgLower = img.toLowerCase();
+      const isVariantSpecific = keywords.some((kw) => imgLower.includes(kw));
+      const isOtherVariant = Object.entries(colorKeywords)
+        .filter(([key]) => key !== variantLower)
+        .some(([, kws]) => kws.some((kw) => imgLower.includes(kw)));
+      return isVariantSpecific || !isOtherVariant;
+    });
+    
+    return variantImages.length > 0 ? variantImages : allImages;
+  };
+
+  const displayImages = getFilteredImages();
+
   const handleBuyNow = () => {
     addItem(product, quantity);
     navigate("/checkout");
@@ -154,7 +182,7 @@ export default function ProductDetailPage() {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
           <ProductImageGallery
-            images={product.images && product.images.length > 0 ? product.images : [product.image]}
+            images={displayImages}
             name={product.name}
             badge={product.badge}
           />
