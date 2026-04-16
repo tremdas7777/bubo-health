@@ -35,7 +35,12 @@ interface DbCollection {
 
 function mapDbProduct(db: DbProduct): Product {
   const variants = Array.isArray(db.variants)
-    ? db.variants.map((v: any) => (typeof v === "string" ? v : v?.name || String(v)))
+    ? db.variants.flatMap((v: any) => {
+        if (typeof v === "string") return [v];
+        if (v?.options && Array.isArray(v.options)) return v.options.map(String);
+        if (v?.name) return [v.name];
+        return [String(v)];
+      })
     : [];
 
   return {
