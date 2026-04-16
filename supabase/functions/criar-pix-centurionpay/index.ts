@@ -113,6 +113,7 @@ serve(async (req) => {
       buyer_phone: buyerPhone || null,
       gateway: "centurionpay",
       shipping_cost_cents: metadata?.shippingCostCents || 0,
+      shipping_method: metadata?.shippingMethod || null,
     }).select("id").single();
 
     if (orderError) {

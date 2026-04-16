@@ -30,6 +30,7 @@ interface Order {
   buyer_document: string | null;
   amount_cents: number;
   shipping_cost_cents: number | null;
+  shipping_method: string | null;
   status: string;
   gateway: string | null;
   tracking_code: string | null;
@@ -70,7 +71,7 @@ export default function AdminPedidos() {
     setLoading(true);
     const { data } = await supabase
       .from("orders")
-      .select("id, buyer_name, buyer_email, buyer_phone, buyer_document, amount_cents, shipping_cost_cents, status, gateway, tracking_code, qr_code_copied, created_at, updated_at")
+      .select("id, buyer_name, buyer_email, buyer_phone, buyer_document, amount_cents, shipping_cost_cents, shipping_method, status, gateway, tracking_code, qr_code_copied, created_at, updated_at")
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -387,8 +388,13 @@ export default function AdminPedidos() {
                         {totalProducts > 0 && (
                           <p className="text-[11px]">Produtos: {formatPrice(totalProducts / 100)}</p>
                         )}
-                        {shippingCents > 0 && (
-                          <p className="text-[11px]">Frete: {formatPrice(shippingCents / 100)}</p>
+                        {(shippingCents > 0 || order.shipping_method) && (
+                          <p className="text-[11px]">
+                            Frete: {formatPrice(shippingCents / 100)}
+                            {order.shipping_method && (
+                              <span className="text-muted-foreground ml-1">({order.shipping_method})</span>
+                            )}
+                          </p>
                         )}
                         <p className="text-xs font-bold text-primary mt-1">
                           Total: {formatPrice(order.amount_cents / 100)}
