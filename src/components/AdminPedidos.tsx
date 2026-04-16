@@ -388,8 +388,13 @@ export default function AdminPedidos() {
                         {totalProducts > 0 && (
                           <p className="text-[11px]">Produtos: {formatPrice(totalProducts / 100)}</p>
                         )}
-                        {shippingCents > 0 && (
-                          <p className="text-[11px]">Frete: {formatPrice(shippingCents / 100)}</p>
+                        {(shippingCents > 0 || order.shipping_method) && (
+                          <p className="text-[11px]">
+                            Frete: {formatPrice(shippingCents / 100)}
+                            {order.shipping_method && (
+                              <span className="text-muted-foreground ml-1">({order.shipping_method})</span>
+                            )}
+                          </p>
                         )}
                         <p className="text-xs font-bold text-primary mt-1">
                           Total: {formatPrice(order.amount_cents / 100)}
