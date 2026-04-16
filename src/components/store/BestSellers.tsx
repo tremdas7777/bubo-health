@@ -11,7 +11,7 @@ export default memo(function BestSellers() {
   const { addItem } = useCart();
 
   // Curated best sellers
-  const bestSellerSlugs = ["kit-ferramentas-refrigeracao", "maquina-solda-laser-portatil", "mini-motosserra"];
+  const bestSellerSlugs = ["kit-ferramentas-refrigeracao", "maquina-solda-laser-portatil", "mini-motosserra", "parafusadeira-furadeira-48v-2-baterias-maleta-acessorios"];
   const bestSellers = bestSellerSlugs
     .map((slug) => allProducts.find((p) => p.slug === slug))
     .filter(Boolean) as Product[];
