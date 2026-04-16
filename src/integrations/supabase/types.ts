@@ -301,6 +301,7 @@ export type Database = {
           pix_qr_code: string | null
           qr_code_copied: boolean | null
           shipping_cost_cents: number | null
+          shipping_method: string | null
           status: string
           tracking_code: string | null
           updated_at: string
@@ -319,6 +320,7 @@ export type Database = {
           pix_qr_code?: string | null
           qr_code_copied?: boolean | null
           shipping_cost_cents?: number | null
+          shipping_method?: string | null
           status?: string
           tracking_code?: string | null
           updated_at?: string
@@ -337,6 +339,7 @@ export type Database = {
           pix_qr_code?: string | null
           qr_code_copied?: boolean | null
           shipping_cost_cents?: number | null
+          shipping_method?: string | null
           status?: string
           tracking_code?: string | null
           updated_at?: string
