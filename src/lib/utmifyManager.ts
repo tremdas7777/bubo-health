@@ -78,7 +78,7 @@ export async function testUtmifyToken(token: string): Promise<{ success: boolean
 
 export async function notifyUtmifyServerSide(data: {
   orderId: string;
-  status: "waiting_payment" | "paid";
+  status: "waiting_payment" | "paid" | "refused";
   paymentMethod: "pix" | "credit_card";
   customerName: string;
   customerEmail: string;

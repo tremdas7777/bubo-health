@@ -12,7 +12,7 @@ const fmtDate = (d = new Date()) => d.toISOString().replace("T", " ").substring(
 
 interface Body {
   orderId: string;
-  status: "waiting_payment" | "paid";
+  status: "waiting_payment" | "paid" | "refused";
   paymentMethod?: "pix" | "credit_card";
   customerName?: string;
   customerEmail?: string;

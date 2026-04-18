@@ -636,6 +636,22 @@ export default function CheckoutPage() {
       } else {
         setOrderId(result?.order_id || "");
         setPaymentError("Pagamento não aprovado. Verifique os dados do cartão.");
+
+        // Utmify: notifica venda recusada (cartão)
+        if (result?.order_id) {
+          void notifyUtmifyServerSide({
+            orderId: result.order_id,
+            status: "refused",
+            paymentMethod: "credit_card",
+            customerName: name,
+            customerEmail: email,
+            customerPhone: phone || null,
+            customerDocument: cpf?.replace(/\D/g, "") || null,
+            productName: items[0]?.product?.name || "Pedido Kazoom",
+            priceInCents: Math.round(total * 100),
+            trackingParameters: getCampaignParams(),
+          });
+        }
       }
     } catch (err) {
       console.error(err);
