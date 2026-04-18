@@ -139,11 +139,25 @@ export default function ProductDetailPage() {
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
   const bullets = productBulletPoints[product.slug];
 
-  // Filter / reorder images based on selected color or legacy variant
+  // Filter / reorder images based on selected color or active kit slot
   const getFilteredImages = () => {
     const allImages = product.images && product.images.length > 0 ? product.images : [product.image];
 
-    // New: structured colors with image mapping → put selected color image first
+    // Kit mode: use the active slot's color image (or the most-recent filled slot)
+    if (isKitProduct && product.colors) {
+      const slotColor = kitSelections[activeKitSlot]?.color
+        || [...kitSelections].reverse().find((s) => s.color)?.color;
+      if (slotColor) {
+        const found = product.colors.find((c) => c.name === slotColor);
+        if (found?.image) {
+          const rest = allImages.filter((img) => img !== found.image);
+          return [found.image, ...rest];
+        }
+      }
+      return allImages;
+    }
+
+    // Single color selection
     if (product.colors && product.colors.length > 0 && selectedColor) {
       const found = product.colors.find((c) => c.name === selectedColor);
       if (found?.image) {
@@ -176,7 +190,37 @@ export default function ProductDetailPage() {
 
   const displayImages = getFilteredImages();
 
+  const validateKit = (): boolean => {
+    if (!isKitProduct) return true;
+    const incompleteIdx = kitSelections.findIndex((s) => !s.color || !s.size);
+    if (incompleteIdx !== -1) {
+      toast({
+        title: `Complete a Camisa ${incompleteIdx + 1}`,
+        description: "Selecione cor e tamanho de todas as 3 camisas para continuar.",
+        variant: "destructive",
+      });
+      setActiveKitSlot(incompleteIdx);
+      return false;
+    }
+    return true;
+  };
+
+  const handleAddToCart = () => {
+    if (isKitProduct) {
+      if (!validateKit()) return;
+      addItem(product, 1, kitSelections.map((s) => ({ color: s.color!, size: s.size! })));
+      return;
+    }
+    addItem(product, quantity);
+  };
+
   const handleBuyNow = () => {
+    if (isKitProduct) {
+      if (!validateKit()) return;
+      addItem(product, 1, kitSelections.map((s) => ({ color: s.color!, size: s.size! })));
+      navigate("/checkout");
+      return;
+    }
     addItem(product, quantity);
     navigate("/checkout");
   };
