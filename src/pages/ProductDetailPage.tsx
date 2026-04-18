@@ -470,9 +470,11 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              <Button onClick={handleAddToCart} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
-                {isKitProduct ? "Adicionar Kit (3 camisas)" : "Adicionar ao Carrinho"}
-              </Button>
+              {!isKitProduct && (
+                <Button onClick={handleAddToCart} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
+                  Adicionar ao Carrinho
+                </Button>
+              )}
             </div>
 
             {/* Buy Now Button */}
