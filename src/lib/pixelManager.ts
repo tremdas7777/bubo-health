@@ -226,14 +226,35 @@ function _fireCAPIOnly(eventName: string, data?: Record<string, unknown>, userDa
       }).catch(err => console.error('Facebook CAPI error:', err));
     });
   });
-  const tiktokMap: Record<string, string> = { 'Purchase': 'CompletePayment', 'InitiateCheckout': 'InitiateCheckout', 'AddToCart': 'AddToCart', 'ViewContent': 'ViewContent', 'Lead': 'SubmitForm' };
-  cfg.tiktokPixels.forEach(tt => {
-    if (!tt.pixelId || !tt.accessToken) return;
-    fetch('https://business-api.tiktok.com/open_api/v1.3/pixel/track/', {
-      method: 'POST', headers: { 'Content-Type': 'application/json', 'Access-Token': tt.accessToken },
-      body: JSON.stringify({ pixel_code: tt.pixelId, event: tiktokMap[eventName] || eventName, event_id: dedupEventId, timestamp: new Date().toISOString(), context: { page: { url: window.location.href }, user_agent: navigator.userAgent }, properties: data }),
-    }).catch(err => console.error('TikTok Events API error:', err));
-  });
+  // TikTok Events API via edge function — bypassa CORS, com retry, hashing e ttclid/ttp
+  if (cfg.tiktokPixels.some(tt => tt.pixelId && tt.accessToken)) {
+    const ttclid = getCookie('ttclid') || getCampaignParams().ttclid;
+    const ttp = getCookie('_ttp');
+    const payload = {
+      eventName,
+      eventId: dedupEventId,
+      eventSourceUrl: window.location.href,
+      userAgent: navigator.userAgent,
+      data,
+      userData: {
+        email: userData?.email,
+        phone: userData?.phone,
+        external_id: userData?.email || userData?.phone,
+        ttclid,
+        ttp,
+      },
+    };
+    const url = `https://${(import.meta as any).env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/tiktok-capi`;
+    try {
+      // keepalive permite que o request termine mesmo se o usuário navegar (Purchase!)
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        keepalive: true,
+      }).catch(err => console.error('TikTok CAPI error:', err));
+    } catch (err) { console.error('TikTok CAPI invoke error:', err); }
+  }
 }
 
 function _fireClientPixelsOnly(eventName: string, data?: Record<string, unknown>, eventId?: string) {
