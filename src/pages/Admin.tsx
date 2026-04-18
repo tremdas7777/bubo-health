@@ -116,6 +116,8 @@ const INITIAL_PIXEL_CONFIG: PixelConfig = {
   facebookPixels: [],
   tiktokPixels: [],
   googleAdsPixels: [],
+  utmifyMetaPixels: [],
+  utmifyGooglePixels: [],
   utmifyHtml: "",
   onlyPaid: false,
   ga4MeasurementId: "",
