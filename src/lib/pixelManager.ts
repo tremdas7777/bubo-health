@@ -158,6 +158,26 @@ function getCookie(name: string): string | undefined {
   return match ? decodeURIComponent(match[1]) : undefined;
 }
 
+function setCookie(name: string, value: string, days = 90) {
+  try {
+    const expires = new Date(Date.now() + days * 86400000).toUTCString();
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+  } catch {}
+}
+
+// Persist ttclid in a cookie so we can pass it on later events (TikTok recommends 30+ days)
+function captureTikTokClickId() {
+  try {
+    const url = new URLSearchParams(window.location.search);
+    const ttclid = url.get('ttclid');
+    if (ttclid && !getCookie('ttclid')) setCookie('ttclid', ttclid, 90);
+  } catch {}
+}
+
+if (typeof window !== 'undefined') {
+  captureTikTokClickId();
+}
+
 async function sha256(value: string): Promise<string> {
   const encoded = new TextEncoder().encode(value.trim().toLowerCase());
   const hash = await crypto.subtle.digest('SHA-256', encoded);
