@@ -34,7 +34,7 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const updateData: Record<string, unknown> = {
-      active_gateway: config.activeGateway || "centurionpay",
+      active_gateway: "beehive",
       payment_methods: config.paymentMethods || {},
       pagouai_public_key: config.pagouai?.publicKey || "",
       pagouai_secret_key: config.pagouai?.secretKey || "",

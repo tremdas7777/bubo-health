@@ -357,22 +357,7 @@ export default function CheckoutPage() {
     setPaymentError("");
 
     try {
-      const gatewayConfig = await fetchPaymentGatewayConfig();
-      const gateway = gatewayConfig.activeGateway;
-      const gatewayLabel = GATEWAY_LABELS[gateway] || gateway;
-
-      const functionMap: Partial<Record<string, string>> = {
-        centurionpay: "criar-pix-centurionpay",
-        pagamentosmp: "criar-pix-pagamentosmp",
-        beehive: "criar-pix-beehive",
-      };
-
-      const functionName = functionMap[gateway];
-      if (!functionName) {
-        setPaymentError(`${gatewayLabel} ainda não está disponível neste checkout.`);
-        setGenerating(false);
-        return;
-      }
+      const gateway = "beehive";
 
       const bodyBase: Record<string, unknown> = {
         amount: total,
@@ -394,7 +379,7 @@ export default function CheckoutPage() {
         },
       };
 
-      const { data, error } = await supabase.functions.invoke(functionName, {
+      const { data, error } = await supabase.functions.invoke("criar-pix-beehive", {
         body: bodyBase,
       });
 
@@ -494,14 +479,7 @@ export default function CheckoutPage() {
 
     try {
       const gatewayConfig = await fetchPaymentGatewayConfig();
-      const gateway = gatewayConfig.activeGateway;
-      const gatewayLabel = GATEWAY_LABELS[gateway] || gateway;
-
-      if (gateway !== "beehive") {
-        setPaymentError(`Pagamento por cartão ainda não disponível para ${gatewayLabel}.`);
-        setGenerating(false);
-        return;
-      }
+      const gateway = "beehive";
 
       // Validate card fields
       if (!cardNumber || !cardHolder || !cardExpiry || !cardCvv) {
