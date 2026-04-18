@@ -253,7 +253,7 @@ export default function AdminAbandonedCarts() {
                 size="sm"
                 variant="outline"
                 className="h-7 text-[11px] text-destructive border-destructive/30 hover:bg-destructive/10"
-                onClick={() => handleMark(row, false === false ? false : false)}
+                onClick={() => handleMark(row, false)}
               >
                 <XCircle size={12} className="mr-1" /> Perdido
               </Button>
