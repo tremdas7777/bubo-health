@@ -54,7 +54,7 @@ function markPixelsReady() {
   if (pixelReadyResolve) { pixelReadyResolve(); pixelReadyResolve = null; }
   while (eventQueue.length > 0) {
     const ev = eventQueue.shift()!;
-    _fireClientPixelsOnly(ev.eventName, ev.data, ev.eventId);
+    _fireClientPixelsOnly(ev.eventName, ev.data, ev.eventId, ev.userData);
   }
 }
 
@@ -139,15 +139,14 @@ export function injectPixels(config?: PixelConfig) {
   }
 
   if (hasAnyPixel) {
-    // Poll every 50ms instead of waiting a fixed 500ms
     let attempts = 0;
     const check = () => {
       const fbReady = !cfg.facebookPixels.some(fb => fb.pixelId) || typeof (window as any).fbq === 'function';
       const ttReady = !cfg.tiktokPixels.some(tt => tt.pixelId) || typeof (window as any).ttq?.track === 'function';
       const gtagReady = gtagIds.length === 0 || typeof (window as any).gtag === 'function';
-      if ((fbReady && ttReady && gtagReady) || attempts >= 40) { markPixelsReady(); return; }
+      if ((fbReady && ttReady && gtagReady) || attempts >= 80) { markPixelsReady(); return; }
       attempts++;
-      setTimeout(check, 50);
+      setTimeout(check, 25);
     };
     check();
   } else { markPixelsReady(); }
@@ -156,6 +155,26 @@ export function injectPixels(config?: PixelConfig) {
 function getCookie(name: string): string | undefined {
   const match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '=([^;]*)'));
   return match ? decodeURIComponent(match[1]) : undefined;
+}
+
+function setCookie(name: string, value: string, days = 90) {
+  try {
+    const expires = new Date(Date.now() + days * 86400000).toUTCString();
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+  } catch {}
+}
+
+// Persist ttclid in a cookie so we can pass it on later events (TikTok recommends 30+ days)
+function captureTikTokClickId() {
+  try {
+    const url = new URLSearchParams(window.location.search);
+    const ttclid = url.get('ttclid');
+    if (ttclid && !getCookie('ttclid')) setCookie('ttclid', ttclid, 90);
+  } catch {}
+}
+
+if (typeof window !== 'undefined') {
+  captureTikTokClickId();
 }
 
 async function sha256(value: string): Promise<string> {
@@ -206,17 +225,38 @@ function _fireCAPIOnly(eventName: string, data?: Record<string, unknown>, userDa
       }).catch(err => console.error('Facebook CAPI error:', err));
     });
   });
-  const tiktokMap: Record<string, string> = { 'Purchase': 'CompletePayment', 'InitiateCheckout': 'InitiateCheckout', 'AddToCart': 'AddToCart', 'ViewContent': 'ViewContent', 'Lead': 'SubmitForm' };
-  cfg.tiktokPixels.forEach(tt => {
-    if (!tt.pixelId || !tt.accessToken) return;
-    fetch('https://business-api.tiktok.com/open_api/v1.3/pixel/track/', {
-      method: 'POST', headers: { 'Content-Type': 'application/json', 'Access-Token': tt.accessToken },
-      body: JSON.stringify({ pixel_code: tt.pixelId, event: tiktokMap[eventName] || eventName, event_id: dedupEventId, timestamp: new Date().toISOString(), context: { page: { url: window.location.href }, user_agent: navigator.userAgent }, properties: data }),
-    }).catch(err => console.error('TikTok Events API error:', err));
-  });
+  // TikTok Events API via edge function — bypassa CORS, com retry, hashing e ttclid/ttp
+  if (cfg.tiktokPixels.some(tt => tt.pixelId && tt.accessToken)) {
+    const ttclid = getCookie('ttclid') || getCampaignParams().ttclid;
+    const ttp = getCookie('_ttp');
+    const payload = {
+      eventName,
+      eventId: dedupEventId,
+      eventSourceUrl: window.location.href,
+      userAgent: navigator.userAgent,
+      data,
+      userData: {
+        email: userData?.email,
+        phone: userData?.phone,
+        external_id: userData?.email || userData?.phone,
+        ttclid,
+        ttp,
+      },
+    };
+    const url = `https://${(import.meta as any).env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/tiktok-capi`;
+    try {
+      // keepalive permite que o request termine mesmo se o usuário navegar (Purchase!)
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        keepalive: true,
+      }).catch(err => console.error('TikTok CAPI error:', err));
+    } catch (err) { console.error('TikTok CAPI invoke error:', err); }
+  }
 }
 
-function _fireClientPixelsOnly(eventName: string, data?: Record<string, unknown>, eventId?: string) {
+function _fireClientPixelsOnly(eventName: string, data?: Record<string, unknown>, eventId?: string, userData?: { email?: string; phone?: string }) {
   const cfg = getPixelConfig();
   const dedupEventId = eventId || `${eventName}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   if (cfg.facebookPixels.some(fb => fb.pixelId) && typeof (window as any).fbq === 'function') {
@@ -224,7 +264,20 @@ function _fireClientPixelsOnly(eventName: string, data?: Record<string, unknown>
   }
   const tiktokMap: Record<string, string> = { 'Purchase': 'CompletePayment', 'InitiateCheckout': 'InitiateCheckout', 'AddToCart': 'AddToCart', 'ViewContent': 'ViewContent', 'Lead': 'SubmitForm' };
   if (cfg.tiktokPixels.some(tt => tt.pixelId) && typeof (window as any).ttq?.track === 'function') {
-    (window as any).ttq.track(tiktokMap[eventName] || eventName, data);
+    const ttq = (window as any).ttq;
+    if (userData?.email || userData?.phone) {
+      try {
+        const idPayload: Record<string, string> = {};
+        if (userData.email) idPayload.email = userData.email;
+        if (userData.phone) {
+          const ph = userData.phone.replace(/\D/g, '');
+          idPayload.phone_number = ph.startsWith('55') ? `+${ph}` : `+55${ph}`;
+        }
+        ttq.identify(idPayload);
+      } catch {}
+    }
+    try { ttq.track(tiktokMap[eventName] || eventName, data, { event_id: dedupEventId }); }
+    catch { ttq.track(tiktokMap[eventName] || eventName, data); }
   }
   const campaignParams = getCampaignParams();
   cfg.googleAdsPixels.forEach(ga => {
@@ -237,6 +290,6 @@ function _fireClientPixelsOnly(eventName: string, data?: Record<string, unknown>
 }
 
 function _fireConversionEventNow(eventName: string, data?: Record<string, unknown>, userData?: { email?: string; phone?: string }, eventId?: string) {
-  _fireClientPixelsOnly(eventName, data, eventId);
+  _fireClientPixelsOnly(eventName, data, eventId, userData);
   _fireCAPIOnly(eventName, data, userData, eventId);
 }
