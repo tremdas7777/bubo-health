@@ -457,23 +457,25 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            <div className="flex items-center gap-3 pt-1">
-              {!isKitProduct && (
-                <div className="flex items-center overflow-hidden rounded-lg border border-border">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2.5 transition-colors hover:bg-muted">
-                    <Minus size={16} />
-                  </button>
-                  <span className="min-w-[40px] px-4 py-2.5 text-center text-sm font-medium">{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)} className="px-3 py-2.5 transition-colors hover:bg-muted">
-                    <Plus size={16} />
-                  </button>
-                </div>
-              )}
+            {product.slug !== "polo-ducatti-antitranspirante" && (
+              <div className="flex items-center gap-3 pt-1">
+                {!isKitProduct && (
+                  <div className="flex items-center overflow-hidden rounded-lg border border-border">
+                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2.5 transition-colors hover:bg-muted">
+                      <Minus size={16} />
+                    </button>
+                    <span className="min-w-[40px] px-4 py-2.5 text-center text-sm font-medium">{quantity}</span>
+                    <button onClick={() => setQuantity(quantity + 1)} className="px-3 py-2.5 transition-colors hover:bg-muted">
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                )}
 
-              <Button onClick={handleAddToCart} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
-                {isKitProduct ? "Adicionar Kit (3 camisas)" : "Adicionar ao Carrinho"}
-              </Button>
-            </div>
+                <Button onClick={handleAddToCart} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
+                  {isKitProduct ? "Adicionar Kit (3 camisas)" : "Adicionar ao Carrinho"}
+                </Button>
+              </div>
+            )}
 
             {/* Buy Now Button */}
             <Button onClick={handleBuyNow} className="w-full py-6 text-sm font-bold uppercase tracking-wider animate-pulse hover:animate-none">
