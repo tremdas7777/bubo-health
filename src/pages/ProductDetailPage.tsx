@@ -275,8 +275,102 @@ export default function ProductDetailPage() {
               <p className="text-sm text-muted-foreground">em até 6x de {getInstallmentPrice(product.price, 6)}</p>
             </div>
 
-            {/* New: structured colors (swatches) + sizes */}
-            {product.colors && product.colors.length > 0 && (
+            {/* KIT mode: Compre 2 Leve 3 — 3 separate (color + size) selections */}
+            {isKitProduct && product.colors && product.sizes && (
+              <div className="space-y-3 rounded-xl border-2 border-primary/30 bg-primary/5 p-4">
+                <div className="flex items-center gap-2">
+                  <Gift size={18} className="text-primary" />
+                  <p className="text-sm font-bold text-foreground">
+                    🎁 COMPRE 2, LEVE 3 — Escolha as cores e tamanhos das suas 3 camisas
+                  </p>
+                </div>
+
+                {kitSelections.map((slot, idx) => {
+                  const isComplete = !!slot.color && !!slot.size;
+                  const isActive = activeKitSlot === idx;
+                  return (
+                    <div
+                      key={idx}
+                      className={`rounded-lg border bg-background p-3 transition-all ${
+                        isActive ? "border-primary shadow-sm" : "border-border"
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setActiveKitSlot(idx)}
+                        className="mb-2 flex w-full items-center justify-between text-left"
+                      >
+                        <span className="text-sm font-semibold text-foreground">
+                          Camisa {idx + 1}
+                          {isComplete && (
+                            <span className="ml-2 inline-flex items-center gap-1 text-xs font-normal text-primary">
+                              <CheckCircle2 size={12} /> {slot.color} · {slot.size}
+                            </span>
+                          )}
+                        </span>
+                        <span className={`text-xs ${isComplete ? "text-primary" : "text-muted-foreground"}`}>
+                          {isComplete ? "✓ Completo" : isActive ? "Selecionando..." : "Toque para escolher"}
+                        </span>
+                      </button>
+
+                      {isActive && (
+                        <div className="space-y-3 pt-1">
+                          <div>
+                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">Cor</p>
+                            <div className="flex flex-wrap gap-1.5">
+                              {product.colors.map((c) => (
+                                <button
+                                  key={c.name}
+                                  type="button"
+                                  onClick={() => updateKitSlot(idx, { color: c.name })}
+                                  title={c.name}
+                                  aria-label={`Cor ${c.name}`}
+                                  className={`relative h-8 w-8 rounded-full border-2 transition-all ${
+                                    slot.color === c.name
+                                      ? "border-primary ring-2 ring-primary/30 scale-110"
+                                      : "border-border hover:border-primary/50"
+                                  }`}
+                                  style={{ backgroundColor: c.hex }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          <div>
+                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">Tamanho</p>
+                            <div className="flex flex-wrap gap-1.5">
+                              {product.sizes.map((s) => (
+                                <button
+                                  key={s}
+                                  type="button"
+                                  onClick={() => {
+                                    updateKitSlot(idx, { size: s });
+                                    // auto-advance to next incomplete slot
+                                    if (slot.color) {
+                                      const next = kitSelections.findIndex((k, i) => i !== idx && (!k.color || !k.size));
+                                      if (next !== -1) setActiveKitSlot(next);
+                                    }
+                                  }}
+                                  className={`min-w-[40px] rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                                    slot.size === s
+                                      ? "bg-primary text-primary-foreground border-primary"
+                                      : "border-primary/40 text-foreground hover:bg-primary/10"
+                                  }`}
+                                >
+                                  {s}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Standard structured colors (swatches) + sizes — for non-kit products */}
+            {!isKitProduct && product.colors && product.colors.length > 0 && (
               <div className="space-y-2">
                 <p className="text-sm font-medium">
                   Cor: <span className="font-normal text-muted-foreground">{selectedColor || "Selecione"}</span>
@@ -301,7 +395,7 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {product.sizes && product.sizes.length > 0 && (
+            {!isKitProduct && product.sizes && product.sizes.length > 0 && (
               <div className="space-y-2">
                 <p className="text-sm font-medium">
                   Tamanho: <span className="font-normal text-muted-foreground">{selectedSize || "Selecione"}</span>
