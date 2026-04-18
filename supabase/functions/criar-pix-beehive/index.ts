@@ -47,6 +47,7 @@ serve(async (req) => {
     const body: Record<string, unknown> = {
       paymentMethod: "pix",
       amount: amountCents,
+      postbackUrl: `${supabaseUrl}/functions/v1/beehive-webhook`,
       pix: {
         expiresInSeconds: 1800,
       },

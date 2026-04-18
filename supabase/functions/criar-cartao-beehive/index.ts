@@ -50,6 +50,7 @@ serve(async (req) => {
     const body: Record<string, unknown> = {
       paymentMethod: "credit_card",
       amount: amountCents,
+      postbackUrl: `${supabaseUrl}/functions/v1/beehive-webhook`,
       installments: installments || 1,
       card: {
         hash: cardHash,
