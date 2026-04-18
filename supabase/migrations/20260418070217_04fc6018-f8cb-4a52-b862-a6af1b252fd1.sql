@@ -1,0 +1,1 @@
+UPDATE public.collections SET active = true, updated_at = now() WHERE slug = 'moda-masculina';
