@@ -415,6 +415,12 @@ export default function CheckoutPage() {
         setPixQrCode(result.pix_qr_code || "");
         setOrderId(result.order_id || "");
 
+        // Delete draft order now that the real order exists
+        if (draftOrderId) {
+          await supabase.from("orders").delete().eq("id", draftOrderId);
+          setDraftOrderId("");
+        }
+
         // Save order items
         if (result.order_id) {
           await saveOrderItems(result.order_id);
