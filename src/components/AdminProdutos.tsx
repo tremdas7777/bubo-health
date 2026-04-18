@@ -148,9 +148,16 @@ export default function AdminProdutos() {
     return true;
   };
 
-  const deleteProduct = async (id: string) => { if (!confirm('Excluir este produto?')) return; if (await adminAction('delete', id)) { toast.success('Produto excluído'); fetchProducts(); } };
+  const deleteProduct = async (product: DbProduct) => {
+    if (!confirm(`Atenção: "${product.name}" será excluído permanentemente da loja.\n\nConfirma a exclusão?`)) return;
+    if (await adminAction('delete', product.id, { confirm: true })) { toast.success('Produto excluído'); fetchProducts(); }
+  };
   const duplicateProduct = async (product: DbProduct) => { if (await adminAction('duplicate', product.id)) { toast.success('Duplicado!'); fetchProducts(); } };
-  const toggleActive = async (product: DbProduct) => { if (await adminAction('toggle-active', product.id, { active: !product.active })) fetchProducts(); };
+  const toggleActive = async (product: DbProduct) => {
+    const nextActive = !product.active;
+    if (!nextActive && !confirm(`Atenção: "${product.name}" vai sair da loja agora e parar de aparecer para os clientes.\n\nConfirma a desativação?`)) return;
+    if (await adminAction('toggle-active', product.id, { active: nextActive, confirm: nextActive || false })) fetchProducts();
+  };
   const toggleFeatured = async (product: DbProduct) => { if (await adminAction('toggle-featured', product.id, { featured: !product.featured })) fetchProducts(); };
 
   const handleDragDrop = async (fromIndex: number, toIndex: number) => {
@@ -251,7 +258,7 @@ export default function AdminProdutos() {
                     <button onClick={() => toggleActive(product)} className="p-1.5 rounded hover:bg-muted">{product.active ? <Eye size={14} className="text-emerald-500" /> : <EyeOff size={14} className="text-muted-foreground" />}</button>
                     <button onClick={() => duplicateProduct(product)} className="p-1.5 rounded hover:bg-muted"><Copy size={14} className="text-muted-foreground" /></button>
                     <button onClick={() => setEditProduct({ ...product })} className="p-1.5 rounded hover:bg-muted"><Edit size={14} className="text-primary" /></button>
-                    <button onClick={() => deleteProduct(product.id)} className="p-1.5 rounded hover:bg-muted"><Trash2 size={14} className="text-destructive" /></button>
+                    <button onClick={() => deleteProduct(product)} className="p-1.5 rounded hover:bg-muted"><Trash2 size={14} className="text-destructive" /></button>
                   </div>
                 </div>
               </Card>
