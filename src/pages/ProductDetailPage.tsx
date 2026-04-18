@@ -87,6 +87,8 @@ export default function ProductDetailPage() {
   const product = products.find((p) => p.slug === slug);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const { addItem } = useCart();
   const navigate = useNavigate();
 
