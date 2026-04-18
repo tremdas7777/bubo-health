@@ -46,12 +46,16 @@ Deno.serve(async (req) => {
     switch (action) {
       case "delete": {
         if (!id) throw new Error("ID obrigatório");
+        if (data?.confirm !== true) throw new Error("Confirmação obrigatória para excluir produto");
+        console.log("admin-action delete product", { id });
         const { error } = await supabase.from("products").delete().eq("id", id);
         if (error) throw error;
         break;
       }
       case "toggle-active": {
         if (!id || data?.active === undefined) throw new Error("ID e active obrigatórios");
+        if (data.active === false && data?.confirm !== true) throw new Error("Confirmação obrigatória para desativar produto");
+        console.log("admin-action toggle-active product", { id, active: data.active });
         const { error } = await supabase.from("products").update({ active: data.active }).eq("id", id);
         if (error) throw error;
         break;
