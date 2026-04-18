@@ -458,18 +458,20 @@ export default function ProductDetailPage() {
             )}
 
             <div className="flex items-center gap-3 pt-1">
-              <div className="flex items-center overflow-hidden rounded-lg border border-border">
-                <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2.5 transition-colors hover:bg-muted">
-                  <Minus size={16} />
-                </button>
-                <span className="min-w-[40px] px-4 py-2.5 text-center text-sm font-medium">{quantity}</span>
-                <button onClick={() => setQuantity(quantity + 1)} className="px-3 py-2.5 transition-colors hover:bg-muted">
-                  <Plus size={16} />
-                </button>
-              </div>
+              {!isKitProduct && (
+                <div className="flex items-center overflow-hidden rounded-lg border border-border">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2.5 transition-colors hover:bg-muted">
+                    <Minus size={16} />
+                  </button>
+                  <span className="min-w-[40px] px-4 py-2.5 text-center text-sm font-medium">{quantity}</span>
+                  <button onClick={() => setQuantity(quantity + 1)} className="px-3 py-2.5 transition-colors hover:bg-muted">
+                    <Plus size={16} />
+                  </button>
+                </div>
+              )}
 
-              <Button onClick={() => addItem(product, quantity)} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
-                Adicionar ao Carrinho
+              <Button onClick={handleAddToCart} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
+                {isKitProduct ? "Adicionar Kit (3 camisas)" : "Adicionar ao Carrinho"}
               </Button>
             </div>
 
