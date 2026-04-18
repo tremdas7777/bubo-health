@@ -92,9 +92,14 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
-  // Kit "Compre 2, Leve 3" — ativo apenas para polo-ducatti
-  const isKitProduct = product?.slug === "polo-ducatti-antitranspirante";
-  const KIT_SIZE = 3;
+  // Kits: cliente escolhe cor + tamanho de cada peça do kit
+  const KIT_CONFIG: Record<string, { size: number; label: string }> = {
+    "polo-ducatti-antitranspirante": { size: 3, label: "🎁 COMPRE 2, LEVE 3 — Escolha as cores e tamanhos das suas 3 camisas" },
+    "camisa-polo-premium": { size: 5, label: "🎁 KIT COM 5 POLOS — Escolha a cor e o tamanho de cada uma das 5 camisas" },
+  };
+  const kitConfig = product ? KIT_CONFIG[product.slug] : undefined;
+  const isKitProduct = !!kitConfig;
+  const KIT_SIZE = kitConfig?.size ?? 3;
   const [kitSelections, setKitSelections] = useState<Array<{ color: string | null; size: string | null }>>(
     Array.from({ length: KIT_SIZE }, () => ({ color: null, size: null }))
   );
@@ -195,7 +200,7 @@ export default function ProductDetailPage() {
     if (incompleteIdx !== -1) {
       toast({
         title: `Complete a Camisa ${incompleteIdx + 1}`,
-        description: "Selecione cor e tamanho de todas as 3 camisas para continuar.",
+        description: `Selecione cor e tamanho de todas as ${KIT_SIZE} camisas para continuar.`,
         variant: "destructive",
       });
       setActiveKitSlot(incompleteIdx);
@@ -277,11 +282,14 @@ export default function ProductDetailPage() {
             {/* KIT mode: Compre 2 Leve 3 — 3 separate (color + size) selections */}
             {isKitProduct && product.colors && product.sizes && (
               <div className="space-y-3 rounded-xl border-2 border-primary/30 bg-primary/5 p-4">
-                <div className="flex items-center gap-2">
-                  <Gift size={18} className="text-primary" />
-                  <p className="text-sm font-bold text-foreground">
-                    🎁 COMPRE 2, LEVE 3 — Escolha as cores e tamanhos das suas 3 camisas
-                  </p>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Gift size={18} className="text-primary" />
+                    <p className="text-sm font-bold text-foreground">
+                      {kitConfig!.label}
+                    </p>
+                  </div>
+                  <SizeGuideDialog />
                 </div>
 
                 {kitSelections.map((slot, idx) => {
