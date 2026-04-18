@@ -295,11 +295,14 @@ export type Database = {
       }
       orders: {
         Row: {
+          abandoned_recovered: boolean | null
           amount_cents: number
           buyer_document: string | null
           buyer_email: string | null
           buyer_name: string | null
           buyer_phone: string | null
+          checkout_step: string | null
+          checkout_step_updated_at: string | null
           created_at: string
           gateway: string | null
           id: string
@@ -316,11 +319,14 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          abandoned_recovered?: boolean | null
           amount_cents?: number
           buyer_document?: string | null
           buyer_email?: string | null
           buyer_name?: string | null
           buyer_phone?: string | null
+          checkout_step?: string | null
+          checkout_step_updated_at?: string | null
           created_at?: string
           gateway?: string | null
           id?: string
@@ -337,11 +343,14 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          abandoned_recovered?: boolean | null
           amount_cents?: number
           buyer_document?: string | null
           buyer_email?: string | null
           buyer_name?: string | null
           buyer_phone?: string | null
+          checkout_step?: string | null
+          checkout_step_updated_at?: string | null
           created_at?: string
           gateway?: string | null
           id?: string
