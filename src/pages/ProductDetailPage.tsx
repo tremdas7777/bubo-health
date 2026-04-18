@@ -91,8 +91,8 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
-  // Kit "Compre 2, Leve 3" — 3 separate (color + size) selections
-  const isKitProduct = slug === "polo-ducatti-antitranspirante";
+  // Kit "Compre 2, Leve 3" — desativado: polo agora usa fluxo padrão de carrinho
+  const isKitProduct = false;
   const KIT_SIZE = 3;
   const [kitSelections, setKitSelections] = useState<Array<{ color: string | null; size: string | null }>>(
     Array.from({ length: KIT_SIZE }, () => ({ color: null, size: null }))
