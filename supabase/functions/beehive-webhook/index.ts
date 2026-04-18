@@ -68,13 +68,18 @@ serve(async (req) => {
       await supabase.from("orders").update({ status: newStatus, updated_at: new Date().toISOString() }).eq("id", order.id);
     }
 
-    // Notifica Utmify quando virar paid
-    if (newStatus === "paid") {
+    // Notifica Utmify: paid OU refused
+    const utmifyStatus =
+      newStatus === "paid" ? "paid" :
+      (status === "refused" || status === "failed") ? "refused" :
+      null;
+
+    if (utmifyStatus) {
       try {
         await supabase.functions.invoke("notify-utmify", {
           body: {
             orderId: order.id,
-            status: "paid",
+            status: utmifyStatus,
             paymentMethod: paymentMethod === "credit_card" ? "credit_card" : "pix",
             customerName: order.buyer_name || customer?.name || "Cliente",
             customerEmail: order.buyer_email || email || "",
@@ -85,7 +90,9 @@ serve(async (req) => {
           },
         });
       } catch (e) { console.error("notify-utmify invoke error", e); }
+    }
 
+    if (newStatus === "paid") {
       // Email de confirmação
       try {
         await supabase.functions.invoke("send-order-email", {
