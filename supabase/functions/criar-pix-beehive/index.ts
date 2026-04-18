@@ -104,6 +104,16 @@ serve(async (req) => {
     const pixCode = data.pix?.qrcode || data.pix?.qr_code || data.pix?.emv || data.pix?.code || "";
     const pixQrCode = data.pix?.qrcodeBase64 || data.pix?.qr_code_base64 || "";
 
+    if (!pixCode) {
+      return new Response(JSON.stringify({
+        error: data?.message || "Resposta inválida da adquirente: código PIX não retornado.",
+        details: data,
+      }), {
+        status: 424,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const { data: orderData, error: orderError } = await supabase.from("orders").insert({
       amount_cents: amountCents,
       status: data.status || "pending",

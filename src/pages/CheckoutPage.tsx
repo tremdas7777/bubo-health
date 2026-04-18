@@ -171,9 +171,8 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     void trackEvent("checkout");
-    // Load gateway config to check if card is enabled
     fetchPaymentGatewayConfig().then((cfg) => {
-      const methods = cfg.paymentMethods[cfg.activeGateway] || "pix";
+      const methods = cfg.paymentMethods[cfg.activeGateway] || cfg.paymentMethods.default || "pix";
       setCardEnabled(methods === "card" || methods === "pix_card");
       if (methods === "card") setPaymentMethod("card");
     });
@@ -470,7 +469,7 @@ export default function CheckoutPage() {
       }
 
       BeehivePay.setPublicKey(gatewayConfig.beehive.publicKey);
-      BeehivePay.setTestMode(false);
+      BeehivePay.setTestMode(!gatewayConfig.beehive.publicKey.startsWith("pk_live_"));
 
       const [expMonth, expYear] = cardExpiry.split("/").map((s) => parseInt(s.trim(), 10));
       const fullYear = expYear < 100 ? 2000 + expYear : expYear;

@@ -146,6 +146,7 @@ const GATEWAY_LABELS: Record<PaymentGatewayConfig["activeGateway"], string> = {
 
 const GATEWAY_TEST_FUNCTIONS: Partial<Record<PaymentGatewayConfig["activeGateway"], string>> = {
   centurionpay: "criar-pix-centurionpay",
+  beehive: "criar-pix-beehive",
   pagamentosmp: "criar-pix-pagamentosmp",
 };
 
@@ -468,6 +469,7 @@ export default function Admin() {
     try {
       const bodyMap = {
         centurionpay: { secretKey: gatewayConfig.centurionpay.secretKey, companyId: gatewayConfig.centurionpay.companyId },
+        beehive: {},
         pagamentosmp: {
           publicKey: gatewayConfig.pagamentosmp.publicKey,
           secretKey: gatewayConfig.pagamentosmp.secretKey,
