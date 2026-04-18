@@ -312,6 +312,45 @@ export default function CheckoutPage() {
     return true;
   };
 
+  // Upsert a draft order so admin can see live progress through checkout
+  const upsertDraftOrder = useCallback(async (nextStep: "shipping" | "payment") => {
+    try {
+      const payload = {
+        buyer_name: name,
+        buyer_email: email,
+        buyer_phone: phone.replace(/\D/g, ""),
+        buyer_document: cpf.replace(/\D/g, ""),
+        amount_cents: Math.round(totalPrice * 100),
+        status: "draft",
+        checkout_step: nextStep,
+        checkout_step_updated_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      } as Record<string, unknown>;
+
+      if (draftOrderId) {
+        await supabase.from("orders").update(payload as never).eq("id", draftOrderId);
+      } else {
+        const { data } = await supabase
+          .from("orders")
+          .insert(payload as never)
+          .select("id")
+          .maybeSingle();
+        if (data?.id) setDraftOrderId(data.id);
+      }
+    } catch (e) {
+      console.warn("draft order upsert failed", e);
+    }
+  }, [draftOrderId, name, email, phone, cpf, totalPrice]);
+
+  const goToShipping = () => {
+    void upsertDraftOrder("shipping");
+    setStep("shipping");
+  };
+  const goToPayment = () => {
+    void upsertDraftOrder("payment");
+    setStep("payment");
+  };
+
 
   const handleGeneratePix = async () => {
     setGenerating(true);
