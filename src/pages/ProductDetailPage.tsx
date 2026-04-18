@@ -92,9 +92,14 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
-  // Kit "Compre 2, Leve 3" — ativo apenas para polo-ducatti
-  const isKitProduct = product?.slug === "polo-ducatti-antitranspirante";
-  const KIT_SIZE = 3;
+  // Kits: cliente escolhe cor + tamanho de cada peça do kit
+  const KIT_CONFIG: Record<string, { size: number; label: string }> = {
+    "polo-ducatti-antitranspirante": { size: 3, label: "🎁 COMPRE 2, LEVE 3 — Escolha as cores e tamanhos das suas 3 camisas" },
+    "camisa-polo-premium": { size: 5, label: "🎁 KIT COM 5 POLOS — Escolha a cor e o tamanho de cada uma das 5 camisas" },
+  };
+  const kitConfig = product ? KIT_CONFIG[product.slug] : undefined;
+  const isKitProduct = !!kitConfig;
+  const KIT_SIZE = kitConfig?.size ?? 3;
   const [kitSelections, setKitSelections] = useState<Array<{ color: string | null; size: string | null }>>(
     Array.from({ length: KIT_SIZE }, () => ({ color: null, size: null }))
   );
