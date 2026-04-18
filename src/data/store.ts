@@ -43,6 +43,12 @@ import collPesca from "@/assets/collection-pesca.jpg";
 import collSaudeBeleza from "@/assets/collection-saude-beleza.jpg";
 
 
+export interface ProductColor {
+  name: string;
+  hex: string;
+  image?: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -57,6 +63,8 @@ export interface Product {
   stock: number;
   badge?: string;
   variants?: string[];
+  colors?: ProductColor[];
+  sizes?: string[];
   noIndex?: boolean;
 }
 

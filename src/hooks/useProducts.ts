@@ -34,14 +34,34 @@ interface DbCollection {
 }
 
 function mapDbProduct(db: DbProduct): Product {
-  const variants = Array.isArray(db.variants)
-    ? db.variants.flatMap((v: any) => {
+  let variants: string[] = [];
+  let colors: Product["colors"];
+  let sizes: string[] | undefined;
+
+  if (Array.isArray(db.variants)) {
+    // New structured format: [{ colors: [...], sizes: [...] }]
+    const structured = db.variants.find(
+      (v: any) => v && typeof v === "object" && (Array.isArray(v.colors) || Array.isArray(v.sizes))
+    );
+    if (structured) {
+      if (Array.isArray(structured.colors)) {
+        colors = structured.colors
+          .filter((c: any) => c && c.name)
+          .map((c: any) => ({ name: String(c.name), hex: String(c.hex || "#cccccc"), image: c.image }));
+      }
+      if (Array.isArray(structured.sizes)) {
+        sizes = structured.sizes.map(String);
+      }
+    } else {
+      // Legacy: array of strings or { name } / { options: [...] }
+      variants = db.variants.flatMap((v: any) => {
         if (typeof v === "string") return [v];
         if (v?.options && Array.isArray(v.options)) return v.options.map(String);
         if (v?.name) return [v.name];
         return [String(v)];
-      })
-    : [];
+      });
+    }
+  }
 
   return {
     id: db.id,
@@ -54,8 +74,10 @@ function mapDbProduct(db: DbProduct): Product {
     category: db.category || "Geral",
     description: db.description || "",
     descriptionHtml: db.description_html || undefined,
-    stock: 50, // DB doesn't track stock yet, default
+    stock: 50,
     variants: variants.length > 0 ? variants : undefined,
+    colors,
+    sizes,
   };
 }
 

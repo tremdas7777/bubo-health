@@ -87,6 +87,8 @@ export default function ProductDetailPage() {
   const product = products.find((p) => p.slug === slug);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const { addItem } = useCart();
   const navigate = useNavigate();
 
@@ -123,20 +125,29 @@ export default function ProductDetailPage() {
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
   const bullets = productBulletPoints[product.slug];
 
-  // Filter images based on selected variant (color)
+  // Filter / reorder images based on selected color or legacy variant
   const getFilteredImages = () => {
     const allImages = product.images && product.images.length > 0 ? product.images : [product.image];
+
+    // New: structured colors with image mapping → put selected color image first
+    if (product.colors && product.colors.length > 0 && selectedColor) {
+      const found = product.colors.find((c) => c.name === selectedColor);
+      if (found?.image) {
+        const rest = allImages.filter((img) => img !== found.image);
+        return [found.image, ...rest];
+      }
+    }
+
+    // Legacy variant filter
     if (!selectedVariant || !product.variants) return allImages;
-    
+
     const variantLower = selectedVariant.toLowerCase();
-    // Map variant names to URL keywords
     const colorKeywords: Record<string, string[]> = {
       "amarelo": ["amarela", "amarelo"],
       "azul": ["azul"],
     };
     const keywords = colorKeywords[variantLower] || [variantLower];
-    
-    // Get images matching this variant + shared images (accessories, parts, etc.)
+
     const variantImages = allImages.filter((img) => {
       const imgLower = img.toLowerCase();
       const isVariantSpecific = keywords.some((kw) => imgLower.includes(kw));
@@ -145,7 +156,7 @@ export default function ProductDetailPage() {
         .some(([, kws]) => kws.some((kw) => imgLower.includes(kw)));
       return isVariantSpecific || !isOtherVariant;
     });
-    
+
     return variantImages.length > 0 ? variantImages : allImages;
   };
 
@@ -206,7 +217,58 @@ export default function ProductDetailPage() {
               <p className="text-sm text-muted-foreground">em até 6x de {getInstallmentPrice(product.price, 6)}</p>
             </div>
 
-            {product.variants && product.variants.length > 0 && (() => {
+            {/* New: structured colors (swatches) + sizes */}
+            {product.colors && product.colors.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium">
+                  Cor: <span className="font-normal text-muted-foreground">{selectedColor || "Selecione"}</span>
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {product.colors.map((c) => (
+                    <button
+                      key={c.name}
+                      type="button"
+                      onClick={() => setSelectedColor(c.name)}
+                      title={c.name}
+                      aria-label={`Cor ${c.name}`}
+                      className={`relative h-9 w-9 rounded-full border-2 transition-all ${
+                        selectedColor === c.name
+                          ? "border-primary ring-2 ring-primary/30 scale-110"
+                          : "border-border hover:border-primary/50"
+                      }`}
+                      style={{ backgroundColor: c.hex }}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {product.sizes && product.sizes.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium">
+                  Tamanho: <span className="font-normal text-muted-foreground">{selectedSize || "Selecione"}</span>
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {product.sizes.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => setSelectedSize(s)}
+                      className={`min-w-[44px] rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
+                        selectedSize === s
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "border-primary text-primary hover:bg-primary/10"
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Legacy single-variant selector (only when no structured colors/sizes) */}
+            {!product.colors && !product.sizes && product.variants && product.variants.length > 0 && (() => {
               const sizePattern = /^(PP|P|M|G|GG|XGG|\d?XG|\d?G|XS|S|L|XL|XXL|XXXL|\d{2,3})$/i;
               const isSizes = product.variants.every((v) => sizePattern.test(v.trim()));
               const label = isSizes ? "Tamanho:" : "Cor:";
