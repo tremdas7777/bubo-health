@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Props {
@@ -9,6 +9,11 @@ interface Props {
 
 export default function ProductImageGallery({ images, name, badge }: Props) {
   const [selected, setSelected] = useState(0);
+
+  // Reset to first image whenever the image list changes (e.g. color selection)
+  useEffect(() => {
+    setSelected(0);
+  }, [images[0]]);
 
   if (images.length === 0) return null;
 
