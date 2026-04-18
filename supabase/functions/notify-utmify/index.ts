@@ -44,8 +44,9 @@ serve(async (req) => {
     const { data: cfg } = await supabase
       .from("gateway_config")
       .select("utmify_api_token, utmify_api_token_2")
+      .order("updated_at", { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
     const tokens = [cfg?.utmify_api_token, cfg?.utmify_api_token_2].filter(
       (t) => typeof t === "string" && t.trim().length > 0
