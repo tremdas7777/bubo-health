@@ -257,7 +257,7 @@ function _fireCAPIOnly(eventName: string, data?: Record<string, unknown>, userDa
   }
 }
 
-function _fireClientPixelsOnly(eventName: string, data?: Record<string, unknown>, eventId?: string) {
+function _fireClientPixelsOnly(eventName: string, data?: Record<string, unknown>, eventId?: string, userData?: { email?: string; phone?: string }) {
   const cfg = getPixelConfig();
   const dedupEventId = eventId || `${eventName}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   if (cfg.facebookPixels.some(fb => fb.pixelId) && typeof (window as any).fbq === 'function') {
@@ -265,7 +265,20 @@ function _fireClientPixelsOnly(eventName: string, data?: Record<string, unknown>
   }
   const tiktokMap: Record<string, string> = { 'Purchase': 'CompletePayment', 'InitiateCheckout': 'InitiateCheckout', 'AddToCart': 'AddToCart', 'ViewContent': 'ViewContent', 'Lead': 'SubmitForm' };
   if (cfg.tiktokPixels.some(tt => tt.pixelId) && typeof (window as any).ttq?.track === 'function') {
-    (window as any).ttq.track(tiktokMap[eventName] || eventName, data);
+    const ttq = (window as any).ttq;
+    if (userData?.email || userData?.phone) {
+      try {
+        const idPayload: Record<string, string> = {};
+        if (userData.email) idPayload.email = userData.email;
+        if (userData.phone) {
+          const ph = userData.phone.replace(/\D/g, '');
+          idPayload.phone_number = ph.startsWith('55') ? `+${ph}` : `+55${ph}`;
+        }
+        ttq.identify(idPayload);
+      } catch {}
+    }
+    try { ttq.track(tiktokMap[eventName] || eventName, data, { event_id: dedupEventId }); }
+    catch { ttq.track(tiktokMap[eventName] || eventName, data); }
   }
   const campaignParams = getCampaignParams();
   cfg.googleAdsPixels.forEach(ga => {
@@ -278,6 +291,6 @@ function _fireClientPixelsOnly(eventName: string, data?: Record<string, unknown>
 }
 
 function _fireConversionEventNow(eventName: string, data?: Record<string, unknown>, userData?: { email?: string; phone?: string }, eventId?: string) {
-  _fireClientPixelsOnly(eventName, data, eventId);
+  _fireClientPixelsOnly(eventName, data, eventId, userData);
   _fireCAPIOnly(eventName, data, userData, eventId);
 }
