@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import AdminProdutos from "@/components/AdminProdutos";
 import AdminPedidos from "@/components/AdminPedidos";
+import AdminAbandonedCarts from "@/components/AdminAbandonedCarts";
 
 import AdminFrete from "@/components/AdminFrete";
 import AdminDashboard from "@/components/AdminDashboard";
@@ -73,6 +74,7 @@ type Tab =
   | "utmify"
   | "pagamentos"
   | "pedidos"
+  | "abandonados"
   | "cloaker"
   | "frete"
   | "cupons"
@@ -700,6 +702,7 @@ export default function Admin() {
     { id: "utmify", label: "Utmify", icon: <Zap size={14} /> },
     { id: "pagamentos", label: "Pagamentos", icon: <CreditCard size={14} /> },
     { id: "pedidos", label: "Pedidos", icon: <ShoppingCart size={14} /> },
+    { id: "abandonados", label: "Abandonados", icon: <ShoppingCart size={14} /> },
     { id: "cupons", label: "Cupons", icon: <Tag size={14} /> },
     { id: "config", label: "Config", icon: <Settings size={14} /> },
   ];
@@ -742,6 +745,7 @@ export default function Admin() {
         {activeTab === "financeiro" && <AdminFinanceiro />}
         {activeTab === "leads" && <AdminLeads />}
         {activeTab === "cupons" && <AdminCupons />}
+        {activeTab === "abandonados" && <AdminAbandonedCarts />}
         
 
         {activeTab === "analytics" && (

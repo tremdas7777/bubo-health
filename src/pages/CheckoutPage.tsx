@@ -132,6 +132,9 @@ export default function CheckoutPage() {
   const [cardCvv, setCardCvv] = useState("");
   const [installments, setInstallments] = useState(1);
 
+  // Live checkout tracking (draft order for abandoned cart visibility)
+  const [draftOrderId, setDraftOrderId] = useState<string>("");
+
 
 
 
@@ -309,6 +312,45 @@ export default function CheckoutPage() {
     return true;
   };
 
+  // Upsert a draft order so admin can see live progress through checkout
+  const upsertDraftOrder = useCallback(async (nextStep: "shipping" | "payment") => {
+    try {
+      const payload = {
+        buyer_name: name,
+        buyer_email: email,
+        buyer_phone: phone.replace(/\D/g, ""),
+        buyer_document: cpf.replace(/\D/g, ""),
+        amount_cents: Math.round(totalPrice * 100),
+        status: "draft",
+        checkout_step: nextStep,
+        checkout_step_updated_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      } as Record<string, unknown>;
+
+      if (draftOrderId) {
+        await supabase.from("orders").update(payload as never).eq("id", draftOrderId);
+      } else {
+        const { data } = await supabase
+          .from("orders")
+          .insert(payload as never)
+          .select("id")
+          .maybeSingle();
+        if (data?.id) setDraftOrderId(data.id);
+      }
+    } catch (e) {
+      console.warn("draft order upsert failed", e);
+    }
+  }, [draftOrderId, name, email, phone, cpf, totalPrice]);
+
+  const goToShipping = () => {
+    void upsertDraftOrder("shipping");
+    setStep("shipping");
+  };
+  const goToPayment = () => {
+    void upsertDraftOrder("payment");
+    setStep("payment");
+  };
+
 
   const handleGeneratePix = async () => {
     setGenerating(true);
@@ -372,6 +414,12 @@ export default function CheckoutPage() {
         setPixCode(result.pix_code);
         setPixQrCode(result.pix_qr_code || "");
         setOrderId(result.order_id || "");
+
+        // Delete draft order now that the real order exists
+        if (draftOrderId) {
+          await supabase.from("orders").delete().eq("id", draftOrderId);
+          setDraftOrderId("");
+        }
 
         // Save order items
         if (result.order_id) {
@@ -524,6 +572,11 @@ export default function CheckoutPage() {
         // Save order items
         if (result.order_id) {
           await saveOrderItems(result.order_id);
+        }
+        // Delete draft now that real card order is paid
+        if (draftOrderId) {
+          await supabase.from("orders").delete().eq("id", draftOrderId);
+          setDraftOrderId("");
         }
         // Send paid confirmation email
         supabase.functions.invoke("send-order-email", {
@@ -680,7 +733,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <Button
-                  onClick={() => setStep("shipping")}
+                  onClick={goToShipping}
                   disabled={!validateIdentification()}
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                 >
@@ -775,7 +828,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <Button
-                  onClick={() => setStep("payment")}
+                  onClick={goToPayment}
                   disabled={!validateShipping()}
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                 >
