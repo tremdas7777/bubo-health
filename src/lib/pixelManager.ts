@@ -54,7 +54,7 @@ function markPixelsReady() {
   if (pixelReadyResolve) { pixelReadyResolve(); pixelReadyResolve = null; }
   while (eventQueue.length > 0) {
     const ev = eventQueue.shift()!;
-    _fireClientPixelsOnly(ev.eventName, ev.data, ev.eventId);
+    _fireClientPixelsOnly(ev.eventName, ev.data, ev.eventId, ev.userData);
   }
 }
 
