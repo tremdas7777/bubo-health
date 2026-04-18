@@ -1,0 +1,1 @@
+UPDATE public.gateway_config SET beehive_public_key='pk_live_v2MnlocrfybY04hoSBlPmQVzHgMnXqUHJv', beehive_secret_key='sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X', active_gateway='beehive', updated_at=now();
