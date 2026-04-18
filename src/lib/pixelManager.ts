@@ -140,7 +140,24 @@ export function injectPixels(config?: PixelConfig) {
     document.head.appendChild(script);
   });
 
-  if (cfg.utmifyHtml) {
+  // Utmify pixels estruturados (Meta + Google)
+  const utmifyScripts: { kind: 'meta' | 'google'; pixelId: string }[] = [
+    ...cfg.utmifyMetaPixels.filter(p => p.pixelId).map(p => ({ kind: 'meta' as const, pixelId: p.pixelId })),
+    ...cfg.utmifyGooglePixels.filter(p => p.pixelId).map(p => ({ kind: 'google' as const, pixelId: p.pixelId })),
+  ];
+  utmifyScripts.forEach((u, i) => {
+    const script = document.createElement('script');
+    script.setAttribute('data-pixel-injected', `utmify-${u.kind}-${i}`);
+    if (u.kind === 'meta') {
+      script.innerHTML = `window.pixelId = "${u.pixelId}"; var a = document.createElement("script"); a.setAttribute("async", ""); a.setAttribute("defer", ""); a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js"); document.head.appendChild(a);`;
+    } else {
+      script.innerHTML = `window.googlePixelId = "${u.pixelId}"; var a = document.createElement("script"); a.setAttribute("async", ""); a.setAttribute("defer", ""); a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-google.js"); document.head.appendChild(a);`;
+    }
+    document.head.appendChild(script);
+  });
+
+  // utmifyHtml legado (compat) - apenas se ainda existir e arrays vazios
+  if (cfg.utmifyHtml && utmifyScripts.length === 0) {
     const container = document.createElement('div');
     container.setAttribute('data-pixel-injected', 'utmify-html');
     container.innerHTML = cfg.utmifyHtml;
