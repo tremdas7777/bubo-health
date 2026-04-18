@@ -150,19 +150,17 @@ export default function ProductDetailPage() {
       if (slotColor) {
         const found = product.colors.find((c) => c.name === slotColor);
         if (found?.image) {
-          const rest = allImages.filter((img) => img !== found.image);
-          return [found.image, ...rest];
+          return [found.image];
         }
       }
       return allImages;
     }
 
-    // Single color selection
+    // Single color selection — show ONLY the image of the selected color
     if (product.colors && product.colors.length > 0 && selectedColor) {
       const found = product.colors.find((c) => c.name === selectedColor);
       if (found?.image) {
-        const rest = allImages.filter((img) => img !== found.image);
-        return [found.image, ...rest];
+        return [found.image];
       }
     }
 
