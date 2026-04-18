@@ -26,6 +26,46 @@ const defaultConfig: PaymentGatewayConfig = {
   pagamentosmp: { publicKey: '', secretKey: '', enabled: false },
 };
 
+const VALID_GATEWAYS: PaymentGatewayConfig['activeGateway'][] = [
+  'pagouai',
+  'vennox',
+  'centurionpay',
+  'ironpay',
+  'simpayout',
+  'beehive',
+  'pagamentosmp',
+];
+
+function normalizeActiveGateway(value: unknown): PaymentGatewayConfig['activeGateway'] {
+  return VALID_GATEWAYS.includes(value as PaymentGatewayConfig['activeGateway'])
+    ? (value as PaymentGatewayConfig['activeGateway'])
+    : 'centurionpay';
+}
+
+function normalizePaymentMethods(
+  raw: unknown,
+  activeGateway: PaymentGatewayConfig['activeGateway'],
+): Record<string, GatewayPaymentMethods> {
+  const input = raw && typeof raw === 'object' ? { ...(raw as Record<string, unknown>) } : {};
+  const defaultMethod = input.default;
+  const fallbackMethod: GatewayPaymentMethods =
+    defaultMethod === 'card' || defaultMethod === 'pix_card' || defaultMethod === 'pix'
+      ? defaultMethod
+      : 'pix';
+
+  const normalized: Record<string, GatewayPaymentMethods> = {};
+
+  for (const gateway of VALID_GATEWAYS) {
+    const value = input[gateway];
+    normalized[gateway] = value === 'card' || value === 'pix_card' || value === 'pix' ? value : fallbackMethod;
+  }
+
+  normalized.default = fallbackMethod;
+  normalized[activeGateway] = normalized[activeGateway] || fallbackMethod;
+
+  return normalized;
+}
+
 let cachedConfig: PaymentGatewayConfig | null = null;
 let adminPassword: string | null = null;
 
@@ -46,11 +86,11 @@ export async function fetchPaymentGatewayConfig(): Promise<PaymentGatewayConfig>
   try {
     const { data, error } = await supabase.from('gateway_config_public' as any).select('*').limit(1).single();
     if (error || !data) return defaultConfig;
-    const pm = (data as any).payment_methods || {};
     const d = data as any;
+    const activeGateway = normalizeActiveGateway(d.active_gateway);
     const config: PaymentGatewayConfig = {
-      activeGateway: (['pagouai', 'vennox', 'centurionpay', 'ironpay', 'simpayout', 'beehive', 'pagamentosmp'].includes(d.active_gateway) ? d.active_gateway : 'centurionpay') as PaymentGatewayConfig['activeGateway'],
-      paymentMethods: typeof pm === 'object' && pm !== null ? pm : {},
+      activeGateway,
+      paymentMethods: normalizePaymentMethods(d.payment_methods, activeGateway),
       pagouai: { publicKey: d.pagouai_public_key || '', secretKey: '', enabled: false },
       vennox: { secretKey: '', companyId: '', enabled: false },
       centurionpay: { secretKey: '', companyId: '', enabled: false },
@@ -74,10 +114,10 @@ export async function fetchFullGatewayConfig(password: string): Promise<PaymentG
     });
     if (error || resp?.error || !resp?.data) return defaultConfig;
     const d = resp.data;
-    const pm = d.payment_methods || {};
+    const activeGateway = normalizeActiveGateway(d.active_gateway);
     const config: PaymentGatewayConfig = {
-      activeGateway: (['pagouai', 'vennox', 'centurionpay', 'ironpay', 'simpayout', 'beehive', 'pagamentosmp'].includes(d.active_gateway) ? d.active_gateway : 'centurionpay') as PaymentGatewayConfig['activeGateway'],
-      paymentMethods: typeof pm === 'object' && pm !== null ? pm : {},
+      activeGateway,
+      paymentMethods: normalizePaymentMethods(d.payment_methods, activeGateway),
       pagouai: { publicKey: d.pagouai_public_key || '', secretKey: d.pagouai_secret_key || '', enabled: !!(d.pagouai_secret_key) },
       vennox: { secretKey: d.vennox_secret_key || '', companyId: d.vennox_company_id || '', enabled: !!(d.vennox_secret_key && d.vennox_company_id) },
       centurionpay: { secretKey: d.centurionpay_secret_key || '', companyId: d.centurionpay_company_id || '', enabled: !!(d.centurionpay_secret_key && d.centurionpay_company_id) },
@@ -104,8 +144,15 @@ export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Pr
   }
 
   try {
+    const activeGateway = normalizeActiveGateway(config.activeGateway);
+    const normalizedConfig: PaymentGatewayConfig = {
+      ...config,
+      activeGateway,
+      paymentMethods: normalizePaymentMethods(config.paymentMethods, activeGateway),
+    };
+
     const { data, error } = await supabase.functions.invoke('save-gateway-config', {
-      body: { password: adminPassword, config },
+      body: { password: adminPassword, config: normalizedConfig },
     });
 
     if (error) {
@@ -116,7 +163,7 @@ export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Pr
       return { ok: false, error: data.error };
     }
 
-    cachedConfig = config;
+    cachedConfig = normalizedConfig;
     return { ok: true };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : 'Erro desconhecido ao salvar gateway' };
