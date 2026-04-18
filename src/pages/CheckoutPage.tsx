@@ -722,7 +722,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <Button
-                  onClick={() => setStep("shipping")}
+                  onClick={goToShipping}
                   disabled={!validateIdentification()}
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                 >
@@ -817,7 +817,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <Button
-                  onClick={() => setStep("payment")}
+                  onClick={goToPayment}
                   disabled={!validateShipping()}
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                 >
