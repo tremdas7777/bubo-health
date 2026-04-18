@@ -3,6 +3,7 @@
 ## Core
 Store: Kazoom (pt-BR). Base: versatto. Colors: Purple/Lime Green. Light mode default.
 Supabase (DB/Auth/Storage). RLS on all tables. Gateway keys protected via service_role.
+Gateway: SEMPRE Beehive — nunca trocar active_gateway sem ordem explícita.
 Pricing: 5% PIX discount, max 6x card (2.49% interest >1x).
 NO AI IMAGES. Professional real photos only for GMC compliance.
 No coupon field in checkout — user rejected this feature.
