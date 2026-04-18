@@ -132,6 +132,9 @@ export default function CheckoutPage() {
   const [cardCvv, setCardCvv] = useState("");
   const [installments, setInstallments] = useState(1);
 
+  // Live checkout tracking (draft order for abandoned cart visibility)
+  const [draftOrderId, setDraftOrderId] = useState<string>("");
+
 
 
 
