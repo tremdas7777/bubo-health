@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import AdminProdutos from "@/components/AdminProdutos";
 import AdminPedidos from "@/components/AdminPedidos";
+import AdminAbandonedCarts from "@/components/AdminAbandonedCarts";
 
 import AdminFrete from "@/components/AdminFrete";
 import AdminDashboard from "@/components/AdminDashboard";
@@ -73,6 +74,7 @@ type Tab =
   | "utmify"
   | "pagamentos"
   | "pedidos"
+  | "abandonados"
   | "cloaker"
   | "frete"
   | "cupons"
