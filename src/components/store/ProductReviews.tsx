@@ -61,16 +61,20 @@ export default function ProductReviews({ productSlug, productId }: { productSlug
       .order("created_at", { ascending: false })
       .then(({ data }) => {
         if (data && data.length > 0) {
-          setDbReviews(
-            data.map((r) => ({
-              name: r.reviewer_name,
-              rating: r.rating,
-              date: new Date(r.created_at).toLocaleDateString("pt-BR"),
-              text: r.review_text || "",
-              image: r.review_image_url || undefined,
-              verified: r.verified_purchase ?? false,
-            }))
-          );
+          const mapped = data.map((r) => ({
+            name: r.reviewer_name,
+            rating: r.rating,
+            date: new Date(r.created_at).toLocaleDateString("pt-BR"),
+            text: r.review_text || "",
+            image: r.review_image_url || undefined,
+            verified: r.verified_purchase ?? false,
+          }));
+          // Reviews com foto primeiro (maior prova social)
+          mapped.sort((a, b) => {
+            if (!!a.image !== !!b.image) return a.image ? -1 : 1;
+            return 0;
+          });
+          setDbReviews(mapped);
         }
       });
   }, [productId, productSlug]);
