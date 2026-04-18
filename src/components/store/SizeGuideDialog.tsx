@@ -4,9 +4,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 interface SizeRow {
   size: string;
-  chest: number;
-  sleeve: number;
-  length: number;
+  chest: string;
+  waist: string;
 }
 
 interface Props {
@@ -15,14 +14,14 @@ interface Props {
 }
 
 const DEFAULT_ROWS: SizeRow[] = [
-  { size: "PP", chest: 106, sleeve: 20, length: 72 },
-  { size: "P", chest: 112, sleeve: 21, length: 74 },
-  { size: "M", chest: 118, sleeve: 22, length: 76 },
-  { size: "G", chest: 124, sleeve: 23, length: 78 },
-  { size: "GG", chest: 132, sleeve: 24, length: 80 },
-  { size: "3G", chest: 140, sleeve: 25, length: 82 },
-  { size: "4G", chest: 148, sleeve: 26, length: 84 },
-  { size: "5G", chest: 156, sleeve: 27, length: 86 },
+  { size: "PP", chest: "70-79 cm", waist: "55-64 cm" },
+  { size: "P", chest: "80-100 cm", waist: "65-75 cm" },
+  { size: "M", chest: "101-120 cm", waist: "70-80 cm" },
+  { size: "G", chest: "121-140 cm", waist: "80-90 cm" },
+  { size: "GG", chest: "141-160 cm", waist: "90-100 cm" },
+  { size: "XG", chest: "161-170 cm", waist: "100-105 cm" },
+  { size: "XGG", chest: "171-180 cm", waist: "106-110 cm" },
+  { size: "G3", chest: "181-195 cm", waist: "111-120 cm" },
 ];
 
 export default function SizeGuideDialog({ rows = DEFAULT_ROWS, triggerLabel = "Tabela de medidas" }: Props) {
@@ -40,10 +39,10 @@ export default function SizeGuideDialog({ rows = DEFAULT_ROWS, triggerLabel = "T
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center text-xl font-serif">
-            Escolha seu tamanho ideal na tabela abaixo
+            Tabela de Medidas
           </DialogTitle>
           <DialogDescription className="text-center text-xs">
-            Medidas em centímetros (cm). Recomendamos medir uma peça que já te serve bem para comparar.
+            Meça o peito na parte mais larga e a cintura na altura do umbigo. Se ficar entre dois tamanhos, prefira o maior.
           </DialogDescription>
         </DialogHeader>
 
@@ -51,10 +50,9 @@ export default function SizeGuideDialog({ rows = DEFAULT_ROWS, triggerLabel = "T
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-center text-xs uppercase tracking-wider">Tamanho</TableHead>
+                <TableHead className="text-center text-xs uppercase tracking-wider">Tam.</TableHead>
                 <TableHead className="text-center text-xs uppercase tracking-wider">Peito</TableHead>
-                <TableHead className="text-center text-xs uppercase tracking-wider">Manga</TableHead>
-                <TableHead className="text-center text-xs uppercase tracking-wider">Comprimento</TableHead>
+                <TableHead className="text-center text-xs uppercase tracking-wider">Cintura</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -62,8 +60,7 @@ export default function SizeGuideDialog({ rows = DEFAULT_ROWS, triggerLabel = "T
                 <TableRow key={r.size}>
                   <TableCell className="text-center font-semibold">{r.size}</TableCell>
                   <TableCell className="text-center">{r.chest}</TableCell>
-                  <TableCell className="text-center">{r.sleeve}</TableCell>
-                  <TableCell className="text-center">{r.length}</TableCell>
+                  <TableCell className="text-center">{r.waist}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -71,7 +68,7 @@ export default function SizeGuideDialog({ rows = DEFAULT_ROWS, triggerLabel = "T
         </div>
 
         <p className="text-center text-[11px] text-muted-foreground">
-          Dúvida entre dois tamanhos? Escolha o maior para um caixa mais confortável.
+          Dúvida entre dois tamanhos? Escolha o maior para um caimento mais confortável.
         </p>
       </DialogContent>
     </Dialog>
