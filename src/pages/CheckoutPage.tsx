@@ -1021,8 +1021,8 @@ export default function CheckoutPage() {
 
                 {/* Items */}
                 <div className="space-y-3 max-h-[300px] overflow-y-auto">
-                  {items.map(({ product, quantity }) => (
-                    <div key={product.id} className="flex gap-3">
+                  {items.map(({ product, quantity, selections, lineId }) => (
+                    <div key={lineId} className="flex gap-3">
                       <div className="relative">
                         <img src={product.image} alt={product.name} className="w-14 h-14 rounded-lg object-cover" />
                         <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
@@ -1030,17 +1030,24 @@ export default function CheckoutPage() {
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium truncate">{product.name}</p>
+                        <p className="text-xs font-medium line-clamp-2">{product.name}</p>
+                        {selections && selections.length > 0 && (
+                          <ul className="mt-0.5 space-y-0.5 text-[10px] text-muted-foreground">
+                            {selections.map((s, i) => (
+                              <li key={i}>Camisa {i + 1}: {s.color} · {s.size}</li>
+                            ))}
+                          </ul>
+                        )}
                         <p className="text-xs text-primary font-bold">{formatPrice(product.price * quantity)}</p>
                         <div className="flex items-center gap-1 mt-1">
-                          <button onClick={() => updateQuantity(product.id, quantity - 1)} className="w-5 h-5 border border-border rounded flex items-center justify-center hover:bg-muted">
+                          <button onClick={() => updateQuantity(lineId, quantity - 1)} className="w-5 h-5 border border-border rounded flex items-center justify-center hover:bg-muted">
                             <Minus size={10} />
                           </button>
                           <span className="text-[10px] w-4 text-center">{quantity}</span>
-                          <button onClick={() => updateQuantity(product.id, quantity + 1)} className="w-5 h-5 border border-border rounded flex items-center justify-center hover:bg-muted">
+                          <button onClick={() => updateQuantity(lineId, quantity + 1)} className="w-5 h-5 border border-border rounded flex items-center justify-center hover:bg-muted">
                             <Plus size={10} />
                           </button>
-                          <button onClick={() => removeItem(product.id)} className="ml-auto text-muted-foreground hover:text-destructive">
+                          <button onClick={() => removeItem(lineId)} className="ml-auto text-muted-foreground hover:text-destructive">
                             <Trash2 size={12} />
                           </button>
                         </div>

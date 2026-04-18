@@ -33,34 +33,43 @@ export default function CartDrawer() {
             </div>
           ) : (
             <div className="space-y-4">
-              {items.map(({ product, quantity }) => (
-                <div key={product.id} className="flex gap-3 border-b border-border pb-4">
+              {items.map(({ product, quantity, selections, lineId }) => (
+                <div key={lineId} className="flex gap-3 border-b border-border pb-4">
                   <img
                     src={product.image}
                     alt={product.name}
                     className="w-20 h-20 object-cover rounded-lg"
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-medium truncate">{product.name}</h3>
+                    <h3 className="text-sm font-medium line-clamp-2">{product.name}</h3>
+                    {selections && selections.length > 0 && (
+                      <ul className="mt-1 space-y-0.5 text-xs text-muted-foreground">
+                        {selections.map((s, i) => (
+                          <li key={i}>
+                            <span className="font-medium text-foreground">Camisa {i + 1}:</span> {s.color} · {s.size}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                     <p className="text-primary font-semibold text-sm mt-1">
                       {formatPrice(product.price)}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <button
-                        onClick={() => updateQuantity(product.id, quantity - 1)}
+                        onClick={() => updateQuantity(lineId, quantity - 1)}
                         className="w-7 h-7 border border-border rounded flex items-center justify-center hover:bg-muted"
                       >
                         <Minus size={14} />
                       </button>
                       <span className="text-sm w-6 text-center">{quantity}</span>
                       <button
-                        onClick={() => updateQuantity(product.id, quantity + 1)}
+                        onClick={() => updateQuantity(lineId, quantity + 1)}
                         className="w-7 h-7 border border-border rounded flex items-center justify-center hover:bg-muted"
                       >
                         <Plus size={14} />
                       </button>
                       <button
-                        onClick={() => removeItem(product.id)}
+                        onClick={() => removeItem(lineId)}
                         className="ml-auto text-muted-foreground hover:text-destructive"
                       >
                         <Trash2 size={16} />
