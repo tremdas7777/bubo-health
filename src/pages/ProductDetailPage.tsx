@@ -90,6 +90,19 @@ export default function ProductDetailPage() {
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
+  // Kit "Compre 2, Leve 3" — 3 separate (color + size) selections
+  const isKitProduct = slug === "polo-ducatti-antitranspirante";
+  const KIT_SIZE = 3;
+  const [kitSelections, setKitSelections] = useState<Array<{ color: string | null; size: string | null }>>(
+    Array.from({ length: KIT_SIZE }, () => ({ color: null, size: null }))
+  );
+  const [activeKitSlot, setActiveKitSlot] = useState(0);
+
+  const updateKitSlot = (idx: number, patch: Partial<{ color: string; size: string }>) => {
+    setKitSelections((prev) => prev.map((s, i) => (i === idx ? { ...s, ...patch } : s)));
+  };
+
   const { addItem } = useCart();
   const navigate = useNavigate();
 
