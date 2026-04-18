@@ -11,6 +11,7 @@ import CepCalculator from "@/components/store/CepCalculator";
 import ProductCard from "@/components/store/ProductCard";
 import ProductReviews from "@/components/store/ProductReviews";
 import ProductFAQ from "@/components/store/ProductFAQ";
+import SizeGuideDialog from "@/components/store/SizeGuideDialog";
 import { formatPrice, getInstallmentPrice, getDiscountPercent } from "@/data/store";
 import { getPixPrice, getPixSavings, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
 import { useCart } from "@/contexts/CartContext";
@@ -395,9 +396,12 @@ export default function ProductDetailPage() {
 
             {!isKitProduct && product.sizes && product.sizes.length > 0 && (
               <div className="space-y-2">
-                <p className="text-sm font-medium">
-                  Tamanho: <span className="font-normal text-muted-foreground">{selectedSize || "Selecione"}</span>
-                </p>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-medium">
+                    Tamanho: <span className="font-normal text-muted-foreground">{selectedSize || "Selecione"}</span>
+                  </p>
+                  <SizeGuideDialog />
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {product.sizes.map((s) => (
                     <button
