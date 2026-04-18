@@ -29,3 +29,4 @@ No coupon field in checkout — user rejected this feature.
 - [features/banners](mem://features/banners) — HeroCarousel responsive (9:16 mobile, 16:7 desktop)
 - [constraints/product-imagery](mem://constraints/product-imagery) — Strict requirement for real photos, ban on AI-generated images
 - [constraints/no-checkout-coupon](mem://constraints/no-checkout-coupon) — No coupon/discount code field in checkout
+- [marketing/instagram-card-template](mem://marketing/instagram-card-template) — Template padrão card Instagram 1080x1080 (roxo + lima, "MAIS VENDIDO DA SEMANA")
