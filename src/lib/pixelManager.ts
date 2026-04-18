@@ -139,15 +139,14 @@ export function injectPixels(config?: PixelConfig) {
   }
 
   if (hasAnyPixel) {
-    // Poll every 50ms instead of waiting a fixed 500ms
     let attempts = 0;
     const check = () => {
       const fbReady = !cfg.facebookPixels.some(fb => fb.pixelId) || typeof (window as any).fbq === 'function';
       const ttReady = !cfg.tiktokPixels.some(tt => tt.pixelId) || typeof (window as any).ttq?.track === 'function';
       const gtagReady = gtagIds.length === 0 || typeof (window as any).gtag === 'function';
-      if ((fbReady && ttReady && gtagReady) || attempts >= 40) { markPixelsReady(); return; }
+      if ((fbReady && ttReady && gtagReady) || attempts >= 80) { markPixelsReady(); return; }
       attempts++;
-      setTimeout(check, 50);
+      setTimeout(check, 25);
     };
     check();
   } else { markPixelsReady(); }
