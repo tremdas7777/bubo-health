@@ -573,6 +573,11 @@ export default function CheckoutPage() {
         if (result.order_id) {
           await saveOrderItems(result.order_id);
         }
+        // Delete draft now that real card order is paid
+        if (draftOrderId) {
+          await supabase.from("orders").delete().eq("id", draftOrderId);
+          setDraftOrderId("");
+        }
         // Send paid confirmation email
         supabase.functions.invoke("send-order-email", {
           body: {
