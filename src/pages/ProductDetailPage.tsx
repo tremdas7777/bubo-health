@@ -200,7 +200,7 @@ export default function ProductDetailPage() {
     if (incompleteIdx !== -1) {
       toast({
         title: `Complete a Camisa ${incompleteIdx + 1}`,
-        description: "Selecione cor e tamanho de todas as 3 camisas para continuar.",
+        description: `Selecione cor e tamanho de todas as ${KIT_SIZE} camisas para continuar.`,
         variant: "destructive",
       });
       setActiveKitSlot(incompleteIdx);
@@ -282,11 +282,14 @@ export default function ProductDetailPage() {
             {/* KIT mode: Compre 2 Leve 3 — 3 separate (color + size) selections */}
             {isKitProduct && product.colors && product.sizes && (
               <div className="space-y-3 rounded-xl border-2 border-primary/30 bg-primary/5 p-4">
-                <div className="flex items-center gap-2">
-                  <Gift size={18} className="text-primary" />
-                  <p className="text-sm font-bold text-foreground">
-                    🎁 COMPRE 2, LEVE 3 — Escolha as cores e tamanhos das suas 3 camisas
-                  </p>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Gift size={18} className="text-primary" />
+                    <p className="text-sm font-bold text-foreground">
+                      {kitConfig!.label}
+                    </p>
+                  </div>
+                  <SizeGuideDialog />
                 </div>
 
                 {kitSelections.map((slot, idx) => {
