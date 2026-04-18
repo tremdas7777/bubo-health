@@ -4,12 +4,15 @@ import { getCampaignParams } from '@/lib/campaignParams';
 export interface FacebookPixelEntry { id: string; pixelId: string; accessToken: string; }
 export interface TikTokPixelEntry { id: string; pixelId: string; accessToken: string; }
 export interface GoogleAdsEntry { id: string; adsId: string; adsLabel: string; }
+export interface UtmifyPixelEntry { id: string; pixelId: string; }
 
 export interface PixelConfig {
   facebookPixels: FacebookPixelEntry[];
   tiktokPixels: TikTokPixelEntry[];
   googleAdsPixels: GoogleAdsEntry[];
-  utmifyHtml?: string;
+  utmifyMetaPixels: UtmifyPixelEntry[];
+  utmifyGooglePixels: UtmifyPixelEntry[];
+  utmifyHtml?: string; // legacy, mantido p/ compat
   onlyPaid?: boolean;
   ga4MeasurementId?: string;
   ga4ApiSecret?: string;
@@ -17,11 +20,31 @@ export interface PixelConfig {
 
 const STORAGE_KEY = 'pixel_config';
 
+// Extrai IDs de pixels Utmify de um HTML legado (pixel.js = meta, pixel-google.js = google)
+function extractUtmifyFromHtml(html: string): { meta: UtmifyPixelEntry[]; google: UtmifyPixelEntry[] } {
+  const meta: UtmifyPixelEntry[] = [];
+  const google: UtmifyPixelEntry[] = [];
+  if (!html) return { meta, google };
+  // Cada bloco <script>...</script>
+  const blocks = html.match(/<script[\s\S]*?<\/script>/gi) || [];
+  blocks.forEach(block => {
+    const isGoogle = /pixel-google\.js/i.test(block) || /googlePixelId/.test(block);
+    const idMatch = block.match(/(?:googlePixelId|pixelId)\s*=\s*["']([^"']+)["']/);
+    if (idMatch) {
+      const entry: UtmifyPixelEntry = { id: crypto.randomUUID(), pixelId: idMatch[1] };
+      if (isGoogle) google.push(entry); else meta.push(entry);
+    }
+  });
+  return { meta, google };
+}
+
 function migrateConfig(raw: any): PixelConfig {
   const cfg: PixelConfig = {
     facebookPixels: raw.facebookPixels || [],
     tiktokPixels: raw.tiktokPixels || [],
     googleAdsPixels: raw.googleAdsPixels || [],
+    utmifyMetaPixels: raw.utmifyMetaPixels || [],
+    utmifyGooglePixels: raw.utmifyGooglePixels || [],
     utmifyHtml: raw.utmifyHtml || '',
     onlyPaid: raw.onlyPaid ?? false,
     ga4MeasurementId: raw.ga4MeasurementId || '',
@@ -36,10 +59,17 @@ function migrateConfig(raw: any): PixelConfig {
   if (cfg.googleAdsPixels.length === 0 && raw.googleAdsId) {
     cfg.googleAdsPixels.push({ id: crypto.randomUUID(), adsId: raw.googleAdsId, adsLabel: raw.googleAdsLabel || '' });
   }
+  // Migra utmifyHtml legado para arrays estruturados (uma vez)
+  if ((cfg.utmifyMetaPixels.length === 0 && cfg.utmifyGooglePixels.length === 0) && cfg.utmifyHtml) {
+    const extracted = extractUtmifyFromHtml(cfg.utmifyHtml);
+    cfg.utmifyMetaPixels = extracted.meta;
+    cfg.utmifyGooglePixels = extracted.google;
+    cfg.utmifyHtml = ''; // limpa legado após migração
+  }
   return cfg;
 }
 
-const DEFAULT_CONFIG: PixelConfig = { facebookPixels: [], tiktokPixels: [], googleAdsPixels: [], utmifyHtml: '', onlyPaid: false };
+const DEFAULT_CONFIG: PixelConfig = { facebookPixels: [], tiktokPixels: [], googleAdsPixels: [], utmifyMetaPixels: [], utmifyGooglePixels: [], utmifyHtml: '', onlyPaid: false };
 let cachedConfig: PixelConfig = DEFAULT_CONFIG;
 let configLoaded = false;
 
