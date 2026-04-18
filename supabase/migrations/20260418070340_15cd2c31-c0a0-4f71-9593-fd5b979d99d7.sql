@@ -1,0 +1,1 @@
+UPDATE public.products SET active = false, updated_at = now() WHERE slug IN ('polo-ducatti-antitranspirante-copia-mo3y4s3r', 'polo-ducatti-antitranspirante-copia-mo3y4srn');
