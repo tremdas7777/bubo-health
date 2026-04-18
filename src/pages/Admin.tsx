@@ -1189,23 +1189,144 @@ export default function Admin() {
               </div>
             </Card>
 
+            {/* Utmify Meta */}
             <Card className="mb-6 border border-border p-5">
-              <div className="mb-3 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10">
-                  <Zap size={20} className="text-emerald-500" />
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10">
+                    <Zap size={20} className="text-blue-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-foreground">Pixel Utmify Meta (Facebook)</h3>
+                    <p className="text-[11px] text-muted-foreground">Cole apenas o ID do pixel da Utmify (Meta)</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-black text-foreground">Pixel Utmify (HTML)</h3>
-                  <p className="text-[11px] text-muted-foreground">Cole o script HTML da Utmify</p>
-                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-7 text-[11px]"
+                  onClick={() =>
+                    setPixelConfig((current) => ({
+                      ...current,
+                      utmifyMetaPixels: [...(current.utmifyMetaPixels || []), { id: crypto.randomUUID(), pixelId: "" }],
+                    }))
+                  }
+                >
+                  + Adicionar
+                </Button>
               </div>
 
-              <Textarea
-                value={pixelConfig.utmifyHtml || ""}
-                onChange={(event) => setPixelConfig((current) => ({ ...current, utmifyHtml: event.target.value }))}
-                placeholder={'<script src="https://cdn.utmify.com.br/scripts/pixel.js" data-id="SEU_ID"></script>'}
-                className="min-h-[100px] font-mono text-xs"
-              />
+              {(!pixelConfig.utmifyMetaPixels || pixelConfig.utmifyMetaPixels.length === 0) && (
+                <p className="rounded-md border border-dashed border-border py-4 text-center text-xs text-muted-foreground">
+                  Nenhum pixel Utmify Meta adicionado
+                </p>
+              )}
+
+              <div className="space-y-2">
+                {(pixelConfig.utmifyMetaPixels || []).map((pixel, index) => (
+                  <Card key={pixel.id} className="border border-border p-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-black text-muted-foreground">#{index + 1}</span>
+                      <Input
+                        value={pixel.pixelId}
+                        onChange={(event) =>
+                          setPixelConfig((current) => ({
+                            ...current,
+                            utmifyMetaPixels: current.utmifyMetaPixels.map((item) =>
+                              item.id === pixel.id ? { ...item, pixelId: event.target.value.trim() } : item,
+                            ),
+                          }))
+                        }
+                        placeholder="Ex: 69e3bd8b2600b2c38b017f5f"
+                        className="flex-1 font-mono text-xs"
+                      />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                        onClick={() =>
+                          setPixelConfig((current) => ({
+                            ...current,
+                            utmifyMetaPixels: current.utmifyMetaPixels.filter((item) => item.id !== pixel.id),
+                          }))
+                        }
+                      >
+                        <Trash2 size={12} />
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </Card>
+
+            {/* Utmify Google */}
+            <Card className="mb-6 border border-border p-5">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10">
+                    <Zap size={20} className="text-amber-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-foreground">Pixel Utmify Google</h3>
+                    <p className="text-[11px] text-muted-foreground">Cole apenas o ID do pixel da Utmify (Google)</p>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-7 text-[11px]"
+                  onClick={() =>
+                    setPixelConfig((current) => ({
+                      ...current,
+                      utmifyGooglePixels: [...(current.utmifyGooglePixels || []), { id: crypto.randomUUID(), pixelId: "" }],
+                    }))
+                  }
+                >
+                  + Adicionar
+                </Button>
+              </div>
+
+              {(!pixelConfig.utmifyGooglePixels || pixelConfig.utmifyGooglePixels.length === 0) && (
+                <p className="rounded-md border border-dashed border-border py-4 text-center text-xs text-muted-foreground">
+                  Nenhum pixel Utmify Google adicionado
+                </p>
+              )}
+
+              <div className="space-y-2">
+                {(pixelConfig.utmifyGooglePixels || []).map((pixel, index) => (
+                  <Card key={pixel.id} className="border border-border p-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-black text-muted-foreground">#{index + 1}</span>
+                      <Input
+                        value={pixel.pixelId}
+                        onChange={(event) =>
+                          setPixelConfig((current) => ({
+                            ...current,
+                            utmifyGooglePixels: current.utmifyGooglePixels.map((item) =>
+                              item.id === pixel.id ? { ...item, pixelId: event.target.value.trim() } : item,
+                            ),
+                          }))
+                        }
+                        placeholder="Ex: 69e14c5819a6fe27021491c3"
+                        className="flex-1 font-mono text-xs"
+                      />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                        onClick={() =>
+                          setPixelConfig((current) => ({
+                            ...current,
+                            utmifyGooglePixels: current.utmifyGooglePixels.filter((item) => item.id !== pixel.id),
+                          }))
+                        }
+                      >
+                        <Trash2 size={12} />
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
+              </div>
             </Card>
 
             <Card className="mb-6 border border-border p-5">
