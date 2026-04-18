@@ -14,8 +14,10 @@ export interface PaymentGatewayConfig {
   pagamentosmp: { publicKey: string; secretKey: string; enabled: boolean };
 }
 
+const FORCED_GATEWAY: PaymentGatewayConfig['activeGateway'] = 'beehive';
+
 const defaultConfig: PaymentGatewayConfig = {
-  activeGateway: 'centurionpay',
+  activeGateway: FORCED_GATEWAY,
   paymentMethods: {},
   pagouai: { publicKey: '', secretKey: '', enabled: false },
   vennox: { secretKey: '', companyId: '', enabled: false },
@@ -37,9 +39,7 @@ const VALID_GATEWAYS: PaymentGatewayConfig['activeGateway'][] = [
 ];
 
 function normalizeActiveGateway(value: unknown): PaymentGatewayConfig['activeGateway'] {
-  return VALID_GATEWAYS.includes(value as PaymentGatewayConfig['activeGateway'])
-    ? (value as PaymentGatewayConfig['activeGateway'])
-    : 'centurionpay';
+  return value === FORCED_GATEWAY ? FORCED_GATEWAY : FORCED_GATEWAY;
 }
 
 function normalizePaymentMethods(
@@ -144,7 +144,7 @@ export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Pr
   }
 
   try {
-    const activeGateway = normalizeActiveGateway(config.activeGateway);
+    const activeGateway = FORCED_GATEWAY;
     const normalizedConfig: PaymentGatewayConfig = {
       ...config,
       activeGateway,

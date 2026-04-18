@@ -125,7 +125,7 @@ const INITIAL_PIXEL_CONFIG: PixelConfig = {
 };
 
 const INITIAL_GATEWAY_CONFIG: PaymentGatewayConfig = {
-  activeGateway: "centurionpay",
+  activeGateway: "beehive",
   paymentMethods: {},
   pagouai: { publicKey: "", secretKey: "", enabled: false },
   vennox: { secretKey: "", companyId: "", enabled: false },
@@ -1523,25 +1523,14 @@ export default function Admin() {
                 <span className="text-sm font-black text-foreground">Gateway Ativo</span>
               </div>
 
-              <div className="flex flex-wrap gap-2">
-                {(Object.keys(GATEWAY_LABELS) as PaymentGatewayConfig["activeGateway"][]).map((gateway) => (
-                  <button
-                    key={gateway}
-                    onClick={async () => {
-                      const updatedConfig = { ...gatewayConfig, activeGateway: gateway };
-                      setGatewayConfig(updatedConfig);
-                      const result = await savePaymentGatewayConfig(updatedConfig);
-                      flashMessage(setGatewayMessage, result.ok ? `Gateway ativo: ${GATEWAY_LABELS[gateway]}` : result.error || "Erro ao salvar gateway", 5000);
-                    }}
-                    className={`min-w-[80px] flex-1 rounded-lg border-2 px-3 py-2.5 text-xs font-bold transition-all ${
-                      gatewayConfig.activeGateway === gateway
-                        ? "border-emerald-500 bg-emerald-500/5 text-emerald-500"
-                        : "border-border text-muted-foreground hover:border-muted-foreground/30"
-                    }`}
-                  >
-                    {GATEWAY_LABELS[gateway]}
-                  </button>
-                ))}
+              <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 px-4 py-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-black text-foreground">Beehive</p>
+                    <p className="text-[11px] text-muted-foreground">Travado como gateway padrão da loja para evitar troca automática.</p>
+                  </div>
+                  <Badge className="border-emerald-500/30 bg-emerald-500/10 text-[10px] text-emerald-500">Fixo</Badge>
+                </div>
               </div>
               <StatusMessage msg={gatewayMessage} />
             </Card>
