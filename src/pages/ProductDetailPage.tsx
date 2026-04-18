@@ -125,20 +125,29 @@ export default function ProductDetailPage() {
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
   const bullets = productBulletPoints[product.slug];
 
-  // Filter images based on selected variant (color)
+  // Filter / reorder images based on selected color or legacy variant
   const getFilteredImages = () => {
     const allImages = product.images && product.images.length > 0 ? product.images : [product.image];
+
+    // New: structured colors with image mapping → put selected color image first
+    if (product.colors && product.colors.length > 0 && selectedColor) {
+      const found = product.colors.find((c) => c.name === selectedColor);
+      if (found?.image) {
+        const rest = allImages.filter((img) => img !== found.image);
+        return [found.image, ...rest];
+      }
+    }
+
+    // Legacy variant filter
     if (!selectedVariant || !product.variants) return allImages;
-    
+
     const variantLower = selectedVariant.toLowerCase();
-    // Map variant names to URL keywords
     const colorKeywords: Record<string, string[]> = {
       "amarelo": ["amarela", "amarelo"],
       "azul": ["azul"],
     };
     const keywords = colorKeywords[variantLower] || [variantLower];
-    
-    // Get images matching this variant + shared images (accessories, parts, etc.)
+
     const variantImages = allImages.filter((img) => {
       const imgLower = img.toLowerCase();
       const isVariantSpecific = keywords.some((kw) => imgLower.includes(kw));
@@ -147,7 +156,7 @@ export default function ProductDetailPage() {
         .some(([, kws]) => kws.some((kw) => imgLower.includes(kw)));
       return isVariantSpecific || !isOtherVariant;
     });
-    
+
     return variantImages.length > 0 ? variantImages : allImages;
   };
 
