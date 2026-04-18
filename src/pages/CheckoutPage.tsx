@@ -568,6 +568,22 @@ export default function CheckoutPage() {
         return;
       }
 
+      // Utmify: notifica venda pendente (cartão) — dispara para TODA tentativa de pagamento
+      if (result?.order_id) {
+        void notifyUtmifyServerSide({
+          orderId: result.order_id,
+          status: "waiting_payment",
+          paymentMethod: "credit_card",
+          customerName: name,
+          customerEmail: email,
+          customerPhone: phone || null,
+          customerDocument: cpf?.replace(/\D/g, "") || null,
+          productName: items[0]?.product?.name || "Pedido Kazoom",
+          priceInCents: Math.round(total * 100),
+          trackingParameters: getCampaignParams(),
+        });
+      }
+
       if (result?.status === "paid") {
         // Save order items
         if (result.order_id) {
