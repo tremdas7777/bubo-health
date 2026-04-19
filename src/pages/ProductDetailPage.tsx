@@ -281,17 +281,71 @@ export default function ProductDetailPage() {
             <ProductRatingSummary productId={product.id} />
 
             <div className="space-y-1 text-center lg:text-left">
-              {hasDiscount && <p className="text-sm text-muted-foreground line-through">{formatPrice(product.compareAtPrice!)}</p>}
+              {hasDiscount && <p className="text-sm text-muted-foreground line-through">{formatPrice(activeCompareAt!)}</p>}
               <div className="flex items-center justify-center gap-3 lg:justify-start">
-                <span className="text-2xl font-bold text-primary">{formatPrice(product.price)}</span>
+                <span className="text-2xl font-bold text-primary">{formatPrice(activePrice)}</span>
                 {hasDiscount && (
                   <span className="flex items-center gap-1 rounded bg-lime px-2 py-1 text-xs font-bold text-foreground">
-                    ↓ {getDiscountPercent(product.price, product.compareAtPrice!)}%
+                    ↓ {getDiscountPercent(activePrice, activeCompareAt!)}%
                   </span>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground">{t("productPage.installmentsIn", { count: 6, value: getInstallmentPrice(product.price, 6) })}</p>
+              {activeBundle && activeBundle.perUnitCents && (
+                <p className="text-xs text-muted-foreground">
+                  {formatPrice(activeBundle.perUnitCents / 100)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
+                </p>
+              )}
+              <p className="text-sm text-muted-foreground">{t("productPage.installmentsIn", { count: 6, value: formatPrice(activePrice / 6) })}</p>
             </div>
+
+            {/* Bundle selector (1 / 2 / 3 unidades) */}
+            {product.bundles && product.bundles.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium">{t("productPage.chooseBundle", { defaultValue: "Escolha sua oferta" })}</p>
+                <div className="grid gap-2">
+                  {product.bundles.map((b, idx) => {
+                    const isSelected = selectedBundle === idx;
+                    const perUnit = b.perUnitCents ?? b.priceCents / b.qty;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setSelectedBundle(idx)}
+                        className={`flex items-center justify-between gap-3 rounded-xl border-2 p-3 text-left transition-all ${
+                          isSelected
+                            ? "border-primary bg-primary/5 shadow-sm"
+                            : "border-border hover:border-primary/40"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
+                              isSelected ? "border-primary bg-primary" : "border-border"
+                            }`}
+                          >
+                            {isSelected && <CheckCircle2 size={12} className="text-primary-foreground" />}
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-foreground">{b.label}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {formatPrice(perUnit / 100)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-bold text-primary">{formatPrice(b.priceCents / 100)}</p>
+                          {b.badge && (
+                            <span className="inline-block rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">
+                              {b.badge}
+                            </span>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* KIT mode: Compre 2 Leve 3 — 3 separate (color + size) selections */}
             {isKitProduct && product.colors && product.sizes && (
