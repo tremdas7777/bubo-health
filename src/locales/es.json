@@ -503,5 +503,28 @@
       "subtitle": "La página que buscas no existe.",
       "backHome": "Volver al inicio"
     }
+  },
+  "hero": {
+    "tech": {
+      "eyebrow": "Nueva Colección",
+      "title": "Tecnología inteligente para la vida diaria",
+      "subtitle": "Smartwatches, auriculares y gadgets que hacen cada momento más fácil.",
+      "cta": "Ver electrónicos",
+      "alt": "Gadgets premium sobre fondo degradado"
+    },
+    "sports": {
+      "eyebrow": "Muévete Mejor",
+      "title": "Equípate. Supera tus límites.",
+      "subtitle": "Equipo deportivo y fitness diseñado para el rendimiento.",
+      "cta": "Ver deportes",
+      "alt": "Equipo deportivo sobre degradado dinámico"
+    },
+    "beauty": {
+      "eyebrow": "Cuidado Personal",
+      "title": "Belleza y elegancia para tu hogar",
+      "subtitle": "Descubre esenciales de belleza y piezas que elevan tu espacio.",
+      "cta": "Ver belleza",
+      "alt": "Belleza y decoración del hogar sobre mármol"
+    }
   }
 }

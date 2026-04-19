@@ -503,5 +503,28 @@
       "subtitle": "La page que vous cherchez n'existe pas.",
       "backHome": "Retour à l'accueil"
     }
+  },
+  "hero": {
+    "tech": {
+      "eyebrow": "Nouvelle Collection",
+      "title": "Technologie intelligente pour le quotidien",
+      "subtitle": "Smartwatches, écouteurs et gadgets qui simplifient chaque instant.",
+      "cta": "Voir l'électronique",
+      "alt": "Gadgets premium sur fond dégradé"
+    },
+    "sports": {
+      "eyebrow": "Bougez Mieux",
+      "title": "Équipez-vous. Dépassez-vous.",
+      "subtitle": "Équipement sport et fitness conçu pour la performance.",
+      "cta": "Voir le sport",
+      "alt": "Équipement sportif sur dégradé dynamique"
+    },
+    "beauty": {
+      "eyebrow": "Bien-être",
+      "title": "La beauté rencontre l'élégance",
+      "subtitle": "Découvrez les essentiels beauté et les pièces qui subliment votre espace.",
+      "cta": "Voir la beauté",
+      "alt": "Beauté et décoration sur marbre"
+    }
   }
 }
