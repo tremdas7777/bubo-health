@@ -196,8 +196,12 @@ export type Database = {
           payment_methods: Json
           simpayout_client_id: string | null
           simpayout_client_secret: string | null
+          stripe_mode: string
           stripe_publishable_key: string | null
           stripe_secret_key: string | null
+          stripe_test_publishable_key: string | null
+          stripe_test_secret_key: string | null
+          stripe_test_webhook_secret: string | null
           stripe_webhook_secret: string | null
           updated_at: string
           utmify_api_token: string | null
@@ -221,8 +225,12 @@ export type Database = {
           payment_methods?: Json
           simpayout_client_id?: string | null
           simpayout_client_secret?: string | null
+          stripe_mode?: string
           stripe_publishable_key?: string | null
           stripe_secret_key?: string | null
+          stripe_test_publishable_key?: string | null
+          stripe_test_secret_key?: string | null
+          stripe_test_webhook_secret?: string | null
           stripe_webhook_secret?: string | null
           updated_at?: string
           utmify_api_token?: string | null
@@ -246,8 +254,12 @@ export type Database = {
           payment_methods?: Json
           simpayout_client_id?: string | null
           simpayout_client_secret?: string | null
+          stripe_mode?: string
           stripe_publishable_key?: string | null
           stripe_secret_key?: string | null
+          stripe_test_publishable_key?: string | null
+          stripe_test_secret_key?: string | null
+          stripe_test_webhook_secret?: string | null
           stripe_webhook_secret?: string | null
           updated_at?: string
           utmify_api_token?: string | null

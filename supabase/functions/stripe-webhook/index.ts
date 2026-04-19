@@ -19,34 +19,69 @@ Deno.serve(async (req) => {
 
     const { data: gw } = await supabaseAdmin
       .from("gateway_config")
-      .select("stripe_secret_key, stripe_webhook_secret")
+      .select("stripe_secret_key, stripe_webhook_secret, stripe_test_secret_key, stripe_test_webhook_secret, stripe_mode")
       .limit(1)
       .single();
 
-    if (!gw?.stripe_secret_key) {
-      return new Response("Stripe not configured", { status: 400, headers: corsHeaders });
-    }
-
-    const stripe = new Stripe(gw.stripe_secret_key, { apiVersion: "2024-06-20" });
     const signature = req.headers.get("stripe-signature");
     const rawBody = await req.text();
 
-    let event: Stripe.Event;
-    if (gw.stripe_webhook_secret && signature) {
-      try {
-        event = await stripe.webhooks.constructEventAsync(
-          rawBody,
-          signature,
-          gw.stripe_webhook_secret,
-        );
-      } catch (err) {
-        console.error("Signature verification failed", err);
-        return new Response("Invalid signature", { status: 400, headers: corsHeaders });
-      }
-    } else {
-      // No webhook secret configured: parse without verification (NOT recommended).
-      event = JSON.parse(rawBody) as Stripe.Event;
+    // Try to verify against both modes (live and test) so the webhook works
+    // regardless of which Stripe environment sent the event.
+    const candidates: Array<{ secret: string; webhookSecret: string; label: string }> = [];
+    if (gw?.stripe_secret_key) {
+      candidates.push({
+        secret: gw.stripe_secret_key,
+        webhookSecret: gw.stripe_webhook_secret || "",
+        label: "live",
+      });
     }
+    if (gw?.stripe_test_secret_key) {
+      candidates.push({
+        secret: gw.stripe_test_secret_key,
+        webhookSecret: gw.stripe_test_webhook_secret || "",
+        label: "test",
+      });
+    }
+
+    if (candidates.length === 0) {
+      return new Response("Stripe not configured", { status: 400, headers: corsHeaders });
+    }
+
+    let event: Stripe.Event | null = null;
+    let usedSecret = "";
+    let lastErr: unknown = null;
+
+    for (const c of candidates) {
+      const stripe = new Stripe(c.secret, { apiVersion: "2024-06-20" });
+      if (c.webhookSecret && signature) {
+        try {
+          event = await stripe.webhooks.constructEventAsync(rawBody, signature, c.webhookSecret);
+          usedSecret = c.secret;
+          console.log(`stripe-webhook verified with ${c.label} keys`);
+          break;
+        } catch (err) {
+          lastErr = err;
+          continue;
+        }
+      } else {
+        // No webhook secret: parse without verification (fallback)
+        try {
+          event = JSON.parse(rawBody) as Stripe.Event;
+          usedSecret = c.secret;
+          console.warn(`stripe-webhook parsed without signature for ${c.label}`);
+          break;
+        } catch (err) {
+          lastErr = err;
+        }
+      }
+    }
+
+    if (!event) {
+      console.error("Signature verification failed for all candidates", lastErr);
+      return new Response("Invalid signature", { status: 400, headers: corsHeaders });
+    }
+    void usedSecret;
 
     if (
       event.type === "checkout.session.completed" ||

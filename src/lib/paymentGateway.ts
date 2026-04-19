@@ -12,7 +12,16 @@ export interface PaymentGatewayConfig {
   simpayout: { clientId: string; clientSecret: string; enabled: boolean };
   beehive: { publicKey: string; secretKey: string; enabled: boolean };
   pagamentosmp: { publicKey: string; secretKey: string; enabled: boolean };
-  stripe: { publishableKey: string; secretKey: string; webhookSecret: string; enabled: boolean };
+  stripe: {
+    publishableKey: string;
+    secretKey: string;
+    webhookSecret: string;
+    testPublishableKey: string;
+    testSecretKey: string;
+    testWebhookSecret: string;
+    mode: 'live' | 'test';
+    enabled: boolean;
+  };
 }
 
 const DEFAULT_GATEWAY: PaymentGatewayConfig['activeGateway'] = 'stripe';
@@ -27,7 +36,16 @@ const defaultConfig: PaymentGatewayConfig = {
   simpayout: { clientId: '', clientSecret: '', enabled: false },
   beehive: { publicKey: '', secretKey: '', enabled: false },
   pagamentosmp: { publicKey: '', secretKey: '', enabled: false },
-  stripe: { publishableKey: '', secretKey: '', webhookSecret: '', enabled: false },
+  stripe: {
+    publishableKey: '',
+    secretKey: '',
+    webhookSecret: '',
+    testPublishableKey: '',
+    testSecretKey: '',
+    testWebhookSecret: '',
+    mode: 'live',
+    enabled: false,
+  },
 };
 
 const VALID_GATEWAYS: PaymentGatewayConfig['activeGateway'][] = [
@@ -110,7 +128,11 @@ export async function fetchPaymentGatewayConfig(): Promise<PaymentGatewayConfig>
         publishableKey: d.stripe_publishable_key || '',
         secretKey: '',
         webhookSecret: '',
-        enabled: !!(d.stripe_publishable_key),
+        testPublishableKey: d.stripe_test_publishable_key || '',
+        testSecretKey: '',
+        testWebhookSecret: '',
+        mode: (d.stripe_mode === 'test' ? 'test' : 'live'),
+        enabled: !!(d.stripe_publishable_key || d.stripe_test_publishable_key),
       },
     };
     cachedConfig = config;
@@ -143,7 +165,11 @@ export async function fetchFullGatewayConfig(password: string): Promise<PaymentG
         publishableKey: d.stripe_publishable_key || '',
         secretKey: d.stripe_secret_key || '',
         webhookSecret: d.stripe_webhook_secret || '',
-        enabled: !!(d.stripe_publishable_key && d.stripe_secret_key),
+        testPublishableKey: d.stripe_test_publishable_key || '',
+        testSecretKey: d.stripe_test_secret_key || '',
+        testWebhookSecret: d.stripe_test_webhook_secret || '',
+        mode: (d.stripe_mode === 'test' ? 'test' : 'live'),
+        enabled: !!((d.stripe_mode === 'test' ? d.stripe_test_secret_key : d.stripe_secret_key)),
       },
     };
     cachedConfig = config;

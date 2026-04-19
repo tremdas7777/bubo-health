@@ -58,20 +58,22 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    // Load Stripe secret key from gateway_config
+    // Load Stripe secret key from gateway_config (respects test/live mode)
     const { data: gw, error: gwErr } = await supabaseAdmin
       .from("gateway_config")
-      .select("stripe_secret_key")
+      .select("stripe_secret_key, stripe_test_secret_key, stripe_mode")
       .limit(1)
       .single();
-    if (gwErr || !gw?.stripe_secret_key) {
+    const isTest = gw?.stripe_mode === "test";
+    const activeKey = isTest ? gw?.stripe_test_secret_key : gw?.stripe_secret_key;
+    if (gwErr || !activeKey) {
       return new Response(
-        JSON.stringify({ error: "Stripe não configurado. Configure a Secret Key no admin." }),
+        JSON.stringify({ error: `Stripe ${isTest ? "test" : "live"} não configurado. Configure a Secret Key no admin.` }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
 
-    const stripe = new Stripe(gw.stripe_secret_key, {
+    const stripe = new Stripe(activeKey, {
       apiVersion: "2024-06-20",
     });
 
