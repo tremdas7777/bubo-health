@@ -126,6 +126,50 @@ export default function ProductDetailPage() {
     }
   }, [product]);
 
+  // Translate the kit bullet points to the active UI language (cached in localStorage).
+  useEffect(() => {
+    if (!product) return;
+    const slug = product.slug;
+    const bulletList = productBulletPoints[slug];
+    if (!bulletList || bulletList.length === 0) {
+      setTranslatedBullets(null);
+      return;
+    }
+    if (language === "pt") {
+      setTranslatedBullets(null); // use original (already pt-BR)
+      return;
+    }
+    const cacheKey = `bullets-tr:${slug}:${language}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      try {
+        const arr = JSON.parse(cached);
+        if (Array.isArray(arr) && arr.length === bulletList.length) {
+          setTranslatedBullets(arr);
+          return;
+        }
+      } catch { /* ignore */ }
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke("translate-texts", {
+          body: { texts: bulletList.map((b) => b.text), targetLang: language },
+        });
+        if (cancelled) return;
+        if (error || !data?.translations) {
+          setTranslatedBullets(null);
+          return;
+        }
+        localStorage.setItem(cacheKey, JSON.stringify(data.translations));
+        setTranslatedBullets(data.translations);
+      } catch {
+        if (!cancelled) setTranslatedBullets(null);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [product, language]);
+
   if (isLoading) {
     return (
       <Layout>
