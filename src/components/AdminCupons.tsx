@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Plus, Save, Trash2, Tag } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { adminWrite } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -44,28 +45,34 @@ export default function AdminCupons() {
 
   const handleAdd = async () => {
     if (!newCode.trim() || !newValue) return;
-    const { error } = await supabase.from("coupons").insert({
-      code: newCode.trim().toUpperCase(),
-      discount_type: newType,
-      discount_value: parseInt(newValue),
-      min_order_cents: newMinOrder ? parseInt(newMinOrder) * 100 : 0,
-      max_uses: newMaxUses ? parseInt(newMaxUses) : null,
-      expires_at: newExpires || null,
+    const result = await adminWrite({
+      table: "coupons",
+      op: "insert",
+      payload: {
+        code: newCode.trim().toUpperCase(),
+        discount_type: newType,
+        discount_value: parseInt(newValue),
+        min_order_cents: newMinOrder ? parseInt(newMinOrder) * 100 : 0,
+        max_uses: newMaxUses ? parseInt(newMaxUses) : null,
+        expires_at: newExpires || null,
+      },
     });
-    if (error) { flash("Erro: " + error.message); return; }
+    if (!result.ok) { flash("Erro: " + result.error); return; }
     flash("Cupom criado com sucesso!");
     setNewCode(""); setNewValue(""); setNewMinOrder(""); setNewMaxUses(""); setNewExpires("");
     await load();
   };
 
   const toggleActive = async (id: string, active: boolean) => {
-    await supabase.from("coupons").update({ active }).eq("id", id);
+    const result = await adminWrite({ table: "coupons", op: "update", payload: { active }, match: { id } });
+    if (!result.ok) { flash("Erro: " + result.error); return; }
     await load();
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Excluir este cupom?")) return;
-    await supabase.from("coupons").delete().eq("id", id);
+    const result = await adminWrite({ table: "coupons", op: "delete", match: { id } });
+    if (!result.ok) { flash("Erro: " + result.error); return; }
     flash("Cupom excluído!");
     await load();
   };

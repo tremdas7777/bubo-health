@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { adminWrite } from '@/lib/adminApi';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -27,8 +28,20 @@ export default function AdminFrete() {
 
   async function handleSave() {
     if (!config) return; setSaving(true);
-    const { error } = await supabase.from('shipping_config').update({ free_shipping_enabled: config.free_shipping_enabled, free_shipping_min_cents: config.free_shipping_min_cents, flat_rate_enabled: config.flat_rate_enabled, flat_rate_cents: config.flat_rate_cents, shipping_options: config.shipping_options as any }).eq('id', config.id);
-    setMessage(error ? '❌ Erro ao salvar configuração' : '✅ Configuração de frete salva com sucesso!');
+    const result = await adminWrite({
+      table: 'shipping_config',
+      op: 'update',
+      payload: {
+        free_shipping_enabled: config.free_shipping_enabled,
+        free_shipping_min_cents: config.free_shipping_min_cents,
+        flat_rate_enabled: config.flat_rate_enabled,
+        flat_rate_cents: config.flat_rate_cents,
+        shipping_options: config.shipping_options as any,
+        updated_at: new Date().toISOString(),
+      },
+      match: { id: config.id },
+    });
+    setMessage(!result.ok ? `❌ Erro ao salvar: ${result.error}` : '✅ Configuração de frete salva com sucesso!');
     setSaving(false); setTimeout(() => setMessage(''), 4000);
   }
 
