@@ -703,5 +703,17 @@
     "relatedProducts": "Related Products",
     "kitLabel2for3": "🎁 BUY 2, GET 3 — Choose the colors and sizes of your 3 shirts",
     "kitLabel5polos": "🎁 KIT OF 5 POLOS — Choose the color and size of each of the 5 shirts"
+  },
+  "bundle": {
+    "units_one": "{{count}} unit",
+    "units_other": "{{count}} units",
+    "buyGet": "Buy {{buy}}, Get {{get}}",
+    "kitOf": "Kit of {{count}}",
+    "savePercent": "Save {{percent}}%",
+    "bestSeller": "Best Seller",
+    "bestDeal": "Best Deal",
+    "mostPopular": "Most Popular",
+    "free": "Free",
+    "offer": "Special Offer"
   }
 }
