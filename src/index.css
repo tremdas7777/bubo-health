@@ -110,3 +110,20 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* react-phone-number-input theming */
+.phone-input-wrapper .PhoneInput { width: 100%; }
+.phone-input-wrapper .PhoneInputCountry { margin-right: 0.5rem; }
+.phone-input-wrapper .PhoneInputInput {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+}
+.phone-input-wrapper .PhoneInputInput::placeholder { color: hsl(var(--muted-foreground)); }
+.phone-input-wrapper .PhoneInputCountrySelectArrow {
+  border-color: hsl(var(--muted-foreground));
+  opacity: 0.7;
+}
