@@ -86,6 +86,7 @@ function ProductRatingSummary({ productId }: { productId: string }) {
 }
 
 export default function ProductDetailPage() {
+  const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const { data: products = [], isLoading } = useDbProducts();
   const product = products.find((p) => p.slug === slug);
@@ -95,9 +96,9 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   // Kits: cliente escolhe cor + tamanho de cada peça do kit
-  const KIT_CONFIG: Record<string, { size: number; label: string }> = {
-    "polo-ducatti-antitranspirante": { size: 3, label: "🎁 COMPRE 2, LEVE 3 — Escolha as cores e tamanhos das suas 3 camisas" },
-    "camisa-polo-premium": { size: 5, label: "🎁 KIT COM 5 POLOS — Escolha a cor e o tamanho de cada uma das 5 camisas" },
+  const KIT_CONFIG: Record<string, { size: number; labelKey: string }> = {
+    "polo-ducatti-antitranspirante": { size: 3, labelKey: "productPage.kitLabel2for3" },
+    "camisa-polo-premium": { size: 5, labelKey: "productPage.kitLabel5polos" },
   };
   const kitConfig = product ? KIT_CONFIG[product.slug] : undefined;
   const isKitProduct = !!kitConfig;
