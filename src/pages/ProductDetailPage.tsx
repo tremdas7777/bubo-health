@@ -13,9 +13,10 @@ import ProductCard from "@/components/store/ProductCard";
 import ProductReviews from "@/components/store/ProductReviews";
 import ProductFAQ from "@/components/store/ProductFAQ";
 import SizeGuideDialog from "@/components/store/SizeGuideDialog";
-import { formatPrice, getInstallmentPrice, getDiscountPercent } from "@/data/store";
+import { formatPrice as formatBRL, getInstallmentPrice, getDiscountPercent } from "@/data/store";
 import { getPixPrice, getPixSavings, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
 import { useCart } from "@/contexts/CartContext";
+import { useLocalization } from "@/contexts/LocalizationContext";
 import { trackEvent } from "@/lib/funnelTracking";
 import { Button } from "@/components/ui/button";
 import ProductJsonLd from "@/components/seo/ProductJsonLd";
@@ -90,10 +91,12 @@ export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: products = [], isLoading } = useDbProducts();
   const product = products.find((p) => p.slug === slug);
+  const { formatPrice: fmt } = useLocalization();
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedBundle, setSelectedBundle] = useState<number>(0);
 
   // Kits: cliente escolhe cor + tamanho de cada peça do kit
   const KIT_CONFIG: Record<string, { size: number; labelKey: string }> = {
@@ -142,8 +145,16 @@ export default function ProductDetailPage() {
     );
   }
 
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
-  const pixPrice = getPixPrice(product.price);
+  // Bundle-aware pricing — when product has bundles, use selected bundle's price
+  const activeBundle = product.bundles && product.bundles.length > 0 ? product.bundles[selectedBundle] : null;
+  const activePrice = activeBundle ? activeBundle.priceCents / 100 : product.price;
+  const activeCompareAt = activeBundle?.originalPriceCents
+    ? activeBundle.originalPriceCents / 100
+    : product.compareAtPrice;
+  const hasDiscount = activeCompareAt && activeCompareAt > activePrice;
+  const pixPrice = getPixPrice(activePrice);
+  // Currency-aware formatter — accepts decimal units (e.g. 31.00) and shows in active currency
+  const formatPrice = (decimal: number) => fmt(Math.round(decimal * 100));
   const relatedProducts = filterByCategory(products, product.category).filter((p) => p.id !== product.id).slice(0, 4);
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
   const bullets = productBulletPoints[product.slug];
@@ -212,13 +223,23 @@ export default function ProductDetailPage() {
     return true;
   };
 
+  // Build a product snapshot reflecting the active bundle (price + name suffix)
+  const productForCart = activeBundle
+    ? {
+        ...product,
+        price: activeBundle.priceCents / 100,
+        compareAtPrice: activeBundle.originalPriceCents ? activeBundle.originalPriceCents / 100 : product.compareAtPrice,
+        name: activeBundle.qty > 1 ? `${product.name} (${activeBundle.qty}x)` : product.name,
+      }
+    : product;
+
   const handleAddToCart = () => {
     if (isKitProduct) {
       if (!validateKit()) return;
       addItem(product, 1, kitSelections.map((s) => ({ color: s.color!, size: s.size! })));
       return;
     }
-    addItem(product, quantity);
+    addItem(productForCart, quantity);
   };
 
   const handleBuyNow = () => {
@@ -228,7 +249,7 @@ export default function ProductDetailPage() {
       navigate("/checkout");
       return;
     }
-    addItem(product, quantity);
+    addItem(productForCart, quantity);
     navigate("/checkout");
   };
 
@@ -270,17 +291,71 @@ export default function ProductDetailPage() {
             <ProductRatingSummary productId={product.id} />
 
             <div className="space-y-1 text-center lg:text-left">
-              {hasDiscount && <p className="text-sm text-muted-foreground line-through">{formatPrice(product.compareAtPrice!)}</p>}
+              {hasDiscount && <p className="text-sm text-muted-foreground line-through">{formatPrice(activeCompareAt!)}</p>}
               <div className="flex items-center justify-center gap-3 lg:justify-start">
-                <span className="text-2xl font-bold text-primary">{formatPrice(product.price)}</span>
+                <span className="text-2xl font-bold text-primary">{formatPrice(activePrice)}</span>
                 {hasDiscount && (
                   <span className="flex items-center gap-1 rounded bg-lime px-2 py-1 text-xs font-bold text-foreground">
-                    ↓ {getDiscountPercent(product.price, product.compareAtPrice!)}%
+                    ↓ {getDiscountPercent(activePrice, activeCompareAt!)}%
                   </span>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground">{t("productPage.installmentsIn", { count: 6, value: getInstallmentPrice(product.price, 6) })}</p>
+              {activeBundle && activeBundle.perUnitCents && (
+                <p className="text-xs text-muted-foreground">
+                  {formatPrice(activeBundle.perUnitCents / 100)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
+                </p>
+              )}
+              <p className="text-sm text-muted-foreground">{t("productPage.installmentsIn", { count: 6, value: formatPrice(activePrice / 6) })}</p>
             </div>
+
+            {/* Bundle selector (1 / 2 / 3 unidades) */}
+            {product.bundles && product.bundles.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium">{t("productPage.chooseBundle", { defaultValue: "Escolha sua oferta" })}</p>
+                <div className="grid gap-2">
+                  {product.bundles.map((b, idx) => {
+                    const isSelected = selectedBundle === idx;
+                    const perUnit = b.perUnitCents ?? b.priceCents / b.qty;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setSelectedBundle(idx)}
+                        className={`flex items-center justify-between gap-3 rounded-xl border-2 p-3 text-left transition-all ${
+                          isSelected
+                            ? "border-primary bg-primary/5 shadow-sm"
+                            : "border-border hover:border-primary/40"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
+                              isSelected ? "border-primary bg-primary" : "border-border"
+                            }`}
+                          >
+                            {isSelected && <CheckCircle2 size={12} className="text-primary-foreground" />}
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-foreground">{b.label}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {formatPrice(perUnit / 100)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-bold text-primary">{formatPrice(b.priceCents / 100)}</p>
+                          {b.badge && (
+                            <span className="inline-block rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">
+                              {b.badge}
+                            </span>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* KIT mode: Compre 2 Leve 3 — 3 separate (color + size) selections */}
             {isKitProduct && product.colors && product.sizes && (
