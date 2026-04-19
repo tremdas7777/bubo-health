@@ -492,12 +492,39 @@
       "wpTemplate": "*Contact via Site*\n\n*Name:* {{name}}\n*Email:* {{email}}\n*Subject:* {{subject}}\n\n*Message:*\n{{message}}",
       "noSubject": "No subject"
     },
-    "products": { "title": "All products" },
-    "trackOrder": { "title": "Track your order" },
+    "products": {
+      "title": "All products"
+    },
+    "trackOrder": {
+      "title": "Track your order"
+    },
     "notFound": {
       "title": "Page not found",
       "subtitle": "The page you're looking for doesn't exist.",
       "backHome": "Back to home"
+    }
+  },
+  "hero": {
+    "tech": {
+      "eyebrow": "New Collection",
+      "title": "Smart tech for everyday life",
+      "subtitle": "Smartwatches, earbuds and gadgets that make every moment easier.",
+      "cta": "Shop electronics",
+      "alt": "Premium tech gadgets on gradient background"
+    },
+    "sports": {
+      "eyebrow": "Move Better",
+      "title": "Gear up. Push limits.",
+      "subtitle": "Sports & fitness equipment built for performance.",
+      "cta": "Shop sports",
+      "alt": "Sports equipment on dynamic gradient"
+    },
+    "beauty": {
+      "eyebrow": "Self Care",
+      "title": "Beauty meets home elegance",
+      "subtitle": "Discover beauty essentials and pieces that elevate your space.",
+      "cta": "Shop beauty",
+      "alt": "Beauty and home decor on marble"
     }
   }
 }
