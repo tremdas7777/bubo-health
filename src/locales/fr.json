@@ -703,5 +703,17 @@
     "relatedProducts": "Produits Similaires",
     "kitLabel2for3": "🎁 ACHETEZ 2, OBTENEZ 3 — Choisissez les couleurs et tailles de vos 3 chemises",
     "kitLabel5polos": "🎁 KIT DE 5 POLOS — Choisissez la couleur et la taille de chacune des 5 chemises"
+  },
+  "bundle": {
+    "units_one": "{{count}} unité",
+    "units_other": "{{count}} unités",
+    "buyGet": "Achetez {{buy}}, Obtenez {{get}}",
+    "kitOf": "Kit de {{count}}",
+    "savePercent": "Économisez {{percent}}%",
+    "bestSeller": "Meilleure Vente",
+    "bestDeal": "Meilleure Offre",
+    "mostPopular": "Plus Populaire",
+    "free": "Gratuit",
+    "offer": "Offre Spéciale"
   }
 }

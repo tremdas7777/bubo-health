@@ -703,5 +703,17 @@
     "relatedProducts": "Produtos Relacionados",
     "kitLabel2for3": "🎁 COMPRE 2, LEVE 3 — Escolha as cores e tamanhos das suas 3 camisas",
     "kitLabel5polos": "🎁 KIT COM 5 POLOS — Escolha a cor e o tamanho de cada uma das 5 camisas"
+  },
+  "bundle": {
+    "units_one": "{{count}} unidade",
+    "units_other": "{{count}} unidades",
+    "buyGet": "Compre {{buy}}, Leve {{get}}",
+    "kitOf": "Kit com {{count}}",
+    "savePercent": "Economize {{percent}}%",
+    "bestSeller": "Mais Vendido",
+    "bestDeal": "Melhor Oferta",
+    "mostPopular": "Mais Popular",
+    "free": "Grátis",
+    "offer": "Oferta Especial"
   }
 }
