@@ -116,7 +116,7 @@ export default function CheckoutPage() {
   const [loadingCep, setLoadingCep] = useState(false);
 
   // Payment
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [cardEnabled, setCardEnabled] = useState(false);
   const [activeGateway, setActiveGateway] = useState<string>("stripe");
   const [pixCode, setPixCode] = useState("");
@@ -180,7 +180,8 @@ export default function CheckoutPage() {
       setActiveGateway(cfg.activeGateway);
       const methods = cfg.paymentMethods[cfg.activeGateway] || cfg.paymentMethods.default || "card";
       setCardEnabled(methods === "card" || methods === "pix_card");
-      if (cfg.activeGateway === "stripe" || methods === "card") setPaymentMethod("card");
+      // International store — always force card payment (no PIX)
+      setPaymentMethod("card");
     });
   }, []);
 
@@ -921,44 +922,7 @@ export default function CheckoutPage() {
                   <button onClick={() => setStep("shipping")} className="text-xs text-primary hover:underline">Editar entrega</button>
                 </div>
 
-                {/* Payment method selector — hidden when Stripe is the active gateway (card only) */}
-                {activeGateway !== "stripe" && cardEnabled && (
-                  <div className="space-y-2">
-                    <label className="text-xs font-semibold text-muted-foreground block">Forma de pagamento</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        onClick={() => setPaymentMethod("pix")}
-                        className={`flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-bold transition-all ${
-                          paymentMethod === "pix"
-                            ? "border-emerald-500 bg-emerald-500/5 text-emerald-600"
-                            : "border-border text-muted-foreground hover:border-muted-foreground/40"
-                        }`}
-                      >
-                        <Tag size={16} /> PIX
-                      </button>
-                      <button
-                        onClick={() => setPaymentMethod("card")}
-                        className={`flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-bold transition-all ${
-                          paymentMethod === "card"
-                            ? "border-primary bg-primary/5 text-primary"
-                            : "border-border text-muted-foreground hover:border-muted-foreground/40"
-                        }`}
-                      >
-                        <CreditCard size={16} /> Cartão
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* PIX benefit highlight */}
-                {isPix && (
-                  <div className="bg-emerald-500/10 rounded-lg p-3 flex items-center gap-2">
-                    <Tag size={14} className="text-emerald-600" />
-                    <span className="text-xs font-medium text-emerald-700">
-                      Você economiza <strong>{formatPrice(subtotal * PIX_DISCOUNT_RATE)}</strong> pagando via PIX!
-                    </span>
-                  </div>
-                )}
+                {/* PIX selector hidden — international store, card only */}
 
 
 
@@ -968,9 +932,7 @@ export default function CheckoutPage() {
                 {/* Summary */}
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatPrice(subtotal)}</span></div>
-                  {isPix && (
-                    <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
-                  )}
+                  {/* PIX discount line removed — international store */}
                   <div className="flex justify-between"><span className="text-muted-foreground">Frete ({selectedShippingOption?.name})</span><span>{shippingCost === 0 ? "Grátis" : formatPrice(shippingCost / 100)}</span></div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
                     <span>Total</span>
