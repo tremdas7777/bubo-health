@@ -137,7 +137,16 @@ const INITIAL_GATEWAY_CONFIG: PaymentGatewayConfig = {
   simpayout: { clientId: "", clientSecret: "", enabled: false },
   beehive: { publicKey: "", secretKey: "", enabled: false },
   pagamentosmp: { publicKey: "", secretKey: "", enabled: false },
-  stripe: { publishableKey: "", secretKey: "", webhookSecret: "", enabled: false },
+  stripe: {
+    publishableKey: "",
+    secretKey: "",
+    webhookSecret: "",
+    testPublishableKey: "",
+    testSecretKey: "",
+    testWebhookSecret: "",
+    mode: "live",
+    enabled: false,
+  },
 };
 
 const SUCCESS_HINTS = ["sucesso", "enviado", "ativado", "ok", "válido", "salva", "aprovado", "funcionando"];

@@ -128,7 +128,11 @@ export async function fetchPaymentGatewayConfig(): Promise<PaymentGatewayConfig>
         publishableKey: d.stripe_publishable_key || '',
         secretKey: '',
         webhookSecret: '',
-        enabled: !!(d.stripe_publishable_key),
+        testPublishableKey: d.stripe_test_publishable_key || '',
+        testSecretKey: '',
+        testWebhookSecret: '',
+        mode: (d.stripe_mode === 'test' ? 'test' : 'live'),
+        enabled: !!(d.stripe_publishable_key || d.stripe_test_publishable_key),
       },
     };
     cachedConfig = config;
@@ -161,7 +165,11 @@ export async function fetchFullGatewayConfig(password: string): Promise<PaymentG
         publishableKey: d.stripe_publishable_key || '',
         secretKey: d.stripe_secret_key || '',
         webhookSecret: d.stripe_webhook_secret || '',
-        enabled: !!(d.stripe_publishable_key && d.stripe_secret_key),
+        testPublishableKey: d.stripe_test_publishable_key || '',
+        testSecretKey: d.stripe_test_secret_key || '',
+        testWebhookSecret: d.stripe_test_webhook_secret || '',
+        mode: (d.stripe_mode === 'test' ? 'test' : 'live'),
+        enabled: !!((d.stripe_mode === 'test' ? d.stripe_test_secret_key : d.stripe_secret_key)),
       },
     };
     cachedConfig = config;
