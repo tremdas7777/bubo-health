@@ -25,26 +25,26 @@ export function saveUtmifyConfig(config: UtmifyConfig): void {
 
 export async function syncUtmifyConfigToDb(config: UtmifyConfig): Promise<void> {
   try {
-    const { data: existing } = await supabase
-      .from("gateway_config")
-      .select("id")
-      .order("updated_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    if (existing?.id) {
-      await supabase
-        .from("gateway_config")
-        .update({
-          utmify_api_token: config.apiToken || "",
-          utmify_api_token_2: config.apiToken2 || "",
-        })
-        .eq("id", existing.id);
-    } else {
-      await supabase.from("gateway_config").insert({
-        utmify_api_token: config.apiToken || "",
-        utmify_api_token_2: config.apiToken2 || "",
-      });
+    // gateway_config é gravado via edge function dedicada (save-gateway-config) com senha admin.
+    // Buscamos a config atual via read-gateway-config para preservar os outros campos.
+    const { getAdminPassword } = await import("@/lib/paymentGateway");
+    const password = getAdminPassword();
+    if (!password) {
+      console.warn("[Utmify] Sessão admin ausente — tokens salvos apenas em localStorage.");
+      return;
     }
+    const { data: current } = await supabase.functions.invoke("read-gateway-config", {
+      body: { password },
+    });
+    const base = (current as any)?.config || {};
+    const payload = {
+      ...base,
+      utmify_api_token: config.apiToken || "",
+      utmify_api_token_2: config.apiToken2 || "",
+    };
+    await supabase.functions.invoke("save-gateway-config", {
+      body: { password, config: payload },
+    });
   } catch (e) {
     console.error("Falha ao sincronizar tokens Utmify com o backend", e);
   }
