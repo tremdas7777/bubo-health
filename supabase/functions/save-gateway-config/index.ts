@@ -33,8 +33,20 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    const allowedGateways = [
+      "pagouai",
+      "vennox",
+      "centurionpay",
+      "ironpay",
+      "simpayout",
+      "beehive",
+      "pagamentosmp",
+      "stripe",
+    ];
+    const activeGateway = allowedGateways.includes(config.activeGateway) ? config.activeGateway : "stripe";
+
     const updateData: Record<string, unknown> = {
-      active_gateway: "beehive",
+      active_gateway: activeGateway,
       payment_methods: config.paymentMethods || {},
       pagouai_public_key: config.pagouai?.publicKey || "",
       pagouai_secret_key: config.pagouai?.secretKey || "",
@@ -49,6 +61,9 @@ serve(async (req) => {
       beehive_secret_key: config.beehive?.secretKey || "",
       pagamentosmp_public_key: config.pagamentosmp?.publicKey || "",
       pagamentosmp_secret_key: config.pagamentosmp?.secretKey || "",
+      stripe_publishable_key: config.stripe?.publishableKey || "",
+      stripe_secret_key: config.stripe?.secretKey || "",
+      stripe_webhook_secret: config.stripe?.webhookSecret || "",
       updated_at: new Date().toISOString(),
     };
 
