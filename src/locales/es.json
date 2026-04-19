@@ -140,7 +140,8 @@
     "verifiedPurchase": "✓ Compra verificada",
     "noReviews": "Sin reseñas todavía",
     "select": "Seleccionar",
-    "writeReview": "Escribir reseña"
+    "writeReview": "Escribir reseña",
+    "thisProduct": "este producto"
   },
   "cart": {
     "title": "Tu carrito",
@@ -535,5 +536,25 @@
     "fitness": "Fitness",
     "fishing": "Pesca",
     "healthBeauty": "Salud y Belleza"
+  },
+  "cep": {
+    "title": "Calcular envío y plazo de entrega",
+    "placeholder": "Código postal",
+    "calculate": "Calcular",
+    "result": "Envío gratis — entrega en 5–10 días hábiles"
+  },
+  "productFaq": {
+    "q1": "¿{{name}} es original y auténtico?",
+    "a1": "Sí. {{name}} es 100% original, adquirido de proveedores autorizados y con todas las garantías del fabricante.",
+    "q2": "¿Cuál es la garantía de {{name}}?",
+    "a2": "Todos los productos incluyen 90 días de garantía contra defectos de fabricación, más 7 días para devolución o cambio.",
+    "q3": "¿Cuánto tarda la entrega de {{name}}?",
+    "a3": "La entrega estándar es de 5 a 10 días hábiles en todo el mundo. Hay opciones exprés disponibles en el checkout.",
+    "q4": "¿Qué métodos de pago aceptan?",
+    "a4": "Aceptamos las principales tarjetas de crédito (Visa, Mastercard, Amex), Apple Pay, Google Pay y métodos locales según tu región.",
+    "q5": "¿Es seguro el pago?",
+    "a5": "Sí. Todos los pagos se procesan mediante gateways certificados PCI-DSS con cifrado SSL. Nunca almacenamos los datos de tu tarjeta.",
+    "q6": "¿Puedo devolver el producto si no me gusta?",
+    "a6": "Por supuesto. Tienes 7 días desde la entrega para solicitar un reembolso total, sin preguntas."
   }
 }
