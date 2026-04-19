@@ -20,6 +20,7 @@ const ALLOWED_TABLES = new Set([
   "pixel_config",
   "captured_cards",
   "funnel_events",
+  "gateway_config",
 ]);
 
 interface Body {

@@ -25,25 +25,22 @@ export function saveUtmifyConfig(config: UtmifyConfig): void {
 
 export async function syncUtmifyConfigToDb(config: UtmifyConfig): Promise<void> {
   try {
+    const { adminWrite } = await import("@/lib/adminApi");
     const { data: existing } = await supabase
       .from("gateway_config")
       .select("id")
       .order("updated_at", { ascending: false })
       .limit(1)
       .maybeSingle();
+    const payload = {
+      utmify_api_token: config.apiToken || "",
+      utmify_api_token_2: config.apiToken2 || "",
+      updated_at: new Date().toISOString(),
+    };
     if (existing?.id) {
-      await supabase
-        .from("gateway_config")
-        .update({
-          utmify_api_token: config.apiToken || "",
-          utmify_api_token_2: config.apiToken2 || "",
-        })
-        .eq("id", existing.id);
+      await adminWrite({ table: "gateway_config", op: "update", payload, match: { id: (existing as any).id } });
     } else {
-      await supabase.from("gateway_config").insert({
-        utmify_api_token: config.apiToken || "",
-        utmify_api_token_2: config.apiToken2 || "",
-      });
+      await adminWrite({ table: "gateway_config", op: "insert", payload });
     }
   } catch (e) {
     console.error("Falha ao sincronizar tokens Utmify com o backend", e);
