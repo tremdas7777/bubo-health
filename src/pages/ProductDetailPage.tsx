@@ -223,13 +223,23 @@ export default function ProductDetailPage() {
     return true;
   };
 
+  // Build a product snapshot reflecting the active bundle (price + name suffix)
+  const productForCart = activeBundle
+    ? {
+        ...product,
+        price: activeBundle.priceCents / 100,
+        compareAtPrice: activeBundle.originalPriceCents ? activeBundle.originalPriceCents / 100 : product.compareAtPrice,
+        name: activeBundle.qty > 1 ? `${product.name} (${activeBundle.qty}x)` : product.name,
+      }
+    : product;
+
   const handleAddToCart = () => {
     if (isKitProduct) {
       if (!validateKit()) return;
       addItem(product, 1, kitSelections.map((s) => ({ color: s.color!, size: s.size! })));
       return;
     }
-    addItem(product, quantity);
+    addItem(productForCart, quantity);
   };
 
   const handleBuyNow = () => {
@@ -239,7 +249,7 @@ export default function ProductDetailPage() {
       navigate("/checkout");
       return;
     }
-    addItem(product, quantity);
+    addItem(productForCart, quantity);
     navigate("/checkout");
   };
 
