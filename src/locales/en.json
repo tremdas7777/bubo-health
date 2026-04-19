@@ -237,7 +237,9 @@
     "stepShippedDesc": "You'll receive tracking info by email",
     "stepDelivered": "Delivered",
     "stepDeliveredDesc": "Product delivered at your address",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "emailHighlightTitle": "Check your email 📧",
+    "emailHighlightDesc": "We've sent the order confirmation, invoice and tracking code to your registered email. Please also check your spam folder."
   },
   "auth": {
     "signInTitle": "Sign in to your account",

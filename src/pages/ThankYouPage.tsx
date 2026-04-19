@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { CheckCircle, Package, Truck, Home, ShoppingBag, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/store/Layout";
@@ -7,6 +8,7 @@ import { useCart } from "@/contexts/CartContext";
 import PageHead from "@/components/seo/PageHead";
 
 export default function ThankYouPage() {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get("pedido") || searchParams.get("order") || "";
   const { clearCart } = useCart();
@@ -15,9 +17,16 @@ export default function ThankYouPage() {
     clearCart();
   }, [clearCart]);
 
+  const steps = [
+    { icon: CheckCircle, label: t("thankYou.stepPaymentDone"), desc: t("thankYou.stepPaymentDoneDesc"), done: true },
+    { icon: Package, label: t("thankYou.stepPreparing"), desc: t("thankYou.stepPreparingDesc"), done: false },
+    { icon: Truck, label: t("thankYou.stepShipped"), desc: t("thankYou.stepShippedDesc"), done: false },
+    { icon: Home, label: t("thankYou.stepDelivered"), desc: t("thankYou.stepDeliveredDesc"), done: false },
+  ];
+
   return (
     <Layout>
-      <PageHead title="Pedido Confirmado" description="Seu pedido foi confirmado com sucesso." />
+      <PageHead title={t("thankYou.paymentConfirmed")} description={t("thankYou.thanksMessage")} />
       <div className="min-h-[70vh] flex items-center justify-center py-12 px-4">
         <div className="max-w-lg w-full text-center space-y-6">
           <div className="relative mx-auto w-24 h-24">
@@ -29,24 +38,22 @@ export default function ThankYouPage() {
 
           <div className="space-y-2">
             <h1 className="text-2xl sm:text-3xl font-heading font-bold text-foreground">
-              Pedido confirmado! 🎉
+              {t("thankYou.paymentConfirmed")} 🎉
             </h1>
             <p className="text-muted-foreground text-sm">
-              Obrigado pela sua compra. Seu pedido foi recebido com sucesso.
+              {t("thankYou.thanksMessage")}
             </p>
           </div>
 
-          {/* Email highlight */}
           <div className="bg-primary/5 border-2 border-primary/20 rounded-xl p-5 text-left">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Mail size={20} className="text-primary" />
               </div>
               <div>
-                <p className="text-sm font-bold text-foreground mb-1">Confira seu email 📧</p>
+                <p className="text-sm font-bold text-foreground mb-1">{t("thankYou.emailHighlightTitle")}</p>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Enviamos a confirmação do pedido, a nota fiscal e o código de rastreamento para o email cadastrado.
-                  Verifique também sua caixa de spam.
+                  {t("thankYou.emailHighlightDesc")}
                 </p>
               </div>
             </div>
@@ -54,20 +61,15 @@ export default function ThankYouPage() {
 
           {orderId && (
             <div className="bg-muted/50 rounded-xl border border-border p-4">
-              <p className="text-xs text-muted-foreground mb-1">Número do pedido</p>
+              <p className="text-xs text-muted-foreground mb-1">{t("thankYou.orderNumber")}</p>
               <p className="font-mono text-sm font-bold text-foreground">{orderId.slice(0, 8).toUpperCase()}</p>
             </div>
           )}
 
           <div className="bg-background rounded-xl border border-border p-5 text-left space-y-4">
-            <h2 className="text-sm font-heading font-bold text-foreground">Próximos passos</h2>
+            <h2 className="text-sm font-heading font-bold text-foreground">{t("thankYou.nextSteps")}</h2>
             <div className="space-y-3">
-              {[
-                { icon: CheckCircle, label: "Pagamento aprovado", desc: "Recebemos seu pagamento com sucesso", done: true },
-                { icon: Package, label: "Preparando pedido", desc: "Estamos separando seus produtos", done: false },
-                { icon: Truck, label: "Enviado", desc: "Você receberá o código de rastreamento por email", done: false },
-                { icon: Home, label: "Entregue", desc: "Produto entregue no seu endereço", done: false },
-              ].map((step, i) => (
+              {steps.map((step, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                     step.done ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
@@ -87,11 +89,11 @@ export default function ThankYouPage() {
             <Button asChild className="bg-primary hover:bg-primary/90">
               <Link to="/produtos">
                 <ShoppingBag size={16} className="mr-2" />
-                Continuar comprando
+                {t("thankYou.continueShopping")}
               </Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to="/">Voltar para o início</Link>
+              <Link to="/">{t("thankYou.backHome")}</Link>
             </Button>
           </div>
         </div>

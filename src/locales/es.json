@@ -237,7 +237,9 @@
     "stepShippedDesc": "Recibirás el rastreo por correo",
     "stepDelivered": "Entregado",
     "stepDeliveredDesc": "Producto entregado en tu dirección",
-    "backHome": "Volver al inicio"
+    "backHome": "Volver al inicio",
+    "emailHighlightTitle": "Revisa tu correo 📧",
+    "emailHighlightDesc": "Te enviamos la confirmación del pedido, la factura y el código de seguimiento al correo registrado. Revisa también tu carpeta de spam."
   },
   "auth": {
     "signInTitle": "Entra en tu cuenta",
