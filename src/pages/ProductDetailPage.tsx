@@ -125,7 +125,7 @@ export default function ProductDetailPage() {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-20 text-center">
-          <p className="text-muted-foreground">Carregando produto...</p>
+          <p className="text-muted-foreground">{t("productPage.loading")}</p>
         </div>
       </Layout>
     );
@@ -135,8 +135,8 @@ export default function ProductDetailPage() {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-20 text-center">
-          <h1 className="mb-4 text-2xl font-heading font-bold">Produto não encontrado</h1>
-          <Link to="/produtos" className="text-primary hover:underline">Ver todos os produtos</Link>
+          <h1 className="mb-4 text-2xl font-heading font-bold">{t("productPage.notFound")}</h1>
+          <Link to="/produtos" className="text-primary hover:underline">{t("productPage.viewAllProducts")}</Link>
         </div>
       </Layout>
     );
@@ -202,8 +202,8 @@ export default function ProductDetailPage() {
     const incompleteIdx = kitSelections.findIndex((s) => !s.color || !s.size);
     if (incompleteIdx !== -1) {
       toast({
-        title: `Complete a Camisa ${incompleteIdx + 1}`,
-        description: `Selecione cor e tamanho de todas as ${KIT_SIZE} camisas para continuar.`,
+        title: t("productPage.kitCompleteShirt", { n: incompleteIdx + 1 }),
+        description: t("productPage.kitCompleteDesc", { count: KIT_SIZE }),
         variant: "destructive",
       });
       setActiveKitSlot(incompleteIdx);
@@ -243,15 +243,15 @@ export default function ProductDetailPage() {
       <ProductJsonLd product={product} url={productUrl} />
       <BreadcrumbJsonLd
         items={[
-          { name: "Início", url: window.location.origin },
-          { name: "Produtos", url: `${window.location.origin}/produtos` },
+          { name: t("productPage.breadcrumbHome"), url: window.location.origin },
+          { name: t("productPage.breadcrumbProducts"), url: `${window.location.origin}/produtos` },
           { name: product.name, url: productUrl },
         ]}
       />
       <div className="container mx-auto px-4 py-6">
         <Breadcrumbs
           items={[
-            { label: "Produtos", href: "/produtos" },
+            { label: t("productPage.breadcrumbProducts"), href: "/produtos" },
             { label: product.name },
           ]}
         />
@@ -279,7 +279,7 @@ export default function ProductDetailPage() {
                   </span>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground">em até 6x de {getInstallmentPrice(product.price, 6)}</p>
+              <p className="text-sm text-muted-foreground">{t("productPage.installmentsIn", { count: 6, value: getInstallmentPrice(product.price, 6) })}</p>
             </div>
 
             {/* KIT mode: Compre 2 Leve 3 — 3 separate (color + size) selections */}
