@@ -110,7 +110,7 @@ export default function CheckoutPage() {
   const [cardHolder, setCardHolder] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
-  const [installments, setInstallments] = useState(1);
+  const installments = 1; // installments removed — pay in full only
 
   // Live checkout tracking
   const [draftOrderId, setDraftOrderId] = useState<string>("");
