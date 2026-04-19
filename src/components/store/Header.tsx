@@ -8,8 +8,11 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import logoIcon from "@/assets/logo-icon.png";
 import SearchOverlay from "./SearchOverlay";
+import LanguageCurrencySwitcher from "./LanguageCurrencySwitcher";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
+  const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const { totalItems, setIsOpen } = useCart();
@@ -44,11 +47,12 @@ export default function Header() {
           </Link>
 
           {/* Right: account + cart */}
-          <div className="flex items-center gap-3 w-[100px] justify-end">
+          <div className="flex items-center gap-3 w-[140px] justify-end">
+            <LanguageCurrencySwitcher />
             <button
               onClick={toggleTheme}
               className="text-foreground hover:text-primary transition-colors"
-              aria-label="Alternar tema"
+              aria-label={t("nav.toggleTheme")}
             >
               {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
             </button>

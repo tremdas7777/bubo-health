@@ -8,6 +8,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { LocalizationProvider } from "@/contexts/LocalizationContext";
 import { captureCampaignParams } from "@/lib/campaignParams";
 import { trackEvent } from "@/lib/funnelTracking";
 import { injectPixels, loadPixelConfigFromDb } from "@/lib/pixelManager";
@@ -56,6 +57,7 @@ const App = () => {
       <ThemeProvider>
         <TooltipProvider>
           <AuthProvider>
+            <LocalizationProvider>
             <CartProvider>
               <WishlistProvider>
               <Toaster />
@@ -87,6 +89,7 @@ const App = () => {
               </BrowserRouter>
               </WishlistProvider>
             </CartProvider>
+            </LocalizationProvider>
           </AuthProvider>
         </TooltipProvider>
       </ThemeProvider>
