@@ -303,7 +303,7 @@ export default function CheckoutPage() {
       });
 
       const bodyBase: Record<string, unknown> = {
-        amount: getTotalWithInterest(total, installments),
+        amount: total,
         buyerName: name, buyerEmail: email,
         buyerDocument: taxId.replace(/\D/g, "") || "00000000000",
         buyerPhone: phone.replace(/\D/g, ""),
