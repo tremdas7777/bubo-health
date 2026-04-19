@@ -52,6 +52,7 @@ const productBulletPoints: Record<string, { icon: React.ElementType; text: strin
 };
 
 function ProductRatingSummary({ productId }: { productId: string }) {
+  const { t } = useTranslation();
   const [avg, setAvg] = useState(0);
   const [count, setCount] = useState(0);
 
@@ -79,7 +80,7 @@ function ProductRatingSummary({ productId }: { productId: string }) {
         ))}
       </div>
       <span className="text-sm font-medium">{avg.toFixed(1)}</span>
-      <span className="text-xs text-muted-foreground">({count} avaliações)</span>
+      <span className="text-xs text-muted-foreground">{t("productPage.reviewsCount", { count })}</span>
     </div>
   );
 }
