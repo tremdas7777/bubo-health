@@ -653,7 +653,7 @@ export default function CheckoutPage() {
         quantity: i.quantity,
         amount_cents: Math.round(i.product.price * 100),
         product_id: i.product.id || null,
-        image: i.product.image_url || (i.product.images?.[0] ?? null),
+        image: i.product.image || (i.product.images?.[0] ?? null),
       }));
 
       const { data, error } = await supabase.functions.invoke("stripe-checkout", {
