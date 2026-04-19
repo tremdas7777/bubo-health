@@ -64,6 +64,10 @@ serve(async (req) => {
       stripe_publishable_key: config.stripe?.publishableKey || "",
       stripe_secret_key: config.stripe?.secretKey || "",
       stripe_webhook_secret: config.stripe?.webhookSecret || "",
+      stripe_test_publishable_key: config.stripe?.testPublishableKey || "",
+      stripe_test_secret_key: config.stripe?.testSecretKey || "",
+      stripe_test_webhook_secret: config.stripe?.testWebhookSecret || "",
+      stripe_mode: config.stripe?.mode === "test" ? "test" : "live",
       updated_at: new Date().toISOString(),
     };
 
