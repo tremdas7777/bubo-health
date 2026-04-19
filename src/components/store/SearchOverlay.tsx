@@ -94,10 +94,10 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                     <p className="text-xs text-muted-foreground truncate">{product.category}</p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="text-sm font-bold text-primary">{formatPrice(product.price)}</p>
+                    <p className="text-sm font-bold text-primary">{formatPrice(Math.round(product.price * 100))}</p>
                     {product.compareAtPrice && (
                       <p className="text-[10px] text-muted-foreground line-through">
-                        {formatPrice(product.compareAtPrice)}
+                        {formatPrice(Math.round(product.compareAtPrice * 100))}
                       </p>
                     )}
                   </div>

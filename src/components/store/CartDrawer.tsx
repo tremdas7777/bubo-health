@@ -49,7 +49,7 @@ export default function CartDrawer() {
                       </ul>
                     )}
                     <p className="text-primary font-semibold text-sm mt-1">
-                      {formatPrice(product.price)}
+                      {formatPrice(Math.round(product.price * 100))}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <button onClick={() => updateQuantity(lineId, quantity - 1)} className="w-7 h-7 border border-border rounded flex items-center justify-center hover:bg-muted">
