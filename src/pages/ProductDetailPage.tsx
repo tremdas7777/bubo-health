@@ -673,7 +673,7 @@ export default function ProductDetailPage() {
                       <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                         <Icon size={16} className="text-primary" />
                       </div>
-                      <span className="text-sm leading-relaxed text-muted-foreground">{item.text}</span>
+                      <span className="text-sm leading-relaxed text-muted-foreground">{translatedBullets?.[i] ?? item.text}</span>
                     </li>
                   );
                 })}
