@@ -1005,6 +1005,8 @@ export default function CheckoutPage() {
                 )}
 
                 {activeGateway !== "stripe" && isPix && (
+                  <Button
+                    onClick={handleGeneratePix}
                     disabled={generating}
                     className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
                   >
@@ -1016,7 +1018,7 @@ export default function CheckoutPage() {
                   </Button>
                 )}
 
-                {paymentMethod === "card" && (
+                {activeGateway !== "stripe" && paymentMethod === "card" && (
                   <div className="space-y-3">
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1 block">Número do cartão *</label>
