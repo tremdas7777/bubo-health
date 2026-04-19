@@ -542,6 +542,67 @@
     "fishing": "Pesca",
     "healthBeauty": "Saúde e Beleza"
   },
+  "collectionPage": {
+    "filter": "Filtrar:",
+    "availability": "Disponibilidade",
+    "inStock": "Em estoque",
+    "sortBy": "Ordenar por:",
+    "sortDefault": "Em destaque",
+    "sortNameAsc": "Nome, A–Z",
+    "sortPriceAsc": "Preço, menor para maior",
+    "sortPriceDesc": "Preço, maior para menor",
+    "productsCount": "{{count}} produtos",
+    "empty": "Nenhum produto encontrado nesta coleção.",
+    "faqTitle": "Perguntas Frequentes sobre {{name}}",
+    "home": "Início",
+    "fallbackDesc": "Confira os melhores produtos de {{name}} na Kazoom. Frete grátis e checkout seguro.",
+    "descriptions": {
+      "home-kitchen": "Descubra utensílios e acessórios para transformar sua casa. De iluminação inteligente a ferramentas práticas, tudo com frete grátis mundial.",
+      "electronics": "Eletrônicos que fazem a diferença no seu dia a dia. Smartwatches, consoles portáteis, despertadores LED e mais, tudo com garantia de 30 dias.",
+      "sports": "Equipamentos esportivos de alta performance. Raquetes, óculos, capacetes e acessórios para todos os esportes, com frete grátis mundial.",
+      "tools": "Ferramentas profissionais para refrigeração, construção e manutenção. Kits completos com garantia e frete grátis.",
+      "fitness": "Equipamentos de fitness para treinar em casa ou na academia. Faixas, joelheiras, massageadores e mais.",
+      "fishing": "Tudo para pesca esportiva e profissional. Molinetes, linhas e acessórios de alta qualidade com frete grátis.",
+      "health-beauty": "Cosméticos e produtos de beleza selecionados. Maquiagem, cuidados com cabelo e unhas, tudo com frete grátis e garantia."
+    },
+    "faqs": {
+      "home-kitchen": [
+        {"q": "Quais produtos de casa e cozinha a Kazoom oferece?", "a": "Oferecemos utensílios práticos como trituradores, vasos decorativos, despertadores e iluminação inteligente, todos com frete grátis."},
+        {"q": "Os produtos de cozinha têm garantia?", "a": "Sim, todos os produtos têm garantia de 30 dias com devolução sem burocracia."},
+        {"q": "Posso parcelar as compras?", "a": "Sim, você pode dividir o pagamento em várias parcelas no checkout."}
+      ],
+      "electronics": [
+        {"q": "Quais eletrônicos vocês vendem?", "a": "Smartwatches, consoles portáteis, despertadores digitais e lâmpadas inteligentes Wi-Fi."},
+        {"q": "Os eletrônicos possuem nota fiscal?", "a": "Sim, todos os pedidos acompanham nota fiscal eletrônica enviada por e-mail."},
+        {"q": "Qual o prazo de entrega dos eletrônicos?", "a": "Envio expresso mundial em 5–9 dias úteis, grátis."}
+      ],
+      "sports": [
+        {"q": "Que tipo de produtos esportivos a Kazoom tem?", "a": "Temos raquetes de beach tennis, óculos de natação, capacetes de ciclismo, óculos esportivos e muito mais."},
+        {"q": "Os óculos esportivos possuem proteção UV?", "a": "Sim, nossos óculos contam com lentes UV400 para máxima segurança."},
+        {"q": "Vocês oferecem frete grátis para produtos esportivos?", "a": "Sim, todos os produtos têm frete grátis mundial."}
+      ],
+      "tools": [
+        {"q": "O kit de ferramentas para refrigeração é profissional?", "a": "Sim, é um kit completo com bomba de vácuo 7 CFM, 2 manifolds, flangeador, maçarico e mais de 20 ferramentas profissionais."},
+        {"q": "As ferramentas são bivolt?", "a": "Sim, a bomba de vácuo e equipamentos elétricos são bivolt (110/220V)."},
+        {"q": "Qual a garantia das ferramentas?", "a": "Todas as ferramentas possuem garantia de 30 dias. Se não ficar satisfeito, devolvemos seu dinheiro."}
+      ],
+      "fitness": [
+        {"q": "Quais equipamentos de fitness vocês oferecem?", "a": "Joelheiras profissionais, faixas de treino, exercitadores abdominais, massageadores musculares e powerballs."},
+        {"q": "Os produtos de fitness são indicados para iniciantes?", "a": "Sim, nossos produtos atendem desde iniciantes até atletas avançados, com diferentes níveis de resistência."},
+        {"q": "Posso usar os equipamentos em casa?", "a": "Com certeza! Todos os produtos são projetados para uso em casa, academia ou ao ar livre."}
+      ],
+      "fishing": [
+        {"q": "Vocês vendem equipamentos de pesca profissional?", "a": "Sim, temos molinetes de 12 rolamentos, linhas, coletes e kits de alicates profissionais."},
+        {"q": "Os molinetes são de boa qualidade?", "a": "Nossos molinetes possuem 12 rolamentos de aço inoxidável, garantindo operação suave e durabilidade superior."},
+        {"q": "Vocês entregam para o mundo todo?", "a": "Sim, oferecemos frete grátis mundial."}
+      ],
+      "health-beauty": [
+        {"q": "Os cosméticos são seguros?", "a": "Sim, todos os produtos de beleza são testados dermatologicamente e seguem normas internacionais de segurança."},
+        {"q": "Quais produtos de beleza vocês vendem?", "a": "Sombras, delineadores, pentes volumizadores, preenchedores de sobrancelha, esmaltes espelhados e rímel definidor."},
+        {"q": "Como funciona a troca de cosméticos?", "a": "Você tem 30 dias para devolver qualquer produto, sem burocracia. Basta entrar em contato."}
+      ]
+    }
+  },
   "cep": {
     "title": "Calcular frete e prazo de entrega",
     "placeholder": "CEP",
