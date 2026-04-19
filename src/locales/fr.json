@@ -603,6 +603,10 @@
       ]
     }
   },
+  "productReviews": {
+    "basedOn": "Basé sur {{count}} avis vérifiés",
+    "verified": "Achat vérifié"
+  },
   "cep": {
     "title": "Calculer livraison et délai",
     "placeholder": "Code postal",

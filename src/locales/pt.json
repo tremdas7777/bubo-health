@@ -603,6 +603,10 @@
       ]
     }
   },
+  "productReviews": {
+    "basedOn": "Baseado em {{count}} avaliações verificadas",
+    "verified": "Compra verificada"
+  },
   "cep": {
     "title": "Calcular frete e prazo de entrega",
     "placeholder": "CEP",

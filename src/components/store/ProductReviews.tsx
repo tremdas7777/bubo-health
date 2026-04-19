@@ -1,6 +1,8 @@
 import { Star } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
+import { useLocalization } from "@/contexts/LocalizationContext";
 import reviewImg1 from "@/assets/reviews/review-kit-1.webp";
 import reviewImg2 from "@/assets/reviews/review-kit-2.webp";
 import reviewImg3 from "@/assets/reviews/review-kit-3.webp";
@@ -16,71 +18,116 @@ interface Review {
   verified: boolean;
 }
 
-// Hardcoded reviews for kit-ferramentas-refrigeracao (with photos)
+const LOCALE_BY_LANG: Record<string, string> = { en: "en-US", es: "es-ES", pt: "pt-BR", fr: "fr-FR" };
+
 const kitReviews: Review[] = [
-  { name: "Carlos M.", rating: 5, date: "12/03/2025", text: "Kit completo demais! Chegou tudo certinho, ferramentas de boa qualidade. A bomba de vácuo funciona perfeitamente. Recomendo para quem trabalha na área.", image: reviewImg1, verified: true },
-  { name: "Rafael S.", rating: 5, date: "28/02/2025", text: "Manifold excelente, mangueiras de qualidade profissional. Já usei em 3 instalações e tudo funcionando perfeitamente. Melhor custo-benefício que encontrei.", image: reviewImg2, verified: true },
-  { name: "Anderson P.", rating: 5, date: "15/02/2025", text: "Maleta organizadora top, tudo encaixado perfeitamente. Flangeador com rotação 360° faz um acabamento impecável. Vale cada centavo.", image: reviewImg3, verified: true },
-  { name: "Marcos L.", rating: 4, date: "03/02/2025", text: "Ferramentas muito boas para o preço. Bomba de vácuo potente, manifolds bem calibrados. O maçarico é potente e as curvadoras facilitam muito o trabalho.", image: reviewImg4, verified: true },
-  { name: "João V.", rating: 5, date: "20/01/2025", text: "Comprei e não me arrependi! Kit super completo, veio tudo que prometeram. Já estava precisando trocar minhas ferramentas antigas e esse kit resolveu tudo.", image: reviewImg5, verified: true },
-  { name: "Fernando R.", rating: 5, date: "10/01/2025", text: "Entrega rápida e bem embalado. As ferramentas são robustas e de boa qualidade. O flangeador é muito superior ao que eu usava antes. Nota 10!", verified: true },
-  { name: "Diego A.", rating: 5, date: "05/01/2025", text: "Sou técnico há 8 anos e esse kit me surpreendeu. Tudo que preciso no dia a dia está aqui. O multímetro com capacímetro é um diferencial enorme.", verified: true },
-  { name: "Leandro F.", rating: 4, date: "28/12/2024", text: "Kit muito bom, só achei a maleta um pouco pesada, mas é porque vem muita coisa mesmo. Curvadoras e cortador de tubo excelentes.", verified: true },
-  { name: "Thiago B.", rating: 5, date: "20/12/2024", text: "Melhor investimento que fiz para minha oficina. Parei de ficar pedindo ferramenta emprestada. Tudo funcionando perfeitamente após 2 meses de uso intenso.", verified: true },
-  { name: "Roberto C.", rating: 5, date: "15/12/2024", text: "Produto excelente! Fiz 5 instalações de split com esse kit e não tive nenhum problema. A bomba de vácuo é silenciosa e eficiente.", verified: true },
-  { name: "Gustavo N.", rating: 4, date: "10/12/2024", text: "Bom custo-benefício. As mangueiras são de boa qualidade e os manifolds vêm bem calibrados. Recomendo para quem está começando na área.", verified: true },
-  { name: "Paulo H.", rating: 5, date: "01/12/2024", text: "Comprei para meu filho que está fazendo curso de refrigeração. Ele ficou impressionado com a qualidade. Kit profissional de verdade.", verified: true },
-  { name: "Edson M.", rating: 5, date: "25/11/2024", text: "Já é meu segundo kit, comprei outro para um funcionário. Durabilidade excelente, uso diariamente há mais de 6 meses sem problemas.", verified: true },
+  { name: "Carlos M.", rating: 5, date: "2025-03-12", text: "Kit completo demais! Chegou tudo certinho, ferramentas de boa qualidade. A bomba de vácuo funciona perfeitamente. Recomendo para quem trabalha na área.", image: reviewImg1, verified: true },
+  { name: "Rafael S.", rating: 5, date: "2025-02-28", text: "Manifold excelente, mangueiras de qualidade profissional. Já usei em 3 instalações e tudo funcionando perfeitamente. Melhor custo-benefício que encontrei.", image: reviewImg2, verified: true },
+  { name: "Anderson P.", rating: 5, date: "2025-02-15", text: "Maleta organizadora top, tudo encaixado perfeitamente. Flangeador com rotação 360° faz um acabamento impecável. Vale cada centavo.", image: reviewImg3, verified: true },
+  { name: "Marcos L.", rating: 4, date: "2025-02-03", text: "Ferramentas muito boas para o preço. Bomba de vácuo potente, manifolds bem calibrados. O maçarico é potente e as curvadoras facilitam muito o trabalho.", image: reviewImg4, verified: true },
+  { name: "João V.", rating: 5, date: "2025-01-20", text: "Comprei e não me arrependi! Kit super completo, veio tudo que prometeram.", image: reviewImg5, verified: true },
+  { name: "Fernando R.", rating: 5, date: "2025-01-10", text: "Entrega rápida e bem embalado. As ferramentas são robustas e de boa qualidade. O flangeador é muito superior ao que eu usava antes. Nota 10!", verified: true },
+  { name: "Diego A.", rating: 5, date: "2025-01-05", text: "Sou técnico há 8 anos e esse kit me surpreendeu. Tudo que preciso no dia a dia está aqui. O multímetro com capacímetro é um diferencial enorme.", verified: true },
+  { name: "Leandro F.", rating: 4, date: "2024-12-28", text: "Kit muito bom, só achei a maleta um pouco pesada, mas é porque vem muita coisa mesmo. Curvadoras e cortador de tubo excelentes.", verified: true },
+  { name: "Thiago B.", rating: 5, date: "2024-12-20", text: "Melhor investimento que fiz para minha oficina. Parei de ficar pedindo ferramenta emprestada. Tudo funcionando perfeitamente após 2 meses de uso intenso.", verified: true },
+  { name: "Roberto C.", rating: 5, date: "2024-12-15", text: "Produto excelente! Fiz 5 instalações de split com esse kit e não tive nenhum problema. A bomba de vácuo é silenciosa e eficiente.", verified: true },
+  { name: "Gustavo N.", rating: 4, date: "2024-12-10", text: "Bom custo-benefício. As mangueiras são de boa qualidade e os manifolds vêm bem calibrados. Recomendo para quem está começando na área.", verified: true },
+  { name: "Paulo H.", rating: 5, date: "2024-12-01", text: "Comprei para meu filho que está fazendo curso de refrigeração. Ele ficou impressionado com a qualidade. Kit profissional de verdade.", verified: true },
+  { name: "Edson M.", rating: 5, date: "2024-11-25", text: "Já é meu segundo kit, comprei outro para um funcionário. Durabilidade excelente, uso diariamente há mais de 6 meses sem problemas.", verified: true },
 ];
 
 function Stars({ count }: { count: number }) {
   return (
     <div className="flex gap-0.5">
       {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          size={14}
-          className={i < count ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground/30"}
-        />
+        <Star key={i} size={14} className={i < count ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground/30"} />
       ))}
     </div>
   );
 }
 
+const SOURCE_LANG_BY_PRODUCT = (slug: string): string =>
+  slug === "kit-ferramentas-refrigeracao" ? "pt" : "en";
+
+async function translateBatch(texts: string[], targetLang: string, cacheKey: string): Promise<string[]> {
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    try {
+      const arr = JSON.parse(cached);
+      if (Array.isArray(arr) && arr.length === texts.length) return arr;
+    } catch {}
+  }
+  try {
+    const { data, error } = await supabase.functions.invoke("translate-texts", {
+      body: { texts, targetLang },
+    });
+    if (error || !data?.translations) return texts;
+    localStorage.setItem(cacheKey, JSON.stringify(data.translations));
+    return data.translations;
+  } catch {
+    return texts;
+  }
+}
+
 export default function ProductReviews({ productSlug, productId }: { productSlug: string; productId?: string }) {
-  const [dbReviews, setDbReviews] = useState<Review[] | null>(null);
+  const { t } = useTranslation();
+  const { language } = useLocalization();
+  const [reviews, setReviews] = useState<Review[] | null>(null);
 
   useEffect(() => {
-    if (productSlug === "kit-ferramentas-refrigeracao" || !productId) return;
+    let cancelled = false;
 
-    supabase
-      .from("product_reviews")
-      .select("*")
-      .eq("product_id", productId)
-      .eq("approved", true)
-      .order("created_at", { ascending: false })
-      .then(({ data }) => {
+    async function load() {
+      let baseReviews: Review[] = [];
+      if (productSlug === "kit-ferramentas-refrigeracao") {
+        baseReviews = kitReviews;
+      } else if (productId) {
+        const { data } = await supabase
+          .from("product_reviews")
+          .select("*")
+          .eq("product_id", productId)
+          .eq("approved", true)
+          .order("created_at", { ascending: false });
         if (data && data.length > 0) {
-          const mapped = data.map((r) => ({
+          baseReviews = data.map((r) => ({
             name: r.reviewer_name,
             rating: r.rating,
-            date: new Date(r.created_at).toLocaleDateString("pt-BR"),
+            date: r.created_at,
             text: r.review_text || "",
             image: r.review_image_url || undefined,
             verified: r.verified_purchase ?? false,
           }));
-          // Reviews com foto primeiro (maior prova social)
-          mapped.sort((a, b) => {
-            if (!!a.image !== !!b.image) return a.image ? -1 : 1;
-            return 0;
-          });
-          setDbReviews(mapped);
         }
-      });
-  }, [productId, productSlug]);
+      }
 
-  // Use hardcoded for kit, DB reviews for others
-  const reviews = productSlug === "kit-ferramentas-refrigeracao" ? kitReviews : dbReviews;
+      if (baseReviews.length === 0) {
+        if (!cancelled) setReviews([]);
+        return;
+      }
+
+      // Translate if target language differs from source
+      const sourceLang = SOURCE_LANG_BY_PRODUCT(productSlug);
+      let texts = baseReviews.map((r) => r.text);
+      if (language !== sourceLang) {
+        const cacheKey = `reviews-tr:${productSlug}:${language}`;
+        texts = await translateBatch(texts, language, cacheKey);
+      }
+
+      const locale = LOCALE_BY_LANG[language] || "en-US";
+      const formatted = baseReviews.map((r, i) => ({
+        ...r,
+        text: texts[i] || r.text,
+        date: new Date(r.date).toLocaleDateString(locale, { day: "2-digit", month: "2-digit", year: "numeric" }),
+      }));
+      // Reviews with photo first
+      formatted.sort((a, b) => (!!a.image !== !!b.image ? (a.image ? -1 : 1) : 0));
+
+      if (!cancelled) setReviews(formatted);
+    }
+
+    load();
+    return () => { cancelled = true; };
+  }, [productId, productSlug, language]);
 
   if (!reviews || reviews.length === 0) return null;
 
@@ -94,7 +141,7 @@ export default function ProductReviews({ productSlug, productId }: { productSlug
           <span className="text-lg font-bold">{avg.toFixed(1)}</span>
         </div>
         <span className="text-sm text-muted-foreground">
-          Baseado em {reviews.length} avaliações verificadas
+          {t("productReviews.basedOn", { count: reviews.length, defaultValue: `Based on ${reviews.length} verified reviews` })}
         </span>
       </div>
 
@@ -110,7 +157,7 @@ export default function ProductReviews({ productSlug, productId }: { productSlug
                 <Stars count={review.rating} />
                 {review.verified && (
                   <span className="rounded bg-lime/20 px-1.5 py-0.5 text-[10px] font-bold text-primary">
-                    ✓ Compra verificada
+                    ✓ {t("productReviews.verified", { defaultValue: "Verified purchase" })}
                   </span>
                 )}
               </div>
@@ -119,7 +166,7 @@ export default function ProductReviews({ productSlug, productId }: { productSlug
             {review.image && (
               <img
                 src={review.image}
-                alt={`Foto do produto por ${review.name}`}
+                alt={`Photo by ${review.name}`}
                 className="w-full rounded-lg object-cover aspect-video"
                 loading="lazy"
               />

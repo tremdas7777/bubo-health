@@ -603,6 +603,10 @@
       ]
     }
   },
+  "productReviews": {
+    "basedOn": "Based on {{count}} verified reviews",
+    "verified": "Verified purchase"
+  },
   "cep": {
     "title": "Calculate shipping & delivery time",
     "placeholder": "ZIP code",
