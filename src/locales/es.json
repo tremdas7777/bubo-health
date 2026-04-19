@@ -608,10 +608,13 @@
     "verified": "Compra verificada"
   },
   "cep": {
-    "title": "Calcular envío y plazo de entrega",
+    "title": "Consultar envío y plazo de entrega",
     "placeholder": "Código postal",
-    "calculate": "Calcular",
-    "result": "Envío gratis — entrega en 5–10 días hábiles"
+    "calculate": "Consultar",
+    "result": "Envío gratis a todo el mundo — entrega en 5–10 días hábiles",
+    "invalid": "Formato inválido. Ejemplo: {{example}}",
+    "notFound": "Código postal no encontrado. Verifíquelo e inténtelo de nuevo.",
+    "networkError": "Error de conexión. Inténtelo de nuevo."
   },
   "productFaq": {
     "q1": "¿{{name}} es original y auténtico?",

@@ -608,10 +608,13 @@
     "verified": "Achat vérifié"
   },
   "cep": {
-    "title": "Calculer livraison et délai",
+    "title": "Vérifier livraison et délai",
     "placeholder": "Code postal",
-    "calculate": "Calculer",
-    "result": "Livraison gratuite — sous 5 à 10 jours ouvrés"
+    "calculate": "Vérifier",
+    "result": "Livraison gratuite dans le monde entier — sous 5 à 10 jours ouvrés",
+    "invalid": "Format invalide. Exemple : {{example}}",
+    "notFound": "Code postal introuvable. Vérifiez et réessayez.",
+    "networkError": "Erreur de connexion. Veuillez réessayer."
   },
   "productFaq": {
     "q1": "{{name}} est-il original et authentique ?",
