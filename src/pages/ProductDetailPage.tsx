@@ -311,7 +311,7 @@ export default function ProductDetailPage() {
                         className="mb-2 flex w-full items-center justify-between text-left"
                       >
                         <span className="text-sm font-semibold text-foreground">
-                          Camisa {idx + 1}
+                          {t("productPage.kitShirtLabel", { n: idx + 1 })}
                           {isComplete && (
                             <span className="ml-2 inline-flex items-center gap-1 text-xs font-normal text-primary">
                               <CheckCircle2 size={12} /> {slot.color} · {slot.size}
@@ -319,14 +319,14 @@ export default function ProductDetailPage() {
                           )}
                         </span>
                         <span className={`text-xs ${isComplete ? "text-primary" : "text-muted-foreground"}`}>
-                          {isComplete ? "✓ Completo" : isActive ? "Selecionando..." : "Toque para escolher"}
+                          {isComplete ? t("productPage.kitComplete") : isActive ? t("productPage.kitSelecting") : t("productPage.kitTapToChoose")}
                         </span>
                       </button>
 
                       {isActive && (
                         <div className="space-y-3 pt-1">
                           <div>
-                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">Cor</p>
+                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">{t("productPage.kitColor")}</p>
                             <div className="flex flex-wrap gap-1.5">
                               {product.colors.map((c) => (
                                 <button
@@ -334,7 +334,7 @@ export default function ProductDetailPage() {
                                   type="button"
                                   onClick={() => updateKitSlot(idx, { color: c.name })}
                                   title={c.name}
-                                  aria-label={`Cor ${c.name}`}
+                                  aria-label={t("productPage.kitColorAria", { name: c.name })}
                                   className={`relative h-8 w-8 rounded-full border-2 transition-all ${
                                     slot.color === c.name
                                       ? "border-primary ring-2 ring-primary/30 scale-110"
@@ -346,7 +346,7 @@ export default function ProductDetailPage() {
                             </div>
                           </div>
                           <div>
-                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">Tamanho</p>
+                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">{t("productPage.kitSize")}</p>
                             <div className="flex flex-wrap gap-1.5">
                               {product.sizes.map((s) => (
                                 <button
@@ -383,7 +383,7 @@ export default function ProductDetailPage() {
             {!isKitProduct && product.colors && product.colors.length > 0 && (
               <div className="space-y-2">
                 <p className="text-sm font-medium">
-                  Cor: <span className="font-normal text-muted-foreground">{selectedColor || "Selecione"}</span>
+                  {t("productPage.colorLabel")} <span className="font-normal text-muted-foreground">{selectedColor || t("productPage.selectPlaceholder")}</span>
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {product.colors.map((c) => (
@@ -392,7 +392,7 @@ export default function ProductDetailPage() {
                       type="button"
                       onClick={() => setSelectedColor(c.name)}
                       title={c.name}
-                      aria-label={`Cor ${c.name}`}
+                      aria-label={t("productPage.kitColorAria", { name: c.name })}
                       className={`relative h-9 w-9 rounded-full border-2 transition-all ${
                         selectedColor === c.name
                           ? "border-primary ring-2 ring-primary/30 scale-110"
@@ -409,7 +409,7 @@ export default function ProductDetailPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm font-medium">
-                    Tamanho: <span className="font-normal text-muted-foreground">{selectedSize || "Selecione"}</span>
+                    {t("productPage.sizeLabel")} <span className="font-normal text-muted-foreground">{selectedSize || t("productPage.selectPlaceholder")}</span>
                   </p>
                   <SizeGuideDialog />
                 </div>
@@ -436,7 +436,7 @@ export default function ProductDetailPage() {
             {!product.colors && !product.sizes && product.variants && product.variants.length > 0 && (() => {
               const sizePattern = /^(PP|P|M|G|GG|XGG|\d?XG|\d?G|XS|S|L|XL|XXL|XXXL|\d{2,3})$/i;
               const isSizes = product.variants.every((v) => sizePattern.test(v.trim()));
-              const label = isSizes ? "Tamanho:" : "Cor:";
+              const label = isSizes ? t("productPage.sizeLabel") : t("productPage.colorLabel");
               return (
                 <div className="space-y-2">
                   <p className="text-sm font-medium">{label}</p>
@@ -462,7 +462,7 @@ export default function ProductDetailPage() {
             {product.stock <= 30 && (
               <div>
                 <p className="mb-1 text-sm text-muted-foreground">
-                  Restam apenas <strong>{product.stock}</strong> unidades deste produto
+                  <Trans i18nKey="productPage.stockRemaining" values={{ count: product.stock }} components={{ strong: <strong /> }} />
                 </p>
                 <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted">
                   <div className="h-full rounded-full bg-lime transition-all" style={{ width: `${Math.min(100, (product.stock / 50) * 100)}%` }} />
