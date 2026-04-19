@@ -92,7 +92,8 @@ export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: products = [], isLoading } = useDbProducts();
   const product = products.find((p) => p.slug === slug);
-  const { formatPrice: fmt } = useLocalization();
+  const { formatPrice: fmt, language } = useLocalization();
+  const [translatedBullets, setTranslatedBullets] = useState<string[] | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -337,7 +338,7 @@ export default function ProductDetailPage() {
                             {isSelected && <CheckCircle2 size={12} className="text-primary-foreground" />}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-foreground">{b.label}</p>
+                            <p className="text-sm font-semibold text-foreground">{translateBundleLabel(b.label, t)}</p>
                             <p className="text-xs text-muted-foreground">
                               {formatPrice(perUnit / 100)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
                             </p>
@@ -347,7 +348,7 @@ export default function ProductDetailPage() {
                           <p className="text-sm font-bold text-primary">{formatPrice(b.priceCents / 100)}</p>
                           {b.badge && (
                             <span className="inline-block rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">
-                              {b.badge}
+                              {translateBundleBadge(b.badge, t)}
                             </span>
                           )}
                         </div>
