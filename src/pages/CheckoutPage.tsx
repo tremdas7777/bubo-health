@@ -752,7 +752,7 @@ export default function CheckoutPage() {
                             ))}
                           </ul>
                         )}
-                        <p className="text-xs text-primary font-bold">{formatPrice(product.price * quantity)}</p>
+                        <p className="text-xs text-primary font-bold">{formatPrice(Math.round(product.price * 100 * quantity))}</p>
                         <div className="flex items-center gap-1 mt-1">
                           <button onClick={() => updateQuantity(lineId, quantity - 1)} className="w-5 h-5 border border-border rounded flex items-center justify-center hover:bg-muted">
                             <Minus size={10} />

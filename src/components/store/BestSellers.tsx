@@ -75,10 +75,10 @@ function BestSellerCard({ product, addItem, formatPrice, addLabel, stockLeftLabe
         </Link>
         <div>
           <div className="flex items-baseline justify-center gap-1.5">
-            <span className="text-primary font-bold text-sm">{formatPrice(product.price)}</span>
+            <span className="text-primary font-bold text-sm">{formatPrice(Math.round(product.price * 100))}</span>
             {hasDiscount && (
               <span className="text-muted-foreground text-[10px] line-through">
-                {formatPrice(product.compareAtPrice!)}
+                {formatPrice(Math.round(product.compareAtPrice! * 100))}
               </span>
             )}
           </div>
