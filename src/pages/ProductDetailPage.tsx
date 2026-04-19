@@ -570,21 +570,6 @@ export default function ProductDetailPage() {
               {t("productPage.buyNow")}
             </Button>
 
-            <div className="flex items-start gap-3 rounded-lg border border-border bg-card p-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-lime/20">
-                <span className="text-xs font-bold text-primary">PIX</span>
-              </div>
-              <div>
-                <p className="text-sm">
-                  <strong className="text-foreground">{formatPrice(pixPrice)}</strong> <span className="text-muted-foreground">{t("productPage.pixLabel")}</span>{" "}
-                  <span className="rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">{t("productPage.pixDiscount", { percent: PIX_DISCOUNT_PERCENT })}</span>
-                </p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  <Trans i18nKey="productPage.pixSavings" values={{ value: formatPrice(getPixSavings(product.price)) }} components={{ strong: <strong /> }} />
-                </p>
-              </div>
-            </div>
-
             {/* Guarantee Badge */}
             <div className="flex items-start gap-3 rounded-lg border-2 border-lime/50 bg-lime/5 p-4">
               <ShieldCheck size={28} className="mt-0.5 shrink-0 text-primary" />
@@ -614,7 +599,7 @@ export default function ProductDetailPage() {
                 <Shield size={14} /> {t("productPage.securePayment")}
               </div>
               <div className="flex flex-wrap items-center justify-center gap-2">
-                {["Mastercard", "Visa", "Elo", "Maestro", "Amex", "Diners", "Pix"].map((method) => (
+                {["Mastercard", "Visa", "Amex", "Diners", "Apple Pay", "Google Pay"].map((method) => (
                   <span key={method} className="rounded border border-border bg-muted px-2.5 py-1.5 text-[10px] font-medium">
                     {method}
                   </span>

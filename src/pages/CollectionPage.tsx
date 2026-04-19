@@ -12,7 +12,7 @@ const collectionFAQs: Record<string, { question: string; answer: string }[]> = {
   "casa-e-cozinha": [
     { question: "Quais produtos de casa e cozinha a Kazoom oferece?", answer: "Oferecemos utensílios domésticos práticos como trituradores, vasos decorativos, despertadores e iluminação inteligente, todos com frete grátis." },
     { question: "Os produtos de cozinha têm garantia?", answer: "Sim, todos os produtos possuem garantia de 30 dias com devolução sem burocracia." },
-    { question: "Posso parcelar as compras?", answer: "Sim, parcele em até 6x sem juros no cartão ou ganhe desconto extra pagando no PIX." },
+    { question: "Posso parcelar as compras?", answer: "Sim, parcele em até 6x sem juros no cartão de crédito." },
   ],
   "eletronicos": [
     { question: "Quais eletrônicos vocês vendem?", answer: "Vendemos smartwatches, consoles portáteis, despertadores digitais e lâmpadas inteligentes com conectividade Wi-Fi." },
