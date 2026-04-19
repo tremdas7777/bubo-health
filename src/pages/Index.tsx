@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Layout from "@/components/store/Layout";
 import HeroCarousel from "@/components/store/HeroCarousel";
 import CollectionsCarousel from "@/components/store/CollectionsCarousel";
@@ -13,16 +14,14 @@ import WebSiteJsonLd from "@/components/seo/WebSiteJsonLd";
 import PageHead from "@/components/seo/PageHead";
 
 const Index = () => {
+  const { t } = useTranslation();
   const { data: collections = [] } = useDbCollections();
   const categoryOrder = collections.map((c) => c.slug);
 
   return (
     <Layout>
+      <PageHead title={t("home.title")} description={t("home.description")} />
       
-      <PageHead
-        title="Kazoom - Tudo que você precisa em um só lugar"
-        description="De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 6x."
-      />
       <OrganizationJsonLd />
       <WebSiteJsonLd />
       <HeroCarousel />

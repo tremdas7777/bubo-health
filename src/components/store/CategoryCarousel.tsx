@@ -1,8 +1,9 @@
 import { useRef, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { formatPrice, getInstallmentPrice, getCategoryName } from "@/data/store";
+import { useTranslation } from "react-i18next";
 import { useCart } from "@/contexts/CartContext";
+import { useCurrency } from "@/contexts/LocalizationContext";
 import { useDbProducts, filterByCategory } from "@/hooks/useProducts";
 import type { Product } from "@/data/store";
 
@@ -11,6 +12,8 @@ interface Props {
 }
 
 function ProductCardInline({ product, addItem }: { product: Product; addItem: (p: any) => void }) {
+  const { t } = useTranslation();
+  const { formatPrice } = useCurrency();
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   return (
     <div className="flex-shrink-0 w-[200px] md:w-[230px] group/card bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all [.grid_&]:w-full">
@@ -38,22 +41,19 @@ function ProductCardInline({ product, addItem }: { product: Product; addItem: (p
         </Link>
         <div>
           <div className="flex items-baseline justify-center gap-1.5">
-            <span className="text-primary font-bold text-sm">{formatPrice(product.price)}</span>
+            <span className="text-primary font-bold text-sm">{formatPrice(Math.round(product.price * 100))}</span>
             {hasDiscount && (
               <span className="text-muted-foreground text-[11px] line-through">
-                {formatPrice(product.compareAtPrice!)}
+                {formatPrice(Math.round(product.compareAtPrice! * 100))}
               </span>
             )}
           </div>
-          <p className="text-[10px] text-muted-foreground mt-0.5">
-            em até <strong>6x</strong> de <strong>{getInstallmentPrice(product.price, 6)}</strong>
-          </p>
         </div>
         <button
           onClick={() => addItem(product)}
           className="w-full mt-1.5 bg-primary hover:bg-primary/90 text-primary-foreground text-[11px] font-medium rounded py-2 transition-colors"
         >
-          Adicionar ao carrinho
+          {t("product.addToCart")}
         </button>
       </div>
     </div>
@@ -61,10 +61,20 @@ function ProductCardInline({ product, addItem }: { product: Product; addItem: (p
 }
 
 export default memo(function CategoryCarousel({ category }: Props) {
+  const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const { data: allProducts = [] } = useDbProducts();
   const products = filterByCategory(allProducts, category);
   const { addItem } = useCart();
+  const COLLECTION_I18N: Record<string, string> = {
+    "home-kitchen": t("collections.homeKitchen"),
+    "electronics": t("collections.electronics"),
+    "sports": t("collections.sports"),
+    "tools": t("collections.tools"),
+    "fitness": t("collections.fitness"),
+    "fishing": t("collections.fishing"),
+    "health-beauty": t("collections.healthBeauty"),
+  };
 
   if (products.length === 0) return null;
 
@@ -80,13 +90,13 @@ export default memo(function CategoryCarousel({ category }: Props) {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg md:text-xl font-heading font-semibold">
-            {getCategoryName(category)}
+            {COLLECTION_I18N[category] || category}
           </h2>
           <Link
             to={`/colecao/${category}`}
             className="text-primary text-sm font-medium hover:underline transition-colors"
           >
-            Ver tudo →
+            {t("common.viewAll")} →
           </Link>
         </div>
 
@@ -101,7 +111,7 @@ export default memo(function CategoryCarousel({ category }: Props) {
             <button
               onClick={() => scroll("left")}
               className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 bg-background/90 border border-border rounded-full p-1.5 shadow-md opacity-0 group-hover/nav:opacity-100 transition-opacity hidden md:flex"
-              aria-label="Anterior"
+              aria-label={t("common.previous")}
             >
               <ChevronLeft size={18} />
             </button>
@@ -119,7 +129,7 @@ export default memo(function CategoryCarousel({ category }: Props) {
             <button
               onClick={() => scroll("right")}
               className="absolute -right-2 top-1/2 -translate-y-1/2 z-10 bg-background/90 border border-border rounded-full p-1.5 shadow-md opacity-0 group-hover/nav:opacity-100 transition-opacity hidden md:flex"
-              aria-label="Próximo"
+              aria-label={t("common.next")}
             >
               <ChevronRight size={18} />
             </button>

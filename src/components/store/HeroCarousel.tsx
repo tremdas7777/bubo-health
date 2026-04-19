@@ -1,5 +1,6 @@
 import { useState, useEffect, memo } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useIsMobile } from "@/hooks/use-mobile";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
@@ -12,6 +13,7 @@ const desktopSlides = [hero1, hero2, hero3];
 const mobileSlides = [hero1Mobile, hero2Mobile, hero3Mobile];
 
 export default memo(function HeroCarousel() {
+  const { t } = useTranslation();
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(true);
   const isMobile = useIsMobile();
@@ -53,7 +55,7 @@ export default memo(function HeroCarousel() {
       <button
         onClick={prev}
         className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors"
-        aria-label="Slide anterior"
+        aria-label={t("common.previous")}
       >
         <ChevronLeft size={32} />
       </button>
@@ -61,7 +63,7 @@ export default memo(function HeroCarousel() {
       <button
         onClick={next}
         className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 text-white/70 hover:text-white transition-colors"
-        aria-label="Próximo slide"
+        aria-label={t("common.next")}
       >
         <ChevronRight size={32} />
       </button>
@@ -82,7 +84,7 @@ export default memo(function HeroCarousel() {
       <button
         onClick={() => setPlaying(!playing)}
         className="absolute bottom-4 right-4 z-20 text-white/60 hover:text-white transition-colors"
-        aria-label={playing ? "Pausar" : "Reproduzir"}
+        aria-label={playing ? t("common.pause") : t("common.play")}
       >
         {playing ? <Pause size={18} /> : <Play size={18} />}
       </button>

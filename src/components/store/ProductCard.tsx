@@ -20,7 +20,6 @@ export default memo(function ProductCard({ product }: Props) {
   const { formatPrice } = useCurrency();
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const wishlisted = isInWishlist(product.id);
-  // Stable pseudo-random sales count based on product id
   const salesCount = ((product.id.charCodeAt(0) * 7 + product.id.charCodeAt(1) * 13) % 80) + 20;
 
   return (
@@ -28,7 +27,7 @@ export default memo(function ProductCard({ product }: Props) {
       <Link to={`/produto/${product.slug}`} className="block relative overflow-hidden">
         <img
           src={product.image}
-          alt={`${product.name} - Comprar na Kazoom com frete grátis`}
+          alt={product.name}
           className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
           decoding="async"
@@ -42,16 +41,16 @@ export default memo(function ProductCard({ product }: Props) {
         )}
         {product.stock <= 10 && (
           <span className="absolute bottom-2 left-2 bg-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full animate-pulse">
-            Últimas {product.stock} unidades!
+            {t("product.lastUnits", { count: product.stock })}
           </span>
         )}
         <span className="absolute bottom-2 right-2 bg-foreground/80 text-background text-[9px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-0.5">
-          🔥 {salesCount} vendidos
+          {t("product.salesCount", { count: salesCount })}
         </span>
         <button
           onClick={(e) => { e.preventDefault(); toggleItem(product); }}
           className="absolute top-2 left-2 bg-background/80 backdrop-blur-sm rounded-full p-1.5 hover:bg-background transition-colors"
-          aria-label={wishlisted ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+          aria-label={wishlisted ? t("product.removeFromFavorites") : t("product.addToFavorites")}
         >
           <Heart size={16} className={wishlisted ? "fill-destructive text-destructive" : "text-muted-foreground"} />
         </button>
@@ -67,18 +66,14 @@ export default memo(function ProductCard({ product }: Props) {
         <div className="mt-2 space-y-1">
           <div className="flex items-baseline justify-center gap-2">
             <span className="text-primary font-bold text-base">
-              {formatPrice(product.price)}
+              {formatPrice(Math.round(product.price * 100))}
             </span>
             {hasDiscount && (
               <span className="text-muted-foreground text-xs line-through">
-                {formatPrice(product.compareAtPrice!)}
+                {formatPrice(Math.round(product.compareAtPrice! * 100))}
               </span>
             )}
           </div>
-
-          <p className="text-[10px] text-muted-foreground">
-            {t("product.installmentsLabel", { count: 6, value: getInstallmentPrice(product.price, 6) })}
-          </p>
         </div>
 
         <Button
