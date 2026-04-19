@@ -14,6 +14,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { fireWebhookEvent } from "@/lib/webhookManager";
+import { adminWrite } from "@/lib/adminApi";
 
 interface OrderItem {
   id: string;
@@ -127,13 +128,15 @@ export default function AdminPedidos() {
   };
 
   const handleUpdateStatus = async (order: Order, newStatus: string) => {
-    const { error } = await supabase
-      .from("orders")
-      .update({ status: newStatus, updated_at: new Date().toISOString() })
-      .eq("id", order.id);
+    const result = await adminWrite({
+      table: "orders",
+      op: "update",
+      payload: { status: newStatus, updated_at: new Date().toISOString() },
+      match: { id: order.id },
+    });
 
-    if (error) {
-      flash("Erro ao atualizar status");
+    if (!result.ok) {
+      flash("Erro ao atualizar status: " + result.error);
       return;
     }
 
@@ -171,13 +174,15 @@ export default function AdminPedidos() {
   };
 
   const handleSaveTracking = async (order: Order) => {
-    const { error } = await supabase
-      .from("orders")
-      .update({ tracking_code: order.tracking_code, status: order.tracking_code ? "shipped" : order.status, updated_at: new Date().toISOString() })
-      .eq("id", order.id);
+    const result = await adminWrite({
+      table: "orders",
+      op: "update",
+      payload: { tracking_code: order.tracking_code, status: order.tracking_code ? "shipped" : order.status, updated_at: new Date().toISOString() },
+      match: { id: order.id },
+    });
 
-    if (error) {
-      flash("Erro ao salvar rastreio");
+    if (!result.ok) {
+      flash("Erro ao salvar rastreio: " + result.error);
       return;
     }
 
@@ -280,7 +285,12 @@ export default function AdminPedidos() {
 
   const handleClearOrders = async () => {
     if (!window.confirm("Tem certeza que deseja limpar TODOS os pedidos?")) return;
-    await supabase.from("orders").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    const result = await adminWrite({
+      table: "orders",
+      op: "delete",
+      not_match: { id: "00000000-0000-0000-0000-000000000000" },
+    });
+    if (!result.ok) { flash("Erro ao limpar: " + result.error); return; }
     await fetchOrders();
     flash("Pedidos removidos com sucesso!");
   };
