@@ -53,7 +53,7 @@ export default function ProductsPage() {
     <Layout>
       <PageHead
         title="Todos os Produtos | Kazoom"
-        description="Explore todos os produtos da Kazoom. Frete grátis, parcele em até 12x e 5% de desconto no PIX."
+        description="Explore all Kazoom products. Free shipping worldwide and secure card payment."
         canonical="https://snug-code-space.lovable.app/produtos"
       />
       <div className="container mx-auto px-4 py-8">
