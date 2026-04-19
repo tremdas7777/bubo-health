@@ -641,6 +641,70 @@ export default function CheckoutPage() {
     setGenerating(false);
   };
 
+  const handleStripeCheckout = async () => {
+    setGenerating(true);
+    setPaymentError("");
+    try {
+      const successUrl = `${window.location.origin}/obrigado`;
+      const cancelUrl = `${window.location.origin}/checkout`;
+
+      const cartItems = items.map((i) => ({
+        name: i.product.name,
+        quantity: i.quantity,
+        amount_cents: Math.round(i.product.price * 100),
+        product_id: i.product.id || null,
+        image: i.product.image_url || (i.product.images?.[0] ?? null),
+      }));
+
+      const { data, error } = await supabase.functions.invoke("stripe-checkout", {
+        body: {
+          items: cartItems,
+          buyerName: name,
+          buyerEmail: email,
+          buyerPhone: phone.replace(/\D/g, ""),
+          currency: "usd",
+          shippingCostCents: shippingCost,
+          successUrl,
+          cancelUrl,
+          metadata: {
+            address: `${address}, ${addressNumber} ${complement}`.trim(),
+            neighborhood,
+            city,
+            state,
+            cep: cep.replace(/\D/g, ""),
+            shippingMethod: selectedShipping,
+          },
+        },
+      });
+
+      if (error) {
+        throw new Error(await extractFunctionErrorMessage(error));
+      }
+      const result = data as { url?: string; order_id?: string; error?: string } | null;
+      if (result?.error) {
+        setPaymentError(result.error);
+        setGenerating(false);
+        return;
+      }
+      if (!result?.url) {
+        setPaymentError("Não foi possível iniciar o checkout do Stripe.");
+        setGenerating(false);
+        return;
+      }
+      // Delete draft order since real order is created server-side
+      if (draftOrderId) {
+        await supabase.from("orders").delete().eq("id", draftOrderId);
+        setDraftOrderId("");
+      }
+      void trackEvent("purchase");
+      window.location.href = result.url;
+    } catch (err) {
+      console.error(err);
+      setPaymentError(await extractFunctionErrorMessage(err));
+      setGenerating(false);
+    }
+  };
+
   const stepIndex = step === "identification" ? 0 : step === "shipping" ? 1 : 2;
 
   return (
@@ -857,8 +921,8 @@ export default function CheckoutPage() {
                   <button onClick={() => setStep("shipping")} className="text-xs text-primary hover:underline">Editar entrega</button>
                 </div>
 
-                {/* Payment method selector */}
-                {cardEnabled && (
+                {/* Payment method selector — hidden when Stripe is the active gateway (card only) */}
+                {activeGateway !== "stripe" && cardEnabled && (
                   <div className="space-y-2">
                     <label className="text-xs font-semibold text-muted-foreground block">Forma de pagamento</label>
                     <div className="grid grid-cols-2 gap-2">
