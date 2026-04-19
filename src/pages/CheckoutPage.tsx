@@ -118,6 +118,7 @@ export default function CheckoutPage() {
   // Payment
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
   const [cardEnabled, setCardEnabled] = useState(false);
+  const [activeGateway, setActiveGateway] = useState<string>("stripe");
   const [pixCode, setPixCode] = useState("");
   const [pixQrCode, setPixQrCode] = useState("");
   const [orderId, setOrderId] = useState("");
