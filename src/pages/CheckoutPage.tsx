@@ -176,9 +176,10 @@ export default function CheckoutPage() {
   useEffect(() => {
     void trackEvent("checkout");
     fetchPaymentGatewayConfig().then((cfg) => {
-      const methods = cfg.paymentMethods[cfg.activeGateway] || cfg.paymentMethods.default || "pix";
+      setActiveGateway(cfg.activeGateway);
+      const methods = cfg.paymentMethods[cfg.activeGateway] || cfg.paymentMethods.default || "card";
       setCardEnabled(methods === "card" || methods === "pix_card");
-      if (methods === "card") setPaymentMethod("card");
+      if (cfg.activeGateway === "stripe" || methods === "card") setPaymentMethod("card");
     });
   }, []);
 
