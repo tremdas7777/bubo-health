@@ -289,7 +289,7 @@ export default function ProductDetailPage() {
                   <div className="flex items-center gap-2">
                     <Gift size={18} className="text-primary" />
                     <p className="text-sm font-bold text-foreground">
-                      {kitConfig!.label}
+                      {t(kitConfig!.labelKey)}
                     </p>
                   </div>
                   <SizeGuideDialog />
