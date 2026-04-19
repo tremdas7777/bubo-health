@@ -608,10 +608,13 @@
     "verified": "Verified purchase"
   },
   "cep": {
-    "title": "Calculate shipping & delivery time",
-    "placeholder": "ZIP code",
-    "calculate": "Calculate",
-    "result": "Free shipping — delivery in 5–10 business days"
+    "title": "Check shipping & delivery time",
+    "placeholder": "Postal / ZIP code",
+    "calculate": "Check",
+    "result": "Free worldwide shipping — delivery in 5–10 business days",
+    "invalid": "Invalid format. Example: {{example}}",
+    "notFound": "Postal code not found. Please check and try again.",
+    "networkError": "Connection error. Please try again."
   },
   "productFaq": {
     "q1": "Is {{name}} original and genuine?",
