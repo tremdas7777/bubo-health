@@ -23,6 +23,7 @@ import ProductJsonLd from "@/components/seo/ProductJsonLd";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import PageHead from "@/components/seo/PageHead";
 import { useDbProducts, filterByCategory } from "@/hooks/useProducts";
+import { translateBundleLabel, translateBundleBadge } from "@/lib/bundleI18n";
 
 const productBulletPoints: Record<string, { icon: React.ElementType; text: string }[]> = {
   "kit-ferramentas-refrigeracao": [
