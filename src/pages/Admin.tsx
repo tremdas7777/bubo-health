@@ -127,7 +127,7 @@ const INITIAL_PIXEL_CONFIG: PixelConfig = {
 };
 
 const INITIAL_GATEWAY_CONFIG: PaymentGatewayConfig = {
-  activeGateway: "beehive",
+  activeGateway: "stripe",
   paymentMethods: {},
   pagouai: { publicKey: "", secretKey: "", enabled: false },
   vennox: { secretKey: "", companyId: "", enabled: false },
@@ -136,6 +136,7 @@ const INITIAL_GATEWAY_CONFIG: PaymentGatewayConfig = {
   simpayout: { clientId: "", clientSecret: "", enabled: false },
   beehive: { publicKey: "", secretKey: "", enabled: false },
   pagamentosmp: { publicKey: "", secretKey: "", enabled: false },
+  stripe: { publishableKey: "", secretKey: "", webhookSecret: "", enabled: false },
 };
 
 const SUCCESS_HINTS = ["sucesso", "enviado", "ativado", "ok", "válido", "salva", "aprovado", "funcionando"];
@@ -148,6 +149,7 @@ const GATEWAY_LABELS: Record<PaymentGatewayConfig["activeGateway"], string> = {
   simpayout: "Sim Payout",
   beehive: "Beehive",
   pagamentosmp: "MP Pagamentos",
+  stripe: "Stripe",
 };
 
 const GATEWAY_TEST_FUNCTIONS: Partial<Record<PaymentGatewayConfig["activeGateway"], string>> = {
@@ -1519,28 +1521,85 @@ export default function Admin() {
         {activeTab === "pagamentos" && (
           <div>
             <h2 className="mb-1 text-xl font-black text-foreground">Gateways de Pagamento</h2>
-            <p className="mb-6 text-xs text-muted-foreground">Configure os gateways para gerar cobranças PIX</p>
+            <p className="mb-6 text-xs text-muted-foreground">Configure suas chaves Stripe para aceitar pagamentos com cartão</p>
 
             <Card className="mb-4 border border-border p-4">
               <div className="mb-2 flex items-center gap-2">
-                <QrCode size={16} className="text-emerald-500" />
+                <CreditCard size={16} className="text-primary" />
                 <span className="text-sm font-black text-foreground">Gateway Ativo</span>
               </div>
 
-              <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 px-4 py-3">
+              <div className="rounded-lg border border-primary/30 bg-primary/5 px-4 py-3">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-sm font-black text-foreground">Beehive</p>
-                    <p className="text-[11px] text-muted-foreground">Travado como gateway padrão da loja para evitar troca automática.</p>
+                    <p className="text-sm font-black text-foreground">{GATEWAY_LABELS[gatewayConfig.activeGateway]}</p>
+                    <p className="text-[11px] text-muted-foreground">Selecione o gateway que processará as vendas reais</p>
                   </div>
-                  <Badge className="border-emerald-500/30 bg-emerald-500/10 text-[10px] text-emerald-500">Fixo</Badge>
+                  <select
+                    value={gatewayConfig.activeGateway}
+                    onChange={(e) => setGatewayConfig((current) => ({ ...current, activeGateway: e.target.value as PaymentGatewayConfig["activeGateway"] }))}
+                    className="rounded-md border border-border bg-background px-2 py-1 text-xs font-bold"
+                  >
+                    <option value="stripe">Stripe</option>
+                    <option value="beehive">Beehive</option>
+                  </select>
                 </div>
               </div>
+              <Button
+                size="sm"
+                className="mt-3 w-full bg-primary text-xs font-bold text-primary-foreground"
+                onClick={() => void persistGateway("Gateway ativo salvo!")}
+              >
+                <Save size={12} className="mr-1" /> Salvar Gateway Ativo
+              </Button>
               <StatusMessage msg={gatewayMessage} />
             </Card>
 
             <GatewayCard
-              title="Beehive"
+              title="Stripe"
+              isActive={gatewayConfig.activeGateway === "stripe"}
+              fields={[
+                {
+                  label: "Chave Publicável (Publishable Key)",
+                  value: gatewayConfig.stripe.publishableKey,
+                  onChange: (value) => setGatewayConfig((current) => ({ ...current, stripe: { ...current.stripe, publishableKey: value } })),
+                  placeholder: "pk_live_...",
+                },
+                {
+                  label: "Chave Secreta (Secret Key)",
+                  value: gatewayConfig.stripe.secretKey,
+                  onChange: (value) => setGatewayConfig((current) => ({ ...current, stripe: { ...current.stripe, secretKey: value } })),
+                  placeholder: "sk_live_...",
+                  secret: true,
+                },
+                {
+                  label: "Webhook Signing Secret (opcional, recomendado)",
+                  value: gatewayConfig.stripe.webhookSecret,
+                  onChange: (value) => setGatewayConfig((current) => ({ ...current, stripe: { ...current.stripe, webhookSecret: value } })),
+                  placeholder: "whsec_...",
+                  secret: true,
+                },
+              ]}
+              onSave={() => void persistGateway("Stripe salvo!")}
+              onTest={() => {
+                flashMessage(setGatewayMessage, "ℹ️ Teste o Stripe fazendo uma compra real no checkout (modo live).", 6000);
+              }}
+              testing={gatewayTesting}
+              gatewayKey="stripe"
+              paymentMethods={gatewayConfig.paymentMethods.stripe || "card"}
+              onPaymentMethodChange={handlePaymentMethodChange}
+            />
+
+            <div className="mt-2 mb-4 rounded-md border border-border bg-muted/30 p-3 text-[11px] text-muted-foreground">
+              <p className="font-bold text-foreground mb-1">📌 Webhook URL para configurar no Stripe Dashboard:</p>
+              <code className="block break-all rounded bg-background px-2 py-1 text-[10px]">
+                https://skdwgsrckqiqeydlmndj.supabase.co/functions/v1/stripe-webhook
+              </code>
+              <p className="mt-2">Eventos: <strong>checkout.session.completed</strong>, <strong>checkout.session.async_payment_succeeded</strong>, <strong>checkout.session.async_payment_failed</strong>, <strong>checkout.session.expired</strong></p>
+            </div>
+
+            <GatewayCard
+              title="Beehive (legado)"
               isActive={gatewayConfig.activeGateway === "beehive"}
               fields={[
                 {

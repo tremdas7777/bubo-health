@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 export type GatewayPaymentMethods = 'pix' | 'card' | 'pix_card';
 
 export interface PaymentGatewayConfig {
-  activeGateway: 'pagouai' | 'vennox' | 'centurionpay' | 'ironpay' | 'simpayout' | 'beehive' | 'pagamentosmp';
+  activeGateway: 'pagouai' | 'vennox' | 'centurionpay' | 'ironpay' | 'simpayout' | 'beehive' | 'pagamentosmp' | 'stripe';
   paymentMethods: Record<string, GatewayPaymentMethods>;
   pagouai: { publicKey: string; secretKey: string; enabled: boolean };
   vennox: { secretKey: string; companyId: string; enabled: boolean };
@@ -12,12 +12,13 @@ export interface PaymentGatewayConfig {
   simpayout: { clientId: string; clientSecret: string; enabled: boolean };
   beehive: { publicKey: string; secretKey: string; enabled: boolean };
   pagamentosmp: { publicKey: string; secretKey: string; enabled: boolean };
+  stripe: { publishableKey: string; secretKey: string; webhookSecret: string; enabled: boolean };
 }
 
-const FORCED_GATEWAY: PaymentGatewayConfig['activeGateway'] = 'beehive';
+const DEFAULT_GATEWAY: PaymentGatewayConfig['activeGateway'] = 'stripe';
 
 const defaultConfig: PaymentGatewayConfig = {
-  activeGateway: FORCED_GATEWAY,
+  activeGateway: DEFAULT_GATEWAY,
   paymentMethods: {},
   pagouai: { publicKey: '', secretKey: '', enabled: false },
   vennox: { secretKey: '', companyId: '', enabled: false },
@@ -26,6 +27,7 @@ const defaultConfig: PaymentGatewayConfig = {
   simpayout: { clientId: '', clientSecret: '', enabled: false },
   beehive: { publicKey: '', secretKey: '', enabled: false },
   pagamentosmp: { publicKey: '', secretKey: '', enabled: false },
+  stripe: { publishableKey: '', secretKey: '', webhookSecret: '', enabled: false },
 };
 
 const VALID_GATEWAYS: PaymentGatewayConfig['activeGateway'][] = [
@@ -36,10 +38,14 @@ const VALID_GATEWAYS: PaymentGatewayConfig['activeGateway'][] = [
   'simpayout',
   'beehive',
   'pagamentosmp',
+  'stripe',
 ];
 
 function normalizeActiveGateway(value: unknown): PaymentGatewayConfig['activeGateway'] {
-  return value === FORCED_GATEWAY ? FORCED_GATEWAY : FORCED_GATEWAY;
+  if (typeof value === 'string' && (VALID_GATEWAYS as string[]).includes(value)) {
+    return value as PaymentGatewayConfig['activeGateway'];
+  }
+  return DEFAULT_GATEWAY;
 }
 
 function normalizePaymentMethods(
@@ -50,8 +56,8 @@ function normalizePaymentMethods(
   const defaultMethod = input.default;
   const fallbackMethod: GatewayPaymentMethods =
     defaultMethod === 'card' || defaultMethod === 'pix_card' || defaultMethod === 'pix'
-      ? defaultMethod
-      : 'pix';
+      ? (defaultMethod as GatewayPaymentMethods)
+      : 'card';
 
   const normalized: Record<string, GatewayPaymentMethods> = {};
 
@@ -60,6 +66,8 @@ function normalizePaymentMethods(
     normalized[gateway] = value === 'card' || value === 'pix_card' || value === 'pix' ? value : fallbackMethod;
   }
 
+  // Stripe in this project is card-only by default
+  normalized.stripe = 'card';
   normalized.default = fallbackMethod;
   normalized[activeGateway] = normalized[activeGateway] || fallbackMethod;
 
@@ -98,6 +106,12 @@ export async function fetchPaymentGatewayConfig(): Promise<PaymentGatewayConfig>
       simpayout: { clientId: '', clientSecret: '', enabled: false },
       beehive: { publicKey: d.beehive_public_key || '', secretKey: '', enabled: !!(d.beehive_public_key) },
       pagamentosmp: { publicKey: d.pagamentosmp_public_key || '', secretKey: '', enabled: false },
+      stripe: {
+        publishableKey: d.stripe_publishable_key || '',
+        secretKey: '',
+        webhookSecret: '',
+        enabled: !!(d.stripe_publishable_key),
+      },
     };
     cachedConfig = config;
     return config;
@@ -125,6 +139,12 @@ export async function fetchFullGatewayConfig(password: string): Promise<PaymentG
       simpayout: { clientId: d.simpayout_client_id || '', clientSecret: d.simpayout_client_secret || '', enabled: !!(d.simpayout_client_id && d.simpayout_client_secret) },
       beehive: { publicKey: d.beehive_public_key || '', secretKey: d.beehive_secret_key || '', enabled: !!(d.beehive_public_key && d.beehive_secret_key) },
       pagamentosmp: { publicKey: d.pagamentosmp_public_key || '', secretKey: d.pagamentosmp_secret_key || '', enabled: !!(d.pagamentosmp_public_key && d.pagamentosmp_secret_key) },
+      stripe: {
+        publishableKey: d.stripe_publishable_key || '',
+        secretKey: d.stripe_secret_key || '',
+        webhookSecret: d.stripe_webhook_secret || '',
+        enabled: !!(d.stripe_publishable_key && d.stripe_secret_key),
+      },
     };
     cachedConfig = config;
     return config;
@@ -144,7 +164,7 @@ export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Pr
   }
 
   try {
-    const activeGateway = FORCED_GATEWAY;
+    const activeGateway = normalizeActiveGateway(config.activeGateway);
     const normalizedConfig: PaymentGatewayConfig = {
       ...config,
       activeGateway,

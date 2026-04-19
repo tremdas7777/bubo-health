@@ -196,6 +196,9 @@ export type Database = {
           payment_methods: Json
           simpayout_client_id: string | null
           simpayout_client_secret: string | null
+          stripe_publishable_key: string | null
+          stripe_secret_key: string | null
+          stripe_webhook_secret: string | null
           updated_at: string
           utmify_api_token: string | null
           utmify_api_token_2: string | null
@@ -218,6 +221,9 @@ export type Database = {
           payment_methods?: Json
           simpayout_client_id?: string | null
           simpayout_client_secret?: string | null
+          stripe_publishable_key?: string | null
+          stripe_secret_key?: string | null
+          stripe_webhook_secret?: string | null
           updated_at?: string
           utmify_api_token?: string | null
           utmify_api_token_2?: string | null
@@ -240,6 +246,9 @@ export type Database = {
           payment_methods?: Json
           simpayout_client_id?: string | null
           simpayout_client_secret?: string | null
+          stripe_publishable_key?: string | null
+          stripe_secret_key?: string | null
+          stripe_webhook_secret?: string | null
           updated_at?: string
           utmify_api_token?: string | null
           utmify_api_token_2?: string | null
@@ -673,6 +682,7 @@ export type Database = {
           pagamentosmp_public_key: string | null
           pagouai_public_key: string | null
           payment_methods: Json | null
+          stripe_publishable_key: string | null
           updated_at: string | null
         }
         Insert: {
@@ -683,6 +693,7 @@ export type Database = {
           pagamentosmp_public_key?: string | null
           pagouai_public_key?: string | null
           payment_methods?: Json | null
+          stripe_publishable_key?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -693,6 +704,7 @@ export type Database = {
           pagamentosmp_public_key?: string | null
           pagouai_public_key?: string | null
           payment_methods?: Json | null
+          stripe_publishable_key?: string | null
           updated_at?: string | null
         }
         Relationships: []

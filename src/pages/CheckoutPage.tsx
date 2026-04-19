@@ -118,6 +118,7 @@ export default function CheckoutPage() {
   // Payment
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
   const [cardEnabled, setCardEnabled] = useState(false);
+  const [activeGateway, setActiveGateway] = useState<string>("stripe");
   const [pixCode, setPixCode] = useState("");
   const [pixQrCode, setPixQrCode] = useState("");
   const [orderId, setOrderId] = useState("");
@@ -176,9 +177,10 @@ export default function CheckoutPage() {
   useEffect(() => {
     void trackEvent("checkout");
     fetchPaymentGatewayConfig().then((cfg) => {
-      const methods = cfg.paymentMethods[cfg.activeGateway] || cfg.paymentMethods.default || "pix";
+      setActiveGateway(cfg.activeGateway);
+      const methods = cfg.paymentMethods[cfg.activeGateway] || cfg.paymentMethods.default || "card";
       setCardEnabled(methods === "card" || methods === "pix_card");
-      if (methods === "card") setPaymentMethod("card");
+      if (cfg.activeGateway === "stripe" || methods === "card") setPaymentMethod("card");
     });
   }, []);
 
@@ -639,6 +641,70 @@ export default function CheckoutPage() {
     setGenerating(false);
   };
 
+  const handleStripeCheckout = async () => {
+    setGenerating(true);
+    setPaymentError("");
+    try {
+      const successUrl = `${window.location.origin}/obrigado`;
+      const cancelUrl = `${window.location.origin}/checkout`;
+
+      const cartItems = items.map((i) => ({
+        name: i.product.name,
+        quantity: i.quantity,
+        amount_cents: Math.round(i.product.price * 100),
+        product_id: i.product.id || null,
+        image: i.product.image || (i.product.images?.[0] ?? null),
+      }));
+
+      const { data, error } = await supabase.functions.invoke("stripe-checkout", {
+        body: {
+          items: cartItems,
+          buyerName: name,
+          buyerEmail: email,
+          buyerPhone: phone.replace(/\D/g, ""),
+          currency: "usd",
+          shippingCostCents: shippingCost,
+          successUrl,
+          cancelUrl,
+          metadata: {
+            address: `${address}, ${addressNumber} ${complement}`.trim(),
+            neighborhood,
+            city,
+            state,
+            cep: cep.replace(/\D/g, ""),
+            shippingMethod: selectedShipping,
+          },
+        },
+      });
+
+      if (error) {
+        throw new Error(await extractFunctionErrorMessage(error));
+      }
+      const result = data as { url?: string; order_id?: string; error?: string } | null;
+      if (result?.error) {
+        setPaymentError(result.error);
+        setGenerating(false);
+        return;
+      }
+      if (!result?.url) {
+        setPaymentError("Não foi possível iniciar o checkout do Stripe.");
+        setGenerating(false);
+        return;
+      }
+      // Delete draft order since real order is created server-side
+      if (draftOrderId) {
+        await supabase.from("orders").delete().eq("id", draftOrderId);
+        setDraftOrderId("");
+      }
+      void trackEvent("purchase");
+      window.location.href = result.url;
+    } catch (err) {
+      console.error(err);
+      setPaymentError(await extractFunctionErrorMessage(err));
+      setGenerating(false);
+    }
+  };
+
   const stepIndex = step === "identification" ? 0 : step === "shipping" ? 1 : 2;
 
   return (
@@ -855,8 +921,8 @@ export default function CheckoutPage() {
                   <button onClick={() => setStep("shipping")} className="text-xs text-primary hover:underline">Editar entrega</button>
                 </div>
 
-                {/* Payment method selector */}
-                {cardEnabled && (
+                {/* Payment method selector — hidden when Stripe is the active gateway (card only) */}
+                {activeGateway !== "stripe" && cardEnabled && (
                   <div className="space-y-2">
                     <label className="text-xs font-semibold text-muted-foreground block">Forma de pagamento</label>
                     <div className="grid grid-cols-2 gap-2">
@@ -916,7 +982,29 @@ export default function CheckoutPage() {
                   <div className="bg-destructive/10 text-destructive text-xs font-medium rounded-lg p-3 text-center">{paymentError}</div>
                 )}
 
-                {isPix && (
+                {activeGateway === "stripe" && (
+                  <div className="space-y-3">
+                    <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 flex items-center gap-2">
+                      <Lock size={14} className="text-primary" />
+                      <span className="text-xs font-medium text-foreground">
+                        Pagamento 100% seguro processado pela Stripe — aceitamos todas as bandeiras de cartão.
+                      </span>
+                    </div>
+                    <Button
+                      onClick={handleStripeCheckout}
+                      disabled={generating}
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
+                    >
+                      {generating ? (
+                        <><Loader2 size={16} className="animate-spin mr-2" /> Redirecionando...</>
+                      ) : (
+                        <><CreditCard size={16} className="mr-2" /> Pagar {formatPrice(total)} com Stripe</>
+                      )}
+                    </Button>
+                  </div>
+                )}
+
+                {activeGateway !== "stripe" && isPix && (
                   <Button
                     onClick={handleGeneratePix}
                     disabled={generating}
@@ -930,7 +1018,7 @@ export default function CheckoutPage() {
                   </Button>
                 )}
 
-                {paymentMethod === "card" && (
+                {activeGateway !== "stripe" && paymentMethod === "card" && (
                   <div className="space-y-3">
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1 block">Número do cartão *</label>
