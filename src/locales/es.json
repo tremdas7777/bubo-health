@@ -370,7 +370,12 @@
   "delivery": {
     "payment": "Pago",
     "orderReady": "Pedido listo",
-    "delivered": "Entregado"
+    "shipped": "Enviado",
+    "inTransit": "En tránsito",
+    "delivered": "Entregado",
+    "in24h": "En 24h",
+    "expressTitle": "Envío Express Mundial",
+    "freeShipping": "Envío Gratis"
   },
   "footerExtras": {
     "businessAddress": "Tienda mundial",
