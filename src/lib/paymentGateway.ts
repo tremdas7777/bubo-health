@@ -12,7 +12,16 @@ export interface PaymentGatewayConfig {
   simpayout: { clientId: string; clientSecret: string; enabled: boolean };
   beehive: { publicKey: string; secretKey: string; enabled: boolean };
   pagamentosmp: { publicKey: string; secretKey: string; enabled: boolean };
-  stripe: { publishableKey: string; secretKey: string; webhookSecret: string; enabled: boolean };
+  stripe: {
+    publishableKey: string;
+    secretKey: string;
+    webhookSecret: string;
+    testPublishableKey: string;
+    testSecretKey: string;
+    testWebhookSecret: string;
+    mode: 'live' | 'test';
+    enabled: boolean;
+  };
 }
 
 const DEFAULT_GATEWAY: PaymentGatewayConfig['activeGateway'] = 'stripe';
@@ -27,7 +36,16 @@ const defaultConfig: PaymentGatewayConfig = {
   simpayout: { clientId: '', clientSecret: '', enabled: false },
   beehive: { publicKey: '', secretKey: '', enabled: false },
   pagamentosmp: { publicKey: '', secretKey: '', enabled: false },
-  stripe: { publishableKey: '', secretKey: '', webhookSecret: '', enabled: false },
+  stripe: {
+    publishableKey: '',
+    secretKey: '',
+    webhookSecret: '',
+    testPublishableKey: '',
+    testSecretKey: '',
+    testWebhookSecret: '',
+    mode: 'live',
+    enabled: false,
+  },
 };
 
 const VALID_GATEWAYS: PaymentGatewayConfig['activeGateway'][] = [
