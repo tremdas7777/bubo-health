@@ -485,14 +485,14 @@ export default function ProductDetailPage() {
 
               {!isKitProduct && (
                 <Button onClick={handleAddToCart} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
-                  Adicionar ao Carrinho
+                  {t("productPage.addToCart")}
                 </Button>
               )}
             </div>
 
             {/* Buy Now Button */}
             <Button onClick={handleBuyNow} className="w-full py-6 text-sm font-bold uppercase tracking-wider animate-pulse hover:animate-none">
-              Comprar Agora
+              {t("productPage.buyNow")}
             </Button>
 
             <div className="flex items-start gap-3 rounded-lg border border-border bg-card p-4">
@@ -501,11 +501,11 @@ export default function ProductDetailPage() {
               </div>
               <div>
                 <p className="text-sm">
-                  <strong className="text-foreground">{formatPrice(pixPrice)}</strong> <span className="text-muted-foreground">no pix</span>{" "}
-                  <span className="rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">{PIX_DISCOUNT_PERCENT}% de desconto</span>
+                  <strong className="text-foreground">{formatPrice(pixPrice)}</strong> <span className="text-muted-foreground">{t("productPage.pixLabel")}</span>{" "}
+                  <span className="rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">{t("productPage.pixDiscount", { percent: PIX_DISCOUNT_PERCENT })}</span>
                 </p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Pague com <strong>PIX</strong> e economize {formatPrice(getPixSavings(product.price))}
+                  <Trans i18nKey="productPage.pixSavings" values={{ value: formatPrice(getPixSavings(product.price)) }} components={{ strong: <strong /> }} />
                 </p>
               </div>
             </div>
@@ -514,9 +514,9 @@ export default function ProductDetailPage() {
             <div className="flex items-start gap-3 rounded-lg border-2 border-lime/50 bg-lime/5 p-4">
               <ShieldCheck size={28} className="mt-0.5 shrink-0 text-primary" />
               <div>
-                <p className="text-sm font-semibold text-foreground">Garantia de 30 Dias</p>
+                <p className="text-sm font-semibold text-foreground">{t("productPage.guaranteeTitle")}</p>
                 <p className="text-xs text-muted-foreground">
-                  Se não ficar satisfeito, devolvemos seu dinheiro. Sem burocracia.
+                  {t("productPage.guaranteeDesc")}
                 </p>
               </div>
             </div>
@@ -525,10 +525,10 @@ export default function ProductDetailPage() {
               <Truck size={24} className="mt-0.5 shrink-0 text-primary" />
               <div>
                 <p className="text-sm">
-                  <span className="font-semibold text-primary">Frete Grátis</span>{" "}
-                  <span className="text-muted-foreground">Enviado por Correios de 3 a 11 dias úteis</span>
+                  <span className="font-semibold text-primary">{t("productPage.freeShipping")}</span>{" "}
+                  <span className="text-muted-foreground">{t("productPage.freeShippingDesc")}</span>
                 </p>
-                <p className="text-xs text-muted-foreground">para sua cidade, UF e Região</p>
+                <p className="text-xs text-muted-foreground">{t("productPage.freeShippingArea")}</p>
               </div>
             </div>
 
@@ -536,7 +536,7 @@ export default function ProductDetailPage() {
 
             <div className="space-y-3 pt-2 text-center">
               <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                <Shield size={14} /> Pagamento Seguro e Rápido
+                <Shield size={14} /> {t("productPage.securePayment")}
               </div>
               <div className="flex flex-wrap items-center justify-center gap-2">
                 {["Mastercard", "Visa", "Elo", "Maestro", "Amex", "Diners", "Pix"].map((method) => (
@@ -553,11 +553,11 @@ export default function ProductDetailPage() {
 
         {/* Bullet Points Description */}
         <div className="mx-auto mt-12 max-w-3xl border-t border-border pt-8">
-          <h3 className="mb-4 text-lg font-heading font-semibold">Descrição do Produto</h3>
+          <h3 className="mb-4 text-lg font-heading font-semibold">{t("productPage.productDescription")}</h3>
           {bullets ? (
             <div className="space-y-3">
               <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-                Kit Profissional completo para Refrigeração e Ar Condicionado — tudo que você precisa em uma única maleta:
+                {t("productPage.kitIntro")}
               </p>
               <ul className="space-y-3">
                 {bullets.map((item, i) => {
@@ -575,7 +575,7 @@ export default function ProductDetailPage() {
               <div className="mt-4 flex items-center gap-2 rounded-lg bg-lime/10 p-3">
                 <CheckCircle2 size={18} className="shrink-0 text-primary" />
                 <p className="text-sm font-medium text-foreground">
-                  Bivolt 110/220V — 18 kg de ferramentas profissionais prontas para uso
+                  {t("productPage.kitFooter")}
                 </p>
               </div>
             </div>
@@ -593,7 +593,7 @@ export default function ProductDetailPage() {
         <div className="mx-auto mt-12 max-w-3xl border-t border-border pt-8">
           <h3 className="mb-6 flex items-center gap-2 text-lg font-heading font-semibold">
             <Star size={20} className="fill-yellow-400 text-yellow-400" />
-            Avaliações de Clientes
+            {t("productPage.customerReviews")}
           </h3>
           <ProductReviews productSlug={product.slug} productId={product.id} />
         </div>
@@ -602,14 +602,14 @@ export default function ProductDetailPage() {
         <div className="mx-auto mt-12 max-w-3xl border-t border-border pt-8">
           <h3 className="mb-4 flex items-center gap-2 text-lg font-heading font-semibold">
             <HelpCircle size={20} className="text-primary" />
-            Perguntas Frequentes
+            {t("productPage.faqTitle")}
           </h3>
           <ProductFAQ productName={product.name} productDescription={product.description || ""} />
         </div>
 
         {relatedProducts.length > 0 && (
           <div className="mt-12 border-t border-border pt-8">
-            <h3 className="mb-6 text-center text-xl font-heading font-semibold">Produtos Relacionados</h3>
+            <h3 className="mb-6 text-center text-xl font-heading font-semibold">{t("productPage.relatedProducts")}</h3>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {relatedProducts.map((relatedProduct) => (
                 <ProductCard key={relatedProduct.id} product={relatedProduct} />
