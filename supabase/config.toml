@@ -2,3 +2,6 @@ project_id = "skdwgsrckqiqeydlmndj"
 
 [functions.stripe-webhook]
 verify_jwt = false
+
+[functions.translate-texts]
+verify_jwt = false
