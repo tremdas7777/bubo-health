@@ -1574,32 +1574,67 @@ export default function Admin() {
               <StatusMessage msg={gatewayMessage} />
             </Card>
 
+            <Card className="mt-3 mb-2 border-primary/30 bg-primary/5 p-3">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-black text-foreground">
+                    Modo Stripe: {gatewayConfig.stripe.mode === "test" ? "🧪 TEST (sandbox)" : "🟢 LIVE (produção)"}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground">
+                    {gatewayConfig.stripe.mode === "test"
+                      ? "Use cartões de teste (4242...). Nenhum dinheiro real é cobrado."
+                      : "Cobranças reais. Use chaves sk_live_ e pk_live_."}
+                  </p>
+                </div>
+                <select
+                  value={gatewayConfig.stripe.mode}
+                  onChange={(e) =>
+                    setGatewayConfig((current) => ({
+                      ...current,
+                      stripe: { ...current.stripe, mode: e.target.value as "live" | "test" },
+                    }))
+                  }
+                  className="rounded-md border border-border bg-background px-2 py-1 text-xs font-bold"
+                >
+                  <option value="live">LIVE</option>
+                  <option value="test">TEST</option>
+                </select>
+              </div>
+              <Button
+                size="sm"
+                className="mt-3 w-full bg-primary text-xs font-bold text-primary-foreground"
+                onClick={() => void persistGateway(`Modo Stripe alterado para ${gatewayConfig.stripe.mode.toUpperCase()}!`)}
+              >
+                <Save size={12} className="mr-1" /> Salvar Modo
+              </Button>
+            </Card>
+
             <GatewayCard
-              title="Stripe"
-              isActive={gatewayConfig.activeGateway === "stripe"}
+              title="Stripe — Chaves LIVE (produção)"
+              isActive={gatewayConfig.activeGateway === "stripe" && gatewayConfig.stripe.mode === "live"}
               fields={[
                 {
-                  label: "Chave Publicável (Publishable Key)",
+                  label: "Chave Publicável LIVE (Publishable Key)",
                   value: gatewayConfig.stripe.publishableKey,
                   onChange: (value) => setGatewayConfig((current) => ({ ...current, stripe: { ...current.stripe, publishableKey: value } })),
                   placeholder: "pk_live_...",
                 },
                 {
-                  label: "Chave Secreta (Secret Key)",
+                  label: "Chave Secreta LIVE (Secret Key)",
                   value: gatewayConfig.stripe.secretKey,
                   onChange: (value) => setGatewayConfig((current) => ({ ...current, stripe: { ...current.stripe, secretKey: value } })),
                   placeholder: "sk_live_...",
                   secret: true,
                 },
                 {
-                  label: "Webhook Signing Secret (opcional, recomendado)",
+                  label: "Webhook Signing Secret LIVE",
                   value: gatewayConfig.stripe.webhookSecret,
                   onChange: (value) => setGatewayConfig((current) => ({ ...current, stripe: { ...current.stripe, webhookSecret: value } })),
                   placeholder: "whsec_...",
                   secret: true,
                 },
               ]}
-              onSave={() => void persistGateway("Stripe salvo!")}
+              onSave={() => void persistGateway("Chaves LIVE salvas!")}
               onTest={() => {
                 flashMessage(setGatewayMessage, "ℹ️ Teste o Stripe fazendo uma compra real no checkout (modo live).", 6000);
               }}
@@ -1609,12 +1644,48 @@ export default function Admin() {
               onPaymentMethodChange={handlePaymentMethodChange}
             />
 
+            <GatewayCard
+              title="Stripe — Chaves TEST (sandbox)"
+              isActive={gatewayConfig.activeGateway === "stripe" && gatewayConfig.stripe.mode === "test"}
+              fields={[
+                {
+                  label: "Chave Publicável TEST",
+                  value: gatewayConfig.stripe.testPublishableKey,
+                  onChange: (value) => setGatewayConfig((current) => ({ ...current, stripe: { ...current.stripe, testPublishableKey: value } })),
+                  placeholder: "pk_test_...",
+                },
+                {
+                  label: "Chave Secreta TEST",
+                  value: gatewayConfig.stripe.testSecretKey,
+                  onChange: (value) => setGatewayConfig((current) => ({ ...current, stripe: { ...current.stripe, testSecretKey: value } })),
+                  placeholder: "sk_test_...",
+                  secret: true,
+                },
+                {
+                  label: "Webhook Signing Secret TEST",
+                  value: gatewayConfig.stripe.testWebhookSecret,
+                  onChange: (value) => setGatewayConfig((current) => ({ ...current, stripe: { ...current.stripe, testWebhookSecret: value } })),
+                  placeholder: "whsec_...",
+                  secret: true,
+                },
+              ]}
+              onSave={() => void persistGateway("Chaves TEST salvas!")}
+              onTest={() => {
+                flashMessage(setGatewayMessage, "ℹ️ Em modo TEST use o cartão 4242 4242 4242 4242 (qualquer validade futura e CVV).", 8000);
+              }}
+              testing={gatewayTesting}
+              gatewayKey="stripe"
+              paymentMethods={gatewayConfig.paymentMethods.stripe || "card"}
+              onPaymentMethodChange={handlePaymentMethodChange}
+            />
+
             <div className="mt-2 mb-4 rounded-md border border-border bg-muted/30 p-3 text-[11px] text-muted-foreground">
-              <p className="font-bold text-foreground mb-1">📌 Webhook URL para configurar no Stripe Dashboard:</p>
+              <p className="font-bold text-foreground mb-1">📌 Webhook URL para configurar no Stripe Dashboard (LIVE e TEST):</p>
               <code className="block break-all rounded bg-background px-2 py-1 text-[10px]">
                 https://skdwgsrckqiqeydlmndj.supabase.co/functions/v1/stripe-webhook
               </code>
-              <p className="mt-2">Eventos: <strong>checkout.session.completed</strong>, <strong>checkout.session.async_payment_succeeded</strong>, <strong>checkout.session.async_payment_failed</strong>, <strong>checkout.session.expired</strong></p>
+              <p className="mt-2">Cadastre o mesmo endpoint nos dois ambientes (Live e Test) do Stripe e cole cada whsec_ no campo correspondente acima. O sistema detecta automaticamente qual chave usar.</p>
+              <p className="mt-1">Eventos: <strong>checkout.session.completed</strong>, <strong>checkout.session.async_payment_succeeded</strong>, <strong>checkout.session.async_payment_failed</strong>, <strong>checkout.session.expired</strong></p>
             </div>
 
             <GatewayCard
