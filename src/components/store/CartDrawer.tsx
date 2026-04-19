@@ -76,9 +76,6 @@ export default function CartDrawer() {
               <span>{t("cart.total")}</span>
               <span className="text-primary">{formatPrice(totalPrice)}</span>
             </div>
-            <p className="text-xs text-muted-foreground text-center">
-              {t("cart.installmentsHint", { value: formatPrice(Math.round(totalPrice / 12)) })}
-            </p>
             <Button
               onClick={() => { setIsOpen(false); navigate("/checkout"); }}
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6"
