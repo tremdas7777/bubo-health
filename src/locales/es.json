@@ -526,5 +526,14 @@
       "cta": "Ver belleza",
       "alt": "Belleza y decoración del hogar sobre mármol"
     }
+  },
+  "collections": {
+    "homeKitchen": "Hogar y Cocina",
+    "electronics": "Electrónicos",
+    "sports": "Deportes",
+    "tools": "Herramientas",
+    "fitness": "Fitness",
+    "fishing": "Pesca",
+    "healthBeauty": "Salud y Belleza"
   }
 }

@@ -526,5 +526,14 @@
       "cta": "Shop beauty",
       "alt": "Beauty and home decor on marble"
     }
+  },
+  "collections": {
+    "homeKitchen": "Home & Kitchen",
+    "electronics": "Electronics",
+    "sports": "Sports",
+    "tools": "Tools",
+    "fitness": "Fitness",
+    "fishing": "Fishing",
+    "healthBeauty": "Health & Beauty"
   }
 }
