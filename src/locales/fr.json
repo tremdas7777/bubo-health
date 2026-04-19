@@ -702,7 +702,8 @@
     "faqTitle": "Questions Fréquentes",
     "relatedProducts": "Produits Similaires",
     "kitLabel2for3": "🎁 ACHETEZ 2, OBTENEZ 3 — Choisissez les couleurs et tailles de vos 3 chemises",
-    "kitLabel5polos": "🎁 KIT DE 5 POLOS — Choisissez la couleur et la taille de chacune des 5 chemises"
+    "kitLabel5polos": "🎁 KIT DE 5 POLOS — Choisissez la couleur et la taille de chacune des 5 chemises",
+    "perUnit": "par unité"
   },
   "bundle": {
     "units_one": "{{count}} unité",

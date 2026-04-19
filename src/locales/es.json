@@ -702,7 +702,8 @@
     "faqTitle": "Preguntas Frecuentes",
     "relatedProducts": "Productos Relacionados",
     "kitLabel2for3": "🎁 COMPRA 2, LLEVA 3 — Elige los colores y tallas de tus 3 camisas",
-    "kitLabel5polos": "🎁 KIT DE 5 POLOS — Elige el color y la talla de cada una de las 5 camisas"
+    "kitLabel5polos": "🎁 KIT DE 5 POLOS — Elige el color y la talla de cada una de las 5 camisas",
+    "perUnit": "por unidad"
   },
   "bundle": {
     "units_one": "{{count}} unidad",
