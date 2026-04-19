@@ -5,7 +5,6 @@ export default function AnnouncementBar() {
   const messages = [
     t("announcement.welcome"),
     t("announcement.freeShipping"),
-    t("announcement.installments"),
   ];
   const repeated = [...messages, ...messages, ...messages, ...messages, ...messages, ...messages];
 

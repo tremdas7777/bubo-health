@@ -13,7 +13,7 @@ import { notifyUtmifyServerSide } from "@/lib/utmifyManager";
 import { getCampaignParams } from "@/lib/campaignParams";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getTotalWithInterest, getInstallmentValue } from "@/lib/pricing";
+// installments removed
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { detectVisitorLocale, getTaxIdLabel, supportsInstallments } from "@/lib/checkoutLocale";
 import PhoneCountryInput from "@/components/store/PhoneCountryInput";
@@ -81,7 +81,6 @@ export default function CheckoutPage() {
 
   // Auto-detected country from IP (default = "us" until detection completes)
   const [country, setCountry] = useState<string>("us");
-  const showInstallments = supportsInstallments(country, i18n.language);
   const taxIdLabel = getTaxIdLabel(country);
 
   // Form fields
@@ -111,7 +110,7 @@ export default function CheckoutPage() {
   const [cardHolder, setCardHolder] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
-  const [installments, setInstallments] = useState(1);
+  const installments = 1; // installments removed — pay in full only
 
   // Live checkout tracking
   const [draftOrderId, setDraftOrderId] = useState<string>("");
@@ -304,7 +303,7 @@ export default function CheckoutPage() {
       });
 
       const bodyBase: Record<string, unknown> = {
-        amount: getTotalWithInterest(total, installments),
+        amount: total,
         buyerName: name, buyerEmail: email,
         buyerDocument: taxId.replace(/\D/g, "") || "00000000000",
         buyerPhone: phone.replace(/\D/g, ""),
@@ -682,26 +681,7 @@ export default function CheckoutPage() {
                         <Input value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="123" inputMode="numeric" />
                       </div>
                     </div>
-                    {showInstallments && (
-                      <div>
-                        <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.installments")} *</label>
-                        <Select value={String(installments)} onValueChange={(v) => setInstallments(Number(v))}>
-                          <SelectTrigger><SelectValue /></SelectTrigger>
-                          <SelectContent>
-                            {Array.from({ length: 6 }, (_, i) => i + 1).map((n) => {
-                              const installmentVal = getInstallmentValue(total, n);
-                              const totalWithInterest = getTotalWithInterest(total, n);
-                              const hasInterest = n > 1;
-                              return (
-                                <SelectItem key={n} value={String(n)}>
-                                  {n}x {formatPrice(installmentVal)} {hasInterest ? `(${formatPrice(totalWithInterest)})` : `(${t("checkout.inFull")})`}
-                                </SelectItem>
-                              );
-                            })}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    )}
+                    {/* Installments removed — pay in full only */}
                     <Button
                       onClick={handleCardPayment}
                       disabled={generating}

@@ -351,7 +351,7 @@ export default function ProductDetailPage() {
                   {formatPrice(activeBundle.perUnitCents / 100)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
                 </p>
               )}
-              <p className="text-sm text-muted-foreground">{t("productPage.installmentsIn", { count: 6, value: formatPrice(activePrice / 6) })}</p>
+              
             </div>
 
             {/* Bundle selector (1 / 2 / 3 unidades) */}
