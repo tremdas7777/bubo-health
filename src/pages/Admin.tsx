@@ -127,7 +127,7 @@ const INITIAL_PIXEL_CONFIG: PixelConfig = {
 };
 
 const INITIAL_GATEWAY_CONFIG: PaymentGatewayConfig = {
-  activeGateway: "beehive",
+  activeGateway: "stripe",
   paymentMethods: {},
   pagouai: { publicKey: "", secretKey: "", enabled: false },
   vennox: { secretKey: "", companyId: "", enabled: false },
@@ -136,6 +136,7 @@ const INITIAL_GATEWAY_CONFIG: PaymentGatewayConfig = {
   simpayout: { clientId: "", clientSecret: "", enabled: false },
   beehive: { publicKey: "", secretKey: "", enabled: false },
   pagamentosmp: { publicKey: "", secretKey: "", enabled: false },
+  stripe: { publishableKey: "", secretKey: "", webhookSecret: "", enabled: false },
 };
 
 const SUCCESS_HINTS = ["sucesso", "enviado", "ativado", "ok", "válido", "salva", "aprovado", "funcionando"];
@@ -148,6 +149,7 @@ const GATEWAY_LABELS: Record<PaymentGatewayConfig["activeGateway"], string> = {
   simpayout: "Sim Payout",
   beehive: "Beehive",
   pagamentosmp: "MP Pagamentos",
+  stripe: "Stripe",
 };
 
 const GATEWAY_TEST_FUNCTIONS: Partial<Record<PaymentGatewayConfig["activeGateway"], string>> = {
