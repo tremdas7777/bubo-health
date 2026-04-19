@@ -145,8 +145,16 @@ export default function ProductDetailPage() {
     );
   }
 
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
-  const pixPrice = getPixPrice(product.price);
+  // Bundle-aware pricing — when product has bundles, use selected bundle's price
+  const activeBundle = product.bundles && product.bundles.length > 0 ? product.bundles[selectedBundle] : null;
+  const activePrice = activeBundle ? activeBundle.priceCents / 100 : product.price;
+  const activeCompareAt = activeBundle?.originalPriceCents
+    ? activeBundle.originalPriceCents / 100
+    : product.compareAtPrice;
+  const hasDiscount = activeCompareAt && activeCompareAt > activePrice;
+  const pixPrice = getPixPrice(activePrice);
+  // Currency-aware formatter — accepts decimal units (e.g. 31.00) and shows in active currency
+  const formatPrice = (decimal: number) => fmt(Math.round(decimal * 100));
   const relatedProducts = filterByCategory(products, product.category).filter((p) => p.id !== product.id).slice(0, 4);
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
   const bullets = productBulletPoints[product.slug];
