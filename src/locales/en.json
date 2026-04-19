@@ -370,7 +370,12 @@
   "delivery": {
     "payment": "Payment",
     "orderReady": "Order ready",
-    "delivered": "Delivered"
+    "shipped": "Shipped",
+    "inTransit": "In transit",
+    "delivered": "Delivered",
+    "in24h": "In 24h",
+    "expressTitle": "Express Worldwide Shipping",
+    "freeShipping": "Free Shipping"
   },
   "footerExtras": {
     "businessAddress": "Worldwide store",
