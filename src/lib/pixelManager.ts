@@ -110,9 +110,13 @@ export async function savePixelConfig(config: PixelConfig) {
   cachedConfig = config; configLoaded = true;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
   try {
-    const { data: existing } = await supabase.from('pixel_config').select('id').limit(1).single();
-    if (existing) { await supabase.from('pixel_config').update({ config: config as any, updated_at: new Date().toISOString() }).eq('id', (existing as any).id); }
-    else { await supabase.from('pixel_config').insert({ config: config as any }); }
+    const { adminWrite } = await import('@/lib/adminApi');
+    const { data: existing } = await supabase.from('pixel_config').select('id').limit(1).maybeSingle();
+    if (existing) {
+      await adminWrite({ table: 'pixel_config', op: 'update', payload: { config: config as any, updated_at: new Date().toISOString() }, match: { id: (existing as any).id } });
+    } else {
+      await adminWrite({ table: 'pixel_config', op: 'insert', payload: { config: config as any } });
+    }
   } catch (err) { console.error('[Pixels] Failed to save to DB:', err); }
   injectPixels(config);
 }

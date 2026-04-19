@@ -25,15 +25,19 @@ export function saveWebhookConfig(config: WebhookConfig) {
 }
 
 export async function syncWebhooksToDb(config: WebhookConfig) {
-  const currentIds = config.webhooks.filter(w => w.url?.trim()).map(w => w.id);
-  if (currentIds.length > 0) {
-    await supabase.from('webhook_endpoints').delete().not('id', 'in', `(${currentIds.join(',')})`);
+  const { adminWrite } = await import('@/lib/adminApi');
+  const validRows = config.webhooks.filter(w => w.url?.trim()).map(w => ({
+    id: w.id, url: w.url, events: w.events, active: true,
+  }));
+  // Fetch existing rows then delete those not in current set
+  const { data: existing } = await supabase.from('webhook_endpoints').select('id');
+  const validIds = new Set(validRows.map(r => r.id));
+  const toDelete = (existing || []).filter((r: any) => !validIds.has(r.id));
+  for (const row of toDelete) {
+    await adminWrite({ table: 'webhook_endpoints', op: 'delete', match: { id: (row as any).id } });
   }
-  if (config.webhooks.length > 0) {
-    const rows = config.webhooks.filter(w => w.url?.trim()).map(w => ({ id: w.id, url: w.url, events: w.events, active: true }));
-    if (rows.length > 0) {
-      await supabase.from('webhook_endpoints').upsert(rows, { onConflict: 'id' });
-    }
+  if (validRows.length > 0) {
+    await adminWrite({ table: 'webhook_endpoints', op: 'upsert', payload: validRows });
   }
 }
 
