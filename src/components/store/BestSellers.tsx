@@ -1,20 +1,20 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { TrendingUp } from "lucide-react";
-import { formatPrice, getInstallmentPrice } from "@/data/store";
+import { useTranslation } from "react-i18next";
 import { useCart } from "@/contexts/CartContext";
+import { useCurrency } from "@/contexts/LocalizationContext";
 import { useDbProducts } from "@/hooks/useProducts";
 import type { Product } from "@/data/store";
 
 export default memo(function BestSellers() {
+  const { t } = useTranslation();
   const { data: allProducts = [] } = useDbProducts();
   const { addItem } = useCart();
+  const { formatPrice } = useCurrency();
 
-  // Curated best sellers
-  const bestSellerSlugs = ["kit-ferramentas-refrigeracao", "maquina-solda-laser-portatil", "mini-motosserra", "parafusadeira-furadeira-48v-2-baterias-maleta-acessorios"];
-  const bestSellers = bestSellerSlugs
-    .map((slug) => allProducts.find((p) => p.slug === slug))
-    .filter(Boolean) as Product[];
+  // Pick top featured / first 4 products as "best sellers"
+  const bestSellers = allProducts.slice(0, 4);
 
   if (bestSellers.length === 0) return null;
 
@@ -24,13 +24,13 @@ export default memo(function BestSellers() {
         <div className="flex items-center justify-center gap-2 mb-8">
           <TrendingUp size={22} className="text-primary" />
           <h2 className="text-xl md:text-2xl font-heading font-semibold text-center">
-            Mais Vendidos
+            {t("home.bestSellers")}
           </h2>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-w-[1000px] mx-auto">
           {bestSellers.map((product) => (
-            <BestSellerCard key={product.id} product={product} addItem={addItem} />
+            <BestSellerCard key={product.id} product={product} addItem={addItem} formatPrice={formatPrice} addLabel={t("product.addToCart")} stockLeftLabel={t("product.lastUnits", { count: product.stock })} />
           ))}
         </div>
       </div>
@@ -38,7 +38,7 @@ export default memo(function BestSellers() {
   );
 });
 
-function BestSellerCard({ product, addItem }: { product: Product; addItem: (p: any) => void }) {
+function BestSellerCard({ product, addItem, formatPrice, addLabel, stockLeftLabel }: { product: Product; addItem: (p: any) => void; formatPrice: (cents: number) => string; addLabel: string; stockLeftLabel: string }) {
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
@@ -63,7 +63,7 @@ function BestSellerCard({ product, addItem }: { product: Product; addItem: (p: a
         )}
         {product.stock <= 10 && (
           <span className="absolute bottom-2 left-2 bg-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full animate-pulse">
-            Restam {product.stock}!
+            {stockLeftLabel}
           </span>
         )}
       </Link>
@@ -82,15 +82,12 @@ function BestSellerCard({ product, addItem }: { product: Product; addItem: (p: a
               </span>
             )}
           </div>
-          <p className="text-[10px] text-muted-foreground">
-            em até <strong>6x</strong> de <strong>{getInstallmentPrice(product.price, 6)}</strong>
-          </p>
         </div>
         <button
           onClick={() => addItem(product)}
           className="w-full mt-1.5 bg-primary hover:bg-primary/90 text-primary-foreground text-[11px] font-medium rounded py-2 transition-colors"
         >
-          Adicionar ao carrinho
+          {addLabel}
         </button>
       </div>
     </div>

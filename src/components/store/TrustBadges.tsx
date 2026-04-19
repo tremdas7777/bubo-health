@@ -1,13 +1,15 @@
 import { Truck, CreditCard, Shield, Headphones } from "lucide-react";
-
-const badges = [
-  { icon: Truck, title: "Frete Grátis", desc: "Frete Grátis para todo o Brasil!" },
-  { icon: CreditCard, title: "Pagamento Facilitado", desc: "Parcele suas compras em até 6x no cartão" },
-  { icon: Shield, title: "Pagamento Seguro", desc: "Ambiente Seguro para compras online" },
-  { icon: Headphones, title: "Suporte", desc: "Atendimento de Segunda a Sexta das 08h às 18h" },
-];
+import { useTranslation } from "react-i18next";
 
 export default function TrustBadges() {
+  const { t } = useTranslation();
+  const badges = [
+    { icon: Truck, title: t("home.trust.shipping"), desc: t("home.trust.shippingDesc") },
+    { icon: CreditCard, title: t("home.trust.installments"), desc: t("home.trust.installmentsDesc") },
+    { icon: Shield, title: t("home.trust.secure"), desc: t("home.trust.secureDesc") },
+    { icon: Headphones, title: t("home.trust.support"), desc: t("home.trust.supportDesc") },
+  ];
+
   return (
     <section className="py-10 border-t border-border">
       <div className="container mx-auto px-4">
