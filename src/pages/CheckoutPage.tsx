@@ -682,26 +682,7 @@ export default function CheckoutPage() {
                         <Input value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="123" inputMode="numeric" />
                       </div>
                     </div>
-                    {showInstallments && (
-                      <div>
-                        <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.installments")} *</label>
-                        <Select value={String(installments)} onValueChange={(v) => setInstallments(Number(v))}>
-                          <SelectTrigger><SelectValue /></SelectTrigger>
-                          <SelectContent>
-                            {Array.from({ length: 6 }, (_, i) => i + 1).map((n) => {
-                              const installmentVal = getInstallmentValue(total, n);
-                              const totalWithInterest = getTotalWithInterest(total, n);
-                              const hasInterest = n > 1;
-                              return (
-                                <SelectItem key={n} value={String(n)}>
-                                  {n}x {formatPrice(installmentVal)} {hasInterest ? `(${formatPrice(totalWithInterest)})` : `(${t("checkout.inFull")})`}
-                                </SelectItem>
-                              );
-                            })}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    )}
+                    {/* Installments removed — pay in full only */}
                     <Button
                       onClick={handleCardPayment}
                       disabled={generating}
