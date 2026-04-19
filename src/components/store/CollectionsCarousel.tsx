@@ -1,9 +1,11 @@
 import { useRef, memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useDbCollections, useDbProducts } from "@/hooks/useProducts";
 
 export default memo(function CollectionsCarousel() {
+  const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const { data: collections = [] } = useDbCollections();
   const { data: products = [] } = useDbProducts();
@@ -26,14 +28,14 @@ export default memo(function CollectionsCarousel() {
     <section className="py-10 md:py-14">
       <div className="container mx-auto px-4">
         <h2 className="text-xl md:text-2xl lg:text-3xl font-heading font-semibold text-center mb-8">
-          Nossas Coleções
+          {t("home.collections")}
         </h2>
 
         <div className="relative group/nav">
           <button
             onClick={() => scroll("left")}
             className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 bg-background/90 border border-border rounded-full p-1.5 shadow-md opacity-0 group-hover/nav:opacity-100 transition-opacity hidden md:flex"
-            aria-label="Anterior"
+            aria-label={t("common.previous")}
           >
             <ChevronLeft size={18} />
           </button>
@@ -80,7 +82,7 @@ export default memo(function CollectionsCarousel() {
           <button
             onClick={() => scroll("right")}
             className="absolute -right-2 top-1/2 -translate-y-1/2 z-10 bg-background/90 border border-border rounded-full p-1.5 shadow-md opacity-0 group-hover/nav:opacity-100 transition-opacity hidden md:flex"
-            aria-label="Próximo"
+            aria-label={t("common.next")}
           >
             <ChevronRight size={18} />
           </button>
