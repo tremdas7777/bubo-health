@@ -10,6 +10,16 @@ export default memo(function CollectionsCarousel() {
   const { data: collections = [] } = useDbCollections();
   const { data: products = [] } = useDbProducts();
 
+  const COLLECTION_I18N: Record<string, string> = {
+    "home-kitchen": t("collections.homeKitchen"),
+    "electronics": t("collections.electronics"),
+    "sports": t("collections.sports"),
+    "tools": t("collections.tools"),
+    "fitness": t("collections.fitness"),
+    "fishing": t("collections.fishing"),
+    "health-beauty": t("collections.healthBeauty"),
+  };
+
   const fallbackImages: Record<string, string> = {};
   for (const p of products) {
     if (p.category && !fallbackImages[p.category] && p.image) {
@@ -59,7 +69,7 @@ export default memo(function CollectionsCarousel() {
                   {(col.image || fallbackImages[col.slug]) && (
                     <img
                       src={col.image || fallbackImages[col.slug]}
-                      alt={col.name}
+                      alt={COLLECTION_I18N[col.slug] || col.name}
                       className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
                       loading="lazy"
                       decoding="async"
@@ -71,7 +81,7 @@ export default memo(function CollectionsCarousel() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-0 right-0 px-2">
                     <h3 className="text-white font-heading font-medium text-sm text-center drop-shadow-sm">
-                      {col.name}
+                      {COLLECTION_I18N[col.slug] || col.name}
                     </h3>
                   </div>
                 </div>

@@ -526,5 +526,14 @@
       "cta": "Voir la beauté",
       "alt": "Beauté et décoration sur marbre"
     }
+  },
+  "collections": {
+    "homeKitchen": "Maison et Cuisine",
+    "electronics": "Électronique",
+    "sports": "Sports",
+    "tools": "Outils",
+    "fitness": "Fitness",
+    "fishing": "Pêche",
+    "healthBeauty": "Santé et Beauté"
   }
 }

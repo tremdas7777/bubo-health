@@ -526,5 +526,14 @@
       "cta": "Ver beleza",
       "alt": "Beleza e decoração em mármore"
     }
+  },
+  "collections": {
+    "homeKitchen": "Casa e Cozinha",
+    "electronics": "Eletrônicos",
+    "sports": "Esportes",
+    "tools": "Ferramentas",
+    "fitness": "Fitness",
+    "fishing": "Pesca",
+    "healthBeauty": "Saúde e Beleza"
   }
 }
