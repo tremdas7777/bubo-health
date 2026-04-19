@@ -1,10 +1,10 @@
 # Project Memory
 
 ## Core
-Store: Kazoom (pt-BR). Base: versatto. Colors: Purple/Lime Green. Light mode default.
+Store: Kazoom INTERNACIONAL (EN/ES/PT/FR · USD/EUR/GBP/BRL). Base: versatto. Colors: Purple/Lime Green. Light mode default.
 Supabase (DB/Auth/Storage). RLS on all tables. Gateway keys protected via service_role.
 Gateway: SEMPRE Beehive — nunca trocar active_gateway sem ordem explícita.
-Pricing: 5% PIX discount, max 6x card (2.49% interest >1x).
+NUNCA usar PIX, R$ hardcoded, ou métodos brasileiros — loja é gringa. Checkout = só cartão. Preços em USD cents no DB; sempre via formatPrice do LocalizationContext.
 NO AI IMAGES. Professional real photos only for GMC compliance.
 No coupon field in checkout — user rejected this feature.
 
