@@ -13,7 +13,7 @@ import { notifyUtmifyServerSide } from "@/lib/utmifyManager";
 import { getCampaignParams } from "@/lib/campaignParams";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getTotalWithInterest, getInstallmentValue } from "@/lib/pricing";
+// installments removed
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { detectVisitorLocale, getTaxIdLabel, supportsInstallments } from "@/lib/checkoutLocale";
 import PhoneCountryInput from "@/components/store/PhoneCountryInput";
