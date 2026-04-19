@@ -14,7 +14,7 @@ import ProductReviews from "@/components/store/ProductReviews";
 import ProductFAQ from "@/components/store/ProductFAQ";
 import SizeGuideDialog from "@/components/store/SizeGuideDialog";
 import { formatPrice as formatBRL, getInstallmentPrice, getDiscountPercent } from "@/data/store";
-import { getPixPrice, getPixSavings, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
+// pix removed
 import { useCart } from "@/contexts/CartContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { trackEvent } from "@/lib/funnelTracking";
@@ -198,7 +198,7 @@ export default function ProductDetailPage() {
     ? activeBundle.originalPriceCents / 100
     : product.compareAtPrice;
   const hasDiscount = activeCompareAt && activeCompareAt > activePrice;
-  const pixPrice = getPixPrice(activePrice);
+  
   // Currency-aware formatter — accepts decimal units (e.g. 31.00) and shows in active currency
   const formatPrice = (decimal: number) => fmt(Math.round(decimal * 100));
   const relatedProducts = filterByCategory(products, product.category).filter((p) => p.id !== product.id).slice(0, 4);
