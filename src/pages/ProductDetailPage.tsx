@@ -1,5 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Minus, Plus, Truck, Shield, ShieldCheck, Package, Wrench, Gauge, Flame, Ruler, Zap, CircuitBoard, CheckCircle2, Star, HelpCircle, Gift } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -51,6 +52,7 @@ const productBulletPoints: Record<string, { icon: React.ElementType; text: strin
 };
 
 function ProductRatingSummary({ productId }: { productId: string }) {
+  const { t } = useTranslation();
   const [avg, setAvg] = useState(0);
   const [count, setCount] = useState(0);
 
@@ -78,12 +80,13 @@ function ProductRatingSummary({ productId }: { productId: string }) {
         ))}
       </div>
       <span className="text-sm font-medium">{avg.toFixed(1)}</span>
-      <span className="text-xs text-muted-foreground">({count} avaliações)</span>
+      <span className="text-xs text-muted-foreground">{t("productPage.reviewsCount", { count })}</span>
     </div>
   );
 }
 
 export default function ProductDetailPage() {
+  const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const { data: products = [], isLoading } = useDbProducts();
   const product = products.find((p) => p.slug === slug);
@@ -93,9 +96,9 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   // Kits: cliente escolhe cor + tamanho de cada peça do kit
-  const KIT_CONFIG: Record<string, { size: number; label: string }> = {
-    "polo-ducatti-antitranspirante": { size: 3, label: "🎁 COMPRE 2, LEVE 3 — Escolha as cores e tamanhos das suas 3 camisas" },
-    "camisa-polo-premium": { size: 5, label: "🎁 KIT COM 5 POLOS — Escolha a cor e o tamanho de cada uma das 5 camisas" },
+  const KIT_CONFIG: Record<string, { size: number; labelKey: string }> = {
+    "polo-ducatti-antitranspirante": { size: 3, labelKey: "productPage.kitLabel2for3" },
+    "camisa-polo-premium": { size: 5, labelKey: "productPage.kitLabel5polos" },
   };
   const kitConfig = product ? KIT_CONFIG[product.slug] : undefined;
   const isKitProduct = !!kitConfig;
@@ -122,7 +125,7 @@ export default function ProductDetailPage() {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-20 text-center">
-          <p className="text-muted-foreground">Carregando produto...</p>
+          <p className="text-muted-foreground">{t("productPage.loading")}</p>
         </div>
       </Layout>
     );
@@ -132,8 +135,8 @@ export default function ProductDetailPage() {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-20 text-center">
-          <h1 className="mb-4 text-2xl font-heading font-bold">Produto não encontrado</h1>
-          <Link to="/produtos" className="text-primary hover:underline">Ver todos os produtos</Link>
+          <h1 className="mb-4 text-2xl font-heading font-bold">{t("productPage.notFound")}</h1>
+          <Link to="/produtos" className="text-primary hover:underline">{t("productPage.viewAllProducts")}</Link>
         </div>
       </Layout>
     );
@@ -199,8 +202,8 @@ export default function ProductDetailPage() {
     const incompleteIdx = kitSelections.findIndex((s) => !s.color || !s.size);
     if (incompleteIdx !== -1) {
       toast({
-        title: `Complete a Camisa ${incompleteIdx + 1}`,
-        description: `Selecione cor e tamanho de todas as ${KIT_SIZE} camisas para continuar.`,
+        title: t("productPage.kitCompleteShirt", { n: incompleteIdx + 1 }),
+        description: t("productPage.kitCompleteDesc", { count: KIT_SIZE }),
         variant: "destructive",
       });
       setActiveKitSlot(incompleteIdx);
@@ -240,15 +243,15 @@ export default function ProductDetailPage() {
       <ProductJsonLd product={product} url={productUrl} />
       <BreadcrumbJsonLd
         items={[
-          { name: "Início", url: window.location.origin },
-          { name: "Produtos", url: `${window.location.origin}/produtos` },
+          { name: t("productPage.breadcrumbHome"), url: window.location.origin },
+          { name: t("productPage.breadcrumbProducts"), url: `${window.location.origin}/produtos` },
           { name: product.name, url: productUrl },
         ]}
       />
       <div className="container mx-auto px-4 py-6">
         <Breadcrumbs
           items={[
-            { label: "Produtos", href: "/produtos" },
+            { label: t("productPage.breadcrumbProducts"), href: "/produtos" },
             { label: product.name },
           ]}
         />
@@ -276,7 +279,7 @@ export default function ProductDetailPage() {
                   </span>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground">em até 6x de {getInstallmentPrice(product.price, 6)}</p>
+              <p className="text-sm text-muted-foreground">{t("productPage.installmentsIn", { count: 6, value: getInstallmentPrice(product.price, 6) })}</p>
             </div>
 
             {/* KIT mode: Compre 2 Leve 3 — 3 separate (color + size) selections */}
@@ -286,7 +289,7 @@ export default function ProductDetailPage() {
                   <div className="flex items-center gap-2">
                     <Gift size={18} className="text-primary" />
                     <p className="text-sm font-bold text-foreground">
-                      {kitConfig!.label}
+                      {t(kitConfig!.labelKey)}
                     </p>
                   </div>
                   <SizeGuideDialog />
@@ -308,7 +311,7 @@ export default function ProductDetailPage() {
                         className="mb-2 flex w-full items-center justify-between text-left"
                       >
                         <span className="text-sm font-semibold text-foreground">
-                          Camisa {idx + 1}
+                          {t("productPage.kitShirtLabel", { n: idx + 1 })}
                           {isComplete && (
                             <span className="ml-2 inline-flex items-center gap-1 text-xs font-normal text-primary">
                               <CheckCircle2 size={12} /> {slot.color} · {slot.size}
@@ -316,14 +319,14 @@ export default function ProductDetailPage() {
                           )}
                         </span>
                         <span className={`text-xs ${isComplete ? "text-primary" : "text-muted-foreground"}`}>
-                          {isComplete ? "✓ Completo" : isActive ? "Selecionando..." : "Toque para escolher"}
+                          {isComplete ? t("productPage.kitComplete") : isActive ? t("productPage.kitSelecting") : t("productPage.kitTapToChoose")}
                         </span>
                       </button>
 
                       {isActive && (
                         <div className="space-y-3 pt-1">
                           <div>
-                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">Cor</p>
+                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">{t("productPage.kitColor")}</p>
                             <div className="flex flex-wrap gap-1.5">
                               {product.colors.map((c) => (
                                 <button
@@ -331,7 +334,7 @@ export default function ProductDetailPage() {
                                   type="button"
                                   onClick={() => updateKitSlot(idx, { color: c.name })}
                                   title={c.name}
-                                  aria-label={`Cor ${c.name}`}
+                                  aria-label={t("productPage.kitColorAria", { name: c.name })}
                                   className={`relative h-8 w-8 rounded-full border-2 transition-all ${
                                     slot.color === c.name
                                       ? "border-primary ring-2 ring-primary/30 scale-110"
@@ -343,7 +346,7 @@ export default function ProductDetailPage() {
                             </div>
                           </div>
                           <div>
-                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">Tamanho</p>
+                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">{t("productPage.kitSize")}</p>
                             <div className="flex flex-wrap gap-1.5">
                               {product.sizes.map((s) => (
                                 <button
@@ -380,7 +383,7 @@ export default function ProductDetailPage() {
             {!isKitProduct && product.colors && product.colors.length > 0 && (
               <div className="space-y-2">
                 <p className="text-sm font-medium">
-                  Cor: <span className="font-normal text-muted-foreground">{selectedColor || "Selecione"}</span>
+                  {t("productPage.colorLabel")} <span className="font-normal text-muted-foreground">{selectedColor || t("productPage.selectPlaceholder")}</span>
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {product.colors.map((c) => (
@@ -389,7 +392,7 @@ export default function ProductDetailPage() {
                       type="button"
                       onClick={() => setSelectedColor(c.name)}
                       title={c.name}
-                      aria-label={`Cor ${c.name}`}
+                      aria-label={t("productPage.kitColorAria", { name: c.name })}
                       className={`relative h-9 w-9 rounded-full border-2 transition-all ${
                         selectedColor === c.name
                           ? "border-primary ring-2 ring-primary/30 scale-110"
@@ -406,7 +409,7 @@ export default function ProductDetailPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm font-medium">
-                    Tamanho: <span className="font-normal text-muted-foreground">{selectedSize || "Selecione"}</span>
+                    {t("productPage.sizeLabel")} <span className="font-normal text-muted-foreground">{selectedSize || t("productPage.selectPlaceholder")}</span>
                   </p>
                   <SizeGuideDialog />
                 </div>
@@ -433,7 +436,7 @@ export default function ProductDetailPage() {
             {!product.colors && !product.sizes && product.variants && product.variants.length > 0 && (() => {
               const sizePattern = /^(PP|P|M|G|GG|XGG|\d?XG|\d?G|XS|S|L|XL|XXL|XXXL|\d{2,3})$/i;
               const isSizes = product.variants.every((v) => sizePattern.test(v.trim()));
-              const label = isSizes ? "Tamanho:" : "Cor:";
+              const label = isSizes ? t("productPage.sizeLabel") : t("productPage.colorLabel");
               return (
                 <div className="space-y-2">
                   <p className="text-sm font-medium">{label}</p>
@@ -459,7 +462,7 @@ export default function ProductDetailPage() {
             {product.stock <= 30 && (
               <div>
                 <p className="mb-1 text-sm text-muted-foreground">
-                  Restam apenas <strong>{product.stock}</strong> unidades deste produto
+                  <Trans i18nKey="productPage.stockRemaining" values={{ count: product.stock }} components={{ strong: <strong /> }} />
                 </p>
                 <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted">
                   <div className="h-full rounded-full bg-lime transition-all" style={{ width: `${Math.min(100, (product.stock / 50) * 100)}%` }} />
@@ -482,14 +485,14 @@ export default function ProductDetailPage() {
 
               {!isKitProduct && (
                 <Button onClick={handleAddToCart} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
-                  Adicionar ao Carrinho
+                  {t("productPage.addToCart")}
                 </Button>
               )}
             </div>
 
             {/* Buy Now Button */}
             <Button onClick={handleBuyNow} className="w-full py-6 text-sm font-bold uppercase tracking-wider animate-pulse hover:animate-none">
-              Comprar Agora
+              {t("productPage.buyNow")}
             </Button>
 
             <div className="flex items-start gap-3 rounded-lg border border-border bg-card p-4">
@@ -498,11 +501,11 @@ export default function ProductDetailPage() {
               </div>
               <div>
                 <p className="text-sm">
-                  <strong className="text-foreground">{formatPrice(pixPrice)}</strong> <span className="text-muted-foreground">no pix</span>{" "}
-                  <span className="rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">{PIX_DISCOUNT_PERCENT}% de desconto</span>
+                  <strong className="text-foreground">{formatPrice(pixPrice)}</strong> <span className="text-muted-foreground">{t("productPage.pixLabel")}</span>{" "}
+                  <span className="rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">{t("productPage.pixDiscount", { percent: PIX_DISCOUNT_PERCENT })}</span>
                 </p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Pague com <strong>PIX</strong> e economize {formatPrice(getPixSavings(product.price))}
+                  <Trans i18nKey="productPage.pixSavings" values={{ value: formatPrice(getPixSavings(product.price)) }} components={{ strong: <strong /> }} />
                 </p>
               </div>
             </div>
@@ -511,9 +514,9 @@ export default function ProductDetailPage() {
             <div className="flex items-start gap-3 rounded-lg border-2 border-lime/50 bg-lime/5 p-4">
               <ShieldCheck size={28} className="mt-0.5 shrink-0 text-primary" />
               <div>
-                <p className="text-sm font-semibold text-foreground">Garantia de 30 Dias</p>
+                <p className="text-sm font-semibold text-foreground">{t("productPage.guaranteeTitle")}</p>
                 <p className="text-xs text-muted-foreground">
-                  Se não ficar satisfeito, devolvemos seu dinheiro. Sem burocracia.
+                  {t("productPage.guaranteeDesc")}
                 </p>
               </div>
             </div>
@@ -522,10 +525,10 @@ export default function ProductDetailPage() {
               <Truck size={24} className="mt-0.5 shrink-0 text-primary" />
               <div>
                 <p className="text-sm">
-                  <span className="font-semibold text-primary">Frete Grátis</span>{" "}
-                  <span className="text-muted-foreground">Enviado por Correios de 3 a 11 dias úteis</span>
+                  <span className="font-semibold text-primary">{t("productPage.freeShipping")}</span>{" "}
+                  <span className="text-muted-foreground">{t("productPage.freeShippingDesc")}</span>
                 </p>
-                <p className="text-xs text-muted-foreground">para sua cidade, UF e Região</p>
+                <p className="text-xs text-muted-foreground">{t("productPage.freeShippingArea")}</p>
               </div>
             </div>
 
@@ -533,7 +536,7 @@ export default function ProductDetailPage() {
 
             <div className="space-y-3 pt-2 text-center">
               <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                <Shield size={14} /> Pagamento Seguro e Rápido
+                <Shield size={14} /> {t("productPage.securePayment")}
               </div>
               <div className="flex flex-wrap items-center justify-center gap-2">
                 {["Mastercard", "Visa", "Elo", "Maestro", "Amex", "Diners", "Pix"].map((method) => (
@@ -550,11 +553,11 @@ export default function ProductDetailPage() {
 
         {/* Bullet Points Description */}
         <div className="mx-auto mt-12 max-w-3xl border-t border-border pt-8">
-          <h3 className="mb-4 text-lg font-heading font-semibold">Descrição do Produto</h3>
+          <h3 className="mb-4 text-lg font-heading font-semibold">{t("productPage.productDescription")}</h3>
           {bullets ? (
             <div className="space-y-3">
               <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-                Kit Profissional completo para Refrigeração e Ar Condicionado — tudo que você precisa em uma única maleta:
+                {t("productPage.kitIntro")}
               </p>
               <ul className="space-y-3">
                 {bullets.map((item, i) => {
@@ -572,7 +575,7 @@ export default function ProductDetailPage() {
               <div className="mt-4 flex items-center gap-2 rounded-lg bg-lime/10 p-3">
                 <CheckCircle2 size={18} className="shrink-0 text-primary" />
                 <p className="text-sm font-medium text-foreground">
-                  Bivolt 110/220V — 18 kg de ferramentas profissionais prontas para uso
+                  {t("productPage.kitFooter")}
                 </p>
               </div>
             </div>
@@ -590,7 +593,7 @@ export default function ProductDetailPage() {
         <div className="mx-auto mt-12 max-w-3xl border-t border-border pt-8">
           <h3 className="mb-6 flex items-center gap-2 text-lg font-heading font-semibold">
             <Star size={20} className="fill-yellow-400 text-yellow-400" />
-            Avaliações de Clientes
+            {t("productPage.customerReviews")}
           </h3>
           <ProductReviews productSlug={product.slug} productId={product.id} />
         </div>
@@ -599,14 +602,14 @@ export default function ProductDetailPage() {
         <div className="mx-auto mt-12 max-w-3xl border-t border-border pt-8">
           <h3 className="mb-4 flex items-center gap-2 text-lg font-heading font-semibold">
             <HelpCircle size={20} className="text-primary" />
-            Perguntas Frequentes
+            {t("productPage.faqTitle")}
           </h3>
           <ProductFAQ productName={product.name} productDescription={product.description || ""} />
         </div>
 
         {relatedProducts.length > 0 && (
           <div className="mt-12 border-t border-border pt-8">
-            <h3 className="mb-6 text-center text-xl font-heading font-semibold">Produtos Relacionados</h3>
+            <h3 className="mb-6 text-center text-xl font-heading font-semibold">{t("productPage.relatedProducts")}</h3>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {relatedProducts.map((relatedProduct) => (
                 <ProductCard key={relatedProduct.id} product={relatedProduct} />
