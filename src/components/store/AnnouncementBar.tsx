@@ -1,10 +1,12 @@
-const messages = [
-  "BEM VINDO À KAZOOM!",
-  "FRETE GRÁTIS PARA TODO O BRASIL",
-  "PARCELE SUAS COMPRAS EM ATÉ 6X",
-];
+import { useTranslation } from "react-i18next";
 
 export default function AnnouncementBar() {
+  const { t } = useTranslation();
+  const messages = [
+    t("announcement.welcome"),
+    t("announcement.freeShipping"),
+    t("announcement.installments"),
+  ];
   const repeated = [...messages, ...messages, ...messages, ...messages, ...messages, ...messages];
 
   return (

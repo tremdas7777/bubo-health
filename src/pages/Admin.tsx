@@ -31,6 +31,7 @@ import {
 import AdminProdutos from "@/components/AdminProdutos";
 import AdminPedidos from "@/components/AdminPedidos";
 import AdminAbandonedCarts from "@/components/AdminAbandonedCarts";
+import AdminLocalization from "@/components/AdminLocalization";
 
 import AdminFrete from "@/components/AdminFrete";
 import AdminDashboard from "@/components/AdminDashboard";
@@ -78,6 +79,7 @@ type Tab =
   | "cloaker"
   | "frete"
   | "cupons"
+  | "localization"
   | "config";
 
 interface FunnelStats {
@@ -706,6 +708,7 @@ export default function Admin() {
     { id: "pedidos", label: "Pedidos", icon: <ShoppingCart size={14} /> },
     { id: "abandonados", label: "Abandonados", icon: <ShoppingCart size={14} /> },
     { id: "cupons", label: "Cupons", icon: <Tag size={14} /> },
+    { id: "localization", label: "Localization", icon: <Settings size={14} /> },
     { id: "config", label: "Config", icon: <Settings size={14} /> },
   ];
 
@@ -748,6 +751,7 @@ export default function Admin() {
         {activeTab === "leads" && <AdminLeads />}
         {activeTab === "cupons" && <AdminCupons />}
         {activeTab === "abandonados" && <AdminAbandonedCarts />}
+        {activeTab === "localization" && <AdminLocalization />}
         
 
         {activeTab === "analytics" && (

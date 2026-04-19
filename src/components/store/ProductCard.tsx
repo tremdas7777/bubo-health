@@ -1,10 +1,12 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
-import { Product, formatPrice, getInstallmentPrice } from "@/data/store";
+import { useTranslation } from "react-i18next";
+import { Product, getInstallmentPrice } from "@/data/store";
 import { getPixPrice, PIX_DISCOUNT_PERCENT } from "@/lib/pricing";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
+import { useCurrency } from "@/contexts/LocalizationContext";
 import { Button } from "@/components/ui/button";
 
 interface Props {
@@ -14,6 +16,8 @@ interface Props {
 export default memo(function ProductCard({ product }: Props) {
   const { addItem } = useCart();
   const { isInWishlist, toggleItem } = useWishlist();
+  const { t } = useTranslation();
+  const { formatPrice } = useCurrency();
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const wishlisted = isInWishlist(product.id);
   // Stable pseudo-random sales count based on product id
@@ -72,11 +76,8 @@ export default memo(function ProductCard({ product }: Props) {
             )}
           </div>
 
-          <p className="text-[11px] text-muted-foreground">
-            ou <strong>{formatPrice(getPixPrice(product.price))}</strong> no PIX ({PIX_DISCOUNT_PERCENT}% off)
-          </p>
           <p className="text-[10px] text-muted-foreground">
-            em até <strong>6x</strong> de <strong>{getInstallmentPrice(product.price, 6)}</strong>
+            {t("product.installmentsLabel", { count: 6, value: getInstallmentPrice(product.price, 6) })}
           </p>
         </div>
 
@@ -84,7 +85,7 @@ export default memo(function ProductCard({ product }: Props) {
           onClick={() => addItem(product)}
           className="w-full mt-3 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-medium rounded-md py-2.5"
         >
-          Adicionar ao carrinho
+          {t("product.addToCart")}
         </Button>
       </div>
     </div>
