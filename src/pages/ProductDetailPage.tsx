@@ -23,6 +23,7 @@ import ProductJsonLd from "@/components/seo/ProductJsonLd";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import PageHead from "@/components/seo/PageHead";
 import { useDbProducts, filterByCategory } from "@/hooks/useProducts";
+import { translateBundleLabel, translateBundleBadge } from "@/lib/bundleI18n";
 
 const productBulletPoints: Record<string, { icon: React.ElementType; text: string }[]> = {
   "kit-ferramentas-refrigeracao": [
@@ -91,7 +92,8 @@ export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: products = [], isLoading } = useDbProducts();
   const product = products.find((p) => p.slug === slug);
-  const { formatPrice: fmt } = useLocalization();
+  const { formatPrice: fmt, language } = useLocalization();
+  const [translatedBullets, setTranslatedBullets] = useState<string[] | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -123,6 +125,50 @@ export default function ProductDetailPage() {
       void trackEvent("product_view");
     }
   }, [product]);
+
+  // Translate the kit bullet points to the active UI language (cached in localStorage).
+  useEffect(() => {
+    if (!product) return;
+    const slug = product.slug;
+    const bulletList = productBulletPoints[slug];
+    if (!bulletList || bulletList.length === 0) {
+      setTranslatedBullets(null);
+      return;
+    }
+    if (language === "pt") {
+      setTranslatedBullets(null); // use original (already pt-BR)
+      return;
+    }
+    const cacheKey = `bullets-tr:${slug}:${language}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      try {
+        const arr = JSON.parse(cached);
+        if (Array.isArray(arr) && arr.length === bulletList.length) {
+          setTranslatedBullets(arr);
+          return;
+        }
+      } catch { /* ignore */ }
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke("translate-texts", {
+          body: { texts: bulletList.map((b) => b.text), targetLang: language },
+        });
+        if (cancelled) return;
+        if (error || !data?.translations) {
+          setTranslatedBullets(null);
+          return;
+        }
+        localStorage.setItem(cacheKey, JSON.stringify(data.translations));
+        setTranslatedBullets(data.translations);
+      } catch {
+        if (!cancelled) setTranslatedBullets(null);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [product, language]);
 
   if (isLoading) {
     return (
@@ -336,7 +382,7 @@ export default function ProductDetailPage() {
                             {isSelected && <CheckCircle2 size={12} className="text-primary-foreground" />}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-foreground">{b.label}</p>
+                            <p className="text-sm font-semibold text-foreground">{translateBundleLabel(b.label, t)}</p>
                             <p className="text-xs text-muted-foreground">
                               {formatPrice(perUnit / 100)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
                             </p>
@@ -346,7 +392,7 @@ export default function ProductDetailPage() {
                           <p className="text-sm font-bold text-primary">{formatPrice(b.priceCents / 100)}</p>
                           {b.badge && (
                             <span className="inline-block rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">
-                              {b.badge}
+                              {translateBundleBadge(b.badge, t)}
                             </span>
                           )}
                         </div>
@@ -627,7 +673,7 @@ export default function ProductDetailPage() {
                       <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                         <Icon size={16} className="text-primary" />
                       </div>
-                      <span className="text-sm leading-relaxed text-muted-foreground">{item.text}</span>
+                      <span className="text-sm leading-relaxed text-muted-foreground">{translatedBullets?.[i] ?? item.text}</span>
                     </li>
                   );
                 })}
