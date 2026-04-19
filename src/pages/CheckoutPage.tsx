@@ -616,7 +616,7 @@ export default function CheckoutPage() {
 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between"><span className="text-muted-foreground">{t("checkout.subtotalLabel")}</span><span>{formatPrice(subtotal)}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">{t("checkout.shippingLabel")}</span><span className="text-emerald-600 font-bold">{t("checkout.freeLabel")}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">{t("checkout.shippingLabel")}</span><span className="text-primary font-bold">{t("checkout.freeLabel")}</span></div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
                     <span>{t("checkout.totalLabel")}</span>
                     <span className="text-primary">{formatPrice(total)}</span>
