@@ -49,6 +49,16 @@ export interface ProductColor {
   image?: string;
 }
 
+export interface ProductBundle {
+  qty: number;
+  label: string;
+  /** Price stored in USD cents (will be converted by LocalizationContext) */
+  priceCents: number;
+  originalPriceCents?: number;
+  perUnitCents?: number;
+  badge?: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -65,6 +75,7 @@ export interface Product {
   variants?: string[];
   colors?: ProductColor[];
   sizes?: string[];
+  bundles?: ProductBundle[];
   noIndex?: boolean;
 }
 
