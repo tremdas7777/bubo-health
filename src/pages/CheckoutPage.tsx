@@ -982,9 +982,29 @@ export default function CheckoutPage() {
                   <div className="bg-destructive/10 text-destructive text-xs font-medium rounded-lg p-3 text-center">{paymentError}</div>
                 )}
 
-                {isPix && (
-                  <Button
-                    onClick={handleGeneratePix}
+                {activeGateway === "stripe" && (
+                  <div className="space-y-3">
+                    <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 flex items-center gap-2">
+                      <Lock size={14} className="text-primary" />
+                      <span className="text-xs font-medium text-foreground">
+                        Pagamento 100% seguro processado pela Stripe — aceitamos todas as bandeiras de cartão.
+                      </span>
+                    </div>
+                    <Button
+                      onClick={handleStripeCheckout}
+                      disabled={generating}
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
+                    >
+                      {generating ? (
+                        <><Loader2 size={16} className="animate-spin mr-2" /> Redirecionando...</>
+                      ) : (
+                        <><CreditCard size={16} className="mr-2" /> Pagar {formatPrice(total)} com Stripe</>
+                      )}
+                    </Button>
+                  </div>
+                )}
+
+                {activeGateway !== "stripe" && isPix && (
                     disabled={generating}
                     className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
                   >
