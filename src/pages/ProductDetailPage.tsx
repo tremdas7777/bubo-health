@@ -91,10 +91,12 @@ export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: products = [], isLoading } = useDbProducts();
   const product = products.find((p) => p.slug === slug);
+  const { formatPrice: fmt } = useLocalization();
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedBundle, setSelectedBundle] = useState<number>(0);
 
   // Kits: cliente escolhe cor + tamanho de cada peça do kit
   const KIT_CONFIG: Record<string, { size: number; labelKey: string }> = {
