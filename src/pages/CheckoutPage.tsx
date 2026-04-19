@@ -81,7 +81,6 @@ export default function CheckoutPage() {
 
   // Auto-detected country from IP (default = "us" until detection completes)
   const [country, setCountry] = useState<string>("us");
-  const showInstallments = supportsInstallments(country, i18n.language);
   const taxIdLabel = getTaxIdLabel(country);
 
   // Form fields
