@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Save, RefreshCw, Globe, DollarSign } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { adminWrite } from "@/lib/adminApi";
 import { useLocalization, SupportedCurrency } from "@/contexts/LocalizationContext";
 import { SUPPORTED_LANGUAGES, SupportedLanguage } from "@/i18n";
 
@@ -73,10 +74,10 @@ export default function AdminLocalization() {
       exchange_rates: exchangeRates,
       auto_detect_by_ip: autoDetect,
     };
-    const { error } = await supabase.from("store_settings").update(payload).eq("id", settings.id);
+    const result = await adminWrite({ table: "store_settings", op: "update", payload, match: { id: settings.id } });
     setLoading(false);
-    if (error) {
-      flash("Error: " + error.message);
+    if (!result.ok) {
+      flash("Error: " + result.error);
     } else {
       flash("Settings saved!");
       await refresh();

@@ -62,6 +62,7 @@ import {
 } from "@/lib/webhookManager";
 import { getUtmifyConfig, saveUtmifyConfig, testUtmifyToken, type UtmifyConfig } from "@/lib/utmifyManager";
 import { fetchFullGatewayConfig, savePaymentGatewayConfig, setAdminPassword, getAdminPassword, type PaymentGatewayConfig } from "@/lib/paymentGateway";
+import { adminWrite } from "@/lib/adminApi";
 import { supabase } from "@/integrations/supabase/client";
 
 type Tab =
@@ -534,13 +535,15 @@ export default function Admin() {
   };
 
   const handleApproveOrder = async (order: AdminOrder) => {
-    const { error } = await supabase
-      .from("orders")
-      .update({ status: "paid", updated_at: new Date().toISOString() })
-      .eq("id", order.id);
+    const result = await adminWrite({
+      table: "orders",
+      op: "update",
+      payload: { status: "paid", updated_at: new Date().toISOString() },
+      match: { id: order.id },
+    });
 
-    if (error) {
-      flashMessage(setOrdersMessage, "Erro ao aprovar o pedido", 4000);
+    if (!result.ok) {
+      flashMessage(setOrdersMessage, "Erro ao aprovar o pedido: " + result.error, 4000);
       return;
     }
 
@@ -581,7 +584,12 @@ export default function Admin() {
   const handleClearOrders = async () => {
     if (!window.confirm("Tem certeza que deseja limpar TODOS os pedidos?")) return;
 
-    await supabase.from("orders").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    const result = await adminWrite({
+      table: "orders",
+      op: "delete",
+      not_match: { id: "00000000-0000-0000-0000-000000000000" },
+    });
+    if (!result.ok) { flashMessage(setOrdersMessage, "Erro: " + result.error, 4000); return; }
     await fetchOrders();
     flashMessage(setOrdersMessage, "Pedidos removidos com sucesso!", 4000);
   };
@@ -592,15 +600,17 @@ export default function Admin() {
 
     const { data: existing } = await supabase.from("cloaker_config").select("id").limit(1).maybeSingle();
 
-    const response = existing?.id
-      ? await supabase
-          .from("cloaker_config")
-          .update({ enabled: checked, updated_at: new Date().toISOString() })
-          .eq("id", existing.id)
-      : await supabase.from("cloaker_config").insert({ enabled: checked });
+    const result = existing?.id
+      ? await adminWrite({
+          table: "cloaker_config",
+          op: "update",
+          payload: { enabled: checked, updated_at: new Date().toISOString() },
+          match: { id: existing.id },
+        })
+      : await adminWrite({ table: "cloaker_config", op: "insert", payload: { enabled: checked } });
 
-    if (response.error) {
-      flashMessage(setCloakerMessage, "Erro ao salvar configuração", 4000);
+    if (!result.ok) {
+      flashMessage(setCloakerMessage, "Erro ao salvar: " + result.error, 4000);
     } else {
       setCloakerEnabled(checked);
       flashMessage(setCloakerMessage, checked ? "Cloaker ativado com sucesso!" : "Cloaker desativado com sucesso!", 4000);
@@ -1712,9 +1722,9 @@ export default function Admin() {
                   const { data: existing } = await supabase.from("store_config").select("id").limit(1).maybeSingle();
                   const payload = { whatsapp_number: whatsappNumber, card_enabled: cardEnabled, updated_at: new Date().toISOString() } as any;
                   const result = existing?.id
-                    ? await supabase.from("store_config").update(payload).eq("id", existing.id)
-                    : await supabase.from("store_config").insert(payload);
-                  flashMessage(setConfigMessage, result.error ? "Erro ao salvar" : "Configuração salva com sucesso!");
+                    ? await adminWrite({ table: "store_config", op: "update", payload, match: { id: existing.id } })
+                    : await adminWrite({ table: "store_config", op: "insert", payload });
+                  flashMessage(setConfigMessage, !result.ok ? "Erro ao salvar: " + result.error : "Configuração salva com sucesso!");
                 }}
               >
                 <Save size={14} className="mr-1.5" /> Salvar Configurações

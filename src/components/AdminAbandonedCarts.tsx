@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { adminWrite } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -138,13 +139,12 @@ export default function AdminAbandonedCarts() {
           })),
         },
       });
-      await supabase
-        .from("orders")
-        .update({
-          recovery_email_sent: true,
-          recovery_email_sent_at: new Date().toISOString(),
-        })
-        .eq("id", row.id);
+      await adminWrite({
+        table: "orders",
+        op: "update",
+        payload: { recovery_email_sent: true, recovery_email_sent_at: new Date().toISOString() },
+        match: { id: row.id },
+      });
       flash("Email de recuperação enviado!");
       void fetchData();
     } catch (e) {
@@ -167,10 +167,13 @@ export default function AdminAbandonedCarts() {
   };
 
   const handleMark = async (row: AbandonedRow, recovered: boolean) => {
-    await supabase
-      .from("orders")
-      .update({ abandoned_recovered: recovered })
-      .eq("id", row.id);
+    const result = await adminWrite({
+      table: "orders",
+      op: "update",
+      payload: { abandoned_recovered: recovered },
+      match: { id: row.id },
+    });
+    if (!result.ok) { flash("Erro: " + result.error); return; }
     flash(recovered ? "Marcado como recuperado" : "Marcado como perdido");
     void fetchData();
   };
