@@ -73,7 +73,9 @@ export default function CheckoutPage() {
   const { t, i18n } = useTranslation();
   const { items, totalPrice, updateQuantity, removeItem } = useCart();
   const { user } = useAuth();
-  const { formatPrice } = useLocalization();
+  const { formatPrice: formatCents } = useLocalization();
+  // Local helper: our checkout works in dollars, but formatCents expects cents.
+  const formatPrice = (dollars: number) => formatCents(Math.round(dollars * 100));
   const [step, setStep] = useState<Step>("identification");
   const [showOrderSummary, setShowOrderSummary] = useState(false);
 
