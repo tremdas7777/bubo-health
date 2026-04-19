@@ -429,12 +429,14 @@ export type Database = {
           created_at: string
           description: string | null
           description_html: string | null
+          description_translations: Json
           featured: boolean | null
           gtin: string | null
           id: string
           image_url: string | null
           images: string[] | null
           name: string
+          name_translations: Json
           original_price_cents: number | null
           price_cents: number
           slug: string
@@ -448,12 +450,14 @@ export type Database = {
           created_at?: string
           description?: string | null
           description_html?: string | null
+          description_translations?: Json
           featured?: boolean | null
           gtin?: string | null
           id?: string
           image_url?: string | null
           images?: string[] | null
           name: string
+          name_translations?: Json
           original_price_cents?: number | null
           price_cents: number
           slug: string
@@ -467,12 +471,14 @@ export type Database = {
           created_at?: string
           description?: string | null
           description_html?: string | null
+          description_translations?: Json
           featured?: boolean | null
           gtin?: string | null
           id?: string
           image_url?: string | null
           images?: string[] | null
           name?: string
+          name_translations?: Json
           original_price_cents?: number | null
           price_cents?: number
           slug?: string
@@ -590,6 +596,42 @@ export type Database = {
           id?: string
           updated_at?: string
           whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
+      store_settings: {
+        Row: {
+          auto_detect_by_ip: boolean
+          available_currencies: Json
+          available_languages: Json
+          created_at: string
+          default_currency: string
+          default_language: string
+          exchange_rates: Json
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          auto_detect_by_ip?: boolean
+          available_currencies?: Json
+          available_languages?: Json
+          created_at?: string
+          default_currency?: string
+          default_language?: string
+          exchange_rates?: Json
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          auto_detect_by_ip?: boolean
+          available_currencies?: Json
+          available_languages?: Json
+          created_at?: string
+          default_currency?: string
+          default_language?: string
+          exchange_rates?: Json
+          id?: string
+          updated_at?: string
         }
         Relationships: []
       }
