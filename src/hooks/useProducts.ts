@@ -40,11 +40,12 @@ function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
   let variants: string[] = [];
   let colors: Product["colors"];
   let sizes: string[] | undefined;
+  let bundles: Product["bundles"];
 
   if (Array.isArray(db.variants)) {
-    // New structured format: [{ colors: [...], sizes: [...] }]
+    // Structured format: [{ colors: [...], sizes: [...], bundles: [...] }]
     const structured = db.variants.find(
-      (v: any) => v && typeof v === "object" && (Array.isArray(v.colors) || Array.isArray(v.sizes))
+      (v: any) => v && typeof v === "object" && (Array.isArray(v.colors) || Array.isArray(v.sizes) || Array.isArray(v.bundles))
     );
     if (structured) {
       if (Array.isArray(structured.colors)) {
@@ -54,6 +55,18 @@ function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
       }
       if (Array.isArray(structured.sizes)) {
         sizes = structured.sizes.map(String);
+      }
+      if (Array.isArray(structured.bundles)) {
+        bundles = structured.bundles
+          .filter((b: any) => b && typeof b.qty === "number" && typeof b.priceCents === "number")
+          .map((b: any) => ({
+            qty: Number(b.qty),
+            label: String(b.label || `${b.qty}x`),
+            priceCents: Number(b.priceCents),
+            originalPriceCents: b.originalPriceCents ? Number(b.originalPriceCents) : undefined,
+            perUnitCents: b.perUnitCents ? Number(b.perUnitCents) : undefined,
+            badge: b.badge ? String(b.badge) : undefined,
+          }));
       }
     } else {
       // Legacy: array of strings or { name } / { options: [...] }
@@ -84,6 +97,7 @@ function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
     variants: variants.length > 0 ? variants : undefined,
     colors,
     sizes,
+    bundles,
   };
 }
 
