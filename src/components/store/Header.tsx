@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Search, User, ShoppingBag, Menu, X, Heart, Moon, Sun } from "lucide-react";
 import { useState } from "react";
-import { navLinks } from "@/data/store";
+import { useDbCollections } from "@/hooks/useProducts";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -19,6 +19,22 @@ export default function Header() {
   const { totalItems: wishlistCount } = useWishlist();
   const { theme, toggleTheme } = useTheme();
   const { user } = useAuth();
+  const { data: collections = [] } = useDbCollections();
+
+  const COLLECTION_I18N: Record<string, string> = {
+    "home-kitchen": t("collections.homeKitchen"),
+    "electronics": t("collections.electronics"),
+    "sports": t("collections.sports"),
+    "tools": t("collections.tools"),
+    "fitness": t("collections.fitness"),
+    "fishing": t("collections.fishing"),
+    "health-beauty": t("collections.healthBeauty"),
+  };
+  const navLinks = [
+    { name: t("nav.home"), href: "/" },
+    ...collections.map((c) => ({ name: COLLECTION_I18N[c.slug] || c.name, href: `/colecao/${c.slug}` })),
+    { name: t("nav.about"), href: "/sobre" },
+  ];
 
   return (
     <header className="bg-background sticky top-0 z-40">
@@ -30,11 +46,11 @@ export default function Header() {
             <button
               className="lg:hidden text-foreground"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Menu"
+              aria-label={t("common.menu")}
             >
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
-            <button onClick={() => setSearchOpen(true)} className="text-foreground hover:text-primary transition-colors" aria-label="Buscar">
+            <button onClick={() => setSearchOpen(true)} className="text-foreground hover:text-primary transition-colors" aria-label={t("common.search")}>
               <Search size={22} />
             </button>
           </div>
@@ -56,7 +72,7 @@ export default function Header() {
             >
               {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            <Link to="/favoritos" className="text-foreground hover:text-primary transition-colors relative hidden sm:block" aria-label="Favoritos">
+            <Link to="/favoritos" className="text-foreground hover:text-primary transition-colors relative hidden sm:block" aria-label={t("nav.favorites")}>
               <Heart size={22} />
               {wishlistCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -64,7 +80,7 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <Link to={user ? "/conta" : "/entrar"} className="text-foreground hover:text-primary transition-colors hidden sm:block relative" aria-label="Conta">
+            <Link to={user ? "/conta" : "/entrar"} className="text-foreground hover:text-primary transition-colors hidden sm:block relative" aria-label={t("nav.account")}>
               <User size={22} />
               {user && (
                 <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-background" />
@@ -73,7 +89,7 @@ export default function Header() {
             <button
               onClick={() => setIsOpen(true)}
               className="text-foreground hover:text-primary transition-colors relative"
-              aria-label="Carrinho"
+              aria-label={t("nav.cart")}
             >
               <ShoppingBag size={22} />
               {totalItems > 0 && (
@@ -120,7 +136,7 @@ export default function Header() {
               className="text-sm text-foreground hover:text-primary transition-colors font-normal py-2.5 flex items-center gap-2"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <User size={16} /> {user ? "Minha Conta" : "Entrar"}
+              <User size={16} /> {user ? t("nav.myAccount") : t("nav.signIn")}
             </Link>
           </div>
         </nav>

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import type { Product, Collection } from "@/data/store";
 
@@ -16,6 +17,8 @@ interface DbProduct {
   category: string | null;
   description: string | null;
   description_html: string | null;
+  description_translations?: Record<string, string> | null;
+  name_translations?: Record<string, string> | null;
   variants: any;
   featured: boolean | null;
   active: boolean | null;
@@ -33,7 +36,7 @@ interface DbCollection {
   active: boolean | null;
 }
 
-function mapDbProduct(db: DbProduct): Product {
+function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
   let variants: string[] = [];
   let colors: Product["colors"];
   let sizes: string[] | undefined;
@@ -63,16 +66,19 @@ function mapDbProduct(db: DbProduct): Product {
     }
   }
 
+  const nameT = (db.name_translations && (db.name_translations[lang] || db.name_translations.en)) || db.name;
+  const descT = (db.description_translations && (db.description_translations[lang] || db.description_translations.en)) || db.description || "";
+
   return {
     id: db.id,
-    name: db.name,
+    name: nameT,
     slug: db.slug,
     price: db.price_cents / 100,
     compareAtPrice: db.original_price_cents ? db.original_price_cents / 100 : undefined,
     image: db.image_url || "",
     images: db.images && db.images.length > 0 ? db.images : undefined,
-    category: db.category || "Geral",
-    description: db.description || "",
+    category: db.category || "general",
+    description: descT,
     descriptionHtml: db.description_html || undefined,
     stock: 50,
     variants: variants.length > 0 ? variants : undefined,
@@ -91,8 +97,10 @@ function mapDbCollection(db: DbCollection): Collection {
 }
 
 export function useDbProducts() {
+  const { i18n } = useTranslation();
+  const lang = i18n.language?.slice(0, 2) || "en";
   return useQuery({
-    queryKey: DB_PRODUCTS_QUERY_KEY,
+    queryKey: [...DB_PRODUCTS_QUERY_KEY, lang],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
@@ -101,9 +109,9 @@ export function useDbProducts() {
         .order("sort_order", { ascending: true })
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return (data as DbProduct[]).map(mapDbProduct);
+      return (data as DbProduct[]).map((d) => mapDbProduct(d, lang));
     },
-    staleTime: 1000 * 60 * 2, // 2 min cache
+    staleTime: 1000 * 60 * 2,
   });
 }
 
