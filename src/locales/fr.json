@@ -237,7 +237,9 @@
     "stepShippedDesc": "Vous recevrez le suivi par e-mail",
     "stepDelivered": "Livré",
     "stepDeliveredDesc": "Produit livré à votre adresse",
-    "backHome": "Retour à l'accueil"
+    "backHome": "Retour à l'accueil",
+    "emailHighlightTitle": "Vérifiez votre e-mail 📧",
+    "emailHighlightDesc": "Nous avons envoyé la confirmation de commande, la facture et le code de suivi à votre e-mail. Vérifiez également votre dossier spam."
   },
   "auth": {
     "signInTitle": "Connectez-vous à votre compte",

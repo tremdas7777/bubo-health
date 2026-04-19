@@ -237,7 +237,9 @@
     "stepShippedDesc": "Você receberá o rastreamento por e-mail",
     "stepDelivered": "Entregue",
     "stepDeliveredDesc": "Produto entregue no seu endereço",
-    "backHome": "Voltar para o início"
+    "backHome": "Voltar para o início",
+    "emailHighlightTitle": "Confira seu e-mail 📧",
+    "emailHighlightDesc": "Enviamos a confirmação do pedido, a nota fiscal e o código de rastreamento para o e-mail cadastrado. Verifique também sua caixa de spam."
   },
   "auth": {
     "signInTitle": "Entre na sua conta",
