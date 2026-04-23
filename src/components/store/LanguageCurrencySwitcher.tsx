@@ -16,6 +16,7 @@ const LANG_LABELS: Record<SupportedLanguage, { code: string; name: string }> = {
   es: { code: "ES", name: "Español" },
   pt: { code: "PT", name: "Português" },
   fr: { code: "FR", name: "Français" },
+  de: { code: "DE", name: "Deutsch" },
 };
 
 const CURRENCY_LABELS: Record<SupportedCurrency, { symbol: string; name: string }> = {

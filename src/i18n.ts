@@ -6,8 +6,9 @@ import en from "./locales/en.json";
 import es from "./locales/es.json";
 import pt from "./locales/pt.json";
 import fr from "./locales/fr.json";
+import de from "./locales/de.json";
 
-export const SUPPORTED_LANGUAGES = ["en", "es", "pt", "fr"] as const;
+export const SUPPORTED_LANGUAGES = ["en", "es", "pt", "fr", "de"] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 i18n
@@ -19,6 +20,7 @@ i18n
       es: { translation: es },
       pt: { translation: pt },
       fr: { translation: fr },
+      de: { translation: de },
     },
     fallbackLng: "en",
     supportedLngs: SUPPORTED_LANGUAGES as unknown as string[],
