@@ -18,7 +18,7 @@ export interface StoreSettings {
 const DEFAULT_SETTINGS: StoreSettings = {
   id: "",
   default_language: "en",
-  available_languages: ["en", "es", "pt", "fr"],
+  available_languages: ["en", "es", "pt", "fr", "de"],
   default_currency: "USD",
   available_currencies: ["USD", "EUR", "BRL", "GBP"],
   exchange_rates: { USD: 1, EUR: 0.92, BRL: 5.1, GBP: 0.79 },
@@ -46,6 +46,7 @@ const LOCALE_BY_LANG: Record<SupportedLanguage, string> = {
   es: "es-ES",
   pt: "pt-BR",
   fr: "fr-FR",
+  de: "de-DE",
 };
 
 export function LocalizationProvider({ children }: { children: ReactNode }) {
