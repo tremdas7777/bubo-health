@@ -15,6 +15,7 @@ const ALL_LANGUAGES: { code: SupportedLanguage; name: string; flag: string }[] =
   { code: "es", name: "Español", flag: "🇪🇸" },
   { code: "pt", name: "Português", flag: "🇧🇷" },
   { code: "fr", name: "Français", flag: "🇫🇷" },
+  { code: "de", name: "Deutsch", flag: "🇩🇪" },
 ];
 
 const ALL_CURRENCIES: { code: SupportedCurrency; symbol: string; name: string }[] = [
