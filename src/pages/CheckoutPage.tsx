@@ -619,11 +619,11 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between"><span className="text-muted-foreground">{t("checkout.subtotalLabel")}</span><span>{formatPrice(subtotal)}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">{t("checkout.subtotalLabel")}</span><span>{formatPrice(subtotalCents)}</span></div>
                   <div className="flex justify-between"><span className="text-muted-foreground">{t("checkout.shippingLabel")}</span><span className="text-primary font-bold">{t("checkout.freeLabel")}</span></div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
                     <span>{t("checkout.totalLabel")}</span>
-                    <span className="text-primary">{formatPrice(total)}</span>
+                    <span className="text-primary">{formatPrice(totalCents)}</span>
                   </div>
                 </div>
 
@@ -645,7 +645,7 @@ export default function CheckoutPage() {
                       {generating ? (
                         <><Loader2 size={16} className="animate-spin mr-2" /> {t("checkout.redirecting")}</>
                       ) : (
-                        <><CreditCard size={16} className="mr-2" /> {t("checkout.payWithStripe", { amount: formatPrice(total) })}</>
+                        <><CreditCard size={16} className="mr-2" /> {t("checkout.payWithStripe", { amount: formatPrice(totalCents) })}</>
                       )}
                     </Button>
                   </div>
@@ -694,7 +694,7 @@ export default function CheckoutPage() {
                       {generating ? (
                         <><Loader2 size={16} className="animate-spin mr-2" /> {t("checkout.processing")}</>
                       ) : (
-                        t("checkout.payNow", { amount: formatPrice(total) })
+                        t("checkout.payNow", { amount: formatPrice(totalCents) })
                       )}
                     </Button>
                   </div>
@@ -729,7 +729,7 @@ export default function CheckoutPage() {
                 {t("checkout.orderSummary")} ({items.length} {items.length === 1 ? t("checkout.itemsOne") : t("checkout.items")})
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-primary">{formatPrice(total)}</span>
+                <span className="text-sm font-bold text-primary">{formatPrice(totalCents)}</span>
                 {showOrderSummary ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </div>
             </button>
@@ -777,7 +777,7 @@ export default function CheckoutPage() {
                 <div className="border-t border-border pt-3 space-y-1.5 text-xs">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("checkout.subtotalLabel")}</span>
-                    <span>{formatPrice(subtotal)}</span>
+                    <span>{formatPrice(subtotalCents)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("checkout.shippingLabel")}</span>
@@ -785,7 +785,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
                     <span>{t("checkout.totalLabel")}</span>
-                    <span className="text-primary">{formatPrice(total)}</span>
+                    <span className="text-primary">{formatPrice(totalCents)}</span>
                   </div>
                 </div>
               </div>
