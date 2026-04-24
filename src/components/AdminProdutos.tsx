@@ -337,16 +337,39 @@ export default function AdminProdutos() {
     });
   };
 
+  /* Split CSV text into logical rows, respecting quoted fields that span multiple lines */
+  const splitCsvRows = (text: string): string[] => {
+    const rows: string[] = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === '"') {
+        if (inQuotes && text[i + 1] === '"') { current += '""'; i++; }
+        else inQuotes = !inQuotes;
+        current += ch;
+      } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+        if (ch === '\r' && text[i + 1] === '\n') i++; // skip \r\n
+        if (current.trim()) rows.push(current);
+        current = '';
+      } else {
+        current += ch;
+      }
+    }
+    if (current.trim()) rows.push(current);
+    return rows;
+  };
+
   const handleCsvSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return; setCsvFile(file);
     const reader = new FileReader();
     reader.onload = (ev) => {
       const text = ev.target?.result as string;
-      const lines = text.split('\n').filter(l => l.trim());
-      if (lines.length < 2) return;
+      const rows = splitCsvRows(text);
+      if (rows.length < 2) return;
 
-      const headers = parseCsvLine(lines[0]);
-      const dataRows = lines.slice(1).map(l => parseCsvLine(l));
+      const headers = parseCsvLine(rows[0]);
+      const dataRows = rows.slice(1).map(l => parseCsvLine(l));
 
       if (isShopifyFormat(headers)) {
         // Shopify format detected
