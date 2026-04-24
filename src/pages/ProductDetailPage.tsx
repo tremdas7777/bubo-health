@@ -100,20 +100,39 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedBundle, setSelectedBundle] = useState<number>(0);
 
-  // Kits: cliente escolhe cor + tamanho de cada peça do kit
-  const KIT_CONFIG: Record<string, { size: number; labelKey: string }> = {
+  // Kits: cliente escolhe cor + tamanho (ou sabor) de cada peça do kit
+  const KIT_CONFIG: Record<string, { 
+    size?: number; 
+    labelKey: string; 
+    items?: Array<{ name: string; options: string[]; type: "flavor" | "color-size" }> 
+  }> = {
     "polo-ducatti-antitranspirante": { size: 3, labelKey: "productPage.kitLabel2for3" },
     "camisa-polo-premium": { size: 5, labelKey: "productPage.kitLabel5polos" },
+    "kit-suplementos-completo": { 
+      labelKey: "productPage.kitLabelSupplements",
+      items: [
+        { name: "Whey Protein 100% Pure (900g)", options: ["Chocolate", "Morango", "Baunilha", "Cookies"], type: "flavor" },
+        { name: "Creatina Monohidratada (300g)", options: ["Sem Sabor"], type: "flavor" },
+        { name: "Pré-Treino Explosive (300g)", options: ["Maçã Verde", "Frutas Vermelhas", "Limão"], type: "flavor" },
+        { name: "BCAA Amino (200g)", options: ["Laranja", "Uva", "Melancia"], type: "flavor" }
+      ]
+    }
   };
   const kitConfig = product ? KIT_CONFIG[product.slug] : undefined;
   const isKitProduct = !!kitConfig;
-  const KIT_SIZE = kitConfig?.size ?? 3;
-  const [kitSelections, setKitSelections] = useState<Array<{ color: string | null; size: string | null }>>(
-    Array.from({ length: KIT_SIZE }, () => ({ color: null, size: null }))
+  const KIT_ITEMS = kitConfig?.items || (kitConfig?.size ? Array(kitConfig.size).fill({ name: "", options: [], type: "color-size" }) : []);
+  const KIT_SIZE = KIT_ITEMS.length;
+
+  const [kitSelections, setKitSelections] = useState<Array<{ color: string | null; size: string | null; flavor: string | null }>>(
+    Array.from({ length: KIT_SIZE }, (_, i) => ({ 
+      color: null, 
+      size: null, 
+      flavor: kitConfig?.items?.[i]?.options.length === 1 ? kitConfig.items[i].options[0] : null 
+    }))
   );
   const [activeKitSlot, setActiveKitSlot] = useState(0);
 
-  const updateKitSlot = (idx: number, patch: Partial<{ color: string; size: string }>) => {
+  const updateKitSlot = (idx: number, patch: Partial<{ color: string; size: string; flavor: string }>) => {
     setKitSelections((prev) => prev.map((s, i) => (i === idx ? { ...s, ...patch } : s)));
   };
 
@@ -256,10 +275,16 @@ export default function ProductDetailPage() {
 
   const validateKit = (): boolean => {
     if (!isKitProduct) return true;
-    const incompleteIdx = kitSelections.findIndex((s) => !s.color || !s.size);
+    const incompleteIdx = kitSelections.findIndex((s, i) => {
+      const itemConfig = kitConfig?.items?.[i];
+      if (itemConfig?.type === "flavor") return !s.flavor;
+      return !s.color || !s.size;
+    });
+    
     if (incompleteIdx !== -1) {
+      const itemConfig = kitConfig?.items?.[incompleteIdx];
       toast({
-        title: t("productPage.kitCompleteShirt", { n: incompleteIdx + 1 }),
+        title: itemConfig ? `Selecione o sabor para ${itemConfig.name}` : t("productPage.kitCompleteShirt", { n: incompleteIdx + 1 }),
         description: t("productPage.kitCompleteDesc", { count: KIT_SIZE }),
         variant: "destructive",
       });
@@ -282,7 +307,11 @@ export default function ProductDetailPage() {
   const handleAddToCart = () => {
     if (isKitProduct) {
       if (!validateKit()) return;
-      addItem(product, 1, kitSelections.map((s) => ({ color: s.color!, size: s.size! })));
+      addItem(product, 1, kitSelections.map((s, i) => {
+        const itemConfig = kitConfig?.items?.[i];
+        if (itemConfig?.type === "flavor") return { flavor: s.flavor! };
+        return { color: s.color!, size: s.size! };
+      }));
       return;
     }
     addItem(productForCart, quantity);
@@ -417,8 +446,11 @@ export default function ProductDetailPage() {
                 </div>
 
                 {kitSelections.map((slot, idx) => {
-                  const isComplete = !!slot.color && !!slot.size;
+                  const itemConfig = kitConfig?.items?.[idx];
+                  const isFlavorType = itemConfig?.type === "flavor";
+                  const isComplete = isFlavorType ? !!slot.flavor : (!!slot.color && !!slot.size);
                   const isActive = activeKitSlot === idx;
+                  
                   return (
                     <div
                       key={idx}
@@ -432,10 +464,10 @@ export default function ProductDetailPage() {
                         className="mb-2 flex w-full items-center justify-between text-left"
                       >
                         <span className="text-sm font-semibold text-foreground">
-                          {t("productPage.kitShirtLabel", { n: idx + 1 })}
+                          {itemConfig?.name || t("productPage.kitShirtLabel", { n: idx + 1 })}
                           {isComplete && (
                             <span className="ml-2 inline-flex items-center gap-1 text-xs font-normal text-primary">
-                              <CheckCircle2 size={12} /> {slot.color} · {slot.size}
+                              <CheckCircle2 size={12} /> {isFlavorType ? slot.flavor : `${slot.color} · ${slot.size}`}
                             </span>
                           )}
                         </span>
@@ -443,55 +475,85 @@ export default function ProductDetailPage() {
                           {isComplete ? t("productPage.kitComplete") : isActive ? t("productPage.kitSelecting") : t("productPage.kitTapToChoose")}
                         </span>
                       </button>
-
+                      
                       {isActive && (
                         <div className="space-y-3 pt-1">
-                          <div>
-                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">{t("productPage.kitColor")}</p>
-                            <div className="flex flex-wrap gap-1.5">
-                              {product.colors.map((c) => (
-                                <button
-                                  key={c.name}
-                                  type="button"
-                                  onClick={() => updateKitSlot(idx, { color: c.name })}
-                                  title={c.name}
-                                  aria-label={t("productPage.kitColorAria", { name: c.name })}
-                                  className={`relative h-8 w-8 rounded-full border-2 transition-all ${
-                                    slot.color === c.name
-                                      ? "border-primary ring-2 ring-primary/30 scale-110"
-                                      : "border-border hover:border-primary/50"
-                                  }`}
-                                  style={{ backgroundColor: c.hex }}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                          <div>
-                            <p className="mb-1.5 text-xs font-medium text-muted-foreground">{t("productPage.kitSize")}</p>
-                            <div className="flex flex-wrap gap-1.5">
-                              {product.sizes.map((s) => (
-                                <button
-                                  key={s}
-                                  type="button"
-                                  onClick={() => {
-                                    updateKitSlot(idx, { size: s });
-                                    // auto-advance to next incomplete slot
-                                    if (slot.color) {
-                                      const next = kitSelections.findIndex((k, i) => i !== idx && (!k.color || !k.size));
+                          {isFlavorType ? (
+                            <div>
+                              <p className="mb-1.5 text-xs font-medium text-muted-foreground">Escolha o sabor:</p>
+                              <div className="flex flex-wrap gap-1.5">
+                                {itemConfig.options.map((flavor) => (
+                                  <button
+                                    key={flavor}
+                                    type="button"
+                                    onClick={() => {
+                                      updateKitSlot(idx, { flavor });
+                                      const next = kitSelections.findIndex((k, i) => {
+                                        const nextCfg = kitConfig?.items?.[i];
+                                        if (nextCfg?.type === "flavor") return i !== idx && !k.flavor;
+                                        return i !== idx && (!k.color || !k.size);
+                                      });
                                       if (next !== -1) setActiveKitSlot(next);
-                                    }
-                                  }}
-                                  className={`min-w-[40px] rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
-                                    slot.size === s
-                                      ? "bg-primary text-primary-foreground border-primary"
-                                      : "border-primary/40 text-foreground hover:bg-primary/10"
-                                  }`}
-                                >
-                                  {s}
-                                </button>
-                              ))}
+                                    }}
+                                    className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
+                                      slot.flavor === flavor
+                                        ? "bg-primary text-primary-foreground border-primary"
+                                        : "border-primary/40 text-foreground hover:bg-primary/10"
+                                    }`}
+                                  >
+                                    {flavor}
+                                  </button>
+                                ))}
+                              </div>
                             </div>
-                          </div>
+                          ) : (
+                            <>
+                              <div>
+                                <p className="mb-1.5 text-xs font-medium text-muted-foreground">{t("productPage.kitColor")}</p>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {product.colors?.map((c) => (
+                                    <button
+                                      key={c.name}
+                                      type="button"
+                                      onClick={() => updateKitSlot(idx, { color: c.name })}
+                                      title={c.name}
+                                      className={`relative h-8 w-8 rounded-full border-2 transition-all ${
+                                        slot.color === c.name
+                                          ? "border-primary ring-2 ring-primary/30 scale-110"
+                                          : "border-border hover:border-primary/50"
+                                      }`}
+                                      style={{ backgroundColor: c.hex }}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                              <div>
+                                <p className="mb-1.5 text-xs font-medium text-muted-foreground">{t("productPage.kitSize")}</p>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {product.sizes?.map((s) => (
+                                    <button
+                                      key={s}
+                                      type="button"
+                                      onClick={() => {
+                                        updateKitSlot(idx, { size: s });
+                                        if (slot.color) {
+                                          const next = kitSelections.findIndex((k, i) => i !== idx && (!k.color || !k.size));
+                                          if (next !== -1) setActiveKitSlot(next);
+                                        }
+                                      }}
+                                      className={`min-w-[40px] rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                                        slot.size === s
+                                          ? "bg-primary text-primary-foreground border-primary"
+                                          : "border-primary/40 text-foreground hover:bg-primary/10"
+                                      }`}
+                                    >
+                                      {s}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            </>
+                          )}
                         </div>
                       )}
                     </div>

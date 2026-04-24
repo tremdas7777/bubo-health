@@ -159,6 +159,7 @@
     "remove": "Remove",
     "qty": "Qty",
     "installmentsHint": "in up to 12x of {{value}}",
+    "item": "Item {{n}}",
     "shirt": "Shirt {{n}}"
   },
   "checkout": {
@@ -706,7 +707,8 @@
     "relatedProducts": "Related Products",
     "kitLabel2for3": "🎁 BUY 2, GET 3 — Choose the colors and sizes of your 3 shirts",
     "kitLabel5polos": "🎁 KIT OF 5 POLOS — Choose the color and size of each of the 5 shirts",
-    "perUnit": "per unit"
+    "perUnit": "per unit",
+    "kitLabelSupplements": "🎁 SUPPLEMENTS COMBO — Customize the flavors of your complete kit"
   },
   "bundle": {
     "units_one": "{{count}} unit",

@@ -3,8 +3,9 @@ import { Product } from "@/data/store";
 import { trackEvent } from "@/lib/funnelTracking";
 
 export interface CartItemSelection {
-  color: string;
-  size: string;
+  color?: string;
+  size?: string;
+  flavor?: string;
 }
 
 export interface CartItem {
@@ -31,7 +32,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 function buildLineId(productId: string, selections?: CartItemSelection[]) {
   if (!selections || selections.length === 0) return productId;
-  return `${productId}::${selections.map((s) => `${s.color}|${s.size}`).join("__")}`;
+  return `${productId}::${selections.map((s) => `${s.color || ""}|${s.size || ""}|${s.flavor || ""}`).join("__")}`;
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
