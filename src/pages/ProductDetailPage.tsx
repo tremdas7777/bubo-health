@@ -503,7 +503,7 @@ export default function ProductDetailPage() {
             )}
 
             {/* KIT mode: Compre 2 Leve 3 — 3 separate (color + size) selections */}
-            {isKitProduct && product.colors && product.sizes && (
+            {isKitProduct && (
               <div className="space-y-3 rounded-xl border-2 border-primary/30 bg-primary/5 p-4">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
