@@ -71,14 +71,26 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
       };
       setSettings(s);
 
-      // First-time language: if no localStorage, use default from settings
-      if (!localStorage.getItem("kazoom_lang")) {
+      // URL params override everything (for campaign links per country)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlLang = urlParams.get("lang")?.toLowerCase() as SupportedLanguage | null;
+      const urlCurrency = urlParams.get("currency")?.toUpperCase() as SupportedCurrency | null;
+
+      if (urlLang && s.available_languages.includes(urlLang)) {
+        i18nInst.changeLanguage(urlLang);
+        localStorage.setItem("kazoom_lang", urlLang);
+        document.documentElement.lang = urlLang;
+      } else if (!localStorage.getItem("kazoom_lang")) {
+        // First-time language: use navigator or default
         const navLang = navigator.language.slice(0, 2) as SupportedLanguage;
         const initial = s.available_languages.includes(navLang) ? navLang : s.default_language;
         i18nInst.changeLanguage(initial);
       }
-      // First-time currency
-      if (!localStorage.getItem("kazoom_currency")) {
+
+      if (urlCurrency && s.available_currencies.includes(urlCurrency)) {
+        setCurrencyState(urlCurrency);
+        localStorage.setItem("kazoom_currency", urlCurrency);
+      } else if (!localStorage.getItem("kazoom_currency")) {
         setCurrencyState(s.default_currency);
         localStorage.setItem("kazoom_currency", s.default_currency);
       }
