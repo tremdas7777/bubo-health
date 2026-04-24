@@ -111,6 +111,14 @@ export default function ProductDetailPage() {
   }> = {
     "polo-ducatti-antitranspirante": { size: 3, labelKey: "productPage.kitLabel2for3" },
     "camisa-polo-premium": { size: 5, labelKey: "productPage.kitLabel5polos" },
+    "esn-elite-leistung-combo-1": { 
+      labelKey: "productPage.kitLabelSupplements",
+      items: [
+        { name: "Designer Whey Protein", options: ["Honey Cereal", "Apple Strudel", "Germknödel", "Peanutbutter Cup", "Birthday Cake", "Almond Coconut", "Vanilla Speculoos", "Banana Milk", "Cherry Yogurt", "Chicken Waffle", "Cinnamon Cereal", "Dark Cookies & Cream", "KiBa", "Leons Cereal", "Milk Chocolate", "Milky Hazelnut", "Neutral", "Peach Yogurt", "Salted Dark Chocolate", "Stracciatella", "Strawberry Cream", "Stroopwafel", "Vanilla Ice Cream", "Vanilla Milk", "Vanilla Speculoos V2", "White Chocolate Pistachio", "Blueberry Cheesecake"], type: "flavor" },
+        { name: "Isoclear Whey Protein Isolate", options: ["Royal Candy", "Pina Colada", "Tropical Punch", "Mojito", "Cactus Ice", "Icy Pear", "Peach Rings", "Blackberry", "Bloody Orange", "Spiced Orange", "Fresh Orange", "Fresh Lemon", "Cactus Fruit", "Cherry Lemonade", "Cola Orange", "Green Apple", "Green Tea Honey", "Lemon Iced Tea", "Mango Peach Iced Tea", "Peach Iced Tea", "Pink Grapefruit", "Red Apple Lime", "Sour Power", "Strawberry Lime", "Gummy Bear (limited)"], type: "flavor" },
+        { name: "Crank Pre-Workout", options: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola", "Blackberry", "Sour Power"], type: "flavor" }
+      ]
+    }
   };
   const kitConfig = product ? KIT_CONFIG[product.slug] : undefined;
   const isKitProduct = !!kitConfig;
