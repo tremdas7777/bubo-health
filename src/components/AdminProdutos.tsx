@@ -207,137 +207,90 @@ export default function AdminProdutos() {
     return result;
   };
 
-  const isShopifyFormat = (headers: string[]) => {
-    const lc = headers.map(h => h.toLowerCase());
-    return lc.includes('handle') && lc.includes('title');
-  };
-
   const parseShopifyCsv = (headers: string[], dataRows: string[][]) => {
-    const col = (name: string) => {
-      const idx = headers.findIndex(h => h.toLowerCase() === name.toLowerCase());
-      return idx >= 0 ? idx : -1;
-    };
+    const findCol = (name: string) => headers.findIndex(h => h.trim().toLowerCase().replace(/\s/g, '') === name.toLowerCase().replace(/\s/g, ''));
+    
+    const iHandle = findCol('handle');
+    const iTitle = findCol('title');
+    const iBody = findCol('body (html)') >= 0 ? findCol('body (html)') : findCol('body');
+    const iType = findCol('type') >= 0 ? findCol('type') : findCol('product category');
+    const iPrice = findCol('variant price');
+    const iCompare = findCol('variant compare at price');
+    const iImage = findCol('image src');
+    const iStatus = findCol('status');
 
-    const iHandle = col('handle');
-    const iTitle = col('title');
-    const iBody = col('body (html)') >= 0 ? col('body (html)') : col('body');
-    const iType = col('type') >= 0 ? col('type') : col('product category');
-    const iPrice = col('variant price');
-    const iCompare = col('variant compare at price');
-    const iImage = col('image src');
-    const iStatus = col('status');
-
-    // Detect all option columns (up to 3)
     const optionCols: { nameIdx: number; valIdx: number }[] = [];
     for (let n = 1; n <= 3; n++) {
-      const nameIdx = col(`option${n} name`);
-      const valIdx = col(`option${n} value`);
-      if (nameIdx >= 0 && valIdx >= 0) optionCols.push({ nameIdx, valIdx });
+      const nIdx = findCol(`option${n} name`);
+      const vIdx = findCol(`option${n} value`);
+      if (nIdx >= 0 && vIdx >= 0) optionCols.push({ nameIdx: nIdx, valIdx: vIdx });
     }
-
-    // Group rows by handle
-    type ProductData = {
-      title: string; body: string; category: string;
-      price: number; compare: number | null;
-      image: string; images: string[];
-      optionNames: string[];
-      optionValues: Map<string, Set<string>>;
-      active: boolean;
-    };
-    const grouped = new Map<string, ProductData>();
-
+    
+    const grouped = new Map<string, any>();
+    
     for (const vals of dataRows) {
-      const handle = vals[iHandle] || '';
+      const handle = vals[iHandle]?.trim();
       if (!handle) continue;
-
-      const imgUrl = iImage >= 0 ? (vals[iImage] || '') : '';
-      const title = vals[iTitle] || '';
-      const existing = grouped.get(handle);
-
+      
+      let existing = grouped.get(handle);
       if (!existing) {
-        const priceStr = iPrice >= 0 ? (vals[iPrice] || '') : '';
-        const compareStr = iCompare >= 0 ? (vals[iCompare] || '') : '';
-        const price = priceStr ? Math.round(parseFloat(priceStr.replace(',', '.')) * 100) : 0;
-        const compare = compareStr ? Math.round(parseFloat(compareStr.replace(',', '.')) * 100) : null;
-        const body = iBody >= 0 ? (vals[iBody] || '') : '';
-        const category = iType >= 0 ? (vals[iType] || 'Geral') : 'Geral';
-        const status = iStatus >= 0 ? (vals[iStatus] || '').toLowerCase() : 'active';
-
-        // Extract option names and first values
-        const optionNames: string[] = [];
-        const optionValues = new Map<string, Set<string>>();
-        for (const oc of optionCols) {
-          const optName = vals[oc.nameIdx] || '';
-          const optVal = vals[oc.valIdx] || '';
-          if (optName && optVal && optVal.toLowerCase() !== 'default title') {
-            optionNames.push(optName);
-            optionValues.set(optName, new Set([optVal]));
+        const optInfo: { name: string; values: Set<string>; colIdx: number }[] = [];
+        for (let i = 0; i < optionCols.length; i++) {
+          const oc = optionCols[i];
+          const name = vals[oc.nameIdx]?.trim();
+          const val = vals[oc.valIdx]?.trim();
+          if (name && val && val.toLowerCase() !== 'default title') {
+            optInfo.push({ name, values: new Set([val]), colIdx: i });
           }
         }
-
+        
+        const price = Math.round(parseFloat((vals[iPrice] || '0').replace(',', '.')) * 100) || 0;
+        const compare = vals[iCompare] ? Math.round(parseFloat(vals[iCompare].replace(',', '.')) * 100) : null;
+        
         grouped.set(handle, {
-          title: title || handle, body, category, price, compare,
-          image: imgUrl, images: imgUrl ? [imgUrl] : [],
-          optionNames, optionValues, active: status !== 'draft',
+          name: vals[iTitle] || handle,
+          slug: handle,
+          body: vals[iBody] || '',
+          category: vals[iType] || 'Geral',
+          price_cents: price,
+          original_price_cents: compare,
+          image_url: vals[iImage] || null,
+          images: vals[iImage] ? [vals[iImage]] : [],
+          optInfo,
+          active: (vals[iStatus] || '').toLowerCase() !== 'draft'
         });
       } else {
-        // Add variant values for each option
-        for (const oc of optionCols) {
-          const optVal = vals[oc.valIdx] || '';
-          if (!optVal || optVal.toLowerCase() === 'default title') continue;
-          // Find the matching option name from existing names
-          for (const optName of existing.optionNames) {
-            const set = existing.optionValues.get(optName);
-            if (set) {
-              // Match by column index position
-              const matchIdx = existing.optionNames.indexOf(optName);
-              if (matchIdx === optionCols.indexOf(oc)) {
-                set.add(optVal);
-              }
-            }
+        for (const info of existing.optInfo) {
+          const oc = optionCols[info.colIdx];
+          const val = vals[oc.valIdx]?.trim();
+          if (val && val.toLowerCase() !== 'default title') {
+            info.values.add(val);
           }
         }
-        if (imgUrl && !existing.images.includes(imgUrl)) existing.images.push(imgUrl);
-        if (!existing.title && title) existing.title = title;
+        const img = vals[iImage];
+        if (img && !existing.images.includes(img)) existing.images.push(img);
       }
     }
-
-    // Convert to preview rows
-    return Array.from(grouped.entries()).map(([handle, data]) => {
-      // Build variants: always an array
-      // Single option → flat ["val1", "val2", ...]
-      // Multiple options → [{name: "Opt1", values: [...]}, {name: "Opt2", values: [...]}]
-      let variants: any[];
-      if (data.optionNames.length === 0) {
-        variants = [];
-      } else if (data.optionNames.length === 1) {
-        variants = Array.from(data.optionValues.get(data.optionNames[0]) || []);
-      } else {
-        variants = data.optionNames.map(name => ({
-          name,
-          values: Array.from(data.optionValues.get(name) || [])
+    
+    return Array.from(grouped.values()).map(data => {
+      let variants: any[] = [];
+      if (data.optInfo.length === 1) {
+        variants = Array.from(data.optInfo[0].values);
+      } else if (data.optInfo.length > 1) {
+        variants = data.optInfo.map((info: any) => ({
+          name: info.name,
+          values: Array.from(info.values)
         }));
       }
-
+      
       return {
         _source: 'shopify' as const,
-        name: data.title,
-        slug: handle,
-        price_cents: data.price,
-        original_price_cents: data.compare,
-        category: data.category,
-        description: data.body.replace(/<[^>]*>/g, '').slice(0, 500),
-        description_html: data.body,
-        image_url: data.image || null,
-        images: data.images,
-        variants,
-        active: data.active,
-        featured: false,
+        ...data,
+        variants
       };
     });
   };
 
-  /* Split CSV text into logical rows, respecting quoted fields that span multiple lines */
   const splitCsvRows = (text: string): string[] => {
     const rows: string[] = [];
     let current = '';
@@ -349,7 +302,7 @@ export default function AdminProdutos() {
         else inQuotes = !inQuotes;
         current += ch;
       } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
-        if (ch === '\r' && text[i + 1] === '\n') i++; // skip \r\n
+        if (ch === '\r' && text[i + 1] === '\n') i++;
         if (current.trim()) rows.push(current);
         current = '';
       } else {
@@ -371,20 +324,33 @@ export default function AdminProdutos() {
       const headers = parseCsvLine(rows[0]);
       const dataRows = rows.slice(1).map(l => parseCsvLine(l));
 
-      if (isShopifyFormat(headers)) {
-        // Shopify format detected
+      const isShopify = (h: string[]) => {
+        const lc = h.join(',').toLowerCase();
+        return lc.includes('handle') && lc.includes('title') && lc.includes('option');
+      };
+
+      if (isShopify(headers)) {
         const parsed = parseShopifyCsv(headers, dataRows);
         setCsvPreview(parsed);
-        toast.success(`Formato Shopify detectado! ${parsed.length} produtos encontrados.`);
+        const variantInfo = parsed.map(p => {
+          if (Array.isArray(p.variants) && p.variants.length > 0 && typeof p.variants[0] === 'object') {
+            return p.variants.map((v: any) => `${v.name}: ${v.values.length} sabores`).join(' | ');
+          }
+          return `${p.variants?.length || 0} sabores`;
+        }).join('; ');
+        toast.success(`Shopify detectado! ${parsed.length} produto(s). ${variantInfo}`);
+        console.log('[Shopify Import Preview]', parsed);
       } else {
-        // Legacy Kazoom format
         const headersLc = headers.map(h => h.replace(/^"|"$/g, '').toLowerCase());
-        const rows = dataRows.map(vals => {
+        const rowsParsed = dataRows.map(vals => {
           const row: Record<string, string> = {};
-          headersLc.forEach((h, i) => { row[h] = (vals[i] || '').replace(/^"|"$/g, ''); });
+          headersLc.forEach((h, i) => { row[h] = vals[i]; });
+          const variantStr = row['variacoes'] || row['variants'] || '';
+          row.variants = variantStr ? variantStr.split('|').map((v: string) => v.trim()) : [];
           return row;
         });
-        setCsvPreview(rows.slice(0, 50));
+        setCsvPreview(rowsParsed.slice(0, 50));
+        toast.success('Formato Kazoom detectado.');
       }
     };
     reader.readAsText(file);
@@ -399,15 +365,16 @@ export default function AdminProdutos() {
       let product: any;
 
       if (row._source === 'shopify') {
-        // Shopify pre-parsed row
+        const existingProd = products.find(p => p.slug === row.slug);
         product = {
+          ...(existingProd ? { id: existingProd.id } : {}),
           name: row.name,
           slug: row.slug,
           price_cents: row.price_cents,
           original_price_cents: row.original_price_cents,
           category: row.category || 'Geral',
           description: row.description || '',
-          description_html: row.description_html || '',
+          description_html: row.body || '',
           image_url: row.image_url || null,
           images: row.images || [],
           variants: row.variants || [],
@@ -416,18 +383,7 @@ export default function AdminProdutos() {
           sort_order: success,
         };
       } else {
-        // Legacy Kazoom format
         const name = row['nome'] || row['name'] || ''; if (!name) { errors++; continue; }
-        const slug = row['slug'] || slugify(name);
-        const price_cents = Math.round(parseFloat((row['preco'] || row['price'] || '0').replace(',', '.')) * 100) || 0;
-        const origStr = row['preco_original'] || row['original_price'] || '';
-        const original_price_cents = origStr ? Math.round(parseFloat(origStr.replace(',', '.')) * 100) : null;
-        const category = row['categoria'] || row['category'] || 'Geral';
-        const image_url = row['imagem'] || row['image'] || '';
-        const imagesStr = row['imagens'] || row['images'] || '';
-        const images = imagesStr ? imagesStr.split('|').map((u: string) => u.trim()).filter(Boolean) : (image_url ? [image_url] : []);
-        const variantsStr = row['variantes'] || row['variants'] || '';
-        const variants = variantsStr ? variantsStr.split('|').map((v: string) => v.trim()).filter(Boolean) : [];
         product = { name, slug, price_cents, original_price_cents, category, description: row['descricao'] || row['description'] || '', image_url: image_url || null, images, variants, featured: ['sim', 'true'].includes((row['destaque'] || '').toLowerCase()), active: !['nao', 'false'].includes((row['ativo'] || 'true').toLowerCase()), sort_order: success };
       }
 
