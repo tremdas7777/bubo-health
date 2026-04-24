@@ -111,24 +111,6 @@ export default function ProductDetailPage() {
   }> = {
     "polo-ducatti-antitranspirante": { size: 3, labelKey: "productPage.kitLabel2for3" },
     "camisa-polo-premium": { size: 5, labelKey: "productPage.kitLabel5polos" },
-    "kit-suplementos-completo": { 
-      labelKey: "productPage.kitLabelSupplements",
-      items: [
-        { name: "Designer Whey Protein", options: ["Milk Chocolate", "Vanilla Milk", "Strawberry Cream", "Cookies & Cream", "Neutral", "Banana Milk", "Cinnamon Cereal", "Salted Dark Chocolate"], type: "flavor" },
-        { name: "Isoclear Whey Protein Isolate", options: ["Peach Iced Tea", "Lemon Iced Tea", "Green Apple", "Blue Raspberry", "Tropical Punch", "Fresh Cherry", "Blackberry", "Pink Grapefruit"], type: "flavor" },
-        { name: "Crank Pre-Workout", options: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola", "Blackberry", "Sour Power"], type: "flavor" },
-        { name: "Ultrapure Kreatin Pulver", options: ["Neutral", "Watermelon", "Fizzy Orange", "Fresh Cherry"], type: "flavor" },
-        { name: "Daily", options: ["Cactus Fruit", "Apple Cranberry", "Green Apple", "Pineapple Coconut", "Raspberry Iced Tea", "Sour Power"], type: "flavor" },
-        { name: "Designer Bar Proteinriegel", options: ["Peanut Caramel", "Hazelnut Nougat", "Fudge Brownie", "Coconut", "Dark Chocolate Raspberry", "White Chocolate Raspberry"], type: "flavor" },
-        { name: "Magnesium Complex", options: ["90 Kapseln"], type: "flavor" },
-        { name: "Zink Kapseln", options: ["120 Kapseln"], type: "flavor" },
-        { name: "Vitamin D3 + K2 Depot", options: ["120 Kapseln"], type: "flavor" },
-        { name: "Ashwagandha Kapseln: Ashwa+", options: ["120 Kapseln"], type: "flavor" },
-        { name: "Athlete Stack: Men", options: ["210 Kapseln"], type: "flavor" },
-        { name: "Athlete Stack: Women", options: ["210 Kapseln"], type: "flavor" },
-        { name: "Magnesiumbisglycinat Kapseln", options: ["120 Kapseln"], type: "flavor" }
-      ]
-    }
   };
   const kitConfig = product ? KIT_CONFIG[product.slug] : undefined;
   const isKitProduct = !!kitConfig;
