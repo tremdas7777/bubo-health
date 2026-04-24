@@ -384,7 +384,22 @@ export default function AdminProdutos() {
         };
       } else {
         const name = row['nome'] || row['name'] || ''; if (!name) { errors++; continue; }
-        product = { name, slug, price_cents, original_price_cents, category, description: row['descricao'] || row['description'] || '', image_url: image_url || null, images, variants, featured: ['sim', 'true'].includes((row['destaque'] || '').toLowerCase()), active: !['nao', 'false'].includes((row['ativo'] || 'true').toLowerCase()), sort_order: success };
+        const slug = row['slug'] || name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+        const existingProd = products.find(p => p.slug === slug);
+        product = {
+          ...(existingProd ? { id: existingProd.id } : {}),
+          name, slug,
+          price_cents: Math.round(parseFloat(String(row['preco'] || '0').replace(',', '.')) * 100),
+          original_price_cents: row['preco_original'] ? Math.round(parseFloat(String(row['preco_original']).replace(',', '.')) * 100) : null,
+          category: row['categoria'] || 'Geral',
+          description: row['descricao'] || '',
+          image_url: row['imagem'] || null,
+          images: (row['imagens'] || '').split('|').filter(Boolean),
+          variants: Array.isArray(row.variants) ? row.variants : [],
+          featured: row['destaque'] === 'sim',
+          active: row['ativo'] !== 'nao',
+          sort_order: success,
+        };
       }
 
       const { data, error } = await supabase.functions.invoke('save-admin-product', { body: { password: pw, product } });
