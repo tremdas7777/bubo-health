@@ -207,8 +207,12 @@ export default function CheckoutPage() {
 
   const selectedShippingOption = shippingOptions.find((s) => s.id === selectedShipping) || shippingOptions[0];
   const shippingCost = selectedShippingOption?.price_cents || 0;
-  const subtotal = totalPrice;
-  const total = subtotal + shippingCost / 100;
+  // All values in USD cents
+  const subtotalCents = totalPrice;
+  const totalCents = subtotalCents + shippingCost;
+  // Decimal versions kept for gateway calls and legacy props
+  const subtotal = subtotalCents / 100;
+  const total = totalCents / 100;
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
   const timerStr = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
