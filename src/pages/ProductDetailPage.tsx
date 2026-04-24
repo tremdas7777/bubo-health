@@ -544,7 +544,7 @@ export default function ProductDetailPage() {
                         className="mb-2 flex w-full items-center justify-between text-left"
                       >
                         <span className="text-sm font-semibold text-foreground">
-                          {isFlavorType ? "Sabor" : (itemConfig?.name || t("productPage.kitShirtLabel", { n: idx + 1 }))}
+                          {itemConfig?.name.replace(/\s*[Ff]lavor/g, '') || t("productPage.kitShirtLabel", { n: idx + 1 })}
                           {isComplete && (
                             <span className="ml-2 inline-flex items-center gap-1 text-xs font-normal text-primary">
                               <CheckCircle2 size={12} /> {isFlavorType ? slot.flavor : `${slot.color} · ${slot.size}`}
@@ -552,7 +552,7 @@ export default function ProductDetailPage() {
                           )}
                         </span>
                         <span className={`text-xs ${isComplete ? "text-primary" : "text-muted-foreground"}`}>
-                          {isComplete ? t("productPage.kitComplete") : isActive ? t("productPage.kitSelecting") : `Escolher sabor do ${itemConfig?.name.replace(/\s*[Ff]lavor/g, '') || ''}`}
+                          {isComplete ? t("productPage.kitComplete") : isActive ? t("productPage.kitSelecting") : `escolher sabor:`}
                         </span>
                       </button>
                       
@@ -705,7 +705,7 @@ export default function ProductDetailPage() {
                           const isOpen = openDropdown === opt.name;
                           return (
                             <div key={opt.name} className="relative">
-                              <p className="text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">{opt.name.toLowerCase().includes('flavor') ? 'Sabor' : opt.name.replace(/\s*[Ff]lavor/g, '')}</p>
+                              <p className="text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">{opt.name.replace(/\s*[Ff]lavor/g, '')}</p>
                               <button
                                 type="button"
                                 onClick={() => setOpenDropdown(isOpen ? null : opt.name)}
@@ -718,7 +718,7 @@ export default function ProductDetailPage() {
                                   <div className="min-w-0">
                                     <p className={`font-semibold text-sm truncate ${selected ? 'text-foreground' : 'text-muted-foreground italic'}`}>
                                       {selected || (opt.name.toLowerCase().includes('flavor') 
-                                        ? `Escolher sabor do ${opt.name.replace(/\s*[Ff]lavor/g, '')}`
+                                        ? `escolher sabor:`
                                         : `${t("productPage.selectPlaceholder")} ${opt.name.replace(/\s*[Ff]lavor/g, '')}...`)}
                                     </p>
                                     <p className="text-[10px] text-muted-foreground uppercase font-medium">
