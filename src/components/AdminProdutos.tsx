@@ -229,7 +229,7 @@ export default function AdminProdutos() {
     const grouped = new Map<string, any>();
     
     for (const vals of dataRows) {
-      const handle = vals[iHandle]?.trim();
+      const handle = (vals[iHandle] || '').trim();
       if (!handle) continue;
       
       let existing = grouped.get(handle);
@@ -237,10 +237,14 @@ export default function AdminProdutos() {
         const optInfo: { name: string; values: Set<string>; colIdx: number }[] = [];
         for (let i = 0; i < optionCols.length; i++) {
           const oc = optionCols[i];
-          const name = vals[oc.nameIdx]?.trim();
-          const val = vals[oc.valIdx]?.trim();
-          if (name && val && val.toLowerCase() !== 'default title') {
-            optInfo.push({ name, values: new Set([val]), colIdx: i });
+          const name = (vals[oc.nameIdx] || '').trim();
+          const val = (vals[oc.valIdx] || '').trim();
+          if (name && name.toLowerCase() !== 'default title') {
+            optInfo.push({ 
+              name, 
+              values: new Set(val && val.toLowerCase() !== 'default title' ? [val] : []), 
+              colIdx: i 
+            });
           }
         }
         
@@ -262,7 +266,7 @@ export default function AdminProdutos() {
       } else {
         for (const info of existing.optInfo) {
           const oc = optionCols[info.colIdx];
-          const val = vals[oc.valIdx]?.trim();
+          const val = (vals[oc.valIdx] || '').trim();
           if (val && val.toLowerCase() !== 'default title') {
             info.values.add(val);
           }
