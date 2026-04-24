@@ -705,32 +705,6 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Legacy single-variant selector (only when no structured colors/sizes) */}
-            {!product.colors && !product.sizes && product.variants && product.variants.length > 0 && (() => {
-              const sizePattern = /^(PP|P|M|G|GG|XGG|\d?XG|\d?G|XS|S|L|XL|XXL|XXXL|\d{2,3})$/i;
-              const isSizes = product.variants.every((v) => sizePattern.test(v.trim()));
-              const label = isSizes ? t("productPage.sizeLabel") : t("productPage.colorLabel");
-              return (
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">{label}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {product.variants.map((variant) => (
-                      <button
-                        key={variant}
-                        onClick={() => setSelectedVariant(variant)}
-                        className={`rounded-lg border px-4 py-1.5 text-sm font-medium transition-colors ${
-                          selectedVariant === variant
-                            ? "bg-primary text-primary-foreground border-primary"
-                            : "border-primary text-primary hover:bg-primary/10"
-                        }`}
-                      >
-                        {variant}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              );
-            })()}
 
             {product.stock <= 30 && (
               <div>
