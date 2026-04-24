@@ -1,0 +1,203 @@
+[
+  {
+    "id": "2f690fbf-30d6-4c4d-b155-5aaae6033ea9",
+    "name": "Magnesium Complex",
+    "slug": "magnesium-complex",
+    "variants": [
+      "90 Kapseln"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "37fd3b8c-7268-4adb-b36b-0407b1fa663e",
+    "name": "Ultrapure Kreatin Pulver",
+    "slug": "ultrapure-creatine-monohydrate",
+    "variants": [
+      "Neutral",
+      "Watermelon",
+      "Fizzy Orange",
+      "Fresh Cherry"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "349303bf-7270-47e0-b283-1a3bebf5d7c2",
+    "name": "Designer Bar Proteinriegel",
+    "slug": "designer-bar-proteinriegel",
+    "variants": [
+      "Dark Chocolate Raspberry",
+      "White Chocolate Raspberry",
+      "Almond Coconut",
+      "Cinnamon Cereal",
+      "Dark Chocolate Salted Almond",
+      "Dark Cookie White Choc",
+      "Fudge Brownie",
+      "Hazelnut Nougat",
+      "Lebkuchen",
+      "Peanut Butter Pretzel",
+      "Peanut Caramel",
+      "Spekulatius",
+      "Strawberry White Chocolate",
+      "Strawberry Yogurt",
+      "White Chocolate Pistachio",
+      "Lemon Cheesecake"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "cbe204bd-053a-40ad-a459-bb20d3ca343f",
+    "name": "Designer Whey Protein",
+    "slug": "designer-whey-protein",
+    "variants": [
+      "Honey Cereal",
+      "Apple Strudel",
+      "Germknödel",
+      "Peanutbutter Cup",
+      "Birthday Cake",
+      "Almond Coconut",
+      "Vanilla Speculoos",
+      "Banana Milk",
+      "Cherry Yogurt",
+      "Chicken Waffle",
+      "Cinnamon Cereal",
+      "Dark Cookies & Cream",
+      "KiBa",
+      "Leons Cereal",
+      "Milk Chocolate",
+      "Milky Hazelnut",
+      "Neutral",
+      "Peach Yogurt",
+      "Salted Dark Chocolate",
+      "Stracciatella",
+      "Strawberry Cream",
+      "Stroopwafel",
+      "Vanilla Ice Cream",
+      "Vanilla Milk",
+      "Vanilla Speculoos V2",
+      "White Chocolate Pistachio",
+      "Blueberry Cheesecake"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "7ed7a283-a119-4801-969c-fcd63ff606f8",
+    "name": "Daily",
+    "slug": "daily",
+    "variants": [
+      "Cactus Fruit",
+      "Apple Cranberry",
+      "Green Apple",
+      "Pineapple Coconut",
+      "Raspberry Iced Tea",
+      "Sour Power"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "998b12dc-5a0d-40d6-9199-b50537a082ce",
+    "name": "Crank Pre-Workout",
+    "slug": "crank-pre-workout",
+    "variants": [
+      "Blackberry",
+      "Sour Power",
+      "Biceps Battle (Strawberry Kiwi)",
+      "Cola",
+      "Cherry Cola",
+      "Fresh Berry Juice",
+      "Tropical Punch"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "227e125c-6973-4b70-aafd-902e73754e39",
+    "name": "Athlete Stack: Men",
+    "slug": "athlete-stack-men",
+    "variants": [
+      "210 Kapseln"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "ccbb950b-34b9-4e32-864b-4b4617215a54",
+    "name": "Zink Kapseln",
+    "slug": "zink-kapseln",
+    "variants": [
+      "120 Kapseln"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "8eed0193-2ba3-4893-a4ed-4b1b577bf1e2",
+    "name": "Isoclear Whey Protein Isolate",
+    "slug": "isoclear-whey-isolate",
+    "variants": [
+      "Royal Candy",
+      "Pina Colada",
+      "Tropical Punch",
+      "Mojito",
+      "Cactus Ice",
+      "Icy Pear",
+      "Peach Rings",
+      "Blackberry",
+      "Blue Raspberry",
+      "Blueberry Iced Tea",
+      "Bloody Orange",
+      "Spiced Orange",
+      "Fresh Orange",
+      "Fresh Lemon",
+      "Cactus Fruit",
+      "Cherry Lemonade",
+      "Cola Orange",
+      "Fresh Cherry",
+      "Fresh Cherry less sweet",
+      "Green Apple",
+      "Green Tea Honey",
+      "Lemon Iced Tea",
+      "Mango Peach Iced Tea",
+      "Peach Iced Tea",
+      "Peach Iced Tea less sweet",
+      "Pink Grapefruit",
+      "Red Apple Lime",
+      "Sour Power",
+      "Strawberry Lime",
+      "Gummy Bear (limited)"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "c90b0d71-a22d-421c-bfe8-81c254bfaa51",
+    "name": "Ashwagandha Kapseln: Ashwa+",
+    "slug": "ashwagandha-kapseln-ashwa-pro",
+    "variants": [
+      "120 Kapseln"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "e9d92253-41dd-47ec-a4bc-97cd372c3bbb",
+    "name": "Vitamin D3 + K2 Depot",
+    "slug": "vitamin-d3-k2-depot",
+    "variants": [
+      "120 Kapseln"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "b83ef5da-5de6-40af-aea9-e4e66f90fbcc",
+    "name": "Athlete Stack: Women",
+    "slug": "athlete-stack-women",
+    "variants": [
+      "210 Kapseln"
+    ],
+    "category": "suplementos"
+  },
+  {
+    "id": "9fecc227-b8dd-4e3e-b5b8-f2facec8bd6d",
+    "name": "Magnesiumbisglycinat Kapseln",
+    "slug": "magnesiumbisglycinat-kapseln",
+    "variants": [
+      "120 Kapseln"
+    ],
+    "category": "suplementos"
+  }
+]

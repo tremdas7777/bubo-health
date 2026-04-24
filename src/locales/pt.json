@@ -706,7 +706,8 @@
     "relatedProducts": "Produtos Relacionados",
     "kitLabel2for3": "🎁 COMPRE 2, LEVE 3 — Escolha as cores e tamanhos das suas 3 camisas",
     "kitLabel5polos": "🎁 KIT COM 5 POLOS — Escolha a cor e o tamanho de cada uma das 5 camisas",
-    "perUnit": "por unidade"
+    "perUnit": "por unidade",
+    "kitLabelSupplements": "🎁 COMBO SUPLEMENTOS — Personalize os sabores do seu kit completo"
   },
   "bundle": {
     "units_one": "{{count}} unidade",

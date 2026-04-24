@@ -43,7 +43,11 @@ export default function CartDrawer() {
                       <ul className="mt-1 space-y-0.5 text-xs text-muted-foreground">
                         {selections.map((s, i) => (
                           <li key={i}>
-                            <span className="font-medium text-foreground">{t("cart.shirt", { n: i + 1 })}:</span> {s.color} · {s.size}
+                            {s.name ? (
+                              <><span className="font-medium text-foreground">{s.name}:</span> {s.flavor || s.color}</>
+                            ) : (
+                              <><span className="font-medium text-foreground">{t("cart.shirt", { n: i + 1 })}:</span> {s.color} · {s.size}</>
+                            )}
                           </li>
                         ))}
                       </ul>
