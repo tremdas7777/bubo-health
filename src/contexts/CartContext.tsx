@@ -68,7 +68,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const clearCart = useCallback(() => setItems([]), []);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  // totalPrice in USD cents (product.price is in decimal USD)
+  const totalPrice = items.reduce(
+    (sum, item) => sum + Math.round(item.product.price * 100) * item.quantity,
+    0,
+  );
 
   return (
     <CartContext.Provider
