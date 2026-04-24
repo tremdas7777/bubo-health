@@ -79,8 +79,12 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<Step>("identification");
   const [showOrderSummary, setShowOrderSummary] = useState(false);
 
-  // Auto-detected country from IP (default = "us" until detection completes)
-  const [country, setCountry] = useState<string>("us");
+  // Default country from selected language (campaign-driven), then IP overrides if available
+  const LANG_TO_COUNTRY: Record<string, string> = {
+    de: "de", en: "us", es: "es", pt: "br", fr: "fr",
+  };
+  const initialCountry = LANG_TO_COUNTRY[i18n.language?.slice(0, 2) ?? "en"] || "us";
+  const [country, setCountry] = useState<string>(initialCountry);
   const taxIdLabel = getTaxIdLabel(country);
 
   // Form fields
@@ -145,10 +149,11 @@ export default function CheckoutPage() {
     setEmailSuggestions([]); setShowEmailSuggestions(false);
   }, []);
 
-  // Detect visitor country once
+  // Detect visitor country once — but DON'T override if a campaign language is set via URL
   useEffect(() => {
+    const hasUrlLang = new URLSearchParams(window.location.search).has("lang");
     detectVisitorLocale().then((loc) => {
-      setCountry(loc.countryCode);
+      if (!hasUrlLang) setCountry(loc.countryCode);
       if (loc.city && !city) setCity(loc.city);
       if (loc.region && !stateRegion) setStateRegion(loc.region);
       if (loc.postal && !postalCode) setPostalCode(loc.postal);
