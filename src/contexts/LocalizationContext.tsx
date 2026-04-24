@@ -71,32 +71,53 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
       };
       setSettings(s);
 
-      // URL params override everything (for campaign links per country)
       const urlParams = new URLSearchParams(window.location.search);
+      const currentLang = (localStorage.getItem("kazoom_lang") as SupportedLanguage) || i18nInst.language.slice(0, 2);
+      const currentCurrency = (localStorage.getItem("kazoom_currency") as SupportedCurrency) || currency;
+
+      // 1. Resolve Language
+      let finalLang: SupportedLanguage = currentLang;
+
+      // URL param has highest priority
       const urlLang = urlParams.get("lang")?.toLowerCase() as SupportedLanguage | null;
-      const urlCurrency = urlParams.get("currency")?.toUpperCase() as SupportedCurrency | null;
-
       if (urlLang && s.available_languages.includes(urlLang)) {
-        i18nInst.changeLanguage(urlLang);
-        localStorage.setItem("kazoom_lang", urlLang);
-        document.documentElement.lang = urlLang;
-      } else if (!localStorage.getItem("kazoom_lang")) {
-        // First-time language: use navigator or default
+        finalLang = urlLang;
+      } 
+      // If current lang (from localStorage or navigator) is not available, or it's a first visit
+      else if (!s.available_languages.includes(currentLang) || !localStorage.getItem("kazoom_lang")) {
         const navLang = navigator.language.slice(0, 2) as SupportedLanguage;
-        const initial = s.available_languages.includes(navLang) ? navLang : s.default_language;
-        i18nInst.changeLanguage(initial);
+        finalLang = s.available_languages.includes(navLang) ? navLang : s.default_language;
+        // If even navLang isn't available, use default
+        if (!s.available_languages.includes(finalLang)) {
+          finalLang = s.default_language;
+        }
       }
 
-      if (urlCurrency && s.available_currencies.includes(urlCurrency)) {
-        setCurrencyState(urlCurrency);
-        localStorage.setItem("kazoom_currency", urlCurrency);
-      } else if (!localStorage.getItem("kazoom_currency")) {
-        setCurrencyState(s.default_currency);
-        localStorage.setItem("kazoom_currency", s.default_currency);
+      // Apply language
+      if (finalLang !== i18nInst.language) {
+        i18nInst.changeLanguage(finalLang);
       }
+      localStorage.setItem("kazoom_lang", finalLang);
+      document.documentElement.lang = finalLang;
+
+      // 2. Resolve Currency
+      let finalCurrency: SupportedCurrency = currentCurrency;
+
+      const urlCurrency = urlParams.get("currency")?.toUpperCase() as SupportedCurrency | null;
+      if (urlCurrency && s.available_currencies.includes(urlCurrency)) {
+        finalCurrency = urlCurrency;
+      }
+      // If current currency is not available, or it's a first visit
+      else if (!s.available_currencies.includes(currentCurrency) || !localStorage.getItem("kazoom_currency")) {
+        finalCurrency = s.available_currencies.includes(s.default_currency) ? s.default_currency : s.available_currencies[0] || "USD";
+      }
+
+      // Apply currency
+      setCurrencyState(finalCurrency);
+      localStorage.setItem("kazoom_currency", finalCurrency);
     }
     setLoading(false);
-  }, [i18nInst]);
+  }, [i18nInst, currency]);
 
   useEffect(() => {
     fetchSettings();
