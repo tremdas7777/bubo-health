@@ -603,39 +603,102 @@
     },
     "faqs": {
       "home-kitchen": [
-        {"q": "Quels produits maison et cuisine Kazoom propose-t-il ?", "a": "Nous proposons des articles pratiques comme broyeurs, vases décoratifs, réveils et éclairage intelligent, tous avec livraison gratuite."},
-        {"q": "Les produits de cuisine ont-ils une garantie ?", "a": "Oui, tous les produits bénéficient d'une garantie de remboursement de 30 jours, sans condition."},
-        {"q": "Puis-je payer en plusieurs fois ?", "a": "Oui, vous pouvez répartir votre paiement en plusieurs fois lors du paiement."}
+        {
+          "q": "Quels produits maison et cuisine Kazoom propose-t-il ?",
+          "a": "Nous proposons des articles pratiques comme broyeurs, vases décoratifs, réveils et éclairage intelligent, tous avec livraison gratuite."
+        },
+        {
+          "q": "Les produits de cuisine ont-ils une garantie ?",
+          "a": "Oui, tous les produits bénéficient d'une garantie de remboursement de 30 jours, sans condition."
+        },
+        {
+          "q": "Puis-je payer en plusieurs fois ?",
+          "a": "Oui, vous pouvez répartir votre paiement en plusieurs fois lors du paiement."
+        }
       ],
       "electronics": [
-        {"q": "Quels produits électroniques vendez-vous ?", "a": "Smartwatches, consoles portables, réveils numériques et ampoules connectées Wi-Fi."},
-        {"q": "Les produits électroniques sont-ils livrés avec une facture ?", "a": "Oui, chaque commande est expédiée avec une facture électronique par email."},
-        {"q": "Quel est le délai de livraison pour l'électronique ?", "a": "Livraison express mondiale en 5–9 jours ouvrés, gratuite."}
+        {
+          "q": "Quels produits électroniques vendez-vous ?",
+          "a": "Smartwatches, consoles portables, réveils numériques et ampoules connectées Wi-Fi."
+        },
+        {
+          "q": "Les produits électroniques sont-ils livrés avec une facture ?",
+          "a": "Oui, chaque commande est expédiée avec une facture électronique par email."
+        },
+        {
+          "q": "Quel est le délai de livraison pour l'électronique ?",
+          "a": "Livraison express mondiale en 5–9 jours ouvrés, gratuite."
+        }
       ],
       "sports": [
-        {"q": "Quel type de produits sportifs propose Kazoom ?", "a": "Raquettes de beach tennis, lunettes de natation, casques de cyclisme, lunettes de sport et plus."},
-        {"q": "Les lunettes de sport ont-elles une protection UV ?", "a": "Oui, nos lunettes sont équipées de verres UV400 pour une sécurité maximale."},
-        {"q": "Offrez-vous la livraison gratuite pour les produits sportifs ?", "a": "Oui, tous les produits bénéficient de la livraison mondiale gratuite."}
+        {
+          "q": "Quel type de produits sportifs propose Kazoom ?",
+          "a": "Raquettes de beach tennis, lunettes de natation, casques de cyclisme, lunettes de sport et plus."
+        },
+        {
+          "q": "Les lunettes de sport ont-elles une protection UV ?",
+          "a": "Oui, nos lunettes sont équipées de verres UV400 pour une sécurité maximale."
+        },
+        {
+          "q": "Offrez-vous la livraison gratuite pour les produits sportifs ?",
+          "a": "Oui, tous les produits bénéficient de la livraison mondiale gratuite."
+        }
       ],
       "tools": [
-        {"q": "Le kit d'outils de réfrigération est-il professionnel ?", "a": "Oui, c'est un kit complet avec pompe à vide 7 CFM, 2 manifolds, dudgeonnière, chalumeau et plus de 20 outils professionnels."},
-        {"q": "Les outils sont-ils bi-tension ?", "a": "Oui, la pompe à vide et l'équipement électrique sont bi-tension (110/220V)."},
-        {"q": "Quelle est la garantie des outils ?", "a": "Tous les outils incluent une garantie de 30 jours. Si vous n'êtes pas satisfait, nous vous remboursons."}
+        {
+          "q": "Le kit d'outils de réfrigération est-il professionnel ?",
+          "a": "Oui, c'est un kit complet avec pompe à vide 7 CFM, 2 manifolds, dudgeonnière, chalumeau et plus de 20 outils professionnels."
+        },
+        {
+          "q": "Les outils sont-ils bi-tension ?",
+          "a": "Oui, la pompe à vide et l'équipement électrique sont bi-tension (110/220V)."
+        },
+        {
+          "q": "Quelle est la garantie des outils ?",
+          "a": "Tous les outils incluent une garantie de 30 jours. Si vous n'êtes pas satisfait, nous vous remboursons."
+        }
       ],
       "fitness": [
-        {"q": "Quels équipements fitness proposez-vous ?", "a": "Genouillères professionnelles, bandes d'entraînement, exerciseurs abdominaux, masseurs musculaires et powerballs."},
-        {"q": "Les produits fitness conviennent-ils aux débutants ?", "a": "Oui, nos produits sont conçus pour tous, des débutants aux athlètes confirmés, avec différents niveaux de résistance."},
-        {"q": "Puis-je utiliser les équipements à la maison ?", "a": "Absolument ! Tous les produits sont conçus pour la maison, la salle ou l'extérieur."}
+        {
+          "q": "Quels équipements fitness proposez-vous ?",
+          "a": "Genouillères professionnelles, bandes d'entraînement, exerciseurs abdominaux, masseurs musculaires et powerballs."
+        },
+        {
+          "q": "Les produits fitness conviennent-ils aux débutants ?",
+          "a": "Oui, nos produits sont conçus pour tous, des débutants aux athlètes confirmés, avec différents niveaux de résistance."
+        },
+        {
+          "q": "Puis-je utiliser les équipements à la maison ?",
+          "a": "Absolument ! Tous les produits sont conçus pour la maison, la salle ou l'extérieur."
+        }
       ],
       "fishing": [
-        {"q": "Vendez-vous des équipements de pêche professionnels ?", "a": "Oui, nous avons des moulinets à 12 roulements, lignes, gilets et kits de pinces professionnels."},
-        {"q": "Les moulinets sont-ils de bonne qualité ?", "a": "Nos moulinets ont 12 roulements en acier inoxydable, garantissant un fonctionnement fluide et une durabilité supérieure."},
-        {"q": "Livrez-vous dans le monde entier ?", "a": "Oui, nous offrons la livraison mondiale gratuite."}
+        {
+          "q": "Vendez-vous des équipements de pêche professionnels ?",
+          "a": "Oui, nous avons des moulinets à 12 roulements, lignes, gilets et kits de pinces professionnels."
+        },
+        {
+          "q": "Les moulinets sont-ils de bonne qualité ?",
+          "a": "Nos moulinets ont 12 roulements en acier inoxydable, garantissant un fonctionnement fluide et une durabilité supérieure."
+        },
+        {
+          "q": "Livrez-vous dans le monde entier ?",
+          "a": "Oui, nous offrons la livraison mondiale gratuite."
+        }
       ],
       "health-beauty": [
-        {"q": "Les cosmétiques sont-ils sûrs ?", "a": "Oui, tous les produits de beauté sont testés dermatologiquement et respectent les normes internationales de sécurité."},
-        {"q": "Quels produits de beauté vendez-vous ?", "a": "Fards à paupières, eye-liners, peignes volumisateurs, comble-sourcils, vernis miroir et mascara définissant."},
-        {"q": "Comment fonctionne le retour des cosmétiques ?", "a": "Vous avez 30 jours pour retourner tout produit, sans condition. Contactez-nous simplement."}
+        {
+          "q": "Les cosmétiques sont-ils sûrs ?",
+          "a": "Oui, tous les produits de beauté sont testés dermatologiquement et respectent les normes internationales de sécurité."
+        },
+        {
+          "q": "Quels produits de beauté vendez-vous ?",
+          "a": "Fards à paupières, eye-liners, peignes volumisateurs, comble-sourcils, vernis miroir et mascara définissant."
+        },
+        {
+          "q": "Comment fonctionne le retour des cosmétiques ?",
+          "a": "Vous avez 30 jours pour retourner tout produit, sans condition. Contactez-nous simplement."
+        }
       ]
     }
   },
@@ -706,7 +769,9 @@
     "relatedProducts": "Produits Similaires",
     "kitLabel2for3": "🎁 ACHETEZ 2, OBTENEZ 3 — Choisissez les couleurs et tailles de vos 3 chemises",
     "kitLabel5polos": "🎁 KIT DE 5 POLOS — Choisissez la couleur et la taille de chacune des 5 chemises",
-    "perUnit": "par unité"
+    "perUnit": "par unité",
+    "chooseFlavor": "choisir la saveur :",
+    "optionsAvailable": "{{count}} options disponibles"
   },
   "bundle": {
     "units_one": "{{count}} unité",

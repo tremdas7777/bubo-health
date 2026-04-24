@@ -603,39 +603,102 @@
     },
     "faqs": {
       "home-kitchen": [
-        {"q": "¿Qué productos para el hogar y cocina ofrece Kazoom?", "a": "Ofrecemos artículos prácticos como trituradores, jarrones decorativos, despertadores e iluminación inteligente, todos con envío gratis."},
-        {"q": "¿Los productos de cocina tienen garantía?", "a": "Sí, todos los productos tienen garantía de devolución de 30 días, sin preguntas."},
-        {"q": "¿Puedo pagar en cuotas?", "a": "Sí, puedes dividir tu pago en varias cuotas en el checkout."}
+        {
+          "q": "¿Qué productos para el hogar y cocina ofrece Kazoom?",
+          "a": "Ofrecemos artículos prácticos como trituradores, jarrones decorativos, despertadores e iluminación inteligente, todos con envío gratis."
+        },
+        {
+          "q": "¿Los productos de cocina tienen garantía?",
+          "a": "Sí, todos los productos tienen garantía de devolución de 30 días, sin preguntas."
+        },
+        {
+          "q": "¿Puedo pagar en cuotas?",
+          "a": "Sí, puedes dividir tu pago en varias cuotas en el checkout."
+        }
       ],
       "electronics": [
-        {"q": "¿Qué electrónicos venden?", "a": "Smartwatches, consolas portátiles, despertadores digitales y bombillas inteligentes Wi-Fi."},
-        {"q": "¿Los electrónicos vienen con factura?", "a": "Sí, cada pedido se envía con factura electrónica por correo."},
-        {"q": "¿Cuál es el plazo de entrega de los electrónicos?", "a": "Envío express mundial en 5–9 días hábiles, gratis."}
+        {
+          "q": "¿Qué electrónicos venden?",
+          "a": "Smartwatches, consolas portátiles, despertadores digitales y bombillas inteligentes Wi-Fi."
+        },
+        {
+          "q": "¿Los electrónicos vienen con factura?",
+          "a": "Sí, cada pedido se envía con factura electrónica por correo."
+        },
+        {
+          "q": "¿Cuál es el plazo de entrega de los electrónicos?",
+          "a": "Envío express mundial en 5–9 días hábiles, gratis."
+        }
       ],
       "sports": [
-        {"q": "¿Qué tipo de productos deportivos tiene Kazoom?", "a": "Tenemos raquetas de beach tennis, gafas de natación, cascos de ciclismo, gafas deportivas y más."},
-        {"q": "¿Las gafas deportivas tienen protección UV?", "a": "Sí, nuestras gafas cuentan con lentes UV400 para máxima seguridad."},
-        {"q": "¿Ofrecen envío gratis para productos deportivos?", "a": "Sí, todos los productos tienen envío gratis mundial."}
+        {
+          "q": "¿Qué tipo de productos deportivos tiene Kazoom?",
+          "a": "Tenemos raquetas de beach tennis, gafas de natación, cascos de ciclismo, gafas deportivas y más."
+        },
+        {
+          "q": "¿Las gafas deportivas tienen protección UV?",
+          "a": "Sí, nuestras gafas cuentan con lentes UV400 para máxima seguridad."
+        },
+        {
+          "q": "¿Ofrecen envío gratis para productos deportivos?",
+          "a": "Sí, todos los productos tienen envío gratis mundial."
+        }
       ],
       "tools": [
-        {"q": "¿El kit de herramientas de refrigeración es profesional?", "a": "Sí, es un kit completo con bomba de vacío 7 CFM, 2 manifolds, herramienta de abocardado, soplete y más de 20 herramientas profesionales."},
-        {"q": "¿Las herramientas son bivolt?", "a": "Sí, la bomba de vacío y el equipo eléctrico son bivolt (110/220V)."},
-        {"q": "¿Qué garantía tienen las herramientas?", "a": "Todas las herramientas tienen garantía de 30 días. Si no estás satisfecho, te devolvemos el dinero."}
+        {
+          "q": "¿El kit de herramientas de refrigeración es profesional?",
+          "a": "Sí, es un kit completo con bomba de vacío 7 CFM, 2 manifolds, herramienta de abocardado, soplete y más de 20 herramientas profesionales."
+        },
+        {
+          "q": "¿Las herramientas son bivolt?",
+          "a": "Sí, la bomba de vacío y el equipo eléctrico son bivolt (110/220V)."
+        },
+        {
+          "q": "¿Qué garantía tienen las herramientas?",
+          "a": "Todas las herramientas tienen garantía de 30 días. Si no estás satisfecho, te devolvemos el dinero."
+        }
       ],
       "fitness": [
-        {"q": "¿Qué equipos de fitness ofrecen?", "a": "Rodilleras profesionales, bandas de entrenamiento, ejercitadores abdominales, masajeadores musculares y powerballs."},
-        {"q": "¿Los productos de fitness son aptos para principiantes?", "a": "Sí, nuestros productos están diseñados para todos, desde principiantes hasta atletas avanzados, con diferentes niveles de resistencia."},
-        {"q": "¿Puedo usar los equipos en casa?", "a": "¡Por supuesto! Todos los productos están diseñados para uso en casa, gimnasio o al aire libre."}
+        {
+          "q": "¿Qué equipos de fitness ofrecen?",
+          "a": "Rodilleras profesionales, bandas de entrenamiento, ejercitadores abdominales, masajeadores musculares y powerballs."
+        },
+        {
+          "q": "¿Los productos de fitness son aptos para principiantes?",
+          "a": "Sí, nuestros productos están diseñados para todos, desde principiantes hasta atletas avanzados, con diferentes niveles de resistencia."
+        },
+        {
+          "q": "¿Puedo usar los equipos en casa?",
+          "a": "¡Por supuesto! Todos los productos están diseñados para uso en casa, gimnasio o al aire libre."
+        }
       ],
       "fishing": [
-        {"q": "¿Venden equipos de pesca profesional?", "a": "Sí, tenemos carretes de 12 rodamientos, líneas, chalecos y kits de alicates profesionales."},
-        {"q": "¿Los carretes son de buena calidad?", "a": "Nuestros carretes tienen 12 rodamientos de acero inoxidable, garantizando operación suave y durabilidad superior."},
-        {"q": "¿Envían a todo el mundo?", "a": "Sí, ofrecemos envío gratis mundial."}
+        {
+          "q": "¿Venden equipos de pesca profesional?",
+          "a": "Sí, tenemos carretes de 12 rodamientos, líneas, chalecos y kits de alicates profesionales."
+        },
+        {
+          "q": "¿Los carretes son de buena calidad?",
+          "a": "Nuestros carretes tienen 12 rodamientos de acero inoxidable, garantizando operación suave y durabilidad superior."
+        },
+        {
+          "q": "¿Envían a todo el mundo?",
+          "a": "Sí, ofrecemos envío gratis mundial."
+        }
       ],
       "health-beauty": [
-        {"q": "¿Los cosméticos son seguros?", "a": "Sí, todos los productos de belleza están dermatológicamente probados y cumplen con normas internacionales de seguridad."},
-        {"q": "¿Qué productos de belleza venden?", "a": "Sombras, delineadores, peines voluminizadores, rellenos de cejas, esmaltes espejo y máscara definidora."},
-        {"q": "¿Cómo funciona la devolución de cosméticos?", "a": "Tienes 30 días para devolver cualquier producto, sin preguntas. Solo contáctanos."}
+        {
+          "q": "¿Los cosméticos son seguros?",
+          "a": "Sí, todos los productos de belleza están dermatológicamente probados y cumplen con normas internacionales de seguridad."
+        },
+        {
+          "q": "¿Qué productos de belleza venden?",
+          "a": "Sombras, delineadores, peines voluminizadores, rellenos de cejas, esmaltes espejo y máscara definidora."
+        },
+        {
+          "q": "¿Cómo funciona la devolución de cosméticos?",
+          "a": "Tienes 30 días para devolver cualquier producto, sin preguntas. Solo contáctanos."
+        }
       ]
     }
   },
@@ -706,7 +769,9 @@
     "relatedProducts": "Productos Relacionados",
     "kitLabel2for3": "🎁 COMPRA 2, LLEVA 3 — Elige los colores y tallas de tus 3 camisas",
     "kitLabel5polos": "🎁 KIT DE 5 POLOS — Elige el color y la talla de cada una de las 5 camisas",
-    "perUnit": "por unidad"
+    "perUnit": "por unidad",
+    "chooseFlavor": "elegir sabor:",
+    "optionsAvailable": "{{count}} opciones disponibles"
   },
   "bundle": {
     "units_one": "{{count}} unidad",

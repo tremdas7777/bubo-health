@@ -92,7 +92,7 @@ export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: products = [], isLoading } = useDbProducts();
   const product = products.find((p) => p.slug === slug);
-  const { formatPrice: fmt, language } = useLocalization();
+  const { formatPrice: fmt, language, settings } = useLocalization();
   const [translatedBullets, setTranslatedBullets] = useState<string[] | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
@@ -117,6 +117,9 @@ export default function ProductDetailPage() {
 
   // Force the correct variants for the ESN combo if DB is outdated
   if (product && product.slug === 'esn-elite-leistung-combo-1') {
+    const rate = settings?.exchange_rates?.EUR || 0.92;
+    product.price = 99 / rate;
+    
     product.variants = [
       { name: "Designer Whey Protein Flavor", values: ["Honey Cereal", "Apple Strudel", "Germknödel", "Peanutbutter Cup", "Birthday Cake", "Almond Coconut", "Vanilla Speculoos", "Banana Milk", "Cherry Yogurt", "Chicken Waffle", "Cinnamon Cereal", "Dark Cookies & Cream", "KiBa", "Leons Cereal", "Milk Chocolate", "Milky Hazelnut", "Neutral", "Peach Yogurt", "Salted Dark Chocolate", "Stracciatella", "Strawberry Cream", "Stroopwafel", "Vanilla Ice Cream", "Vanilla Milk", "Vanilla Speculoos V2", "White Chocolate Pistachio", "Blueberry Cheesecake"] },
       { name: "Isoclear Whey Protein Isolate Flavor", values: ["Royal Candy", "Pina Colada", "Tropical Punch", "Mojito", "Cactus Ice", "Icy Pear", "Peach Rings", "Blackberry", "Bloody Orange", "Spiced Orange", "Fresh Orange", "Fresh Lemon", "Cactus Fruit", "Cherry Lemonade", "Cola Orange", "Green Apple", "Green Tea Honey", "Lemon Iced Tea", "Mango Peach Iced Tea", "Peach Iced Tea", "Pink Grapefruit", "Red Apple Lime", "Sour Power", "Strawberry Lime", "Gummy Bear (limited)"] },
@@ -704,17 +707,27 @@ export default function ProductDetailPage() {
                                 className={`w-full flex items-center justify-between rounded-xl border-2 px-4 py-3 text-left transition-all hover:border-primary/40 focus:border-primary focus:outline-none ${isOpen ? 'border-primary shadow-md' : 'border-border'}`}
                               >
                                 <div className="flex items-center gap-3 min-w-0">
-                                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary font-bold text-sm shrink-0">
-                                    {opt.name.toLowerCase().includes('isoclear') ? '🧊' : '🥛'}
+                                  <div className="h-12 w-12 rounded-xl overflow-hidden shrink-0 border border-border shadow-sm">
+                                    <img 
+                                      src={
+                                        opt.name.toLowerCase().includes('designer') 
+                                          ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerWhey_908g_AlmondCoconutFlavor_2024x2024_shop-iCbreuNy_c640bbf7-d33b-4e04-9670-3ab420c5176d.webp?v=1777061872"
+                                          : opt.name.toLowerCase().includes('isoclear')
+                                          ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872"
+                                          : "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872"
+                                      } 
+                                      alt={opt.name}
+                                      className="h-full w-full object-cover"
+                                    />
                                   </div>
                                   <div className="min-w-0">
                                     <p className={`font-semibold text-sm truncate ${selected ? 'text-foreground' : 'text-muted-foreground italic'}`}>
                                       {selected || (opt.name.toLowerCase().includes('flavor') 
-                                        ? `escolher sabor:`
+                                        ? t("productPage.chooseFlavor")
                                         : `${t("productPage.selectPlaceholder")} ${opt.name.replace(/\s*[Ff]lavor/g, '')}...`)}
                                     </p>
                                     <p className="text-[10px] text-muted-foreground uppercase font-medium">
-                                      {opt.values.length} opções disponíveis
+                                      {t("productPage.optionsAvailable", { count: opt.values.length })}
                                     </p>
                                   </div>
                                 </div>

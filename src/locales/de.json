@@ -603,39 +603,102 @@
     },
     "faqs": {
       "home-kitchen": [
-        {"q": "Welche Haus- und Küchenprodukte bietet Kazoom?", "a": "Wir bieten praktische Haushaltsartikel wie Mühlen, Dekorvasen, Wecker und smarte Beleuchtung, alle mit kostenlosem Versand."},
-        {"q": "Haben Küchenprodukte eine Garantie?", "a": "Ja, alle Produkte haben 30 Tage Geld-zurück-Garantie, ohne Fragen."},
-        {"q": "Kann ich in Raten zahlen?", "a": "Ja, Sie können Ihre Zahlung an der Kasse in mehrere Raten aufteilen."}
+        {
+          "q": "Welche Haus- und Küchenprodukte bietet Kazoom?",
+          "a": "Wir bieten praktische Haushaltsartikel wie Mühlen, Dekorvasen, Wecker und smarte Beleuchtung, alle mit kostenlosem Versand."
+        },
+        {
+          "q": "Haben Küchenprodukte eine Garantie?",
+          "a": "Ja, alle Produkte haben 30 Tage Geld-zurück-Garantie, ohne Fragen."
+        },
+        {
+          "q": "Kann ich in Raten zahlen?",
+          "a": "Ja, Sie können Ihre Zahlung an der Kasse in mehrere Raten aufteilen."
+        }
       ],
       "electronics": [
-        {"q": "Welche Elektronik verkaufen Sie?", "a": "Smartwatches, tragbare Konsolen, digitale Wecker und WLAN-Smart-Glühbirnen."},
-        {"q": "Kommt Elektronik mit Rechnung?", "a": "Ja, jede Bestellung wird mit elektronischer Rechnung per E-Mail versendet."},
-        {"q": "Wie ist die Lieferzeit für Elektronik?", "a": "Express-Versand weltweit in 5–9 Werktagen, kostenlos."}
+        {
+          "q": "Welche Elektronik verkaufen Sie?",
+          "a": "Smartwatches, tragbare Konsolen, digitale Wecker und WLAN-Smart-Glühbirnen."
+        },
+        {
+          "q": "Kommt Elektronik mit Rechnung?",
+          "a": "Ja, jede Bestellung wird mit elektronischer Rechnung per E-Mail versendet."
+        },
+        {
+          "q": "Wie ist die Lieferzeit für Elektronik?",
+          "a": "Express-Versand weltweit in 5–9 Werktagen, kostenlos."
+        }
       ],
       "sports": [
-        {"q": "Welche Sportprodukte hat Kazoom?", "a": "Wir haben Beach-Tennis-Schläger, Schwimmbrillen, Fahrradhelme, Sportbrillen und mehr."},
-        {"q": "Haben Sportbrillen UV-Schutz?", "a": "Ja, unsere Sportbrillen haben UV400-Gläser für maximale Sicherheit."},
-        {"q": "Bieten Sie kostenlosen Versand für Sportprodukte?", "a": "Ja, jedes Produkt im Shop wird weltweit kostenlos versendet."}
+        {
+          "q": "Welche Sportprodukte hat Kazoom?",
+          "a": "Wir haben Beach-Tennis-Schläger, Schwimmbrillen, Fahrradhelme, Sportbrillen und mehr."
+        },
+        {
+          "q": "Haben Sportbrillen UV-Schutz?",
+          "a": "Ja, unsere Sportbrillen haben UV400-Gläser für maximale Sicherheit."
+        },
+        {
+          "q": "Bieten Sie kostenlosen Versand für Sportprodukte?",
+          "a": "Ja, jedes Produkt im Shop wird weltweit kostenlos versendet."
+        }
       ],
       "tools": [
-        {"q": "Ist das Kühltechnik-Werkzeugset für Profis?", "a": "Ja, es ist ein komplettes Kit mit 7 CFM Vakuumpumpe, 2 Manometern, Bördelgerät, Brenner und über 20 Profi-Werkzeugen."},
-        {"q": "Sind die Werkzeuge für Doppelvoltage?", "a": "Ja, Vakuumpumpe und elektrische Geräte sind für 110/220V."},
-        {"q": "Wie ist die Garantie auf die Werkzeuge?", "a": "Alle Werkzeuge haben 30 Tage Garantie. Bei Unzufriedenheit erstatten wir Ihr Geld."}
+        {
+          "q": "Ist das Kühltechnik-Werkzeugset für Profis?",
+          "a": "Ja, es ist ein komplettes Kit mit 7 CFM Vakuumpumpe, 2 Manometern, Bördelgerät, Brenner und über 20 Profi-Werkzeugen."
+        },
+        {
+          "q": "Sind die Werkzeuge für Doppelvoltage?",
+          "a": "Ja, Vakuumpumpe und elektrische Geräte sind für 110/220V."
+        },
+        {
+          "q": "Wie ist die Garantie auf die Werkzeuge?",
+          "a": "Alle Werkzeuge haben 30 Tage Garantie. Bei Unzufriedenheit erstatten wir Ihr Geld."
+        }
       ],
       "fitness": [
-        {"q": "Welche Fitnessgeräte bieten Sie?", "a": "Profi-Knieschoner, Trainingsbänder, Bauchtrainer, Muskelmassagegeräte und Powerballs."},
-        {"q": "Sind Fitnessprodukte für Anfänger geeignet?", "a": "Ja, unsere Produkte sind für alle, von Anfängern bis Fortgeschrittenen, mit verschiedenen Widerstandsstufen."},
-        {"q": "Kann ich die Geräte zu Hause nutzen?", "a": "Absolut! Alle Produkte sind für Zuhause, Fitnessstudio oder draußen konzipiert."}
+        {
+          "q": "Welche Fitnessgeräte bieten Sie?",
+          "a": "Profi-Knieschoner, Trainingsbänder, Bauchtrainer, Muskelmassagegeräte und Powerballs."
+        },
+        {
+          "q": "Sind Fitnessprodukte für Anfänger geeignet?",
+          "a": "Ja, unsere Produkte sind für alle, von Anfängern bis Fortgeschrittenen, mit verschiedenen Widerstandsstufen."
+        },
+        {
+          "q": "Kann ich die Geräte zu Hause nutzen?",
+          "a": "Absolut! Alle Produkte sind für Zuhause, Fitnessstudio oder draußen konzipiert."
+        }
       ],
       "fishing": [
-        {"q": "Verkaufen Sie professionelle Angelausrüstung?", "a": "Ja, wir haben 12-Lager-Rollen, Schnüre, Westen und Profi-Zangensets."},
-        {"q": "Sind die Rollen von guter Qualität?", "a": "Unsere Rollen haben 12 Edelstahl-Lager für reibungslosen Lauf und überlegene Haltbarkeit."},
-        {"q": "Versenden Sie weltweit?", "a": "Ja, wir bieten weltweit kostenlosen Versand."}
+        {
+          "q": "Verkaufen Sie professionelle Angelausrüstung?",
+          "a": "Ja, wir haben 12-Lager-Rollen, Schnüre, Westen und Profi-Zangensets."
+        },
+        {
+          "q": "Sind die Rollen von guter Qualität?",
+          "a": "Unsere Rollen haben 12 Edelstahl-Lager für reibungslosen Lauf und überlegene Haltbarkeit."
+        },
+        {
+          "q": "Versenden Sie weltweit?",
+          "a": "Ja, wir bieten weltweit kostenlosen Versand."
+        }
       ],
       "health-beauty": [
-        {"q": "Sind die Kosmetika sicher?", "a": "Ja, alle Beauty-Produkte sind dermatologisch getestet und entsprechen internationalen Sicherheitsstandards."},
-        {"q": "Welche Beauty-Produkte verkaufen Sie?", "a": "Lidschatten, Eyeliner, Volumenkämme, Augenbrauenfüller, Spiegel-Nagellack und definierende Wimperntusche."},
-        {"q": "Wie funktioniert die Kosmetik-Rückgabe?", "a": "Sie haben 30 Tage Zeit, jedes Produkt ohne Fragen zurückzugeben. Kontaktieren Sie uns einfach."}
+        {
+          "q": "Sind die Kosmetika sicher?",
+          "a": "Ja, alle Beauty-Produkte sind dermatologisch getestet und entsprechen internationalen Sicherheitsstandards."
+        },
+        {
+          "q": "Welche Beauty-Produkte verkaufen Sie?",
+          "a": "Lidschatten, Eyeliner, Volumenkämme, Augenbrauenfüller, Spiegel-Nagellack und definierende Wimperntusche."
+        },
+        {
+          "q": "Wie funktioniert die Kosmetik-Rückgabe?",
+          "a": "Sie haben 30 Tage Zeit, jedes Produkt ohne Fragen zurückzugeben. Kontaktieren Sie uns einfach."
+        }
       ]
     }
   },
@@ -706,7 +769,9 @@
     "relatedProducts": "Ähnliche Produkte",
     "kitLabel2for3": "🎁 KAUFE 2, ERHALTE 3 — Wählen Sie Farben und Größen Ihrer 3 Hemden",
     "kitLabel5polos": "🎁 KIT VON 5 POLOS — Wählen Sie Farbe und Größe jedes der 5 Hemden",
-    "perUnit": "pro Stück"
+    "perUnit": "pro Stück",
+    "chooseFlavor": "geschmack wählen:",
+    "optionsAvailable": "{{count}} optionen verfügbar"
   },
   "bundle": {
     "units_one": "{{count}} Einheit",

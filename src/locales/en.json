@@ -603,39 +603,102 @@
     },
     "faqs": {
       "home-kitchen": [
-        {"q": "What home and kitchen products does Kazoom offer?", "a": "We offer practical household items like grinders, decorative vases, alarm clocks and smart lighting, all with free shipping."},
-        {"q": "Do kitchen products have a warranty?", "a": "Yes, all products come with a 30-day money-back guarantee, no questions asked."},
-        {"q": "Can I pay in installments?", "a": "Yes, you can split your payment across multiple installments at checkout."}
+        {
+          "q": "What home and kitchen products does Kazoom offer?",
+          "a": "We offer practical household items like grinders, decorative vases, alarm clocks and smart lighting, all with free shipping."
+        },
+        {
+          "q": "Do kitchen products have a warranty?",
+          "a": "Yes, all products come with a 30-day money-back guarantee, no questions asked."
+        },
+        {
+          "q": "Can I pay in installments?",
+          "a": "Yes, you can split your payment across multiple installments at checkout."
+        }
       ],
       "electronics": [
-        {"q": "What electronics do you sell?", "a": "Smartwatches, portable consoles, digital alarm clocks and Wi-Fi smart bulbs."},
-        {"q": "Do electronics come with an invoice?", "a": "Yes, every order ships with an electronic invoice sent by email."},
-        {"q": "What is the delivery time for electronics?", "a": "Express worldwide shipping in 5–9 business days, free of charge."}
+        {
+          "q": "What electronics do you sell?",
+          "a": "Smartwatches, portable consoles, digital alarm clocks and Wi-Fi smart bulbs."
+        },
+        {
+          "q": "Do electronics come with an invoice?",
+          "a": "Yes, every order ships with an electronic invoice sent by email."
+        },
+        {
+          "q": "What is the delivery time for electronics?",
+          "a": "Express worldwide shipping in 5–9 business days, free of charge."
+        }
       ],
       "sports": [
-        {"q": "What kind of sports products does Kazoom have?", "a": "We have beach tennis rackets, swimming goggles, cycling helmets, sports glasses and more."},
-        {"q": "Do sports glasses have UV protection?", "a": "Yes, our sports glasses feature UV400 lenses for maximum safety."},
-        {"q": "Do you offer free shipping for sports products?", "a": "Yes, every product in the store ships free worldwide."}
+        {
+          "q": "What kind of sports products does Kazoom have?",
+          "a": "We have beach tennis rackets, swimming goggles, cycling helmets, sports glasses and more."
+        },
+        {
+          "q": "Do sports glasses have UV protection?",
+          "a": "Yes, our sports glasses feature UV400 lenses for maximum safety."
+        },
+        {
+          "q": "Do you offer free shipping for sports products?",
+          "a": "Yes, every product in the store ships free worldwide."
+        }
       ],
       "tools": [
-        {"q": "Is the refrigeration tool kit professional grade?", "a": "Yes, it's a complete kit with 7 CFM vacuum pump, 2 manifolds, eccentric flaring tool, torch and over 20 professional tools."},
-        {"q": "Are the tools dual voltage?", "a": "Yes, the vacuum pump and electrical equipment are dual voltage (110/220V)."},
-        {"q": "What is the warranty on the tools?", "a": "All tools include a 30-day guarantee. If you're not satisfied, we refund your money."}
+        {
+          "q": "Is the refrigeration tool kit professional grade?",
+          "a": "Yes, it's a complete kit with 7 CFM vacuum pump, 2 manifolds, eccentric flaring tool, torch and over 20 professional tools."
+        },
+        {
+          "q": "Are the tools dual voltage?",
+          "a": "Yes, the vacuum pump and electrical equipment are dual voltage (110/220V)."
+        },
+        {
+          "q": "What is the warranty on the tools?",
+          "a": "All tools include a 30-day guarantee. If you're not satisfied, we refund your money."
+        }
       ],
       "fitness": [
-        {"q": "What fitness equipment do you offer?", "a": "Professional knee braces, training bands, abdominal exercisers, muscle massagers and powerballs."},
-        {"q": "Are fitness products suitable for beginners?", "a": "Yes, our products are designed for everyone from beginners to advanced athletes, with different resistance levels."},
-        {"q": "Can I use the equipment at home?", "a": "Absolutely! All products are designed for home, gym or outdoor use."}
+        {
+          "q": "What fitness equipment do you offer?",
+          "a": "Professional knee braces, training bands, abdominal exercisers, muscle massagers and powerballs."
+        },
+        {
+          "q": "Are fitness products suitable for beginners?",
+          "a": "Yes, our products are designed for everyone from beginners to advanced athletes, with different resistance levels."
+        },
+        {
+          "q": "Can I use the equipment at home?",
+          "a": "Absolutely! All products are designed for home, gym or outdoor use."
+        }
       ],
       "fishing": [
-        {"q": "Do you sell professional fishing equipment?", "a": "Yes, we have 12-bearing reels, lines, vests and professional plier kits."},
-        {"q": "Are the reels good quality?", "a": "Our reels feature 12 stainless steel bearings, providing smooth operation and superior durability."},
-        {"q": "Do you ship worldwide?", "a": "Yes, we offer free worldwide shipping."}
+        {
+          "q": "Do you sell professional fishing equipment?",
+          "a": "Yes, we have 12-bearing reels, lines, vests and professional plier kits."
+        },
+        {
+          "q": "Are the reels good quality?",
+          "a": "Our reels feature 12 stainless steel bearings, providing smooth operation and superior durability."
+        },
+        {
+          "q": "Do you ship worldwide?",
+          "a": "Yes, we offer free worldwide shipping."
+        }
       ],
       "health-beauty": [
-        {"q": "Are the cosmetics safe?", "a": "Yes, all beauty products are dermatologically tested and meet international safety standards."},
-        {"q": "What beauty products do you sell?", "a": "Eyeshadows, eyeliners, volumizing combs, eyebrow fillers, mirror nail polish and defining mascara."},
-        {"q": "How does the cosmetics return work?", "a": "You have 30 days to return any product, no questions asked. Just contact us."}
+        {
+          "q": "Are the cosmetics safe?",
+          "a": "Yes, all beauty products are dermatologically tested and meet international safety standards."
+        },
+        {
+          "q": "What beauty products do you sell?",
+          "a": "Eyeshadows, eyeliners, volumizing combs, eyebrow fillers, mirror nail polish and defining mascara."
+        },
+        {
+          "q": "How does the cosmetics return work?",
+          "a": "You have 30 days to return any product, no questions asked. Just contact us."
+        }
       ]
     }
   },
@@ -706,7 +769,9 @@
     "relatedProducts": "Related Products",
     "kitLabel2for3": "🎁 BUY 2, GET 3 — Choose the colors and sizes of your 3 shirts",
     "kitLabel5polos": "🎁 KIT OF 5 POLOS — Choose the color and size of each of the 5 shirts",
-    "perUnit": "per unit"
+    "perUnit": "per unit",
+    "chooseFlavor": "choose flavor:",
+    "optionsAvailable": "{{count}} options available"
   },
   "bundle": {
     "units_one": "{{count}} unit",
