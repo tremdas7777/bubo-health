@@ -99,6 +99,7 @@ export default function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedFlavor, setSelectedFlavor] = useState<string | null>(null);
+  const [structuredSelections, setStructuredSelections] = useState<Record<string, string>>({});
   const [selectedBundle, setSelectedBundle] = useState<number>(0);
 
   // Kits: cliente escolhe cor + tamanho (ou sabor) de cada peça do kit
@@ -333,6 +334,15 @@ export default function ProductDetailPage() {
         size: selectedSize || undefined,
         flavor: selectedFlavor || undefined
       });
+    }
+    // Structured variant selections (multi-option Shopify products)
+    const structuredKeys = Object.keys(structuredSelections);
+    if (structuredKeys.length > 0) {
+      for (const key of structuredKeys) {
+        if (structuredSelections[key]) {
+          selections.push({ name: key, flavor: structuredSelections[key] });
+        }
+      }
     }
 
     addItem(productForCart, quantity, selections.length > 0 ? selections : undefined);
@@ -583,7 +593,7 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {!isKitProduct && (product.colors || product.sizes || (product.variants && Array.isArray(product.variants) && product.variants.length > 0)) && (
+            {!isKitProduct && (product.colors || product.sizes || (product.variants && ((Array.isArray(product.variants) && product.variants.length > 0) || (!Array.isArray(product.variants) && typeof product.variants === 'object' && Object.keys(product.variants).length > 0)))) && (
               <div className="space-y-4">
                 {product.colors && product.colors.length > 0 && (
                   <div className="space-y-2">
@@ -634,6 +644,7 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
+                {/* Flat array variants (single option) */}
                 {product.variants && Array.isArray(product.variants) && product.variants.length > 0 && (
                   <div className="space-y-2">
                     <p className="text-sm font-medium">
@@ -655,6 +666,35 @@ export default function ProductDetailPage() {
                         </button>
                       ))}
                     </div>
+                  </div>
+                )}
+
+                {/* Structured variants (multi-option from Shopify) */}
+                {product.variants && !Array.isArray(product.variants) && typeof product.variants === 'object' && Object.keys(product.variants).length > 0 && (
+                  <div className="space-y-4">
+                    {Object.entries(product.variants as Record<string, string[]>).map(([optionName, values]) => (
+                      <div key={optionName} className="space-y-2">
+                        <p className="text-sm font-medium">
+                          {optionName} <span className="font-normal text-muted-foreground">{structuredSelections[optionName] || t("productPage.selectPlaceholder")}</span>
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {(values as string[]).map((val: string) => (
+                            <button
+                              key={val}
+                              type="button"
+                              onClick={() => setStructuredSelections(prev => ({ ...prev, [optionName]: val }))}
+                              className={`rounded-md border-2 px-3 py-2 text-sm font-medium transition-all ${
+                                structuredSelections[optionName] === val
+                                  ? "border-primary bg-primary/5 text-primary"
+                                  : "border-border hover:border-primary/40 text-foreground"
+                              }`}
+                            >
+                              {val}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>

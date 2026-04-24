@@ -221,68 +221,118 @@ export default function AdminProdutos() {
     const iHandle = col('handle');
     const iTitle = col('title');
     const iBody = col('body (html)') >= 0 ? col('body (html)') : col('body');
-    const iVendor = col('vendor');
     const iType = col('type') >= 0 ? col('type') : col('product category');
-    const iOpt1Name = col('option1 name');
-    const iOpt1Val = col('option1 value');
     const iPrice = col('variant price');
     const iCompare = col('variant compare at price');
     const iImage = col('image src');
     const iStatus = col('status');
 
+    // Detect all option columns (up to 3)
+    const optionCols: { nameIdx: number; valIdx: number }[] = [];
+    for (let n = 1; n <= 3; n++) {
+      const nameIdx = col(`option${n} name`);
+      const valIdx = col(`option${n} value`);
+      if (nameIdx >= 0 && valIdx >= 0) optionCols.push({ nameIdx, valIdx });
+    }
+
     // Group rows by handle
-    const grouped = new Map<string, { title: string; body: string; category: string; price: number; compare: number | null; image: string; images: string[]; variants: string[]; active: boolean }>();
+    type ProductData = {
+      title: string; body: string; category: string;
+      price: number; compare: number | null;
+      image: string; images: string[];
+      optionNames: string[];
+      optionValues: Map<string, Set<string>>;
+      active: boolean;
+    };
+    const grouped = new Map<string, ProductData>();
 
     for (const vals of dataRows) {
       const handle = vals[iHandle] || '';
       if (!handle) continue;
 
-      const existing = grouped.get(handle);
-      const variantName = iOpt1Val >= 0 ? (vals[iOpt1Val] || '') : '';
       const imgUrl = iImage >= 0 ? (vals[iImage] || '') : '';
-      const priceStr = iPrice >= 0 ? (vals[iPrice] || '') : '';
-      const compareStr = iCompare >= 0 ? (vals[iCompare] || '') : '';
       const title = vals[iTitle] || '';
-      const status = iStatus >= 0 ? (vals[iStatus] || '').toLowerCase() : 'active';
+      const existing = grouped.get(handle);
 
       if (!existing) {
+        const priceStr = iPrice >= 0 ? (vals[iPrice] || '') : '';
+        const compareStr = iCompare >= 0 ? (vals[iCompare] || '') : '';
         const price = priceStr ? Math.round(parseFloat(priceStr.replace(',', '.')) * 100) : 0;
         const compare = compareStr ? Math.round(parseFloat(compareStr.replace(',', '.')) * 100) : null;
         const body = iBody >= 0 ? (vals[iBody] || '') : '';
         const category = iType >= 0 ? (vals[iType] || 'Geral') : 'Geral';
-        const images: string[] = imgUrl ? [imgUrl] : [];
-        const variants: string[] = variantName && variantName.toLowerCase() !== 'default title' ? [variantName] : [];
+        const status = iStatus >= 0 ? (vals[iStatus] || '').toLowerCase() : 'active';
 
-        grouped.set(handle, { title: title || handle, body, category, price, compare, image: imgUrl, images, variants, active: status !== 'draft' });
+        // Extract option names and first values
+        const optionNames: string[] = [];
+        const optionValues = new Map<string, Set<string>>();
+        for (const oc of optionCols) {
+          const optName = vals[oc.nameIdx] || '';
+          const optVal = vals[oc.valIdx] || '';
+          if (optName && optVal && optVal.toLowerCase() !== 'default title') {
+            optionNames.push(optName);
+            optionValues.set(optName, new Set([optVal]));
+          }
+        }
+
+        grouped.set(handle, {
+          title: title || handle, body, category, price, compare,
+          image: imgUrl, images: imgUrl ? [imgUrl] : [],
+          optionNames, optionValues, active: status !== 'draft',
+        });
       } else {
-        // Additional row = variant or extra image
-        if (variantName && variantName.toLowerCase() !== 'default title' && !existing.variants.includes(variantName)) {
-          existing.variants.push(variantName);
+        // Add variant values for each option
+        for (const oc of optionCols) {
+          const optVal = vals[oc.valIdx] || '';
+          if (!optVal || optVal.toLowerCase() === 'default title') continue;
+          // Find the matching option name from existing names
+          for (const optName of existing.optionNames) {
+            const set = existing.optionValues.get(optName);
+            if (set) {
+              // Match by column index position
+              const matchIdx = existing.optionNames.indexOf(optName);
+              if (matchIdx === optionCols.indexOf(oc)) {
+                set.add(optVal);
+              }
+            }
+          }
         }
-        if (imgUrl && !existing.images.includes(imgUrl)) {
-          existing.images.push(imgUrl);
-        }
-        // Keep the title if the first row was empty
+        if (imgUrl && !existing.images.includes(imgUrl)) existing.images.push(imgUrl);
         if (!existing.title && title) existing.title = title;
       }
     }
 
     // Convert to preview rows
-    return Array.from(grouped.entries()).map(([handle, data]) => ({
-      _source: 'shopify' as const,
-      name: data.title,
-      slug: handle,
-      price_cents: data.price,
-      original_price_cents: data.compare,
-      category: data.category,
-      description: data.body.replace(/<[^>]*>/g, '').slice(0, 500),
-      description_html: data.body,
-      image_url: data.image || null,
-      images: data.images,
-      variants: data.variants,
-      active: data.active,
-      featured: false,
-    }));
+    return Array.from(grouped.entries()).map(([handle, data]) => {
+      // Build variants: if only 1 option → flat array; if multiple → object { "OptionName": [...values] }
+      let variants: any;
+      if (data.optionNames.length === 0) {
+        variants = [];
+      } else if (data.optionNames.length === 1) {
+        variants = Array.from(data.optionValues.get(data.optionNames[0]) || []);
+      } else {
+        variants = {} as Record<string, string[]>;
+        for (const name of data.optionNames) {
+          variants[name] = Array.from(data.optionValues.get(name) || []);
+        }
+      }
+
+      return {
+        _source: 'shopify' as const,
+        name: data.title,
+        slug: handle,
+        price_cents: data.price,
+        original_price_cents: data.compare,
+        category: data.category,
+        description: data.body.replace(/<[^>]*>/g, '').slice(0, 500),
+        description_html: data.body,
+        image_url: data.image || null,
+        images: data.images,
+        variants,
+        active: data.active,
+        featured: false,
+      };
+    });
   };
 
   const handleCsvSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
