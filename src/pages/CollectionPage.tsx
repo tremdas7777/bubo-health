@@ -18,6 +18,7 @@ const SLUG_TO_I18N: Record<string, string> = {
   "fitness": "fitness",
   "fishing": "fishing",
   "health-beauty": "healthBeauty",
+  "suplementos": "suplementos",
 };
 
 export default function CollectionPage() {
