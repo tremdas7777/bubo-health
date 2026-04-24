@@ -336,9 +336,52 @@ export default function ProductDetailPage() {
     return selections.length > 0 ? selections : undefined;
   };
 
+  const validateSelections = (): boolean => {
+    if (isKitProduct) return validateKit();
+
+    // Check standard colors/sizes
+    if (product.colors && product.colors.length > 0 && !selectedColor) {
+      toast({ title: t("product.selectVariant"), description: t("productPage.colorLabel"), variant: "destructive" });
+      return false;
+    }
+    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+      toast({ title: t("product.selectVariant"), description: t("productPage.sizeLabel"), variant: "destructive" });
+      return false;
+    }
+
+    // Check structured or flat variants
+    if (product.variants && Array.isArray(product.variants) && product.variants.length > 0) {
+      const isStructured = typeof product.variants[0] === 'object' && product.variants[0]?.name;
+      if (isStructured) {
+        for (const opt of (product.variants as Array<{name: string; values: string[]}>)) {
+          if (!structuredSelections[opt.name]) {
+            toast({
+              title: "Seleção obrigatória",
+              description: `Por favor, escolha o sabor para ${opt.name.replace(/\s*[Ff]lavor/g, '')}`,
+              variant: "destructive",
+            });
+            setOpenDropdown(opt.name);
+            return false;
+          }
+        }
+      } else if (!selectedFlavor) {
+        toast({ 
+          title: "Seleção obrigatória", 
+          description: "Por favor, escolha um sabor para continuar.", 
+          variant: "destructive" 
+        });
+        setOpenDropdown('_flat');
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const handleAddToCart = () => {
+    if (!validateSelections()) return;
+    
     if (isKitProduct) {
-      if (!validateKit()) return;
       addItem(product, 1, kitSelections.map((s, i) => {
         const itemConfig = kitConfig?.items?.[i];
         if (itemConfig?.type === "flavor") return { flavor: s.flavor!, name: itemConfig.name };
@@ -350,8 +393,9 @@ export default function ProductDetailPage() {
   };
 
   const handleBuyNow = () => {
+    if (!validateSelections()) return;
+
     if (isKitProduct) {
-      if (!validateKit()) return;
       addItem(product, 1, kitSelections.map((s, i) => {
         const itemConfig = kitConfig?.items?.[i];
         if (itemConfig?.type === "flavor") return { flavor: s.flavor!, name: itemConfig.name };
@@ -508,7 +552,7 @@ export default function ProductDetailPage() {
                           )}
                         </span>
                         <span className={`text-xs ${isComplete ? "text-primary" : "text-muted-foreground"}`}>
-                          {isComplete ? t("productPage.kitComplete") : isActive ? t("productPage.kitSelecting") : t("productPage.kitTapToChoose")}
+                          {isComplete ? t("productPage.kitComplete") : isActive ? t("productPage.kitSelecting") : `Escolher sabor ${itemConfig?.name.replace(/\s*[Ff]lavor/g, '') || ''}`}
                         </span>
                       </button>
                       
@@ -537,7 +581,7 @@ export default function ProductDetailPage() {
                                         : "border-primary/40 text-foreground hover:bg-primary/10"
                                     }`}
                                   >
-                                    {flavor}
+                                    {flavor.replace(/\s*[Ff]lavor/g, '')}
                                   </button>
                                 ))}
                               </div>
@@ -661,7 +705,7 @@ export default function ProductDetailPage() {
                           const isOpen = openDropdown === opt.name;
                           return (
                             <div key={opt.name} className="relative">
-                              <p className="text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">{opt.name.replace(' Flavor', '')}</p>
+                              <p className="text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">{opt.name.replace(/\s*[Ff]lavor/g, '')}</p>
                               <button
                                 type="button"
                                 onClick={() => setOpenDropdown(isOpen ? null : opt.name)}
@@ -673,7 +717,9 @@ export default function ProductDetailPage() {
                                   </div>
                                   <div className="min-w-0">
                                     <p className={`font-semibold text-sm truncate ${selected ? 'text-foreground' : 'text-muted-foreground italic'}`}>
-                                      {selected || `${t("productPage.selectPlaceholder")} sabor...`}
+                                      {selected || (opt.name.toLowerCase().includes('flavor') 
+                                        ? `Escolher sabor ${opt.name.replace(/\s*[Ff]lavor/g, '')}`
+                                        : `${t("productPage.selectPlaceholder")} ${opt.name.replace(/\s*[Ff]lavor/g, '')}...`)}
                                     </p>
                                     <p className="text-[10px] text-muted-foreground uppercase font-medium">
                                       {opt.values.length} opções disponíveis
@@ -694,7 +740,7 @@ export default function ProductDetailPage() {
                                         selected === val ? 'bg-primary/10 font-bold text-primary' : 'text-foreground border-b border-border/30'
                                       }`}
                                     >
-                                      <span className="flex-1">{val}</span>
+                                      <span className="flex-1">{val.replace(/\s*[Ff]lavor/g, '')}</span>
                                       {selected === val && (
                                         <svg className="h-4 w-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                                       )}
@@ -721,7 +767,7 @@ export default function ProductDetailPage() {
                       >
                         <div className="min-w-0">
                           <p className={`font-semibold text-sm ${selectedFlavor ? 'text-foreground' : 'text-muted-foreground italic'}`}>
-                            {selectedFlavor || `${t("productPage.selectPlaceholder")} sabor...`}
+                            {selectedFlavor ? selectedFlavor.replace(/\s*[Ff]lavor/g, '') : `Escolher sabor ${product.name.replace(/\s*[Ff]lavor/g, '')}`}
                           </p>
                           <p className="text-[10px] text-muted-foreground uppercase font-medium">
                             {product.variants.length} opções disponíveis
@@ -740,7 +786,7 @@ export default function ProductDetailPage() {
                                 selectedFlavor === String(f) ? 'bg-primary/10 font-bold text-primary' : 'text-foreground border-b border-border/30'
                               }`}
                             >
-                              <span className="flex-1">{String(f)}</span>
+                              <span className="flex-1">{String(f).replace(/\s*[Ff]lavor/g, '')}</span>
                               {selectedFlavor === String(f) && (
                                 <svg className="h-4 w-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                               )}
