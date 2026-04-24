@@ -316,6 +316,26 @@ export default function ProductDetailPage() {
       }
     : product;
 
+  const getSelections = () => {
+    const selections: CartItemSelection[] = [];
+    if (selectedColor || selectedSize || selectedFlavor) {
+      selections.push({
+        color: selectedColor || undefined,
+        size: selectedSize || undefined,
+        flavor: selectedFlavor || undefined
+      });
+    }
+    const structuredKeys = Object.keys(structuredSelections);
+    if (structuredKeys.length > 0) {
+      for (const key of structuredKeys) {
+        if (structuredSelections[key]) {
+          selections.push({ name: key, flavor: structuredSelections[key] });
+        }
+      }
+    }
+    return selections.length > 0 ? selections : undefined;
+  };
+
   const handleAddToCart = () => {
     if (isKitProduct) {
       if (!validateKit()) return;
@@ -326,37 +346,21 @@ export default function ProductDetailPage() {
       }));
       return;
     }
-
-    // Para produtos normais com sabores/cores/tamanhos
-    const selections: CartItemSelection[] = [];
-    if (selectedColor || selectedSize || selectedFlavor) {
-      selections.push({
-        color: selectedColor || undefined,
-        size: selectedSize || undefined,
-        flavor: selectedFlavor || undefined
-      });
-    }
-    // Structured variant selections (multi-option Shopify products)
-    const structuredKeys = Object.keys(structuredSelections);
-    if (structuredKeys.length > 0) {
-      for (const key of structuredKeys) {
-        if (structuredSelections[key]) {
-          selections.push({ name: key, flavor: structuredSelections[key] });
-        }
-      }
-    }
-
-    addItem(productForCart, quantity, selections.length > 0 ? selections : undefined);
+    addItem(productForCart, quantity, getSelections());
   };
 
   const handleBuyNow = () => {
     if (isKitProduct) {
       if (!validateKit()) return;
-      addItem(product, 1, kitSelections.map((s) => ({ color: s.color!, size: s.size! })));
+      addItem(product, 1, kitSelections.map((s, i) => {
+        const itemConfig = kitConfig?.items?.[i];
+        if (itemConfig?.type === "flavor") return { flavor: s.flavor!, name: itemConfig.name };
+        return { color: s.color!, size: s.size! };
+      }));
       navigate("/checkout");
       return;
     }
-    addItem(productForCart, quantity);
+    addItem(productForCart, quantity, getSelections());
     navigate("/checkout");
   };
 
