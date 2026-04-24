@@ -98,6 +98,7 @@ export default function ProductDetailPage() {
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedFlavor, setSelectedFlavor] = useState<string | null>(null);
   const [selectedBundle, setSelectedBundle] = useState<number>(0);
 
   // Kits: cliente escolhe cor + tamanho (ou sabor) de cada peça do kit
@@ -323,7 +324,18 @@ export default function ProductDetailPage() {
       }));
       return;
     }
-    addItem(productForCart, quantity);
+
+    // Para produtos normais com sabores/cores/tamanhos
+    const selections: CartItemSelection[] = [];
+    if (selectedColor || selectedSize || selectedFlavor) {
+      selections.push({
+        color: selectedColor || undefined,
+        size: selectedSize || undefined,
+        flavor: selectedFlavor || undefined
+      });
+    }
+
+    addItem(productForCart, quantity, selections.length > 0 ? selections : undefined);
   };
 
   const handleBuyNow = () => {
@@ -571,56 +583,80 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Standard structured colors (swatches) + sizes — for non-kit products */}
-            {!isKitProduct && product.colors && product.colors.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm font-medium">
-                  {t("productPage.colorLabel")} <span className="font-normal text-muted-foreground">{selectedColor || t("productPage.selectPlaceholder")}</span>
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {product.colors.map((c) => (
-                    <button
-                      key={c.name}
-                      type="button"
-                      onClick={() => setSelectedColor(c.name)}
-                      title={c.name}
-                      aria-label={t("productPage.kitColorAria", { name: c.name })}
-                      className={`relative h-9 w-9 rounded-full border-2 transition-all ${
-                        selectedColor === c.name
-                          ? "border-primary ring-2 ring-primary/30 scale-110"
-                          : "border-border hover:border-primary/50"
-                      }`}
-                      style={{ backgroundColor: c.hex }}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
+            {!isKitProduct && (product.colors || product.sizes || (product.variants && Array.isArray(product.variants) && product.variants.length > 0)) && (
+              <div className="space-y-4">
+                {product.colors && product.colors.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium">
+                      {t("productPage.colorLabel")} <span className="font-normal text-muted-foreground">{selectedColor || t("productPage.selectPlaceholder")}</span>
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {product.colors.map((c) => (
+                        <button
+                          key={c.name}
+                          type="button"
+                          onClick={() => setSelectedColor(c.name)}
+                          title={c.name}
+                          aria-label={t("productPage.kitColorAria", { name: c.name })}
+                          className={`relative h-9 w-9 rounded-full border-2 transition-all ${
+                            selectedColor === c.name
+                              ? "border-primary ring-2 ring-primary/30 scale-110"
+                              : "border-border hover:border-primary/50"
+                          }`}
+                          style={{ backgroundColor: c.hex }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-            {!isKitProduct && product.sizes && product.sizes.length > 0 && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-sm font-medium">
-                    {t("productPage.sizeLabel")} <span className="font-normal text-muted-foreground">{selectedSize || t("productPage.selectPlaceholder")}</span>
-                  </p>
-                  <SizeGuideDialog />
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {product.sizes.map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => setSelectedSize(s)}
-                      className={`min-w-[44px] rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
-                        selectedSize === s
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "border-primary text-primary hover:bg-primary/10"
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
+                {product.sizes && product.sizes.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium">
+                      {t("productPage.sizeLabel")} <span className="font-normal text-muted-foreground">{selectedSize || t("productPage.selectPlaceholder")}</span>
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {product.sizes.map((s) => (
+                        <button
+                          key={s}
+                          type="button"
+                          onClick={() => setSelectedSize(s)}
+                          className={`min-w-[44px] rounded-md border-2 px-3 py-2 text-sm font-medium transition-all ${
+                            selectedSize === s
+                              ? "border-primary bg-primary/5 text-primary"
+                              : "border-border hover:border-primary/40 text-foreground"
+                          }`}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {product.variants && Array.isArray(product.variants) && product.variants.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium">
+                      {t("productPage.flavorLabel", { defaultValue: "Sabor" })} <span className="font-normal text-muted-foreground">{selectedFlavor || t("productPage.selectPlaceholder")}</span>
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {product.variants.map((f: any) => (
+                        <button
+                          key={String(f)}
+                          type="button"
+                          onClick={() => setSelectedFlavor(String(f))}
+                          className={`rounded-md border-2 px-3 py-2 text-sm font-medium transition-all ${
+                            selectedFlavor === String(f)
+                              ? "border-primary bg-primary/5 text-primary"
+                              : "border-border hover:border-primary/40 text-foreground"
+                          }`}
+                        >
+                          {String(f)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 

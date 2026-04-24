@@ -184,10 +184,134 @@ export default function AdminProdutos() {
     if (await adminAction('reorder-collections', undefined, { items: reordered.map((c, i) => ({ id: c.id, sort_order: i })) })) { fetchCollections(); toast.success('Ordem atualizada!'); }
   };
 
+  /* ────────────────────────────────────────────────────
+     CSV parser – handles both Kazoom and Shopify formats
+     ──────────────────────────────────────────────────── */
+  const parseCsvLine = (line: string): string[] => {
+    const result: string[] = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+        else inQuotes = !inQuotes;
+      } else if (ch === ',' && !inQuotes) {
+        result.push(current.trim());
+        current = '';
+      } else {
+        current += ch;
+      }
+    }
+    result.push(current.trim());
+    return result;
+  };
+
+  const isShopifyFormat = (headers: string[]) => {
+    const lc = headers.map(h => h.toLowerCase());
+    return lc.includes('handle') && lc.includes('title');
+  };
+
+  const parseShopifyCsv = (headers: string[], dataRows: string[][]) => {
+    const col = (name: string) => {
+      const idx = headers.findIndex(h => h.toLowerCase() === name.toLowerCase());
+      return idx >= 0 ? idx : -1;
+    };
+
+    const iHandle = col('handle');
+    const iTitle = col('title');
+    const iBody = col('body (html)') >= 0 ? col('body (html)') : col('body');
+    const iVendor = col('vendor');
+    const iType = col('type') >= 0 ? col('type') : col('product category');
+    const iOpt1Name = col('option1 name');
+    const iOpt1Val = col('option1 value');
+    const iPrice = col('variant price');
+    const iCompare = col('variant compare at price');
+    const iImage = col('image src');
+    const iStatus = col('status');
+
+    // Group rows by handle
+    const grouped = new Map<string, { title: string; body: string; category: string; price: number; compare: number | null; image: string; images: string[]; variants: string[]; active: boolean }>();
+
+    for (const vals of dataRows) {
+      const handle = vals[iHandle] || '';
+      if (!handle) continue;
+
+      const existing = grouped.get(handle);
+      const variantName = iOpt1Val >= 0 ? (vals[iOpt1Val] || '') : '';
+      const imgUrl = iImage >= 0 ? (vals[iImage] || '') : '';
+      const priceStr = iPrice >= 0 ? (vals[iPrice] || '') : '';
+      const compareStr = iCompare >= 0 ? (vals[iCompare] || '') : '';
+      const title = vals[iTitle] || '';
+      const status = iStatus >= 0 ? (vals[iStatus] || '').toLowerCase() : 'active';
+
+      if (!existing) {
+        const price = priceStr ? Math.round(parseFloat(priceStr.replace(',', '.')) * 100) : 0;
+        const compare = compareStr ? Math.round(parseFloat(compareStr.replace(',', '.')) * 100) : null;
+        const body = iBody >= 0 ? (vals[iBody] || '') : '';
+        const category = iType >= 0 ? (vals[iType] || 'Geral') : 'Geral';
+        const images: string[] = imgUrl ? [imgUrl] : [];
+        const variants: string[] = variantName && variantName.toLowerCase() !== 'default title' ? [variantName] : [];
+
+        grouped.set(handle, { title: title || handle, body, category, price, compare, image: imgUrl, images, variants, active: status !== 'draft' });
+      } else {
+        // Additional row = variant or extra image
+        if (variantName && variantName.toLowerCase() !== 'default title' && !existing.variants.includes(variantName)) {
+          existing.variants.push(variantName);
+        }
+        if (imgUrl && !existing.images.includes(imgUrl)) {
+          existing.images.push(imgUrl);
+        }
+        // Keep the title if the first row was empty
+        if (!existing.title && title) existing.title = title;
+      }
+    }
+
+    // Convert to preview rows
+    return Array.from(grouped.entries()).map(([handle, data]) => ({
+      _source: 'shopify' as const,
+      name: data.title,
+      slug: handle,
+      price_cents: data.price,
+      original_price_cents: data.compare,
+      category: data.category,
+      description: data.body.replace(/<[^>]*>/g, '').slice(0, 500),
+      description_html: data.body,
+      image_url: data.image || null,
+      images: data.images,
+      variants: data.variants,
+      active: data.active,
+      featured: false,
+    }));
+  };
+
   const handleCsvSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return; setCsvFile(file);
     const reader = new FileReader();
-    reader.onload = (ev) => { const text = ev.target?.result as string; const lines = text.split('\n').filter(l => l.trim()); if (lines.length < 2) return; const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, '').toLowerCase()); const rows = lines.slice(1).map(line => { const vals = line.match(/(".*?"|[^,]+)/g)?.map(v => v.trim().replace(/^"|"$/g, '')) || []; const row: Record<string, string> = {}; headers.forEach((h, i) => { row[h] = vals[i] || ''; }); return row; }); setCsvPreview(rows.slice(0, 50)); };
+    reader.onload = (ev) => {
+      const text = ev.target?.result as string;
+      const lines = text.split('\n').filter(l => l.trim());
+      if (lines.length < 2) return;
+
+      const headers = parseCsvLine(lines[0]);
+      const dataRows = lines.slice(1).map(l => parseCsvLine(l));
+
+      if (isShopifyFormat(headers)) {
+        // Shopify format detected
+        const parsed = parseShopifyCsv(headers, dataRows);
+        setCsvPreview(parsed);
+        toast.success(`Formato Shopify detectado! ${parsed.length} produtos encontrados.`);
+      } else {
+        // Legacy Kazoom format
+        const headersLc = headers.map(h => h.replace(/^"|"$/g, '').toLowerCase());
+        const rows = dataRows.map(vals => {
+          const row: Record<string, string> = {};
+          headersLc.forEach((h, i) => { row[h] = (vals[i] || '').replace(/^"|"$/g, ''); });
+          return row;
+        });
+        setCsvPreview(rows.slice(0, 50));
+      }
+    };
     reader.readAsText(file);
   };
 
@@ -195,17 +319,43 @@ export default function AdminProdutos() {
     if (csvPreview.length === 0) return; setImporting(true); let success = 0; let errors = 0;
     const pw = getAdminPassword();
     if (!pw) { toast.error('Sessão expirada'); setImporting(false); return; }
+
     for (const row of csvPreview) {
-      const name = row['nome'] || row['name'] || ''; if (!name) { errors++; continue; }
-      const slug = row['slug'] || slugify(name);
-      const price_cents = Math.round(parseFloat((row['preco'] || row['price'] || '0').replace(',', '.')) * 100) || 0;
-      const origStr = row['preco_original'] || row['original_price'] || '';
-      const original_price_cents = origStr ? Math.round(parseFloat(origStr.replace(',', '.')) * 100) : null;
-      const category = row['categoria'] || row['category'] || 'Geral';
-      const image_url = row['imagem'] || row['image'] || '';
-      const imagesStr = row['imagens'] || row['images'] || '';
-      const images = imagesStr ? imagesStr.split('|').map((u: string) => u.trim()).filter(Boolean) : (image_url ? [image_url] : []);
-      const product = { name, slug, price_cents, original_price_cents, category, description: row['descricao'] || '', image_url: image_url || null, images, featured: ['sim', 'true'].includes((row['destaque'] || '').toLowerCase()), active: !['nao', 'false'].includes((row['ativo'] || 'true').toLowerCase()), sort_order: success };
+      let product: any;
+
+      if (row._source === 'shopify') {
+        // Shopify pre-parsed row
+        product = {
+          name: row.name,
+          slug: row.slug,
+          price_cents: row.price_cents,
+          original_price_cents: row.original_price_cents,
+          category: row.category || 'Geral',
+          description: row.description || '',
+          description_html: row.description_html || '',
+          image_url: row.image_url || null,
+          images: row.images || [],
+          variants: row.variants || [],
+          featured: false,
+          active: row.active !== false,
+          sort_order: success,
+        };
+      } else {
+        // Legacy Kazoom format
+        const name = row['nome'] || row['name'] || ''; if (!name) { errors++; continue; }
+        const slug = row['slug'] || slugify(name);
+        const price_cents = Math.round(parseFloat((row['preco'] || row['price'] || '0').replace(',', '.')) * 100) || 0;
+        const origStr = row['preco_original'] || row['original_price'] || '';
+        const original_price_cents = origStr ? Math.round(parseFloat(origStr.replace(',', '.')) * 100) : null;
+        const category = row['categoria'] || row['category'] || 'Geral';
+        const image_url = row['imagem'] || row['image'] || '';
+        const imagesStr = row['imagens'] || row['images'] || '';
+        const images = imagesStr ? imagesStr.split('|').map((u: string) => u.trim()).filter(Boolean) : (image_url ? [image_url] : []);
+        const variantsStr = row['variantes'] || row['variants'] || '';
+        const variants = variantsStr ? variantsStr.split('|').map((v: string) => v.trim()).filter(Boolean) : [];
+        product = { name, slug, price_cents, original_price_cents, category, description: row['descricao'] || row['description'] || '', image_url: image_url || null, images, variants, featured: ['sim', 'true'].includes((row['destaque'] || '').toLowerCase()), active: !['nao', 'false'].includes((row['ativo'] || 'true').toLowerCase()), sort_order: success };
+      }
+
       const { data, error } = await supabase.functions.invoke('save-admin-product', { body: { password: pw, product } });
       if (error || data?.error) errors++; else success++;
     }
@@ -297,7 +447,8 @@ export default function AdminProdutos() {
           <Card className="p-4 border border-border"><h3 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2"><Download size={16} /> Exportar Produtos</h3><Button onClick={exportCsv} variant="outline" size="sm" className="text-xs"><Download size={14} className="mr-1" /> Exportar CSV ({products.length} produtos)</Button></Card>
           <Card className="p-4 border border-border">
             <h3 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2"><Upload size={16} /> Importar Produtos via CSV</h3>
-            <p className="text-xs text-muted-foreground mb-2">Colunas: <code className="bg-muted px-1 py-0.5 rounded text-[10px]">nome, slug, preco, preco_original, categoria, descricao, imagem, imagens, destaque, ativo</code></p>
+            <p className="text-xs text-muted-foreground mb-1">✅ <strong>Shopify CSV</strong>: Detectado automaticamente. Variantes/sabores são agrupados por produto.</p>
+            <p className="text-xs text-muted-foreground mb-2">✅ <strong>Kazoom CSV</strong>: Colunas: <code className="bg-muted px-1 py-0.5 rounded text-[10px]">nome, slug, preco, preco_original, categoria, descricao, imagem, imagens, variantes, destaque, ativo</code></p>
             <input ref={fileInputRef} type="file" accept=".csv" onChange={handleCsvSelect} className="hidden" />
             <Button onClick={() => fileInputRef.current?.click()} variant="outline" size="sm" className="text-xs mb-3"><Upload size={14} className="mr-1" /> Selecionar CSV</Button>
             {csvFile && <p className="text-xs text-foreground mb-2">📄 {csvFile.name} — {csvPreview.length} produtos</p>}
