@@ -149,10 +149,11 @@ export default function CheckoutPage() {
     setEmailSuggestions([]); setShowEmailSuggestions(false);
   }, []);
 
-  // Detect visitor country once
+  // Detect visitor country once — but DON'T override if a campaign language is set via URL
   useEffect(() => {
+    const hasUrlLang = new URLSearchParams(window.location.search).has("lang");
     detectVisitorLocale().then((loc) => {
-      setCountry(loc.countryCode);
+      if (!hasUrlLang) setCountry(loc.countryCode);
       if (loc.city && !city) setCity(loc.city);
       if (loc.region && !stateRegion) setStateRegion(loc.region);
       if (loc.postal && !postalCode) setPostalCode(loc.postal);
