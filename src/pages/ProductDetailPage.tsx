@@ -111,17 +111,19 @@ export default function ProductDetailPage() {
     "kit-suplementos-completo": { 
       labelKey: "productPage.kitLabelSupplements",
       items: [
-        { name: "Designer Whey Protein (908g)", options: ["Milk Chocolate", "Vanilla Milk", "Strawberry Cream", "Cookies & Cream", "Neutral"], type: "flavor" },
-        { name: "Isoclear Whey Isolate (600g)", options: ["Peach Iced Tea", "Lemon Iced Tea", "Green Apple", "Blue Raspberry", "Tropical Punch"], type: "flavor" },
-        { name: "Crank Pre-Workout (380g)", options: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola"], type: "flavor" },
-        { name: "Ultrapure Kreatin Pulver (500g)", options: ["Neutral", "Watermelon", "Fizzy Orange"], type: "flavor" },
-        { name: "Daily Vitamin Drink", options: ["Green Apple", "Raspberry Iced Tea", "Pineapple Coconut", "Sour Power"], type: "flavor" },
-        { name: "Designer Bar (Box 12x)", options: ["Peanut Caramel", "Hazelnut Nougat", "Fudge Brownie", "Coconut"], type: "flavor" },
+        { name: "Designer Whey Protein", options: ["Milk Chocolate", "Vanilla Milk", "Strawberry Cream", "Cookies & Cream", "Neutral", "Banana Milk", "Cinnamon Cereal", "Salted Dark Chocolate"], type: "flavor" },
+        { name: "Isoclear Whey Protein Isolate", options: ["Peach Iced Tea", "Lemon Iced Tea", "Green Apple", "Blue Raspberry", "Tropical Punch", "Fresh Cherry", "Blackberry", "Pink Grapefruit"], type: "flavor" },
+        { name: "Crank Pre-Workout", options: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola", "Blackberry", "Sour Power"], type: "flavor" },
+        { name: "Ultrapure Kreatin Pulver", options: ["Neutral", "Watermelon", "Fizzy Orange", "Fresh Cherry"], type: "flavor" },
+        { name: "Daily", options: ["Cactus Fruit", "Apple Cranberry", "Green Apple", "Pineapple Coconut", "Raspberry Iced Tea", "Sour Power"], type: "flavor" },
+        { name: "Designer Bar Proteinriegel", options: ["Peanut Caramel", "Hazelnut Nougat", "Fudge Brownie", "Coconut", "Dark Chocolate Raspberry", "White Chocolate Raspberry"], type: "flavor" },
         { name: "Magnesium Complex", options: ["90 Kapseln"], type: "flavor" },
         { name: "Zink Kapseln", options: ["120 Kapseln"], type: "flavor" },
         { name: "Vitamin D3 + K2 Depot", options: ["120 Kapseln"], type: "flavor" },
-        { name: "Ashwa+ Ashwagandha", options: ["120 Kapseln"], type: "flavor" },
-        { name: "Athlete Stack", options: ["Men", "Women"], type: "flavor" }
+        { name: "Ashwagandha Kapseln: Ashwa+", options: ["120 Kapseln"], type: "flavor" },
+        { name: "Athlete Stack: Men", options: ["210 Kapseln"], type: "flavor" },
+        { name: "Athlete Stack: Women", options: ["210 Kapseln"], type: "flavor" },
+        { name: "Magnesiumbisglycinat Kapseln", options: ["120 Kapseln"], type: "flavor" }
       ]
     }
   };
