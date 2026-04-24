@@ -100,6 +100,7 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedFlavor, setSelectedFlavor] = useState<string | null>(null);
   const [structuredSelections, setStructuredSelections] = useState<Record<string, string>>({});
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [selectedBundle, setSelectedBundle] = useState<number>(0);
 
   // Kits: cliente escolhe cor + tamanho (ou sabor) de cada peça do kit
@@ -644,61 +645,104 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
-                {/* Variant selectors – supports flat arrays and structured [{name, values}] */}
+                {/* Variant selectors – ESN-style dropdown */}
                 {product.variants && Array.isArray(product.variants) && product.variants.length > 0 && (() => {
-                  // Detect if structured: [{name: "...", values: [...]}]
                   const isStructured = product.variants.length > 0 && typeof product.variants[0] === 'object' && product.variants[0]?.name && product.variants[0]?.values;
+                  
                   if (isStructured) {
                     return (
-                      <div className="space-y-4">
-                        {(product.variants as Array<{name: string; values: string[]}>).map((opt) => (
-                          <div key={opt.name} className="space-y-2">
-                            <p className="text-sm font-medium">
-                              {opt.name} <span className="font-normal text-muted-foreground">{structuredSelections[opt.name] || t("productPage.selectPlaceholder")}</span>
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                              {opt.values.map((val: string) => (
-                                <button
-                                  key={val}
-                                  type="button"
-                                  onClick={() => setStructuredSelections(prev => ({ ...prev, [opt.name]: val }))}
-                                  className={`rounded-md border-2 px-3 py-2 text-sm font-medium transition-all ${
-                                    structuredSelections[opt.name] === val
-                                      ? "border-primary bg-primary/5 text-primary"
-                                      : "border-border hover:border-primary/40 text-foreground"
-                                  }`}
-                                >
-                                  {val}
-                                </button>
-                              ))}
+                      <div className="space-y-3">
+                        {(product.variants as Array<{name: string; values: string[]}>).map((opt) => {
+                          const selected = structuredSelections[opt.name] || '';
+                          const isOpen = openDropdown === opt.name;
+                          return (
+                            <div key={opt.name} className="relative">
+                              {/* Dropdown trigger – ESN style */}
+                              <button
+                                type="button"
+                                onClick={() => setOpenDropdown(isOpen ? null : opt.name)}
+                                className="w-full flex items-center justify-between rounded-xl border-2 border-border px-4 py-3 text-left transition-all hover:border-primary/40 focus:border-primary focus:outline-none"
+                              >
+                                <div className="flex items-center gap-3 min-w-0">
+                                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary font-bold text-sm shrink-0">
+                                    {opt.name.includes('Isoclear') ? '🧊' : '🥛'}
+                                  </div>
+                                  <div className="min-w-0">
+                                    <p className="font-semibold text-foreground text-sm truncate">
+                                      {selected || opt.name.replace(' Flavor', '')}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                      ({opt.values.length} {t("productPage.flavorLabel", { defaultValue: "Sabores" })})
+                                    </p>
+                                  </div>
+                                </div>
+                                <svg className={`h-5 w-5 text-muted-foreground transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                              </button>
+                              {/* Dropdown list */}
+                              {isOpen && (
+                                <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-xl border-2 border-border bg-background shadow-xl animate-in slide-in-from-top-2 duration-200">
+                                  {opt.values.map((val: string) => (
+                                    <button
+                                      key={val}
+                                      type="button"
+                                      onClick={() => { setStructuredSelections(prev => ({ ...prev, [opt.name]: val })); setOpenDropdown(null); }}
+                                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors hover:bg-primary/5 ${
+                                        selected === val ? 'bg-primary/10 font-semibold text-primary' : 'text-foreground'
+                                      }`}
+                                    >
+                                      <span className="flex-1">{val}</span>
+                                      {selected === val && (
+                                        <svg className="h-4 w-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                                      )}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     );
                   }
-                  // Flat array of strings
+
+                  // Flat array – single dropdown
+                  const isOpenFlat = openDropdown === '_flat';
                   return (
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">
-                        {t("productPage.flavorLabel", { defaultValue: "Sabor" })} <span className="font-normal text-muted-foreground">{selectedFlavor || t("productPage.selectPlaceholder")}</span>
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {product.variants.map((f: any) => (
-                          <button
-                            key={String(f)}
-                            type="button"
-                            onClick={() => setSelectedFlavor(String(f))}
-                            className={`rounded-md border-2 px-3 py-2 text-sm font-medium transition-all ${
-                              selectedFlavor === String(f)
-                                ? "border-primary bg-primary/5 text-primary"
-                                : "border-border hover:border-primary/40 text-foreground"
-                            }`}
-                          >
-                            {String(f)}
-                          </button>
-                        ))}
-                      </div>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setOpenDropdown(isOpenFlat ? null : '_flat')}
+                        className="w-full flex items-center justify-between rounded-xl border-2 border-border px-4 py-3 text-left transition-all hover:border-primary/40 focus:border-primary focus:outline-none"
+                      >
+                        <div className="min-w-0">
+                          <p className="font-semibold text-foreground text-sm">
+                            {selectedFlavor || t("productPage.flavorLabel", { defaultValue: "Sabor" })}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            ({product.variants.length} {t("productPage.flavorLabel", { defaultValue: "Sabores" })})
+                          </p>
+                        </div>
+                        <svg className={`h-5 w-5 text-muted-foreground transition-transform ${isOpenFlat ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                      </button>
+                      {isOpenFlat && (
+                        <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-xl border-2 border-border bg-background shadow-xl animate-in slide-in-from-top-2 duration-200">
+                          {product.variants.map((f: any) => (
+                            <button
+                              key={String(f)}
+                              type="button"
+                              onClick={() => { setSelectedFlavor(String(f)); setOpenDropdown(null); }}
+                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors hover:bg-primary/5 ${
+                                selectedFlavor === String(f) ? 'bg-primary/10 font-semibold text-primary' : 'text-foreground'
+                              }`}
+                            >
+                              <span className="flex-1">{String(f)}</span>
+                              {selectedFlavor === String(f) && (
+                                <svg className="h-4 w-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   );
                 })()}
