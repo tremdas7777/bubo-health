@@ -304,17 +304,19 @@ export default function AdminProdutos() {
 
     // Convert to preview rows
     return Array.from(grouped.entries()).map(([handle, data]) => {
-      // Build variants: if only 1 option → flat array; if multiple → object { "OptionName": [...values] }
-      let variants: any;
+      // Build variants: always an array
+      // Single option → flat ["val1", "val2", ...]
+      // Multiple options → [{name: "Opt1", values: [...]}, {name: "Opt2", values: [...]}]
+      let variants: any[];
       if (data.optionNames.length === 0) {
         variants = [];
       } else if (data.optionNames.length === 1) {
         variants = Array.from(data.optionValues.get(data.optionNames[0]) || []);
       } else {
-        variants = {} as Record<string, string[]>;
-        for (const name of data.optionNames) {
-          variants[name] = Array.from(data.optionValues.get(name) || []);
-        }
+        variants = data.optionNames.map(name => ({
+          name,
+          values: Array.from(data.optionValues.get(name) || [])
+        }));
       }
 
       return {

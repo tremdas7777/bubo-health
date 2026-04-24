@@ -593,7 +593,7 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {!isKitProduct && (product.colors || product.sizes || (product.variants && ((Array.isArray(product.variants) && product.variants.length > 0) || (!Array.isArray(product.variants) && typeof product.variants === 'object' && Object.keys(product.variants).length > 0)))) && (
+            {!isKitProduct && (product.colors || product.sizes || (product.variants && Array.isArray(product.variants) && product.variants.length > 0)) && (
               <div className="space-y-4">
                 {product.colors && product.colors.length > 0 && (
                   <div className="space-y-2">
@@ -644,59 +644,64 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
-                {/* Flat array variants (single option) */}
-                {product.variants && Array.isArray(product.variants) && product.variants.length > 0 && (
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium">
-                      {t("productPage.flavorLabel", { defaultValue: "Sabor" })} <span className="font-normal text-muted-foreground">{selectedFlavor || t("productPage.selectPlaceholder")}</span>
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {product.variants.map((f: any) => (
-                        <button
-                          key={String(f)}
-                          type="button"
-                          onClick={() => setSelectedFlavor(String(f))}
-                          className={`rounded-md border-2 px-3 py-2 text-sm font-medium transition-all ${
-                            selectedFlavor === String(f)
-                              ? "border-primary bg-primary/5 text-primary"
-                              : "border-border hover:border-primary/40 text-foreground"
-                          }`}
-                        >
-                          {String(f)}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Structured variants (multi-option from Shopify) */}
-                {product.variants && !Array.isArray(product.variants) && typeof product.variants === 'object' && Object.keys(product.variants).length > 0 && (
-                  <div className="space-y-4">
-                    {Object.entries(product.variants as Record<string, string[]>).map(([optionName, values]) => (
-                      <div key={optionName} className="space-y-2">
-                        <p className="text-sm font-medium">
-                          {optionName} <span className="font-normal text-muted-foreground">{structuredSelections[optionName] || t("productPage.selectPlaceholder")}</span>
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {(values as string[]).map((val: string) => (
-                            <button
-                              key={val}
-                              type="button"
-                              onClick={() => setStructuredSelections(prev => ({ ...prev, [optionName]: val }))}
-                              className={`rounded-md border-2 px-3 py-2 text-sm font-medium transition-all ${
-                                structuredSelections[optionName] === val
-                                  ? "border-primary bg-primary/5 text-primary"
-                                  : "border-border hover:border-primary/40 text-foreground"
-                              }`}
-                            >
-                              {val}
-                            </button>
-                          ))}
-                        </div>
+                {/* Variant selectors – supports flat arrays and structured [{name, values}] */}
+                {product.variants && Array.isArray(product.variants) && product.variants.length > 0 && (() => {
+                  // Detect if structured: [{name: "...", values: [...]}]
+                  const isStructured = product.variants.length > 0 && typeof product.variants[0] === 'object' && product.variants[0]?.name && product.variants[0]?.values;
+                  if (isStructured) {
+                    return (
+                      <div className="space-y-4">
+                        {(product.variants as Array<{name: string; values: string[]}>).map((opt) => (
+                          <div key={opt.name} className="space-y-2">
+                            <p className="text-sm font-medium">
+                              {opt.name} <span className="font-normal text-muted-foreground">{structuredSelections[opt.name] || t("productPage.selectPlaceholder")}</span>
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {opt.values.map((val: string) => (
+                                <button
+                                  key={val}
+                                  type="button"
+                                  onClick={() => setStructuredSelections(prev => ({ ...prev, [opt.name]: val }))}
+                                  className={`rounded-md border-2 px-3 py-2 text-sm font-medium transition-all ${
+                                    structuredSelections[opt.name] === val
+                                      ? "border-primary bg-primary/5 text-primary"
+                                      : "border-border hover:border-primary/40 text-foreground"
+                                  }`}
+                                >
+                                  {val}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                )}
+                    );
+                  }
+                  // Flat array of strings
+                  return (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">
+                        {t("productPage.flavorLabel", { defaultValue: "Sabor" })} <span className="font-normal text-muted-foreground">{selectedFlavor || t("productPage.selectPlaceholder")}</span>
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {product.variants.map((f: any) => (
+                          <button
+                            key={String(f)}
+                            type="button"
+                            onClick={() => setSelectedFlavor(String(f))}
+                            className={`rounded-md border-2 px-3 py-2 text-sm font-medium transition-all ${
+                              selectedFlavor === String(f)
+                                ? "border-primary bg-primary/5 text-primary"
+                                : "border-border hover:border-primary/40 text-foreground"
+                            }`}
+                          >
+                            {String(f)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             )}
 
