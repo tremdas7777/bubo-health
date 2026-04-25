@@ -144,7 +144,8 @@ export default function ProductDetailPage() {
       { name: "Designer Whey Protein Flavor", values: ["Honey Cereal", "Apple Strudel", "Germknödel", "Peanutbutter Cup", "Birthday Cake", "Almond Coconut", "Vanilla Speculoos", "Banana Milk", "Cherry Yogurt", "Chicken Waffle", "Cinnamon Cereal", "Dark Cookies & Cream", "KiBa", "Leons Cereal", "Milk Chocolate", "Milky Hazelnut", "Neutral", "Peach Yogurt", "Salted Dark Chocolate", "Stracciatella", "Strawberry Cream", "Stroopwafel", "Vanilla Ice Cream", "Vanilla Milk", "Vanilla Speculoos V2", "White Chocolate Pistachio", "Blueberry Cheesecake"] },
       { name: "Isoclear Whey Protein Isolate Flavor", values: ["Royal Candy", "Pina Colada", "Tropical Punch", "Mojito", "Cactus Ice", "Icy Pear", "Peach Rings", "Blackberry", "Bloody Orange", "Spiced Orange", "Fresh Orange", "Fresh Lemon", "Cactus Fruit", "Cherry Lemonade", "Cola Orange", "Green Apple", "Green Tea Honey", "Lemon Iced Tea", "Mango Peach Iced Tea", "Peach Iced Tea", "Pink Grapefruit", "Red Apple Lime", "Sour Power", "Strawberry Lime", "Gummy Bear (limited)"] },
       { name: "Crank Pre-Workout Flavor", values: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola", "Blackberry", "Sour Power"] },
-      { name: "Designer Oatbar Flavor", values: ["Chocolate Chip", "Crunchy Yogurt"] }
+      { name: "Designer Oatbar Flavor", values: ["Chocolate Chip", "Crunchy Yogurt"] },
+      { name: "ESN Daily Flavor", values: ["Cactus Fruit", "Apple Cranberry", "Green Apple", "Raspberry Iced Tea", "Sour Power"] }
     ];
   }
 
@@ -153,6 +154,7 @@ export default function ProductDetailPage() {
     { name: "Isoclear Whey Isolate", image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872" },
     { name: "Crank Pre-Workout", image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872" },
     { name: "Designer Oatbar (Haferriegel)", image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/DesignerOatbar_Tray_ChocolateChipFlavor_2024x2024_shop-DTfLGsf6_436fa537-3161-4178-994c-450c8df4c1da.jpg?v=1773743994" },
+    { name: "ESN Daily", image: "https://www.esn.com/cdn/shop/files/Daily_480g_CactusFruit-ySoy4f4I.jpg?v=1753972752&width=1370" },
     { name: "Ultrapure Kreatin Pulver", image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/UltrapureCreatine_500g_Beutel_NeutralFlavor_2024x2024_shop-6v02cWzQ_a41b1095-1dad-4771-9e1b-4d233d8f358b.jpg?v=1757496135" },
     { name: "Ashwagandha Kapseln: Ashwa+", image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/Ashwa__120Caps_2024x2024_shop-ZiGfqmvZ_617765a7-6ae0-4a08-8e92-cc92773b2760.jpg?v=1762335543" },
     { name: "Magnesium Complex", image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/MagnesiumComplex_90VeganCaps_2024x2024_shop-Nyzniicd_ab59e585-d0b9-45e7-92f6-a9ee5b94598a.jpg?v=1739874672" }
@@ -747,7 +749,9 @@ export default function ProductDetailPage() {
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872"
                                           : opt.name.toLowerCase().includes('crank')
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872"
-                                          : "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/DesignerOatbar_Tray_ChocolateChipFlavor_2024x2024_shop-DTfLGsf6_436fa537-3161-4178-994c-450c8df4c1da.jpg?v=1773743994"
+                                          : opt.name.toLowerCase().includes('oatbar')
+                                          ? "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/DesignerOatbar_Tray_ChocolateChipFlavor_2024x2024_shop-DTfLGsf6_436fa537-3161-4178-994c-450c8df4c1da.jpg?v=1773743994"
+                                          : "https://www.esn.com/cdn/shop/files/Daily_480g_CactusFruit-ySoy4f4I.jpg?v=1753972752&width=1370"
                                       } 
                                       alt={opt.name}
                                       className="h-full w-full object-cover"
