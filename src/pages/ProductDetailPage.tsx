@@ -423,6 +423,11 @@ export default function ProductDetailPage() {
   const handleBuyNow = () => {
     if (!validateSelections()) return;
 
+    if (product?.slug === 'esn-elite-leistung-combo-1') {
+      window.location.href = "https://checkout.flowspays.com/checkout/cmodkt6sb00i31rp0obulz7pa?offer=ZW5X4XQ";
+      return;
+    }
+
     if (isKitProduct) {
       addItem(product, 1, kitSelections.map((s, i) => {
         const itemConfig = kitConfig?.items?.[i];
@@ -871,7 +876,7 @@ export default function ProductDetailPage() {
             )}
 
             <div className="flex items-center gap-3 pt-1">
-              {!isKitProduct && (
+              {!isKitProduct && product?.slug !== 'esn-elite-leistung-combo-1' && (
                 <div className="flex items-center overflow-hidden rounded-lg border border-border">
                   <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2.5 transition-colors hover:bg-muted">
                     <Minus size={16} />
@@ -883,7 +888,7 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              {!isKitProduct && (
+              {!isKitProduct && product?.slug !== 'esn-elite-leistung-combo-1' && (
                 <Button onClick={handleAddToCart} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
                   {t("productPage.addToCart")}
                 </Button>
