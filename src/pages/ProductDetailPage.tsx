@@ -117,8 +117,6 @@ export default function ProductDetailPage() {
 
   // Force the correct variants for the ESN combo if DB is outdated
   if (product && product.slug === 'esn-elite-leistung-combo-1') {
-    const rate = settings?.exchange_rates?.EUR || 0.92;
-    product.price = 99 / rate;
     product.image = "/esn-combo-main.jpg";
     product.images = ["/esn-combo-main.jpg"];
     
