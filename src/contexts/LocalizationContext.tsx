@@ -72,7 +72,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
       setSettings(s);
 
       const urlParams = new URLSearchParams(window.location.search);
-      const currentLang = (localStorage.getItem("kazoom_lang") as SupportedLanguage) || i18nInst.language.slice(0, 2);
+      const currentLang = (localStorage.getItem("kazoom_lang") as SupportedLanguage) || (i18nInst.language.slice(0, 2) as SupportedLanguage);
       const currentCurrency = (localStorage.getItem("kazoom_currency") as SupportedCurrency) || currency;
 
       // 1. Resolve Language
@@ -84,7 +84,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
         finalLang = urlLang;
       } 
       // If current lang (from localStorage or navigator) is not available, or it's a first visit
-      else if (!s.available_languages.includes(currentLang) || !localStorage.getItem("kazoom_lang")) {
+      else if (!s.available_languages.includes(currentLang as SupportedLanguage) || !localStorage.getItem("kazoom_lang")) {
         const navLang = navigator.language.slice(0, 2) as SupportedLanguage;
         finalLang = s.available_languages.includes(navLang) ? navLang : s.default_language;
         // If even navLang isn't available, use default

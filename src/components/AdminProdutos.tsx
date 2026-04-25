@@ -347,10 +347,10 @@ export default function AdminProdutos() {
       } else {
         const headersLc = headers.map(h => h.replace(/^"|"$/g, '').toLowerCase());
         const rowsParsed = dataRows.map(vals => {
-          const row: Record<string, string> = {};
+          const row: Record<string, any> = {};
           headersLc.forEach((h, i) => { row[h] = vals[i]; });
           const variantStr = row['variacoes'] || row['variants'] || '';
-          row.variants = variantStr ? variantStr.split('|').map((v: string) => v.trim()) : [];
+          row.variants = variantStr ? String(variantStr).split('|').map((v: string) => v.trim()) : [];
           return row;
         });
         setCsvPreview(rowsParsed.slice(0, 50));
