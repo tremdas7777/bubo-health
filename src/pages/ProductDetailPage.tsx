@@ -153,8 +153,8 @@ export default function ProductDetailPage() {
     { name: t("productPage.esnItems.whey"), image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerWhey_908g_AlmondCoconutFlavor_2024x2024_shop-iCbreuNy_c640bbf7-d33b-4e04-9670-3ab420c5176d.webp?v=1777061872" },
     { name: t("productPage.esnItems.isoclear"), image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872" },
     { name: t("productPage.esnItems.crank"), image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872" },
-    { name: t("productPage.esnItems.proteinBar"), image: "https://www.esn.com/cdn/shop/files/Designer_Bar_Box_Peanut_Caramel_NEW_6f7f6cc5-0d29-497b-8919-df42761001f5.jpg?v=1711100588&width=1370" },
-    { name: t("productPage.esnItems.daily"), image: "https://www.esn.com/cdn/shop/files/Daily_480g_CactusFruit-ySoy4f4I.jpg?v=1753972752&width=1370" },
+    { name: t("productPage.esnItems.proteinBar"), image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerBar_45g_Tray_DarkChocolateSaltedAlmondFlavor_2024x2024_shop-4mvbqa9t_ff7823ec-c07e-4039-80a7-f3bf95d0638a.webp?v=1777061873" },
+    { name: t("productPage.esnItems.daily"), image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Daily_480g_CactusFruitFlavor_2024x2024_shop-ZTJBj2Ln_f6c0fd1b-c9af-43b4-9ff0-00a180714e8b.webp?v=1777061872" },
     { name: t("productPage.esnItems.creatine"), image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/UltrapureCreatine_500g_Beutel_NeutralFlavor_2024x2024_shop-6v02cWzQ_a41b1095-1dad-4771-9e1b-4d233d8f358b.jpg?v=1757496135" },
     { name: t("productPage.esnItems.ashwa"), image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/Ashwa__120Caps_2024x2024_shop-ZiGfqmvZ_617765a7-6ae0-4a08-8e92-cc92773b2760.jpg?v=1762335543" },
     { name: t("productPage.esnItems.magnesium"), image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/MagnesiumComplex_90VeganCaps_2024x2024_shop-Nyzniicd_ab59e585-d0b9-45e7-92f6-a9ee5b94598a.jpg?v=1739874672" }
@@ -753,10 +753,11 @@ export default function ProductDetailPage() {
                                           : opt.name.toLowerCase().includes('isoclear')
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872"
                                           : opt.name.toLowerCase().includes('crank')
+                                          : opt.name.toLowerCase().includes('crank')
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872"
                                           : opt.name.toLowerCase().includes('bar')
-                                          ? "https://www.esn.com/cdn/shop/files/Designer_Bar_Box_Peanut_Caramel_NEW_6f7f6cc5-0d29-497b-8919-df42761001f5.jpg?v=1711100588&width=1370"
-                                          : "https://www.esn.com/cdn/shop/files/Daily_480g_CactusFruit-ySoy4f4I.jpg?v=1753972752&width=1370"
+                                          ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerBar_45g_Tray_DarkChocolateSaltedAlmondFlavor_2024x2024_shop-4mvbqa9t_ff7823ec-c07e-4039-80a7-f3bf95d0638a.webp?v=1777061873"
+                                          : "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Daily_480g_CactusFruitFlavor_2024x2024_shop-ZTJBj2Ln_f6c0fd1b-c9af-43b4-9ff0-00a180714e8b.webp?v=1777061872"
                                       } 
                                       alt={opt.name}
                                       className="h-full w-full object-cover"
