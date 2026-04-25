@@ -773,7 +773,17 @@
     "kitLabelSupplements": "🎁 COMBO SUPLEMENTOS — Personalize os sabores do seu kit completo",
     "chooseFlavor": "escolher sabor:",
     "optionsAvailable": "{{count}} opções disponíveis",
-    "includedInCombo": "Incluído neste Combo:"
+    "includedInCombo": "Incluído neste Combo:",
+    "esnItems": {
+      "whey": "Designer Whey Protein (908g)",
+      "isoclear": "Isoclear Whey Isolate",
+      "crank": "Crank Pre-Workout",
+      "oatbar": "Designer Oatbar (Barra de Aveia)",
+      "daily": "ESN Daily",
+      "creatine": "Creatina Ultrapure em Pó",
+      "ashwa": "Cápsulas de Ashwagandha: Ashwa+",
+      "magnesium": "Complexo de Magnésio"
+    }
   },
   "bundle": {
     "units_one": "{{count}} unidade",

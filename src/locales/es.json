@@ -772,7 +772,17 @@
     "perUnit": "por unidad",
     "chooseFlavor": "elegir sabor:",
     "optionsAvailable": "{{count}} opciones disponibles",
-    "includedInCombo": "Incluido en este Combo:"
+    "includedInCombo": "Incluido en este Combo:",
+    "esnItems": {
+      "whey": "Designer Whey Protein (908g)",
+      "isoclear": "Isoclear Whey Isolate",
+      "crank": "Crank Pre-Workout",
+      "oatbar": "Designer Oatbar (Barra de Avena)",
+      "daily": "ESN Daily",
+      "creatine": "Creatina Ultrapure en Polvo",
+      "ashwa": "Cápsulas de Ashwagandha: Ashwa+",
+      "magnesium": "Complejo de Magnesio"
+    }
   },
   "bundle": {
     "units_one": "{{count}} unidad",

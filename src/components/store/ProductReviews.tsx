@@ -36,6 +36,16 @@ const kitReviews: Review[] = [
   { name: "Edson M.", rating: 5, date: "2024-11-25", text: "Já é meu segundo kit, comprei outro para um funcionário. Durabilidade excelente, uso diariamente há mais de 6 meses sem problemas.", verified: true },
 ];
 
+const esnReviews: Review[] = [
+  { name: "Lukas B.", rating: 5, date: "2025-04-10", text: "Bestes Bundle, das ich bisher gekauft habe. Das Designer Whey schmeckt in 'Milk Chocolate' einfach überragend und löst sich perfekt auf.", verified: true },
+  { name: "Sarah M.", rating: 5, date: "2025-04-05", text: "Endlich ein komplettes Set für mein Training. Isoclear ist super erfrischend nach dem Gym. Der Preis für 99€ ist unschlagbar.", verified: true },
+  { name: "Kevin S.", rating: 5, date: "2025-03-28", text: "Der Crank Booster gibt ordentlich Energie ohne den typischen Crash danach. Versand war extrem schnell, innerhalb von 2 Tagen war alles da.", verified: true },
+  { name: "Julia K.", rating: 5, date: "2025-03-20", text: "Top Qualität! Kreatin und Magnesium sind jetzt fester Bestandteil meiner Routine. Die Designer Bars sind der Wahnsinn als Snack.", verified: true },
+  { name: "Marc T.", rating: 4, date: "2025-03-15", text: "Alles super, nur die Auswahl der Geschmacksrichtungen war so groß, dass ich mich kaum entscheiden konnte. Geschmacklich 10/10.", verified: true },
+  { name: "Dennis H.", rating: 5, date: "2025-03-10", text: "Hammer Preis-Leistungs-Verhältnis. Alles drin was man braucht. ESN ist einfach die beste Marke auf dem Markt.", verified: true },
+  { name: "Elena G.", rating: 5, date: "2025-03-05", text: "Die Daily Kapseln und Ashwa+ helfen mir sehr bei der Regeneration. Fühle mich morgens viel fitter.", verified: true },
+];
+
 function Stars({ count }: { count: number }) {
   return (
     <div className="flex gap-0.5">
@@ -46,8 +56,11 @@ function Stars({ count }: { count: number }) {
   );
 }
 
-const SOURCE_LANG_BY_PRODUCT = (slug: string): string =>
-  slug === "kit-ferramentas-refrigeracao" ? "pt" : "en";
+const SOURCE_LANG_BY_PRODUCT = (slug: string): string => {
+  if (slug === "kit-ferramentas-refrigeracao") return "pt";
+  if (slug === "esn-elite-leistung-combo-1") return "de";
+  return "en";
+};
 
 async function translateBatch(texts: string[], targetLang: string, cacheKey: string): Promise<string[]> {
   const cached = localStorage.getItem(cacheKey);
@@ -81,6 +94,8 @@ export default function ProductReviews({ productSlug, productId }: { productSlug
       let baseReviews: Review[] = [];
       if (productSlug === "kit-ferramentas-refrigeracao") {
         baseReviews = kitReviews;
+      } else if (productSlug === "esn-elite-leistung-combo-1") {
+        baseReviews = esnReviews;
       } else if (productId) {
         const { data } = await supabase
           .from("product_reviews")
