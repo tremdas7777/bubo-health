@@ -782,7 +782,10 @@
       "ashwa": "Cápsulas de Ashwagandha: Ashwa+",
       "magnesium": "Complejo de Magnesio",
       "proteinBar": "Designer Protein Bar (Barra de Proteína)"
-    }
+    },
+    "requiredSelectionTitle": "Selección obligatoria",
+    "requiredSelectionDesc": "Por favor, elija el sabor para {{name}}",
+    "requiredSelectionGeneral": "Por favor, elija un sabor para continuar."
   },
   "bundle": {
     "units_one": "{{count}} unidad",

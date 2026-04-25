@@ -782,7 +782,10 @@
       "ashwa": "Capsules d'Ashwagandha : Ashwa+",
       "magnesium": "Complexe de Magnésium",
       "proteinBar": "Designer Protein Bar (Barre protéinée)"
-    }
+    },
+    "requiredSelectionTitle": "Sélection requise",
+    "requiredSelectionDesc": "Veuillez choisir le parfum pour {{name}}",
+    "requiredSelectionGeneral": "Veuillez choisir un parfum pour continuer."
   },
   "bundle": {
     "units_one": "{{count}} unité",

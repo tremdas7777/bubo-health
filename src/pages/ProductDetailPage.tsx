@@ -353,8 +353,8 @@ export default function ProductDetailPage() {
         for (const opt of (product.variants as unknown as Array<{name: string; values: string[]}>)) {
           if (!structuredSelections[opt.name]) {
             toast({
-              title: "Seleção obrigatória",
-              description: `Por favor, escolha o sabor para ${opt.name.replace(/\s*[Ff]lavor/g, '')}`,
+              title: t("productPage.requiredSelectionTitle"),
+              description: t("productPage.requiredSelectionDesc", { name: opt.name.replace(/\s*[Ff]lavor/g, '') }),
               variant: "destructive",
             });
             setOpenDropdown(opt.name);
@@ -363,8 +363,8 @@ export default function ProductDetailPage() {
         }
       } else if (!selectedFlavor) {
         toast({ 
-          title: "Seleção obrigatória", 
-          description: "Por favor, escolha um sabor para continuar.", 
+          title: t("productPage.requiredSelectionTitle"), 
+          description: t("productPage.requiredSelectionGeneral"), 
           variant: "destructive" 
         });
         setOpenDropdown('_flat');

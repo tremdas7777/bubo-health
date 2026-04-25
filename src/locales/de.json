@@ -782,7 +782,10 @@
       "ashwa": "Ashwagandha Kapseln: Ashwa+",
       "magnesium": "Magnesium Complex",
       "proteinBar": "Designer Protein Bar (Proteinriegel)"
-    }
+    },
+    "requiredSelectionTitle": "Auswahl erforderlich",
+    "requiredSelectionDesc": "Bitte wählen Sie den Geschmack für {{name}}",
+    "requiredSelectionGeneral": "Bitte wählen Sie einen Geschmack, um fortzufahren."
   },
   "bundle": {
     "units_one": "{{count}} Einheit",
