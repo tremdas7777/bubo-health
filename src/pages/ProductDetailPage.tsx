@@ -753,7 +753,6 @@ export default function ProductDetailPage() {
                                           : opt.name.toLowerCase().includes('isoclear')
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872"
                                           : opt.name.toLowerCase().includes('crank')
-                                          : opt.name.toLowerCase().includes('crank')
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872"
                                           : opt.name.toLowerCase().includes('bar')
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerBar_45g_Tray_DarkChocolateSaltedAlmondFlavor_2024x2024_shop-4mvbqa9t_ff7823ec-c07e-4039-80a7-f3bf95d0638a.webp?v=1777061873"
