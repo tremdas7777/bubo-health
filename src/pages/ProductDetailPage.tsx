@@ -119,6 +119,8 @@ export default function ProductDetailPage() {
   if (product && product.slug === 'esn-elite-leistung-combo-1') {
     const rate = settings?.exchange_rates?.EUR || 0.92;
     product.price = 99 / rate;
+    product.image = "/esn-combo-main.jpg";
+    product.images = ["/esn-combo-main.jpg"];
     
     product.description_html = `<p>Erreichen Sie den Gipfel Ihrer Entwicklung mit der Supplement-Marke Nr. 1 aus Deutschland – jetzt als exklusives Bundle bei Kazoom.</p>
 <p>Wer Höchstleistung will, darf keine Kompromisse eingehen. Das ESN Elite Leistung Combo wurde strategisch für Athleten entwickelt, die nur das Maximum akzeptieren. Wir vereinen deutsche Ernährungswissenschaft mit den reinsten Inhaltsstoffen auf dem Markt in einem einzigen Hochleistungspaket.</p>
