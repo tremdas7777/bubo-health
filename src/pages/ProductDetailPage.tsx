@@ -347,9 +347,10 @@ export default function ProductDetailPage() {
 
     // Check structured or flat variants
     if (product.variants && Array.isArray(product.variants) && product.variants.length > 0) {
-      const isStructured = typeof product.variants[0] === 'object' && product.variants[0]?.name;
+      const firstVariant = product.variants[0] as any;
+      const isStructured = typeof firstVariant === 'object' && firstVariant !== null && firstVariant.name;
       if (isStructured) {
-        for (const opt of (product.variants as Array<{name: string; values: string[]}>)) {
+        for (const opt of (product.variants as unknown as Array<{name: string; values: string[]}>)) {
           if (!structuredSelections[opt.name]) {
             toast({
               title: "Seleção obrigatória",
@@ -696,12 +697,13 @@ export default function ProductDetailPage() {
 
                 {/* Variant selectors – ESN-style dropdown */}
                 {product.variants && Array.isArray(product.variants) && product.variants.length > 0 && (() => {
-                  const isStructured = product.variants.length > 0 && typeof product.variants[0] === 'object' && product.variants[0]?.name && product.variants[0]?.values;
+                  const firstVariant = product.variants[0] as any;
+                  const isStructured = product.variants.length > 0 && typeof firstVariant === 'object' && firstVariant !== null && firstVariant.name && firstVariant.values;
                   
                   if (isStructured) {
                     return (
                       <div className="space-y-3">
-                        {(product.variants as Array<{name: string; values: string[]}>).map((opt) => {
+                        {(product.variants as unknown as Array<{name: string; values: string[]}>).map((opt) => {
                           const selected = structuredSelections[opt.name];
                           const isOpen = openDropdown === opt.name;
                           return (
