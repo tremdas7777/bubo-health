@@ -771,7 +771,8 @@
     "kitLabel5polos": "🎁 KIT OF 5 POLOS — Choose the color and size of each of the 5 shirts",
     "perUnit": "per unit",
     "chooseFlavor": "choose flavor:",
-    "optionsAvailable": "{{count}} options available"
+    "optionsAvailable": "{{count}} options available",
+    "includedInCombo": "Included in this Combo:"
   },
   "bundle": {
     "units_one": "{{count}} unit",

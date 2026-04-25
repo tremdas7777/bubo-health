@@ -143,9 +143,16 @@ export default function ProductDetailPage() {
     product.variants = [
       { name: "Designer Whey Protein Flavor", values: ["Honey Cereal", "Apple Strudel", "Germknödel", "Peanutbutter Cup", "Birthday Cake", "Almond Coconut", "Vanilla Speculoos", "Banana Milk", "Cherry Yogurt", "Chicken Waffle", "Cinnamon Cereal", "Dark Cookies & Cream", "KiBa", "Leons Cereal", "Milk Chocolate", "Milky Hazelnut", "Neutral", "Peach Yogurt", "Salted Dark Chocolate", "Stracciatella", "Strawberry Cream", "Stroopwafel", "Vanilla Ice Cream", "Vanilla Milk", "Vanilla Speculoos V2", "White Chocolate Pistachio", "Blueberry Cheesecake"] },
       { name: "Isoclear Whey Protein Isolate Flavor", values: ["Royal Candy", "Pina Colada", "Tropical Punch", "Mojito", "Cactus Ice", "Icy Pear", "Peach Rings", "Blackberry", "Bloody Orange", "Spiced Orange", "Fresh Orange", "Fresh Lemon", "Cactus Fruit", "Cherry Lemonade", "Cola Orange", "Green Apple", "Green Tea Honey", "Lemon Iced Tea", "Mango Peach Iced Tea", "Peach Iced Tea", "Pink Grapefruit", "Red Apple Lime", "Sour Power", "Strawberry Lime", "Gummy Bear (limited)"] },
-      { name: "Crank Pre-Workout Flavor", values: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola", "Blackberry", "Sour Power"] }
+      { name: "Crank Pre-Workout Flavor", values: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola", "Blackberry", "Sour Power"] },
+      { name: "Designer Oatbar Flavor", values: ["Chocolate Chip", "Crunchy Yogurt"] }
     ];
   }
+
+  const ESN_FIXED_ITEMS = product?.slug === 'esn-elite-leistung-combo-1' ? [
+    { name: "Ultrapure Kreatin Pulver", image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/UltrapureCreatine_500g_Beutel_NeutralFlavor_2024x2024_shop-6v02cWzQ_a41b1095-1dad-4771-9e1b-4d233d8f358b.jpg?v=1757496135" },
+    { name: "Ashwagandha Kapseln: Ashwa+", image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/Ashwa__120Caps_2024x2024_shop-ZiGfqmvZ_617765a7-6ae0-4a08-8e92-cc92773b2760.jpg?v=1762335543" },
+    { name: "Magnesium Complex", image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/MagnesiumComplex_90VeganCaps_2024x2024_shop-Nyzniicd_ab59e585-d0b9-45e7-92f6-a9ee5b94598a.jpg?v=1739874672" }
+  ] : [];
 
   const KIT_ITEMS = kitConfig?.items || (kitConfig?.size ? Array(kitConfig.size).fill({ name: "", options: [], type: "color-size" }) : []);
   const KIT_SIZE = KIT_ITEMS.length;
@@ -730,11 +737,13 @@ export default function ProductDetailPage() {
                                   <div className="h-12 w-12 rounded-xl overflow-hidden shrink-0 border border-border shadow-sm">
                                     <img 
                                       src={
-                                        opt.name.toLowerCase().includes('designer') 
+                                        opt.name.toLowerCase().includes('designer') && opt.name.toLowerCase().includes('whey')
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerWhey_908g_AlmondCoconutFlavor_2024x2024_shop-iCbreuNy_c640bbf7-d33b-4e04-9670-3ab420c5176d.webp?v=1777061872"
                                           : opt.name.toLowerCase().includes('isoclear')
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872"
-                                          : "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872"
+                                          : opt.name.toLowerCase().includes('crank')
+                                          ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872"
+                                          : "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/DesignerOatbar_Tray_ChocolateChipFlavor_2024x2024_shop-DTfLGsf6_436fa537-3161-4178-994c-450c8df4c1da.jpg?v=1773743994"
                                       } 
                                       alt={opt.name}
                                       className="h-full w-full object-cover"
@@ -776,6 +785,22 @@ export default function ProductDetailPage() {
                             </div>
                           );
                         })}
+
+                        {ESN_FIXED_ITEMS.length > 0 && (
+                          <div className="mt-6 pt-6 border-t border-border">
+                            <p className="text-xs font-bold text-muted-foreground mb-4 uppercase tracking-wider">{t("productPage.includedInCombo")}</p>
+                            <div className="space-y-3">
+                              {ESN_FIXED_ITEMS.map((item, idx) => (
+                                <div key={idx} className="flex items-center gap-4 p-3 rounded-xl border border-border bg-muted/20">
+                                  <div className="h-12 w-12 rounded-xl overflow-hidden shrink-0 border border-border bg-background">
+                                    <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                                  </div>
+                                  <p className="text-sm font-semibold text-foreground">{item.name}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     );
                   }

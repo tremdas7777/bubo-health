@@ -771,7 +771,8 @@
     "kitLabel5polos": "🎁 KIT VON 5 POLOS — Wählen Sie Farbe und Größe jedes der 5 Hemden",
     "perUnit": "pro Stück",
     "chooseFlavor": "geschmack wählen:",
-    "optionsAvailable": "{{count}} optionen verfügbar"
+    "optionsAvailable": "{{count}} optionen verfügbar",
+    "includedInCombo": "In diesem Bundle enthalten:"
   },
   "bundle": {
     "units_one": "{{count}} Einheit",

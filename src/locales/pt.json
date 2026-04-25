@@ -772,7 +772,8 @@
     "perUnit": "por unidade",
     "kitLabelSupplements": "🎁 COMBO SUPLEMENTOS — Personalize os sabores do seu kit completo",
     "chooseFlavor": "escolher sabor:",
-    "optionsAvailable": "{{count}} opções disponíveis"
+    "optionsAvailable": "{{count}} opções disponíveis",
+    "includedInCombo": "Incluído neste Combo:"
   },
   "bundle": {
     "units_one": "{{count}} unidade",

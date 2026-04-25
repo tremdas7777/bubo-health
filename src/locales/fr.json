@@ -771,7 +771,8 @@
     "kitLabel5polos": "🎁 KIT DE 5 POLOS — Choisissez la couleur et la taille de chacune des 5 chemises",
     "perUnit": "par unité",
     "chooseFlavor": "choisir la saveur :",
-    "optionsAvailable": "{{count}} options disponibles"
+    "optionsAvailable": "{{count}} options disponibles",
+    "includedInCombo": "Inclus dans ce pack :"
   },
   "bundle": {
     "units_one": "{{count}} unité",
