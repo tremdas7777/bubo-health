@@ -146,7 +146,7 @@ export default function ProductDetailPage() {
       { name: "Designer Whey Protein Flavor", values: ["Honey Cereal", "Apple Strudel", "Germknödel", "Peanutbutter Cup", "Birthday Cake", "Almond Coconut", "Vanilla Speculoos", "Banana Milk", "Cherry Yogurt", "Chicken Waffle", "Cinnamon Cereal", "Dark Cookies & Cream", "KiBa", "Leons Cereal", "Milk Chocolate", "Milky Hazelnut", "Neutral", "Peach Yogurt", "Salted Dark Chocolate", "Stracciatella", "Strawberry Cream", "Stroopwafel", "Vanilla Ice Cream", "Vanilla Milk", "Vanilla Speculoos V2", "White Chocolate Pistachio", "Blueberry Cheesecake"] },
       { name: "Isoclear Whey Protein Isolate Flavor", values: ["Royal Candy", "Pina Colada", "Tropical Punch", "Mojito", "Cactus Ice", "Icy Pear", "Peach Rings", "Blackberry", "Bloody Orange", "Spiced Orange", "Fresh Orange", "Fresh Lemon", "Cactus Fruit", "Cherry Lemonade", "Cola Orange", "Green Apple", "Green Tea Honey", "Lemon Iced Tea", "Mango Peach Iced Tea", "Peach Iced Tea", "Pink Grapefruit", "Red Apple Lime", "Sour Power", "Strawberry Lime", "Gummy Bear (limited)"] },
       { name: "Crank Pre-Workout Flavor", values: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola", "Blackberry", "Sour Power"] },
-      { name: "Designer Oatbar Flavor", values: ["Chocolate Chip", "Crunchy Yogurt"] },
+      { name: "Designer Protein Bar Flavor", values: ["Dark Chocolate Raspberry", "White Chocolate Raspberry", "Almond Coconut", "Cinnamon Cereal", "Dark Cookie White Choc", "Fudge Brownie", "Hazelnut Nougat", "Peanut Caramel", "Salted Caramel", "White Chocolate Almond", "White Chocolate Pistachio"] },
       { name: "ESN Daily Flavor", values: ["Cactus Fruit", "Apple Cranberry", "Green Apple", "Raspberry Iced Tea", "Sour Power"] }
     ];
   }
@@ -155,7 +155,7 @@ export default function ProductDetailPage() {
     { name: t("productPage.esnItems.whey"), image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerWhey_908g_AlmondCoconutFlavor_2024x2024_shop-iCbreuNy_c640bbf7-d33b-4e04-9670-3ab420c5176d.webp?v=1777061872" },
     { name: t("productPage.esnItems.isoclear"), image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872" },
     { name: t("productPage.esnItems.crank"), image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872" },
-    { name: t("productPage.esnItems.oatbar"), image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/DesignerOatbar_Tray_ChocolateChipFlavor_2024x2024_shop-DTfLGsf6_436fa537-3161-4178-994c-450c8df4c1da.jpg?v=1773743994" },
+    { name: t("productPage.esnItems.proteinBar"), image: "https://www.esn.com/cdn/shop/files/Designer_Bar_Box_Peanut_Caramel_NEW_6f7f6cc5-0d29-497b-8919-df42761001f5.jpg?v=1711100588&width=1370" },
     { name: t("productPage.esnItems.daily"), image: "https://www.esn.com/cdn/shop/files/Daily_480g_CactusFruit-ySoy4f4I.jpg?v=1753972752&width=1370" },
     { name: t("productPage.esnItems.creatine"), image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/UltrapureCreatine_500g_Beutel_NeutralFlavor_2024x2024_shop-6v02cWzQ_a41b1095-1dad-4771-9e1b-4d233d8f358b.jpg?v=1757496135" },
     { name: t("productPage.esnItems.ashwa"), image: "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/Ashwa__120Caps_2024x2024_shop-ZiGfqmvZ_617765a7-6ae0-4a08-8e92-cc92773b2760.jpg?v=1762335543" },
@@ -756,8 +756,8 @@ export default function ProductDetailPage() {
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872"
                                           : opt.name.toLowerCase().includes('crank')
                                           ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872"
-                                          : opt.name.toLowerCase().includes('oatbar')
-                                          ? "https://cdn.shopify.com/s/files/1/0845/1358/7515/files/DesignerOatbar_Tray_ChocolateChipFlavor_2024x2024_shop-DTfLGsf6_436fa537-3161-4178-994c-450c8df4c1da.jpg?v=1773743994"
+                                          : opt.name.toLowerCase().includes('bar')
+                                          ? "https://www.esn.com/cdn/shop/files/Designer_Bar_Box_Peanut_Caramel_NEW_6f7f6cc5-0d29-497b-8919-df42761001f5.jpg?v=1711100588&width=1370"
                                           : "https://www.esn.com/cdn/shop/files/Daily_480g_CactusFruit-ySoy4f4I.jpg?v=1753972752&width=1370"
                                       } 
                                       alt={opt.name}
