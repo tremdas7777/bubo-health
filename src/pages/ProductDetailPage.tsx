@@ -120,6 +120,26 @@ export default function ProductDetailPage() {
     const rate = settings?.exchange_rates?.EUR || 0.92;
     product.price = 99 / rate;
     
+    product.description_html = `<p>Erreichen Sie den Gipfel Ihrer Entwicklung mit der Supplement-Marke Nr. 1 aus Deutschland – jetzt als exklusives Bundle bei Kazoom.</p>
+<p>Wer Höchstleistung will, darf keine Kompromisse eingehen. Das ESN Elite Leistung Combo wurde strategisch für Athleten entwickelt, die nur das Maximum akzeptieren. Wir vereinen deutsche Ernährungswissenschaft mit den reinsten Inhaltsstoffen auf dem Markt in einem einzigen Hochleistungspaket.</p>
+<h3 class="mt-4 mb-2 font-bold text-lg">💎 Ihr Arsenal im Überblick:</h3>
+<ul class="list-disc pl-5 space-y-1 mb-4">
+  <li><strong>Designer Whey Protein (908g):</strong> Deutschlands meistverkauftes Whey. Unvergleichlicher Geschmack, cremige Konsistenz und der ideale Support für Ihren Muskelaufbau.</li>
+  <li><strong>Isoclear Whey Isolate:</strong> Die Revolution des isolierten Proteins. Erfrischend wie ein Softdrink, ultra-schnelle Aufnahme und null Fett – perfekt direkt nach dem Training.</li>
+  <li><strong>Ultrapure Creatine:</strong> Der Goldstandard für Kraft. 100% monohydriert und mikronisiert für maximale Explosivität und Regeneration auf Elite-Niveau.</li>
+  <li><strong>Crank Pre-Workout:</strong> Unerschütterlicher Fokus und explosive Energie. Der ultimative Boost für Ihre schwersten Sätze.</li>
+  <li><strong>Daily & Magnesium Complex:</strong> Das Fundament Ihrer Gesundheit. Unterstützung für Muskelregeneration und essentielle Mikronährstoffe für volle Leistungsfähigkeit.</li>
+  <li><strong>Ashwa+:</strong> Das Geheimnis für mentale und körperliche Erholung – optimiert den Cortisolspiegel und Ihren Schlaf.</li>
+  <li><strong>Designer Bar:</strong> Der perfekte proteinreiche Snack für zwischendurch, ohne auf Geschmack zu verzichten.</li>
+</ul>
+<h3 class="mt-4 mb-2 font-bold text-lg">🚀 Warum das Elite Leistung Combo wählen?</h3>
+<ul class="list-disc pl-5 space-y-1">
+  <li><strong>Volle Synergie:</strong> Jedes Produkt verstärkt die Wirkung des anderen – von Pre-Workout bis zur nächtlichen Regeneration.</li>
+  <li><strong>Deutsche Qualität (ESN):</strong> Laborgeprüfte Reinheit und die weltweit besten Rohstoffe.</li>
+  <li><strong>Intelligenter Preisvorteil:</strong> Sichern Sie sich die komplette Linie mit einem exklusiven Rabatt, den es nur im Bundle gibt.</li>
+  <li><strong>Kazoom Exklusivität:</strong> Ein kuratiertes Erlebnis für alle, die nur das Beste suchen.</li>
+</ul>`;
+
     product.variants = [
       { name: "Designer Whey Protein Flavor", values: ["Honey Cereal", "Apple Strudel", "Germknödel", "Peanutbutter Cup", "Birthday Cake", "Almond Coconut", "Vanilla Speculoos", "Banana Milk", "Cherry Yogurt", "Chicken Waffle", "Cinnamon Cereal", "Dark Cookies & Cream", "KiBa", "Leons Cereal", "Milk Chocolate", "Milky Hazelnut", "Neutral", "Peach Yogurt", "Salted Dark Chocolate", "Stracciatella", "Strawberry Cream", "Stroopwafel", "Vanilla Ice Cream", "Vanilla Milk", "Vanilla Speculoos V2", "White Chocolate Pistachio", "Blueberry Cheesecake"] },
       { name: "Isoclear Whey Protein Isolate Flavor", values: ["Royal Candy", "Pina Colada", "Tropical Punch", "Mojito", "Cactus Ice", "Icy Pear", "Peach Rings", "Blackberry", "Bloody Orange", "Spiced Orange", "Fresh Orange", "Fresh Lemon", "Cactus Fruit", "Cherry Lemonade", "Cola Orange", "Green Apple", "Green Tea Honey", "Lemon Iced Tea", "Mango Peach Iced Tea", "Peach Iced Tea", "Pink Grapefruit", "Red Apple Lime", "Sour Power", "Strawberry Lime", "Gummy Bear (limited)"] },

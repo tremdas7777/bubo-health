@@ -267,7 +267,7 @@ export default function CheckoutPage() {
         buyer_name: name, buyer_email: email,
         buyer_phone: phone.replace(/\D/g, ""),
         buyer_document: taxId.replace(/\D/g, "") || null,
-        amount_cents: Math.round(totalPrice * 100),
+        amount_cents: totalPrice,
         status: "draft", checkout_step: nextStep,
         checkout_step_updated_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
