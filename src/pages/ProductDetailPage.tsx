@@ -91,7 +91,58 @@ export default function ProductDetailPage() {
   const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const { data: products = [], isLoading } = useDbProducts();
-  const product = products.find((p) => p.slug === slug);
+  const product = useMemo(() => {
+    const p = products.find((prod) => prod.slug === slug);
+    if (!p) return null;
+
+    if (p.slug === 'esn-elite-leistung-combo-1') {
+      return {
+        ...p,
+        image: "/esn-combo-main.jpg",
+        images: ["/esn-combo-main.jpg"],
+        variants: [
+          { name: "Designer Whey Protein Flavor", values: ["Honey Cereal", "Apple Strudel", "Germknödel", "Peanutbutter Cup", "Birthday Cake", "Almond Coconut", "Vanilla Speculoos", "Banana Milk", "Cherry Yogurt", "Chicken Waffle", "Cinnamon Cereal", "Dark Cookies & Cream", "KiBa", "Leons Cereal", "Milk Chocolate", "Milky Hazelnut", "Neutral", "Peach Yogurt", "Salted Dark Chocolate", "Stracciatella", "Strawberry Cream", "Stroopwafel", "Vanilla Ice Cream", "Vanilla Milk", "Vanilla Speculoos V2", "White Chocolate Pistachio", "Blueberry Cheesecake"] },
+          { name: "Isoclear Whey Protein Isolate Flavor", values: ["Royal Candy", "Pina Colada", "Tropical Punch", "Mojito", "Cactus Ice", "Icy Pear", "Peach Rings", "Blackberry", "Bloody Orange", "Spiced Orange", "Fresh Orange", "Fresh Lemon", "Cactus Fruit", "Cherry Lemonade", "Cola Orange", "Green Apple", "Green Tea Honey", "Lemon Iced Tea", "Mango Peach Iced Tea", "Peach Iced Tea", "Pink Grapefruit", "Red Apple Lime", "Sour Power", "Strawberry Lime", "Gummy Bear (limited)"] },
+          { name: "Crank Pre-Workout Flavor", values: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola", "Blackberry", "Sour Power"] },
+          { name: "Designer Protein Bar Flavor", values: ["Dark Chocolate Raspberry", "White Chocolate Raspberry", "Almond Coconut", "Cinnamon Cereal", "Dark Cookie White Choc", "Fudge Brownie", "Hazelnut Nougat", "Peanut Caramel", "Salted Caramel", "White Chocolate Almond", "White Chocolate Pistachio"] },
+          { name: "ESN Daily Flavor", values: ["Cactus Fruit", "Apple Cranberry", "Green Apple", "Raspberry Iced Tea", "Sour Power"] }
+        ] as any,
+        descriptionHtml: `
+<div class="space-y-6">
+  <div class="bg-primary/5 border border-primary/20 rounded-2xl p-6">
+    <h3 class="text-lg font-bold text-primary mb-3">🚀 Hol dir das ultimative Performance-Paket!</h3>
+    <p class="text-sm leading-relaxed text-muted-foreground">
+      Optimiere dein Training und deine Regeneration mit dem <strong>ESN Elite Leistung Combo</strong>. Dieses exklusive Paket wurde zusammengestellt, um dir alles zu bieten, was du für maximale Erfolge im Fitnessstudio und im Alltag benötigst. Von hochwertigem Protein über kraftvolle Pre-Workouts bis hin zu essentiellen Mikronährstoffen – hier ist alles drin!
+    </p>
+  </div>
+
+  <div>
+    <h4 class="font-bold text-foreground mb-4 flex items-center gap-2">
+      <span class="bg-primary text-primary-foreground w-6 h-6 rounded-full flex items-center justify-center text-xs">8</span>
+      Premium-Produkte enthalten:
+    </h4>
+    <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+      <li class="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border">✅ Designer Whey (908g)</li>
+      <li class="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border">✅ Isoclear Isolate</li>
+      <li class="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border">✅ Crank Pre-Workout</li>
+      <li class="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border">✅ Designer Protein Bar</li>
+      <li class="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border">✅ ESN Daily (Vitamins)</li>
+      <li class="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border">✅ Ultrapure Creatine</li>
+      <li class="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border">✅ Ashwa+ Capsules</li>
+      <li class="flex items-center gap-2 p-2 rounded-lg bg-muted/50 border border-border">✅ Magnesium Complex</li>
+    </ul>
+  </div>
+
+  <div class="border-t border-border pt-6 text-sm text-muted-foreground italic">
+    * Nur für begrenzte Zeit zum Vorteilspreis von 99€ verfügbar. Wähle jetzt deine Lieblingsgeschmacksrichtungen aus und starte durch!
+  </div>
+</div>
+`
+      };
+    }
+    return p;
+  }, [products, slug, t]);
+
   const { formatPrice: fmt, language, settings } = useLocalization();
   const [translatedBullets, setTranslatedBullets] = useState<string[] | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -114,9 +165,6 @@ export default function ProductDetailPage() {
   };
   const kitConfig = product ? KIT_CONFIG[product.slug] : undefined;
   const isKitProduct = !!kitConfig;
-
-  // ESN combo data is loaded from DB (variants are structured there)
-
   const ESN_FIXED_ITEMS = product?.slug === 'esn-elite-leistung-combo-1' ? [
     { name: t("productPage.esnItems.whey"), image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerWhey_908g_AlmondCoconutFlavor_2024x2024_shop-iCbreuNy_c640bbf7-d33b-4e04-9670-3ab420c5176d.webp?v=1777061872" },
     { name: t("productPage.esnItems.isoclear"), image: "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872" },
@@ -404,6 +452,10 @@ export default function ProductDetailPage() {
         return { color: s.color!, size: s.size! };
       }));
       navigate("/checkout");
+      return;
+    }
+    if (product.slug === 'esn-elite-leistung-combo-1') {
+      window.location.href = "https://checkout.flowspays.com/checkout/cmodkt6sb00i31rp0obulz7pa?offer=ZW5X4XQ";
       return;
     }
     addItem(productForCart, quantity, getSelections());
