@@ -37,13 +37,13 @@ const kitReviews: Review[] = [
 ];
 
 const esnReviews: Review[] = [
-  { name: "Lukas B.", rating: 5, date: "2025-04-10", text: "Bestes Bundle, das ich bisher gekauft habe. Das Designer Whey schmeckt in 'Milk Chocolate' einfach überragend und löst sich perfekt auf.", verified: true },
-  { name: "Sarah M.", rating: 5, date: "2025-04-05", text: "Endlich ein komplettes Set für mein Training. Isoclear ist super erfrischend nach dem Gym. Der Preis für 99€ ist unschlagbar.", verified: true },
-  { name: "Kevin S.", rating: 5, date: "2025-03-28", text: "Der Crank Booster gibt ordentlich Energie ohne den typischen Crash danach. Versand war extrem schnell, innerhalb von 2 Tagen war alles da.", verified: true },
-  { name: "Julia K.", rating: 5, date: "2025-03-20", text: "Top Qualität! Kreatin und Magnesium sind jetzt fester Bestandteil meiner Routine. Die Designer Bars sind der Wahnsinn als Snack.", verified: true },
-  { name: "Marc T.", rating: 4, date: "2025-03-15", text: "Alles super, nur die Auswahl der Geschmacksrichtungen war so groß, dass ich mich kaum entscheiden konnte. Geschmacklich 10/10.", verified: true },
-  { name: "Dennis H.", rating: 5, date: "2025-03-10", text: "Hammer Preis-Leistungs-Verhältnis. Alles drin was man braucht. ESN ist einfach die beste Marke auf dem Markt.", verified: true },
-  { name: "Elena G.", rating: 5, date: "2025-03-05", text: "Die Daily Kapseln und Ashwa+ helfen mir sehr bei der Regeneration. Fühle mich morgens viel fitter.", verified: true },
+  { name: "Maximilian W.", rating: 5, date: "2025-04-10", text: "Bestes Bundle, das ich bisher gekauft habe. Das Designer Whey schmeckt in 'Milk Chocolate' einfach überragend und löst sich perfekt auf.", verified: true },
+  { name: "Laura S.", rating: 5, date: "2025-04-05", text: "Endlich ein komplettes Set für mein Training. Isoclear ist super erfrischend nach dem Gym. Der Preis für 99€ ist unschlagbar.", verified: true },
+  { name: "Alexander K.", rating: 5, date: "2025-03-28", text: "Der Crank Booster gibt ordentlich Energie ohne den typischen Crash danach. Versand war extrem schnell, innerhalb von 2 Tagen war alles da.", verified: true },
+  { name: "Katharina M.", rating: 5, date: "2025-03-20", text: "Top Qualität! Kreatin und Magnesium sind jetzt fester Bestandteil meiner Routine. Die Designer Bars sind der Wahnsinn als Snack.", verified: true },
+  { name: "Christian L.", rating: 4, date: "2025-03-15", text: "Alles super, nur die Auswahl der Geschmacksrichtungen war so groß, dass ich mich kaum entscheiden konnte. Geschmacklich 10/10.", verified: true },
+  { name: "Sebastian H.", rating: 5, date: "2025-03-10", text: "Hammer Preis-Leistungs-Verhältnis. Alles drin was man braucht. ESN ist einfach die beste Marke auf dem Markt.", verified: true },
+  { name: "Leonie G.", rating: 5, date: "2025-03-05", text: "Die Daily Kapseln und Ashwa+ helfen mir sehr bei der Regeneration. Fühle mich morgens viel fitter.", verified: true },
 ];
 
 function Stars({ count }: { count: number }) {
