@@ -15,7 +15,7 @@ import ProductFAQ from "@/components/store/ProductFAQ";
 import SizeGuideDialog from "@/components/store/SizeGuideDialog";
 import { formatPrice as formatBRL, getInstallmentPrice, getDiscountPercent } from "@/data/store";
 // pix removed
-import { useCart } from "@/contexts/CartContext";
+import { useCart, type CartItemSelection } from "@/contexts/CartContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { trackEvent } from "@/lib/funnelTracking";
 import { Button } from "@/components/ui/button";
