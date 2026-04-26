@@ -60,14 +60,16 @@ export default memo(function HeroCarousel() {
               fetchPriority={i === 0 ? "high" : "low"}
             />
             {/* Overlay gradient for legibility */}
-            <div
-              className={`absolute inset-0 ${
-                isMobile
-                  ? "bg-gradient-to-t from-black/70 via-black/30 to-transparent"
-                  : "bg-gradient-to-r from-black/50 via-black/10 to-transparent"
-              }`}
-              aria-hidden="true"
-            />
+            {slideKey !== "esn" && (
+              <div
+                className={`absolute inset-0 ${
+                  isMobile
+                    ? "bg-gradient-to-t from-black/70 via-black/30 to-transparent"
+                    : "bg-gradient-to-r from-black/50 via-black/10 to-transparent"
+                }`}
+                aria-hidden="true"
+              />
+            )}
             {/* Translatable text overlay - hidden for slides with embedded text */}
             {slideKey !== "esn" && (
               <div className={`absolute inset-0 z-[5] flex justify-center ${align}`}>
