@@ -52,7 +52,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return [...prev, { product, quantity, selections, lineId }];
     });
     setIsOpen(true);
-    void trackEvent("add_to_cart");
+    void trackEvent("add_to_cart", product.slug);
   }, []);
 
   const removeItem = useCallback((lineId: string) => {
