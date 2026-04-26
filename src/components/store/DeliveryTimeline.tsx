@@ -15,8 +15,8 @@ export default function DeliveryTimeline() {
 
   const paymentDate = today;
   const shipDate = new Date(today); shipDate.setDate(today.getDate() + 1);
-  const deliveryStart = new Date(today); deliveryStart.setDate(today.getDate() + 5);
-  const deliveryEnd = new Date(today); deliveryEnd.setDate(today.getDate() + 9);
+  const deliveryStart = new Date(today); deliveryStart.setDate(today.getDate() + 2);
+  const deliveryEnd = new Date(today); deliveryEnd.setDate(today.getDate() + 5);
 
   const steps = [
     { icon: CreditCard, date: formatDate(paymentDate), label: t("delivery.payment") },
