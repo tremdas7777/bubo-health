@@ -6,15 +6,17 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
+import heroEsn from "@/assets/hero-esn-combo.jpg";
 import hero1Mobile from "@/assets/hero-1-mobile.jpg";
 import hero2Mobile from "@/assets/hero-2-mobile.jpg";
 import hero3Mobile from "@/assets/hero-3-mobile.jpg";
+import heroEsnMobile from "@/assets/hero-esn-combo-mobile.jpg";
 
-const desktopSlides = [hero1, hero2, hero3];
-const mobileSlides = [hero1Mobile, hero2Mobile, hero3Mobile];
+const desktopSlides = [hero1, hero2, hero3, heroEsn];
+const mobileSlides = [hero1Mobile, hero2Mobile, hero3Mobile, heroEsnMobile];
 
-const SLIDE_KEYS = ["tech", "sports", "beauty"] as const;
-const SLIDE_LINKS = ["/colecao/electronics", "/colecao/sports", "/colecao/health-beauty"];
+const SLIDE_KEYS = ["tech", "sports", "beauty", "esn"] as const;
+const SLIDE_LINKS = ["/colecao/electronics", "/colecao/sports", "/colecao/health-beauty", "/produto/esn-elite-leistung-combo-1"];
 
 export default memo(function HeroCarousel() {
   const { t } = useTranslation();
@@ -58,34 +60,41 @@ export default memo(function HeroCarousel() {
               fetchPriority={i === 0 ? "high" : "low"}
             />
             {/* Overlay gradient for legibility */}
-            <div
-              className={`absolute inset-0 ${
-                isMobile
-                  ? "bg-gradient-to-t from-black/70 via-black/30 to-transparent"
-                  : "bg-gradient-to-r from-black/50 via-black/10 to-transparent"
-              }`}
-              aria-hidden="true"
-            />
-            {/* Translatable text overlay */}
-            <div className={`absolute inset-0 z-[5] flex justify-center ${align}`}>
-              <div className={`max-w-xl px-6 ${textAlign}`}>
-                <p className="text-white/90 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] mb-2 md:mb-3 drop-shadow-lg">
-                  {t(`hero.${slideKey}.eyebrow`)}
-                </p>
-                <h1 className="text-white text-3xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-3 md:mb-5 drop-shadow-2xl">
-                  {t(`hero.${slideKey}.title`)}
-                </h1>
-                <p className="text-white/90 text-sm md:text-base lg:text-lg mb-5 md:mb-7 drop-shadow-lg">
-                  {t(`hero.${slideKey}.subtitle`)}
-                </p>
-                <Link
-                  to={SLIDE_LINKS[i]}
-                  className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground text-xs md:text-sm font-bold uppercase tracking-wider px-7 md:px-9 py-3 md:py-4 rounded-full transition-all hover:scale-105 shadow-2xl"
-                >
-                  {t(`hero.${slideKey}.cta`)}
-                </Link>
+            {slideKey !== "esn" && (
+              <div
+                className={`absolute inset-0 ${
+                  isMobile
+                    ? "bg-gradient-to-t from-black/70 via-black/30 to-transparent"
+                    : "bg-gradient-to-r from-black/50 via-black/10 to-transparent"
+                }`}
+                aria-hidden="true"
+              />
+            )}
+            {/* Translatable text overlay - hidden for slides with embedded text */}
+            {slideKey !== "esn" && (
+              <div className={`absolute inset-0 z-[5] flex justify-center ${align}`}>
+                <div className={`max-w-xl px-6 ${textAlign}`}>
+                  <p className="text-white/90 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] mb-2 md:mb-3 drop-shadow-lg">
+                    {t(`hero.${slideKey}.eyebrow`)}
+                  </p>
+                  <h1 className="text-white text-3xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-3 md:mb-5 drop-shadow-2xl">
+                    {t(`hero.${slideKey}.title`)}
+                  </h1>
+                  <p className="text-white/90 text-sm md:text-base lg:text-lg mb-5 md:mb-7 drop-shadow-lg">
+                    {t(`hero.${slideKey}.subtitle`)}
+                  </p>
+                  <Link
+                    to={SLIDE_LINKS[i]}
+                    className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground text-xs md:text-sm font-bold uppercase tracking-wider px-7 md:px-9 py-3 md:py-4 rounded-full transition-all hover:scale-105 shadow-2xl"
+                  >
+                    {t(`hero.${slideKey}.cta`)}
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
+            {slideKey === "esn" && (
+              <Link to={SLIDE_LINKS[i]} className="absolute inset-0 z-[5]" aria-label="ESN Elite Leistung Combo" />
+            )}
           </div>
         );
       })}
