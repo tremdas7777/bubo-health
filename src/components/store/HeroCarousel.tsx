@@ -6,15 +6,17 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
+import heroEsn from "@/assets/hero-esn-combo.jpg";
 import hero1Mobile from "@/assets/hero-1-mobile.jpg";
 import hero2Mobile from "@/assets/hero-2-mobile.jpg";
 import hero3Mobile from "@/assets/hero-3-mobile.jpg";
+import heroEsnMobile from "@/assets/hero-esn-combo-mobile.jpg";
 
-const desktopSlides = [hero1, hero2, hero3];
-const mobileSlides = [hero1Mobile, hero2Mobile, hero3Mobile];
+const desktopSlides = [hero1, hero2, hero3, heroEsn];
+const mobileSlides = [hero1Mobile, hero2Mobile, hero3Mobile, heroEsnMobile];
 
-const SLIDE_KEYS = ["tech", "sports", "beauty"] as const;
-const SLIDE_LINKS = ["/colecao/electronics", "/colecao/sports", "/colecao/health-beauty"];
+const SLIDE_KEYS = ["tech", "sports", "beauty", "esn"] as const;
+const SLIDE_LINKS = ["/colecao/electronics", "/colecao/sports", "/colecao/health-beauty", "/produto/esn-elite-leistung-combo-1"];
 
 export default memo(function HeroCarousel() {
   const { t } = useTranslation();
