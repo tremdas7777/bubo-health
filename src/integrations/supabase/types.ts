@@ -163,18 +163,21 @@ export type Database = {
           created_at: string
           event: string
           id: string
+          product_slug: string | null
           session_id: string | null
         }
         Insert: {
           created_at?: string
           event: string
           id?: string
+          product_slug?: string | null
           session_id?: string | null
         }
         Update: {
           created_at?: string
           event?: string
           id?: string
+          product_slug?: string | null
           session_id?: string | null
         }
         Relationships: []

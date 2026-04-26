@@ -37,6 +37,7 @@ import AdminFrete from "@/components/AdminFrete";
 import AdminDashboard from "@/components/AdminDashboard";
 import AdminFinanceiro from "@/components/AdminFinanceiro";
 import AdminLeads from "@/components/AdminLeads";
+import AdminFunilEsn from "@/components/AdminFunilEsn";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -68,6 +69,7 @@ import { supabase } from "@/integrations/supabase/client";
 type Tab =
   | "dashboard"
   | "analytics"
+  | "funil-esn"
   | "produtos"
   | "financeiro"
   | "leads"
@@ -717,6 +719,7 @@ export default function Admin() {
   const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
     { id: "dashboard", label: "Dashboard", icon: <BarChart3 size={14} /> },
     { id: "analytics", label: "Funil", icon: <TrendingUp size={14} /> },
+    { id: "funil-esn", label: "Funil ESN", icon: <TrendingUp size={14} /> },
     { id: "produtos", label: "Produtos", icon: <Package size={14} /> },
     { id: "frete", label: "Frete", icon: <Truck size={14} /> },
     { id: "financeiro", label: "Financeiro", icon: <DollarSign size={14} /> },
@@ -766,6 +769,7 @@ export default function Admin() {
 
       <div className="mx-auto max-w-3xl p-4">
         {activeTab === "dashboard" && <AdminDashboard />}
+        {activeTab === "funil-esn" && <AdminFunilEsn />}
         {activeTab === "produtos" && <AdminProdutos />}
         {activeTab === "frete" && <AdminFrete />}
         {activeTab === "financeiro" && <AdminFinanceiro />}
