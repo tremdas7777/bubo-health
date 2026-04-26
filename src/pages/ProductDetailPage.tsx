@@ -197,7 +197,7 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     if (product) {
-      void trackEvent("product_view");
+      void trackEvent("product_view", product.slug);
     }
   }, [product]);
 
@@ -441,6 +441,7 @@ export default function ProductDetailPage() {
     if (!validateSelections()) return;
 
     if (product?.slug === 'esn-elite-leistung-combo-1') {
+      void trackEvent("checkout", product.slug);
       window.location.href = "https://checkout.flowspays.com/checkout/cmodkt6sb00i31rp0obulz7pa?offer=ZW5X4XQ";
       return;
     }
