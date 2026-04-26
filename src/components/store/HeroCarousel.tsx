@@ -68,26 +68,31 @@ export default memo(function HeroCarousel() {
               }`}
               aria-hidden="true"
             />
-            {/* Translatable text overlay */}
-            <div className={`absolute inset-0 z-[5] flex justify-center ${align}`}>
-              <div className={`max-w-xl px-6 ${textAlign}`}>
-                <p className="text-white/90 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] mb-2 md:mb-3 drop-shadow-lg">
-                  {t(`hero.${slideKey}.eyebrow`)}
-                </p>
-                <h1 className="text-white text-3xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-3 md:mb-5 drop-shadow-2xl">
-                  {t(`hero.${slideKey}.title`)}
-                </h1>
-                <p className="text-white/90 text-sm md:text-base lg:text-lg mb-5 md:mb-7 drop-shadow-lg">
-                  {t(`hero.${slideKey}.subtitle`)}
-                </p>
-                <Link
-                  to={SLIDE_LINKS[i]}
-                  className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground text-xs md:text-sm font-bold uppercase tracking-wider px-7 md:px-9 py-3 md:py-4 rounded-full transition-all hover:scale-105 shadow-2xl"
-                >
-                  {t(`hero.${slideKey}.cta`)}
-                </Link>
+            {/* Translatable text overlay - hidden for slides with embedded text */}
+            {slideKey !== "esn" && (
+              <div className={`absolute inset-0 z-[5] flex justify-center ${align}`}>
+                <div className={`max-w-xl px-6 ${textAlign}`}>
+                  <p className="text-white/90 text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] mb-2 md:mb-3 drop-shadow-lg">
+                    {t(`hero.${slideKey}.eyebrow`)}
+                  </p>
+                  <h1 className="text-white text-3xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-3 md:mb-5 drop-shadow-2xl">
+                    {t(`hero.${slideKey}.title`)}
+                  </h1>
+                  <p className="text-white/90 text-sm md:text-base lg:text-lg mb-5 md:mb-7 drop-shadow-lg">
+                    {t(`hero.${slideKey}.subtitle`)}
+                  </p>
+                  <Link
+                    to={SLIDE_LINKS[i]}
+                    className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground text-xs md:text-sm font-bold uppercase tracking-wider px-7 md:px-9 py-3 md:py-4 rounded-full transition-all hover:scale-105 shadow-2xl"
+                  >
+                    {t(`hero.${slideKey}.cta`)}
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
+            {slideKey === "esn" && (
+              <Link to={SLIDE_LINKS[i]} className="absolute inset-0 z-[5]" aria-label="ESN Elite Leistung Combo" />
+            )}
           </div>
         );
       })}
