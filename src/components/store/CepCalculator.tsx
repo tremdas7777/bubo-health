@@ -40,6 +40,7 @@ const LANG_TO_COUNTRY: Record<string, string> = {
   es: "es",
   pt: "br",
   fr: "fr",
+  de: "de",
 };
 
 interface LookupResult {
