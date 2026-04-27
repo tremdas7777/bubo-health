@@ -771,15 +771,17 @@ export default function ProductDetailPage() {
                                   <div className="h-12 w-12 rounded-xl overflow-hidden shrink-0 border border-border shadow-sm">
                                     <img 
                                       src={
-                                        opt.name.toLowerCase().includes('designer') && opt.name.toLowerCase().includes('whey')
-                                          ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerWhey_908g_AlmondCoconutFlavor_2024x2024_shop-iCbreuNy_c640bbf7-d33b-4e04-9670-3ab420c5176d.webp?v=1777061872"
-                                          : opt.name.toLowerCase().includes('isoclear')
-                                          ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872"
-                                          : opt.name.toLowerCase().includes('crank')
-                                          ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872"
-                                          : opt.name.toLowerCase().includes('bar')
-                                          ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerBar_45g_Tray_DarkChocolateSaltedAlmondFlavor_2024x2024_shop-4mvbqa9t_ff7823ec-c07e-4039-80a7-f3bf95d0638a.webp?v=1777061873"
-                                          : "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Daily_480g_CactusFruitFlavor_2024x2024_shop-ZTJBj2Ln_f6c0fd1b-c9af-43b4-9ff0-00a180714e8b.webp?v=1777061872"
+                                        product.slug === 'esn-elite-leistung-combo-1' ? (
+                                          opt.name.toLowerCase().includes('designer') && opt.name.toLowerCase().includes('whey')
+                                            ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerWhey_908g_AlmondCoconutFlavor_2024x2024_shop-iCbreuNy_c640bbf7-d33b-4e04-9670-3ab420c5176d.webp?v=1777061872"
+                                            : opt.name.toLowerCase().includes('isoclear')
+                                            ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/IsoClear_908g_LessSweet_FreshCherryFlavor_2024x2024_shop-s-lH3aTm_d20958b4-86e5-4f29-8f19-a219ad289092.webp?v=1777061872"
+                                            : opt.name.toLowerCase().includes('crank')
+                                            ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Crank_380g_BlackberryFlavor_2024x2024_shop-Ky6j3hay_e04a4802-9642-4856-ad9b-69379cd8f308.webp?v=1777061872"
+                                            : opt.name.toLowerCase().includes('bar')
+                                            ? "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/DesignerBar_45g_Tray_DarkChocolateSaltedAlmondFlavor_2024x2024_shop-4mvbqa9t_ff7823ec-c07e-4039-80a7-f3bf95d0638a.webp?v=1777061873"
+                                            : "https://cdn.shopify.com/s/files/1/0983/5246/4147/files/Daily_480g_CactusFruitFlavor_2024x2024_shop-ZTJBj2Ln_f6c0fd1b-c9af-43b4-9ff0-00a180714e8b.webp?v=1777061872"
+                                        ) : (product.image || displayImages[0])
                                       } 
                                       alt={opt.name}
                                       className="h-full w-full object-cover"
