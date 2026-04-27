@@ -48,7 +48,11 @@ function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
       (v: any) => v && typeof v === "object" && typeof v.name === "string" && Array.isArray(v.values)
     );
     if (namedOptions.length > 0) {
-      variants = namedOptions.map((v: any) => ({ name: String(v.name), values: v.values.map(String) }));
+      variants = namedOptions.map((v: any) => ({
+        name: String(v.name),
+        values: v.values.map(String),
+        prices: v.prices && typeof v.prices === "object" ? v.prices : undefined,
+      }));
     }
 
     // Structured format: [{ colors: [...], sizes: [...], bundles: [...] }]

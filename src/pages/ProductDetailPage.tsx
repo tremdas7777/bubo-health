@@ -268,8 +268,36 @@ export default function ProductDetailPage() {
 
   // Bundle-aware pricing — when product has bundles, use selected bundle's price
   const activeBundle = product.bundles && product.bundles.length > 0 ? product.bundles[selectedBundle] : null;
-  const activePrice = activeBundle ? activeBundle.priceCents / 100 : product.price;
-  const activeCompareAt = activeBundle?.originalPriceCents
+
+  // Variant-aware pricing — when a structured variant has per-value prices, use the selected one
+  const variantPriceOverride = (() => {
+    if (!product.variants || !Array.isArray(product.variants)) return null;
+    for (const opt of product.variants as any[]) {
+      if (opt && typeof opt === "object" && opt.prices && opt.name) {
+        const sel = structuredSelections[opt.name];
+        if (sel && opt.prices[sel]) {
+          return {
+            priceCents: Number(opt.prices[sel].priceCents) || 0,
+            originalPriceCents: opt.prices[sel].originalPriceCents
+              ? Number(opt.prices[sel].originalPriceCents)
+              : undefined,
+          };
+        }
+      }
+    }
+    return null;
+  })();
+
+  const activePrice = variantPriceOverride
+    ? variantPriceOverride.priceCents / 100
+    : activeBundle
+    ? activeBundle.priceCents / 100
+    : product.price;
+  const activeCompareAt = variantPriceOverride
+    ? variantPriceOverride.originalPriceCents
+      ? variantPriceOverride.originalPriceCents / 100
+      : undefined
+    : activeBundle?.originalPriceCents
     ? activeBundle.originalPriceCents / 100
     : product.compareAtPrice;
   const hasDiscount = activeCompareAt && activeCompareAt > activePrice;
@@ -350,8 +378,16 @@ export default function ProductDetailPage() {
     return true;
   };
 
-  // Build a product snapshot reflecting the active bundle (price + name suffix)
-  const productForCart = activeBundle
+  // Build a product snapshot reflecting the active bundle / variant price
+  const productForCart = variantPriceOverride
+    ? {
+        ...product,
+        price: variantPriceOverride.priceCents / 100,
+        compareAtPrice: variantPriceOverride.originalPriceCents
+          ? variantPriceOverride.originalPriceCents / 100
+          : product.compareAtPrice,
+      }
+    : activeBundle
     ? {
         ...product,
         price: activeBundle.priceCents / 100,
