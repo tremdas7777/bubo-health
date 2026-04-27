@@ -76,13 +76,13 @@ function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
             badge: b.badge ? String(b.badge) : undefined,
           }));
       }
-    } else {
+    } else if (variants.length === 0) {
       // Legacy: array of strings or { name } / { options: [...] }
       variants = db.variants.flatMap((v: any) => {
         if (typeof v === "string") return [v];
         if (v?.options && Array.isArray(v.options)) return v.options.map(String);
-        if (v?.name) return [v.name];
-        return [String(v)];
+        if (v?.name && !v?.values) return [v.name];
+        return [];
       });
     }
   }
