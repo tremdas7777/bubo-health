@@ -37,12 +37,20 @@ interface DbCollection {
 }
 
 function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
-  let variants: string[] = [];
+  let variants: any[] = [];
   let colors: Product["colors"];
   let sizes: string[] | undefined;
   let bundles: Product["bundles"];
 
   if (Array.isArray(db.variants)) {
+    // Named-options structured format: [{ name: "Stil", values: ["10KG", "20KG"] }]
+    const namedOptions = db.variants.filter(
+      (v: any) => v && typeof v === "object" && typeof v.name === "string" && Array.isArray(v.values)
+    );
+    if (namedOptions.length > 0) {
+      variants = namedOptions.map((v: any) => ({ name: String(v.name), values: v.values.map(String) }));
+    }
+
     // Structured format: [{ colors: [...], sizes: [...], bundles: [...] }]
     const structured = db.variants.find(
       (v: any) => v && typeof v === "object" && (Array.isArray(v.colors) || Array.isArray(v.sizes) || Array.isArray(v.bundles))
