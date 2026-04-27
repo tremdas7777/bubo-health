@@ -378,8 +378,16 @@ export default function ProductDetailPage() {
     return true;
   };
 
-  // Build a product snapshot reflecting the active bundle (price + name suffix)
-  const productForCart = activeBundle
+  // Build a product snapshot reflecting the active bundle / variant price
+  const productForCart = variantPriceOverride
+    ? {
+        ...product,
+        price: variantPriceOverride.priceCents / 100,
+        compareAtPrice: variantPriceOverride.originalPriceCents
+          ? variantPriceOverride.originalPriceCents / 100
+          : product.compareAtPrice,
+      }
+    : activeBundle
     ? {
         ...product,
         price: activeBundle.priceCents / 100,
