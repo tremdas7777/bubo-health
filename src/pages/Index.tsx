@@ -296,7 +296,7 @@ export default function Index() {
                 const accentColor = PRODUCT_THEMES[p.slug] || "#7c3aed";
 
                 return (
-                  <div key={p.id} className="min-w-[85vw] sm:min-w-[300px] lg:min-w-[calc(25%-18px)] snap-center shrink-0 bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group/card border border-gray-100 mb-2">
+                  <div key={p.id} className="min-w-[260px] sm:min-w-[300px] lg:min-w-[calc(25%-18px)] snap-center shrink-0 bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group/card border border-gray-100 mb-2">
                     <Link to={`/produto/${p.slug}`} className="block relative overflow-hidden bg-gray-50 aspect-square">
                       <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
                       <span className={`absolute top-3 left-3 ${p.badgeColor} text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-lg`}>{p.badge}</span>
