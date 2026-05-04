@@ -70,13 +70,6 @@ export default function Header() {
           {/* Right: account + cart */}
           <div className="flex items-center gap-3 w-[140px] justify-end">
             <LanguageCurrencySwitcher />
-            <button
-              onClick={toggleTheme}
-              className="text-foreground hover:text-primary transition-colors"
-              aria-label={t("nav.toggleTheme")}
-            >
-              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
             <Link to="/favoritos" className="text-foreground hover:text-primary transition-colors relative hidden sm:block" aria-label={t("nav.favorites")}>
               <Heart size={22} />
               {wishlistCount > 0 && (
