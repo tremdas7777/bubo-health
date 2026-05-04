@@ -262,11 +262,11 @@ export default function Index() {
             <h2 className="text-3xl md:text-4xl font-heading font-black text-gray-900 mb-2">Encontre sua Gummie Perfeita</h2>
             <p className="text-gray-500 text-base max-w-md mx-auto">Ciência e sabor em uma só gommie. Cuide da sua saúde de um jeito gostoso!</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-4 px-4 sm:mx-0 sm:px-0">
             {PRODUCTS.map((p) => {
               const discount = Math.round(((p.compareAtPrice - p.price) / p.compareAtPrice) * 100);
               return (
-                <div key={p.id} className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border border-gray-100">
+                <div key={p.id} className="min-w-[85vw] sm:min-w-0 snap-center shrink-0 bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border border-gray-100">
                   <Link to={`/produto/${p.slug}`} className="block relative overflow-hidden bg-gray-50 aspect-square">
                     <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <span className={`absolute top-3 left-3 ${p.badgeColor} text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-lg`}>{p.badge}</span>
