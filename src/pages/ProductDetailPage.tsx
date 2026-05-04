@@ -1114,7 +1114,7 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            <DeliveryTimeline />
+            <DeliveryTimeline color={theme.accent} />
           </div>
         </div>
 

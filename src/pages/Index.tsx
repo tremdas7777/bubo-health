@@ -251,8 +251,8 @@ export default function Index() {
         <div className="container mx-auto px-4 py-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {BENEFITS.map((b, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-xl hover:bg-purple-50 transition-colors">
-                <div className="text-[#7c3aed] shrink-0">{b.icon}</div>
+              <div key={i} className="flex items-center gap-3 p-3 rounded-xl transition-all" style={{ '--hover-bg': `${HERO_COLORS[current]?.bar}15` } as any}>
+                <div className="shrink-0" style={{ color: HERO_COLORS[current]?.bar }}>{b.icon}</div>
                 <div>
                   <p className="font-bold text-sm text-gray-900">{b.title}</p>
                   <p className="text-xs text-gray-500">{b.desc}</p>

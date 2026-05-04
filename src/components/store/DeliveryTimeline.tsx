@@ -6,7 +6,7 @@ const LOCALE_BY_LANG: Record<string, string> = {
   en: "en-US", es: "es-ES", pt: "pt-BR", fr: "fr-FR",
 };
 
-export default function DeliveryTimeline() {
+export default function DeliveryTimeline({ color }: { color?: string }) {
   const { t } = useTranslation();
   const { language } = useLocalization();
   const today = new Date();
@@ -25,14 +25,22 @@ export default function DeliveryTimeline() {
     { icon: Home, date: `${formatDate(deliveryStart)} - ${formatDate(deliveryEnd)}`, label: t("delivery.delivered") },
   ];
 
+  const accentColor = color || "#7c3aed";
+
   return (
-    <div className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5 p-4">
+    <div 
+      className="rounded-xl border p-4" 
+      style={{ borderColor: `${accentColor}33`, backgroundImage: `linear-gradient(to bottom right, ${accentColor}0D, #ffffff00)` }}
+    >
       <div className="flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: accentColor }} />
           <p className="text-xs font-bold text-foreground">{t("delivery.expressTitle")}</p>
         </div>
-        <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-600 px-2 py-0.5 rounded-full">
+        <span 
+          className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+          style={{ backgroundColor: `${accentColor}26`, color: accentColor }}
+        >
           {t("delivery.freeShipping")}
         </span>
       </div>
@@ -40,14 +48,17 @@ export default function DeliveryTimeline() {
         {steps.map((step, i) => (
           <div key={i} className="flex items-start flex-1 min-w-0">
             <div className="flex flex-col items-center text-center flex-1 min-w-0">
-              <div className="w-10 h-10 rounded-full bg-primary/10 ring-2 ring-primary/20 flex items-center justify-center mb-1.5">
-                <step.icon size={16} className="text-primary" />
+              <div 
+                className="w-10 h-10 rounded-full flex items-center justify-center mb-1.5 ring-2"
+                style={{ backgroundColor: `${accentColor}1A`, ringColor: `${accentColor}33` }}
+              >
+                <step.icon size={16} style={{ color: accentColor }} />
               </div>
               <p className="text-[10px] font-bold text-foreground leading-tight truncate w-full">{step.date}</p>
               <p className="text-[9px] text-muted-foreground leading-tight">{step.label}</p>
             </div>
             {i < steps.length - 1 && (
-              <div className="flex-shrink-0 w-4 h-0.5 bg-primary/30 mt-5" />
+              <div className="flex-shrink-0 w-4 h-0.5 mt-5" style={{ backgroundColor: `${accentColor}4D` }} />
             )}
           </div>
         ))}
