@@ -531,8 +531,8 @@ export default function ProductDetailPage() {
         ]}
       />
 
-      {/* Hero banner in product color */}
-      <div className={`bg-gradient-to-r ${theme.bg} py-8 px-4 mb-8`}>
+      {/* Hero banner in product color - hidden on mobile */}
+      <div className={`hidden md:block bg-gradient-to-r ${theme.bg} py-8 px-4 mb-8`}>
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="flex-1 text-white text-center md:text-left order-2 md:order-1">
