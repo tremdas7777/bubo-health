@@ -66,7 +66,7 @@ const PRODUCTS = [
     slug: "combo-bubo-health",
     name: "Combo Completo",
     subtitle: "Sleep + Energy + Slim",
-    price: 24790,
+    price: 29100,
     compareAtPrice: 44100,
     image: "/products/bubo-combo.jpg",
     badge: "ECONOMIZE 46%",

@@ -141,6 +141,59 @@ export default function ProductDetailPage() {
 `
       };
     }
+    if (p.slug.includes('bubo') || p.slug.includes('combo')) {
+      const isCombo = p.slug.includes('combo');
+      const unitPrice = 9700;
+      const baseBundles = isCombo ? [
+        {
+          qty: 1,
+          label: "1 Combo (3 produtos)",
+          priceCents: 29100,
+          originalPriceCents: 44100,
+          perUnitCents: 29100,
+          badge: "34% OFF",
+        },
+        {
+          qty: 2,
+          label: "2 Combos (6 produtos) 👫",
+          priceCents: 58200,
+          originalPriceCents: 88200,
+          perUnitCents: 29100,
+          badge: "97/unid.",
+        }
+      ] : [
+        {
+          qty: 1,
+          label: "1 Pote — Experimente",
+          priceCents: 9700,
+          originalPriceCents: 14790,
+          perUnitCents: 9700,
+          badge: "PROMOÇÃO",
+        },
+        {
+          qty: 3,
+          label: "3 Potes — Tratamento Médio",
+          priceCents: 29100,
+          originalPriceCents: 44370,
+          perUnitCents: 9700,
+          badge: "97/unid.",
+        },
+        {
+          qty: 5,
+          label: "5 Potes — Tratamento Completo",
+          priceCents: 48500,
+          originalPriceCents: 73950,
+          perUnitCents: 9700,
+          badge: "97/unid.",
+        }
+      ];
+
+      return {
+        ...p,
+        price: isCombo ? 29100 : 9700,
+        bundles: baseBundles
+      };
+    }
     return p;
   }, [products, slug, t]);
 

@@ -56,23 +56,23 @@ const buildBundles = (): ProductBundle[] => [
     priceCents: 9700,
     originalPriceCents: 14790,
     perUnitCents: 9700,
-    badge: "33% OFF",
+    badge: "PROMOÇÃO",
   },
   {
     qty: 3,
-    label: "3 Potes — Mais Popular 🏆",
-    priceCents: 26700,
+    label: "3 Potes — Tratamento Médio",
+    priceCents: 29100, // 97 * 3
     originalPriceCents: 44370,
-    perUnitCents: 8900,
-    badge: "ECONOMIZE R$ 177",
+    perUnitCents: 9700,
+    badge: "97/unid.",
   },
   {
     qty: 5,
-    label: "5 Potes — Melhor Custo-Benefício 🔥",
-    priceCents: 41500,
+    label: "5 Potes — Tratamento Completo",
+    priceCents: 48500, // 97 * 5
     originalPriceCents: 73950,
-    perUnitCents: 8300,
-    badge: "ECONOMIZE R$ 324",
+    perUnitCents: 9700,
+    badge: "97/unid.",
   },
 ];
 
@@ -118,7 +118,7 @@ export const products: Product[] = [
     id: "bubo-combo",
     name: "Combo Bubo Health Completo",
     slug: "combo-bubo-health",
-    price: 247.90,
+    price: 291.00,
     compareAtPrice: 441.00,
     image: "/products/bubo-combo.jpg",
     images: [
@@ -135,18 +135,18 @@ export const products: Product[] = [
       {
         qty: 1,
         label: "1 Combo (3 produtos)",
-        priceCents: 24790,
+        priceCents: 29100, // 97 * 3
         originalPriceCents: 44100,
-        perUnitCents: 24790,
-        badge: "44% OFF",
+        perUnitCents: 29100,
+        badge: "34% OFF",
       },
       {
         qty: 2,
         label: "2 Combos (6 produtos) 👫",
-        priceCents: 44900,
+        priceCents: 58200, // 291 * 2
         originalPriceCents: 88200,
-        perUnitCents: 22450,
-        badge: "ECONOMIZE R$ 434",
+        perUnitCents: 29100,
+        badge: "97/unid.",
       },
     ],
   }
