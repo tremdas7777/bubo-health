@@ -59,12 +59,12 @@ export default function Header() {
 
           {/* Center: Logo */}
           <Link to="/" className="flex items-center">
-            <span 
-              className="text-2xl md:text-3xl font-heading font-black tracking-tight transition-colors duration-700"
-              style={{ color: barColor }}
-            >
-              Bubo Health
-            </span>
+            {(() => {
+              let logoSrc = "/logos/logo-purple.png";
+              if (barColor === "#f59e0b") logoSrc = "/logos/logo-amber.png";
+              if (barColor === "#16a34a") logoSrc = "/logos/logo-green.png";
+              return <img src={logoSrc} alt="Bubo Health" className="h-12 md:h-14 object-contain transition-all duration-700" />;
+            })()}
           </Link>
 
           {/* Right: account + cart */}
