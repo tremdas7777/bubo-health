@@ -42,7 +42,7 @@ export default function Header() {
     <header className="bg-background sticky top-0 z-40">
       {/* Main header row */}
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-[70px]">
+        <div className="flex items-center justify-between h-[80px] md:h-[100px]">
           {/* Left: search */}
           <div className="flex items-center gap-3 w-[100px]">
             <button
@@ -61,9 +61,9 @@ export default function Header() {
           <Link to="/" className="flex items-center">
             {(() => {
               let logoSrc = "/logos/logo-purple.png";
-              if (barColor === "#f59e0b") logoSrc = "/logos/logo-amber.png";
-              if (barColor === "#16a34a") logoSrc = "/logos/logo-green.png";
-              return <img src={logoSrc} alt="Bubo Health" className="h-12 md:h-14 object-contain transition-all duration-700" />;
+              if (barColor === "#f59e0b" || barColor === "#b45309") logoSrc = "/logos/logo-amber.png";
+              if (barColor === "#16a34a" || barColor === "#15803d") logoSrc = "/logos/logo-green.png";
+              return <img src={logoSrc} alt="Bubo Health" className="h-[60px] md:h-[80px] object-contain transition-all duration-700" />;
             })()}
           </Link>
 

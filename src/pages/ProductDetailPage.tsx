@@ -589,7 +589,7 @@ export default function ProductDetailPage() {
             {/* Rating summary - dynamic from DB */}
             <ProductRatingSummary productId={product.id} />
 
-            <div className="space-y-1 text-center lg:text-left bg-purple-50 rounded-2xl p-4">
+            <div className="space-y-1 text-center lg:text-left rounded-2xl p-4 transition-colors" style={{ backgroundColor: `${theme.accent}10` }}>
               {hasDiscount && <p className="text-sm text-gray-400 line-through">{formatPrice(activeCompareAt!)}</p>}
               <div className="flex items-center justify-center gap-3 lg:justify-start">
                 <span className="text-3xl font-black" style={{ color: theme.accent }}>{formatPrice(activePrice)}</span>
