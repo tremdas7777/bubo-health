@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import logoIcon from "@/assets/logo-icon.png";
 import { useStoreConfig } from "@/hooks/useStoreConfig";
+import LanguageCurrencySwitcher from "./LanguageCurrencySwitcher";
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -109,8 +110,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-background/10 mt-4 pt-5 text-center text-[11px] opacity-40">
-          © {new Date().getFullYear()} Bubo Health. {t("footer.rights")}
+        <div className="border-t border-background/10 mt-4 pt-5 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] opacity-40">
+          <div>© {new Date().getFullYear()} Bubo Health. {t("footer.rights")}</div>
+          <div className="text-background scale-90 md:scale-100">
+            <LanguageCurrencySwitcher />
+          </div>
         </div>
       </div>
     </footer>

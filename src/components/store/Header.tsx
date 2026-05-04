@@ -44,7 +44,7 @@ export default function Header() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-[80px] md:h-[100px]">
           {/* Left: search */}
-          <div className="flex items-center gap-3 w-[100px]">
+          <div className="flex items-center gap-3 w-[140px]">
             <button
               className="lg:hidden text-foreground"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -69,7 +69,6 @@ export default function Header() {
 
           {/* Right: account + cart */}
           <div className="flex items-center gap-3 w-[140px] justify-end">
-            <LanguageCurrencySwitcher />
             <Link to="/favoritos" className="text-foreground hover:text-primary transition-colors relative hidden sm:block" aria-label={t("nav.favorites")}>
               <Heart size={22} />
               {wishlistCount > 0 && (
