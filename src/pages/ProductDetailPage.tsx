@@ -1078,24 +1078,24 @@ export default function ProductDetailPage() {
             </Button>
 
             {/* Guarantee Badge */}
-            <div className="flex items-start gap-3 rounded-lg border-2 border-lime/50 bg-lime/5 p-4">
-              <ShieldCheck size={28} className="mt-0.5 shrink-0 text-primary" />
+            <div className="flex items-start gap-3 rounded-xl border-2 p-4 transition-all" style={{ borderColor: `${theme.accent}4D`, backgroundColor: `${theme.accent}0D` }}>
+              <ShieldCheck size={28} className="mt-0.5 shrink-0" style={{ color: theme.accent }} />
               <div>
-                <p className="text-sm font-semibold text-foreground">{t("productPage.guaranteeTitle")}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-sm font-bold text-foreground">{t("productPage.guaranteeTitle")}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   {t("productPage.guaranteeDesc")}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-lg border border-border bg-card p-4">
-              <Truck size={24} className="mt-0.5 shrink-0 text-primary" />
+            <div className="flex items-start gap-3 rounded-xl border border-border bg-card p-4">
+              <Truck size={24} className="mt-0.5 shrink-0" style={{ color: theme.accent }} />
               <div>
                 <p className="text-sm">
-                  <span className="font-semibold text-primary">{t("productPage.freeShipping")}</span>{" "}
+                  <span className="font-bold" style={{ color: theme.accent }}>{t("productPage.freeShipping")}</span>{" "}
                   <span className="text-muted-foreground">{t("productPage.freeShippingDesc")}</span>
                 </p>
-                <p className="text-xs text-muted-foreground">{t("productPage.freeShippingArea")}</p>
+                <p className="text-xs text-muted-foreground leading-tight">{t("productPage.freeShippingArea")}</p>
               </div>
             </div>
 
@@ -1131,8 +1131,11 @@ export default function ProductDetailPage() {
                   const Icon = item.icon;
                   return (
                     <li key={i} className="flex items-start gap-3">
-                      <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                        <Icon size={16} className="text-primary" />
+                      <div 
+                        className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
+                        style={{ backgroundColor: `${theme.accent}1A` }}
+                      >
+                        <Icon size={16} style={{ color: theme.accent }} />
                       </div>
                       <span className="text-sm leading-relaxed text-muted-foreground">{translatedBullets?.[i] ?? item.text}</span>
                     </li>
