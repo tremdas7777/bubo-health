@@ -85,7 +85,7 @@ serve(async (req) => {
             customerEmail: order.buyer_email || email || "",
             customerPhone: order.buyer_phone || customer?.phone || null,
             customerDocument: order.buyer_document || customer?.document?.number || null,
-            productName: "Pedido Kazoom",
+            productName: "Pedido Bubo Health",
             priceInCents: order.amount_cents || amountCents,
           },
         });

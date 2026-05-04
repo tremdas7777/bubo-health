@@ -333,7 +333,7 @@ export default function CheckoutPage() {
           orderId: result.order_id, status: "waiting_payment", paymentMethod: "credit_card",
           customerName: name, customerEmail: email, customerPhone: phone || null,
           customerDocument: taxId?.replace(/\D/g, "") || null,
-          productName: items[0]?.product?.name || "Kazoom Order",
+          productName: items[0]?.product?.name || "Bubo Health Order",
           priceInCents: Math.round(total * 100), trackingParameters: getCampaignParams(),
         });
       }
@@ -356,7 +356,7 @@ export default function CheckoutPage() {
           orderId: result.order_id || "", status: "paid", paymentMethod: "credit_card",
           customerName: name, customerEmail: email, customerPhone: phone || null,
           customerDocument: taxId?.replace(/\D/g, "") || null,
-          productName: items[0]?.product?.name || "Kazoom Order",
+          productName: items[0]?.product?.name || "Bubo Health Order",
           priceInCents: Math.round(total * 100), trackingParameters: getCampaignParams(),
         });
         void trackEvent("purchase");
@@ -368,7 +368,7 @@ export default function CheckoutPage() {
             orderId: result.order_id, status: "refused", paymentMethod: "credit_card",
             customerName: name, customerEmail: email, customerPhone: phone || null,
             customerDocument: taxId?.replace(/\D/g, "") || null,
-            productName: items[0]?.product?.name || "Kazoom Order",
+            productName: items[0]?.product?.name || "Bubo Health Order",
             priceInCents: Math.round(total * 100), trackingParameters: getCampaignParams(),
           });
         }
@@ -435,7 +435,7 @@ export default function CheckoutPage() {
           <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft size={16} /> {t("checkout.back")}
           </button>
-          <Link to="/" className="text-xl font-heading font-bold text-primary">Kazoom</Link>
+          <Link to="/" className="text-xl font-heading font-bold text-primary">Bubo Health</Link>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Lock size={12} /> {t("checkout.secure")}
           </div>

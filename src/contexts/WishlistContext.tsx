@@ -15,7 +15,7 @@ const WishlistContext = createContext<WishlistContextType | undefined>(undefined
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<Product[]>(() => {
     try {
-      const saved = localStorage.getItem("kazoom-wishlist");
+      const saved = localStorage.getItem("bubohealth-wishlist");
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -23,7 +23,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
-    localStorage.setItem("kazoom-wishlist", JSON.stringify(items));
+    localStorage.setItem("bubohealth-wishlist", JSON.stringify(items));
   }, [items]);
 
   const addItem = useCallback((product: Product) => {

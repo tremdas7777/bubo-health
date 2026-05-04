@@ -110,7 +110,7 @@ export default function AdminAbandonedCarts() {
     const phone = row.buyer_phone.replace(/\D/g, "");
     const full = phone.startsWith("55") ? phone : `55${phone}`;
     const msg = encodeURIComponent(
-      `Olá ${row.buyer_name || ""}! Vi que você começou um pedido na Kazoom 🛒. Posso te ajudar a finalizar? Valor: ${formatBRL(row.amount_cents)}.`
+      `Olá ${row.buyer_name || ""}! Vi que você começou um pedido na Bubo Health 🛒. Posso te ajudar a finalizar? Valor: ${formatBRL(row.amount_cents)}.`
     );
     window.open(`https://wa.me/${full}?text=${msg}`, "_blank");
   };

@@ -25,7 +25,7 @@ export default function ProductJsonLd({ product, url }: Props) {
       sku: product.id,
       brand: {
         "@type": "Brand",
-        name: "Kazoom",
+        name: "Bubo Health",
       },
       aggregateRating: {
         "@type": "AggregateRating",
@@ -49,7 +49,7 @@ export default function ProductJsonLd({ product, url }: Props) {
           : "https://schema.org/OutOfStock",
         seller: {
           "@type": "Organization",
-          name: "Kazoom",
+          name: "Bubo Health",
         },
         shippingDetails: {
           "@type": "OfferShippingDetails",

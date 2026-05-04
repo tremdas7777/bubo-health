@@ -13,7 +13,7 @@ const NotFound = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
-      <PageHead title={`${t("pages.notFound.title")} | Kazoom`} description={t("pages.notFound.subtitle")} />
+      <PageHead title={`${t("pages.notFound.title")} | Bubo Health`} description={t("pages.notFound.subtitle")} />
       <div className="text-center">
         <h1 className="mb-4 text-6xl font-heading font-bold text-foreground">404</h1>
         <p className="mb-4 text-xl text-muted-foreground">{t("pages.notFound.title")}</p>

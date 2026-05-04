@@ -36,8 +36,8 @@ export default function ContactPage() {
   return (
     <Layout>
       <PageHead
-        title="Contato | Kazoom"
-        description="Entre em contato com a Kazoom. Atendimento de segunda a sexta, das 08h às 18h."
+        title="Contato | Bubo Health"
+        description="Entre em contato com a Bubo Health. Atendimento de segunda a sexta, das 08h às 18h."
         canonical="https://snuggle-stuff-source.lovable.app/contato"
       />
       <div className="container mx-auto px-4 py-12 max-w-5xl">
@@ -54,8 +54,8 @@ export default function ContactPage() {
                 <Mail size={20} className="text-primary mt-0.5 shrink-0" />
                 <div>
                   <p className="text-sm font-semibold text-foreground">E-mail</p>
-                  <a href="mailto:suporte@kazoombrasil.com.br" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    suporte@kazoombrasil.com.br
+                  <a href="mailto:suporte@bubohealth.com.br" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    suporte@bubohealth.com.br
                   </a>
                 </div>
               </div>

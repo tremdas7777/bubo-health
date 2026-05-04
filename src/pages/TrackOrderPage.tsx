@@ -82,8 +82,8 @@ export default function TrackOrderPage() {
   return (
     <Layout>
       <PageHead
-        title="Rastrear Pedido | Kazoom"
-        description="Acompanhe o status do seu pedido na Kazoom. Insira o código do pedido para verificar o andamento."
+        title="Rastrear Pedido | Bubo Health"
+        description="Acompanhe o status do seu pedido na Bubo Health. Insira o código do pedido para verificar o andamento."
         canonical="https://snug-code-space.lovable.app/rastrear"
       />
       <div className="container mx-auto px-4 py-12">

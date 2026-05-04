@@ -1,7 +1,7 @@
 # Project Memory
 
 ## Core
-Store: Kazoom INTERNACIONAL (EN/ES/PT/FR · USD/EUR/GBP/BRL). Base: versatto. Colors: Purple/Lime Green. Light mode default.
+Store: Bubo Health INTERNACIONAL (EN/ES/PT/FR · USD/EUR/GBP/BRL). Base: versatto. Colors: Purple/Lime Green. Light mode default.
 Supabase (DB/Auth/Storage). RLS on all tables. Gateway keys protected via service_role.
 Gateway: SEMPRE Beehive — nunca trocar active_gateway sem ordem explícita.
 NUNCA usar PIX, R$ hardcoded, ou métodos brasileiros — loja é gringa. Checkout = só cartão. Preços em USD cents no DB; sempre via formatPrice do LocalizationContext.

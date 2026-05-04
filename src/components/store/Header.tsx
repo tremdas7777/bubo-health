@@ -58,7 +58,7 @@ export default function Header() {
           {/* Center: Logo */}
           <Link to="/" className="flex items-center">
             <span className="text-2xl md:text-3xl font-heading font-bold text-primary tracking-tight">
-              Kazoom
+              Bubo Health
             </span>
           </Link>
 

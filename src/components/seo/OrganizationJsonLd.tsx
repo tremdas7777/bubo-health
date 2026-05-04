@@ -5,11 +5,11 @@ export default function OrganizationJsonLd() {
     const schema = {
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: "Kazoom",
+      name: "Bubo Health",
       url: window.location.origin,
       logo: `${window.location.origin}/logo-icon.png`,
       description:
-        "Kazoom - De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 6x.",
+        "Bubo Health - De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 6x.",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Avenida Larissa Cavalcante, 11",
@@ -22,7 +22,7 @@ export default function OrganizationJsonLd() {
         "@type": "ContactPoint",
         contactType: "customer service",
         availableLanguage: "Portuguese",
-        email: "suporte@kazoombrasil.com.br",
+        email: "suporte@bubohealth.com.br",
         telephone: "+55-11-99153-7247",
       },
       taxID: "60.105.125/0001-08",

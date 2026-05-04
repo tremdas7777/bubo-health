@@ -65,7 +65,7 @@ export const CTAScene = () => {
 
         {/* Brand */}
         <div style={{ marginTop: 50, fontSize: 50, fontWeight: 900, fontFamily: "sans-serif", opacity: brandOp, background: "linear-gradient(135deg, #7C3AED, #A78BFA)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-          KAZOOM
+          Bubo Health
         </div>
       </div>
 

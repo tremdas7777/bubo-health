@@ -1,6 +1,6 @@
 ---
 name: instagram-card-template
-description: Template padrão de card Instagram 1080x1080 para divulgar produtos da Kazoom
+description: Template padrão de card Instagram 1080x1080 para divulgar produtos da Bubo Health
 type: preference
 ---
 Quando o usuário pedir "gere card do produto X" / "card pra Instagram", criar PNG 1080x1080 seguindo EXATAMENTE este template:
@@ -30,4 +30,4 @@ Quando o usuário pedir "gere card do produto X" / "card pra Instagram", criar P
 - Buscar dados do produto no Postgres por nome
 - Salvar em /mnt/documents/card-{slug}.png e emitir <presentation-artifact>
 
-Cores Kazoom: Roxo #5B21B6, Verde Lima #A3E635, Cinza fundo #F3F4F6
+Cores Bubo Health: Roxo #5B21B6, Verde Lima #A3E635, Cinza fundo #F3F4F6

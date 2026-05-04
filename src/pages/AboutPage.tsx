@@ -6,7 +6,7 @@ export default function AboutPage() {
   const { t } = useTranslation();
   return (
     <Layout>
-      <PageHead title={`${t("pages.about.title")} | Kazoom`} description={t("home.description")} />
+      <PageHead title={`${t("pages.about.title")} | Bubo Health`} description={t("home.description")} />
       <div className="container mx-auto px-4 py-16 max-w-2xl">
         <h1 className="text-3xl font-heading font-bold mb-6 text-center">{t("pages.about.title")}</h1>
 
@@ -19,9 +19,9 @@ export default function AboutPage() {
 
           <h2 className="text-lg font-heading font-semibold text-foreground">{t("pages.about.companyData")}</h2>
           <ul className="space-y-1 text-sm">
-            <li><strong>{t("pages.about.companyName")}:</strong> Kazoom</li>
+            <li><strong>{t("pages.about.companyName")}:</strong> Bubo Health</li>
             <li><strong>{t("pages.about.address")}:</strong> Your Company Address</li>
-            <li><strong>{t("pages.about.emailLabel")}:</strong> support@kazoom.com</li>
+            <li><strong>{t("pages.about.emailLabel")}:</strong> support@bubohealth.com</li>
             <li><strong>{t("pages.about.phoneLabel")}:</strong> +1 (000) 000-0000</li>
           </ul>
         </div>

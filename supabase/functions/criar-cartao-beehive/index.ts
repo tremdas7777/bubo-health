@@ -57,14 +57,14 @@ serve(async (req) => {
       },
       items: [
         {
-          title: "Pedido Kazoom",
+          title: "Pedido Bubo Health",
           unitPrice: amountCents,
           quantity: 1,
           tangible: false,
         },
       ],
       metadata: {
-        provider: "Kazoom",
+        provider: "Bubo Health",
         order_id: `KZ-${Date.now()}`,
       },
     };

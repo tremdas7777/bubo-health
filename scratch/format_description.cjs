@@ -7,7 +7,7 @@ const supabase = createClient(url, key);
 
 async function updateDescription() {
   const descriptionHtml = `
-<p>Erreichen Sie den Gipfel Ihrer Entwicklung mit der Supplement-Marke Nr. 1 aus Deutschland – jetzt als exklusives Bundle bei Kazoom.</p>
+<p>Erreichen Sie den Gipfel Ihrer Entwicklung mit der Supplement-Marke Nr. 1 aus Deutschland – jetzt als exklusives Bundle bei Bubo Health.</p>
 <p>Wer Höchstleistung will, darf keine Kompromisse eingehen. Das ESN Elite Leistung Combo wurde strategisch für Athleten entwickelt, die nur das Maximum akzeptieren. Wir vereinen deutsche Ernährungswissenschaft mit den reinsten Inhaltsstoffen auf dem Markt in einem einzigen Hochleistungspaket.</p>
 <h3>💎 Ihr Arsenal im Überblick:</h3>
 <ul>
@@ -24,7 +24,7 @@ async function updateDescription() {
   <li><strong>Volle Synergie:</strong> Jedes Produkt verstärkt die Wirkung des anderen – von Pre-Workout bis zur nächtlichen Regeneration.</li>
   <li><strong>Deutsche Qualität (ESN):</strong> Laborgeprüfte Reinheit und die weltweit besten Rohstoffe.</li>
   <li><strong>Intelligenter Preisvorteil:</strong> Sichern Sie sich die komplette Linie mit einem exklusiven Rabatt, den es nur im Bundle gibt.</li>
-  <li><strong>Kazoom Exklusivität:</strong> Ein kuratiertes Erlebnis für alle, die nur das Beste suchen.</li>
+  <li><strong>Bubo Health Exklusivität:</strong> Ein kuratiertes Erlebnis für alle, die nur das Beste suchen.</li>
 </ul>
   `;
 

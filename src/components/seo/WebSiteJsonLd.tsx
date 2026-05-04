@@ -6,7 +6,7 @@ export default function WebSiteJsonLd() {
     const schema = {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      name: "Kazoom",
+      name: "Bubo Health",
       url: origin,
       description: "De utensílios a eletrônicos, tudo que você precisa em um só lugar. Frete grátis e parcele em até 6x.",
       potentialAction: {

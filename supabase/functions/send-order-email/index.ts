@@ -8,10 +8,10 @@ const corsHeaders = {
 };
 
 const LOGO_URL = "https://mnquagsywdzjudsfurle.supabase.co/storage/v1/object/public/product-images/brand%2Flogo-icon.png";
-const STORE_NAME = "Kazoom";
+const STORE_NAME = "Bubo Health";
 const STORE_URL = "https://snuggle-stuff-source.lovable.app";
-const FROM_EMAIL = "Kazoom <noreply@kazoombrasil.com.br>";
-const SUPPORT_EMAIL = "suporte@kazoombrasil.com.br";
+const FROM_EMAIL = "Bubo Health <noreply@Bubo Health.com.br>";
+const SUPPORT_EMAIL = "suporte@Bubo Health.com.br";
 const WHATSAPP = "(11) 99153-7247";
 
 // Brand colors
@@ -49,7 +49,7 @@ function footer() {
       <img src="${LOGO_URL}" alt="${STORE_NAME}" width="28" height="28" style="display:inline-block;margin-bottom:6px;" />
       <p style="font-size:13px;color:${LIME};font-weight:700;margin:0 0 6px;">${STORE_NAME}</p>
       <p style="font-size:11px;color:#aaa;margin:0 0 4px;">📧 ${SUPPORT_EMAIL} • 📱 ${WHATSAPP}</p>
-      <p style="font-size:11px;color:#666;margin:0;">De utensílios a eletrônicos, tudo que você precisa. É Kazoom!</p>
+      <p style="font-size:11px;color:#666;margin:0;">De utensílios a eletrônicos, tudo que você precisa. É Bubo Health!</p>
     </td></tr>`;
 }
 

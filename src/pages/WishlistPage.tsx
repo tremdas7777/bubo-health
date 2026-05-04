@@ -13,7 +13,7 @@ export default function WishlistPage() {
 
   return (
     <Layout>
-      <PageHead title="Favoritos | Kazoom" description="Seus produtos favoritos na Kazoom" />
+      <PageHead title="Favoritos | Bubo Health" description="Seus produtos favoritos na Bubo Health" />
       <div className="container mx-auto px-4 py-10">
         <h1 className="text-3xl font-heading font-bold mb-8 flex items-center gap-3">
           <Heart className="text-primary" size={28} />

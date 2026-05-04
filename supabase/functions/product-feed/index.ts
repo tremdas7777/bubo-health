@@ -6,7 +6,7 @@ const corsHeaders = {
 };
 
 const STORE_URL = "https://snuggle-stuff-source.lovable.app";
-const STORE_NAME = "Kazoom";
+const STORE_NAME = "Bubo Health";
 
 // Map product categories to Google product categories
 const GOOGLE_CATEGORIES: Record<string, string> = {

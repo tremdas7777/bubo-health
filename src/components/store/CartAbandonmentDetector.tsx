@@ -14,18 +14,18 @@ export default function CartAbandonmentDetector() {
   useEffect(() => {
     if (items.length === 0) return;
     const handleBeforeUnload = () => {
-      sessionStorage.setItem("kazoom-cart-abandoned", "true");
+      sessionStorage.setItem("bubohealth-cart-abandoned", "true");
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [items]);
 
   useEffect(() => {
-    const wasAbandoned = sessionStorage.getItem("kazoom-cart-abandoned");
+    const wasAbandoned = sessionStorage.getItem("bubohealth-cart-abandoned");
     if (wasAbandoned && items.length > 0) {
       const timer = setTimeout(() => {
         setShowPopup(true);
-        sessionStorage.removeItem("kazoom-cart-abandoned");
+        sessionStorage.removeItem("bubohealth-cart-abandoned");
       }, 3000);
       return () => clearTimeout(timer);
     }

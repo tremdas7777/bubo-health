@@ -54,7 +54,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<StoreSettings>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(true);
   const [currency, setCurrencyState] = useState<SupportedCurrency>(() => {
-    return (localStorage.getItem("kazoom_currency") as SupportedCurrency) || "USD";
+    return (localStorage.getItem("bubohealth_currency") as SupportedCurrency) || "USD";
   });
 
   const fetchSettings = useCallback(async () => {
@@ -72,8 +72,8 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
       setSettings(s);
 
       const urlParams = new URLSearchParams(window.location.search);
-      const currentLang = (localStorage.getItem("kazoom_lang") as SupportedLanguage) || (i18nInst.language.slice(0, 2) as SupportedLanguage);
-      const currentCurrency = (localStorage.getItem("kazoom_currency") as SupportedCurrency) || currency;
+      const currentLang = (localStorage.getItem("bubohealth_lang") as SupportedLanguage) || (i18nInst.language.slice(0, 2) as SupportedLanguage);
+      const currentCurrency = (localStorage.getItem("bubohealth_currency") as SupportedCurrency) || currency;
 
       // 1. Resolve Language
       let finalLang: SupportedLanguage = currentLang;
@@ -84,7 +84,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
         finalLang = urlLang;
       } 
       // If current lang (from localStorage or navigator) is not available, or it's a first visit
-      else if (!s.available_languages.includes(currentLang as SupportedLanguage) || !localStorage.getItem("kazoom_lang")) {
+      else if (!s.available_languages.includes(currentLang as SupportedLanguage) || !localStorage.getItem("bubohealth_lang")) {
         const navLang = navigator.language.slice(0, 2) as SupportedLanguage;
         finalLang = s.available_languages.includes(navLang) ? navLang : s.default_language;
         // If even navLang isn't available, use default
@@ -97,7 +97,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
       if (finalLang !== i18nInst.language) {
         i18nInst.changeLanguage(finalLang);
       }
-      localStorage.setItem("kazoom_lang", finalLang);
+      localStorage.setItem("bubohealth_lang", finalLang);
       document.documentElement.lang = finalLang;
 
       // 2. Resolve Currency
@@ -108,13 +108,13 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
         finalCurrency = urlCurrency;
       }
       // If current currency is not available, or it's a first visit
-      else if (!s.available_currencies.includes(currentCurrency) || !localStorage.getItem("kazoom_currency")) {
+      else if (!s.available_currencies.includes(currentCurrency) || !localStorage.getItem("bubohealth_currency")) {
         finalCurrency = s.available_currencies.includes(s.default_currency) ? s.default_currency : s.available_currencies[0] || "USD";
       }
 
       // Apply currency
       setCurrencyState(finalCurrency);
-      localStorage.setItem("kazoom_currency", finalCurrency);
+      localStorage.setItem("bubohealth_currency", finalCurrency);
     }
     setLoading(false);
   }, [i18nInst, currency]);
@@ -126,7 +126,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
   const setLanguage = useCallback(
     (l: SupportedLanguage) => {
       i18nInst.changeLanguage(l);
-      localStorage.setItem("kazoom_lang", l);
+      localStorage.setItem("bubohealth_lang", l);
       document.documentElement.lang = l;
     },
     [i18nInst]
@@ -134,7 +134,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
 
   const setCurrency = useCallback((c: SupportedCurrency) => {
     setCurrencyState(c);
-    localStorage.setItem("kazoom_currency", c);
+    localStorage.setItem("bubohealth_currency", c);
   }, []);
 
   const convert = useCallback(

@@ -30,7 +30,7 @@ const faqs = [
     answer: "Sim, todos os produtos possuem garantia mínima de 30 dias contra defeitos de fabricação. Alguns produtos possuem garantia estendida conforme especificado na descrição.",
   },
   {
-    question: "É seguro comprar na Kazoom?",
+    question: "É seguro comprar na Bubo Health?",
     answer: "Totalmente seguro! Utilizamos criptografia SSL em todo o site, seus dados de pagamento são processados por gateways certificados e nunca armazenamos dados de cartão. Possuímos CNPJ ativo e endereço físico.",
   },
   {
@@ -47,8 +47,8 @@ const FAQPage = () => {
   return (
     <Layout>
       <PageHead
-        title="Perguntas Frequentes - Kazoom"
-        description="Tire suas dúvidas sobre entrega, pagamento, trocas e devoluções na Kazoom."
+        title="Perguntas Frequentes - Bubo Health"
+        description="Tire suas dúvidas sobre entrega, pagamento, trocas e devoluções na Bubo Health."
       />
       <FAQJsonLd
         items={faqs.map((f) => ({

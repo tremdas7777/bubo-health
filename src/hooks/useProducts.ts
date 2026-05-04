@@ -122,21 +122,12 @@ function mapDbCollection(db: DbCollection): Collection {
   };
 }
 
+import { products, collections } from "@/data/store";
+
 export function useDbProducts() {
-  const { i18n } = useTranslation();
-  const lang = i18n.language?.slice(0, 2) || "en";
   return useQuery({
-    queryKey: [...DB_PRODUCTS_QUERY_KEY, lang],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .eq("active", true)
-        .order("sort_order", { ascending: true })
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return (data as DbProduct[]).map((d) => mapDbProduct(d, lang));
-    },
+    queryKey: DB_PRODUCTS_QUERY_KEY,
+    queryFn: () => products,
     staleTime: 1000 * 60 * 2,
   });
 }
@@ -144,15 +135,7 @@ export function useDbProducts() {
 export function useDbCollections() {
   return useQuery({
     queryKey: DB_COLLECTIONS_QUERY_KEY,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("collections")
-        .select("*")
-        .eq("active", true)
-        .order("sort_order", { ascending: true });
-      if (error) throw error;
-      return (data as DbCollection[]).map(mapDbCollection);
-    },
+    queryFn: () => collections,
     staleTime: 1000 * 60 * 5,
   });
 }

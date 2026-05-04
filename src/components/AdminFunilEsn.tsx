@@ -218,7 +218,7 @@ export default function AdminFunilEsn() {
           <DollarSign size={14} className="mt-0.5 text-emerald-500" />
           <p>
             Para ver as vendas <strong>finalizadas</strong> deste combo, acesse o painel do gateway externo
-            <span className="font-mono"> Flowspays</span>. As métricas acima refletem apenas a jornada dentro da loja Kazoom.
+            <span className="font-mono"> Flowspays</span>. As métricas acima refletem apenas a jornada dentro da loja Bubo Health.
           </p>
         </div>
       </Card>

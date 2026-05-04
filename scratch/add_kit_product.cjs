@@ -7,7 +7,7 @@ const supabase = createClient(url, key);
 
 async function addKitProduct() {
   const kitProduct = {
-    name: 'Combo Kazoom Suplementos Completo',
+    name: 'Combo Bubo Health Suplementos Completo',
     slug: 'kit-suplementos-completo',
     price_cents: 59700,
     original_price_cents: 129700,

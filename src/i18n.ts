@@ -29,7 +29,7 @@ i18n
     detection: {
       order: ["localStorage", "navigator", "htmlTag"],
       caches: ["localStorage"],
-      lookupLocalStorage: "kazoom_lang",
+      lookupLocalStorage: "bubohealth_lang",
     },
     returnNull: false,
   });

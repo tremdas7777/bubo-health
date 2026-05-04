@@ -63,7 +63,7 @@ serve(async (req) => {
     const now = fmtDate();
     const payload = {
       orderId: body.orderId,
-      platform: "kazoom-store",
+      platform: "Bubo Health-store",
       paymentMethod: body.paymentMethod || "pix",
       status: body.status,
       createdAt: now,
@@ -77,8 +77,8 @@ serve(async (req) => {
       },
       products: [
         {
-          id: body.productId || "kazoom-product",
-          name: body.productName || "Pedido Kazoom",
+          id: body.productId || "Bubo Health-product",
+          name: body.productName || "Pedido Bubo Health",
           planId: null,
           planName: null,
           quantity: 1,

@@ -17,6 +17,7 @@ import { formatPrice as formatBRL, getInstallmentPrice, getDiscountPercent } fro
 // pix removed
 import { useCart, type CartItemSelection } from "@/contexts/CartContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
+import { useHeroColor } from "@/contexts/HeroColorContext";
 import { trackEvent } from "@/lib/funnelTracking";
 import { Button } from "@/components/ui/button";
 import ProductJsonLd from "@/components/seo/ProductJsonLd";
@@ -193,6 +194,7 @@ export default function ProductDetailPage() {
   };
 
   const { addItem } = useCart();
+  const { setBarColor } = useHeroColor();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -499,10 +501,23 @@ export default function ProductDetailPage() {
     navigate("/checkout");
   };
 
+  // Map product slugs to color themes
+  const PRODUCT_THEMES: Record<string, { bg: string; accent: string; tag: string }> = {
+    "bubo-sleep": { bg: "from-purple-900 to-purple-700", accent: "#7c3aed", tag: "🌙 Gummies do Sono" },
+    "bubo-energy": { bg: "from-amber-700 to-yellow-500", accent: "#f59e0b", tag: "⚡ Gummies de Energia" },
+    "bubo-slim": { bg: "from-green-800 to-green-500", accent: "#16a34a", tag: "🌿 Gummies Emagrecimento" },
+    "combo-bubo-health": { bg: "from-indigo-900 to-purple-700", accent: "#7c3aed", tag: "🔥 Kit Completo" },
+  };
+  const theme = PRODUCT_THEMES[product.slug] || { bg: "from-purple-900 to-purple-700", accent: "#7c3aed", tag: "✨ Bubo Health" };
+
+  useEffect(() => {
+    setBarColor(theme.accent);
+  }, [theme.accent, setBarColor]);
+
   return (
     <Layout>
       <PageHead
-        title={`${product.name} | Kazoom`}
+        title={`${product.name} | Bubo Health`}
         description={product.description.slice(0, 155)}
         canonical={productUrl}
         noIndex={product.noIndex}
@@ -515,7 +530,45 @@ export default function ProductDetailPage() {
           { name: product.name, url: productUrl },
         ]}
       />
-      <div className="container mx-auto px-4 py-6">
+
+      {/* Hero banner in product color */}
+      <div className={`bg-gradient-to-r ${theme.bg} py-8 px-4 mb-8`}>
+        <div className="container mx-auto">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="flex-1 text-white text-center md:text-left order-2 md:order-1">
+              <span className="inline-block bg-white/20 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-3">{theme.tag}</span>
+              <h1 className="text-4xl md:text-5xl font-heading font-black text-white mb-2">{product.name}</h1>
+              <p className="text-white/80 text-base mb-4">{product.description.slice(0, 80)}...</p>
+              <div className="flex items-baseline gap-3 justify-center md:justify-start">
+                <span className="text-4xl font-black text-white">{formatPrice(activePrice)}</span>
+                {hasDiscount && (
+                  <>
+                    <span className="text-white/60 text-lg line-through">{formatPrice(activeCompareAt!)}</span>
+                    <span className="bg-red-500 text-white font-black text-sm px-3 py-1 rounded-full">
+                      -{getDiscountPercent(activePrice, activeCompareAt!)}%
+                    </span>
+                  </>
+                )}
+              </div>
+              {activeBundle && activeBundle.perUnitCents && (
+                <p className="text-white/70 text-sm mt-1">
+                  {formatPrice(activeBundle.perUnitCents / 100)} por unidade
+                </p>
+              )}
+            </div>
+            <div className="flex-shrink-0 order-1 md:order-2">
+              <img
+                src={displayImages[0]}
+                alt={product.name}
+                className="w-[180px] md:w-[240px] object-contain drop-shadow-2xl"
+                style={{ filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.4))" }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 pb-6">
         <Breadcrumbs
           items={[
             { label: t("productPage.breadcrumbProducts"), href: "/produtos" },
@@ -531,18 +584,18 @@ export default function ProductDetailPage() {
           />
 
           <div className="space-y-4">
-            <h1 className="text-center text-xl font-heading font-bold lg:text-left lg:text-2xl">{product.name}</h1>
+            <h2 className="text-center text-2xl font-heading font-black lg:text-left lg:text-3xl" style={{ color: theme.accent }}>{product.name}</h2>
 
             {/* Rating summary - dynamic from DB */}
             <ProductRatingSummary productId={product.id} />
 
-            <div className="space-y-1 text-center lg:text-left">
-              {hasDiscount && <p className="text-sm text-muted-foreground line-through">{formatPrice(activeCompareAt!)}</p>}
+            <div className="space-y-1 text-center lg:text-left bg-purple-50 rounded-2xl p-4">
+              {hasDiscount && <p className="text-sm text-gray-400 line-through">{formatPrice(activeCompareAt!)}</p>}
               <div className="flex items-center justify-center gap-3 lg:justify-start">
-                <span className="text-2xl font-bold text-primary">{formatPrice(activePrice)}</span>
+                <span className="text-3xl font-black" style={{ color: theme.accent }}>{formatPrice(activePrice)}</span>
                 {hasDiscount && (
-                  <span className="flex items-center gap-1 rounded bg-lime px-2 py-1 text-xs font-bold text-foreground">
-                    ↓ {getDiscountPercent(activePrice, activeCompareAt!)}%
+                  <span className="flex items-center gap-1 rounded-full bg-red-500 text-white px-3 py-1 text-sm font-black">
+                    -{getDiscountPercent(activePrice, activeCompareAt!)}%
                   </span>
                 )}
               </div>
@@ -551,7 +604,6 @@ export default function ProductDetailPage() {
                   {formatPrice(activeBundle.perUnitCents / 100)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
                 </p>
               )}
-              
             </div>
 
             {/* Bundle selector (1 / 2 / 3 unidades) */}
@@ -950,14 +1002,23 @@ export default function ProductDetailPage() {
               )}
 
               {!isKitProduct && product?.slug !== 'esn-elite-leistung-combo-1' && (
-                <Button onClick={handleAddToCart} variant="outline" className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider border-primary text-primary hover:bg-primary/10">
+                <Button 
+                  onClick={handleAddToCart} 
+                  variant="outline" 
+                  className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider"
+                  style={{ borderColor: theme.accent, color: theme.accent }}
+                >
                   {t("productPage.addToCart")}
                 </Button>
               )}
             </div>
 
             {/* Buy Now Button */}
-            <Button onClick={handleBuyNow} className="w-full py-6 text-sm font-bold uppercase tracking-wider animate-pulse hover:animate-none">
+            <Button 
+              onClick={handleBuyNow} 
+              className="w-full py-6 text-sm font-bold text-white uppercase tracking-wider transition-all hover:scale-[1.02]"
+              style={{ backgroundColor: theme.accent }}
+            >
               {t("productPage.buyNow")}
             </Button>
 

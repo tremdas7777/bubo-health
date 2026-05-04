@@ -33,7 +33,7 @@
     "pause": "Pause"
   },
   "announcement": {
-    "welcome": "WILLKOMMEN BEI KAZOOM!",
+    "welcome": "WILLKOMMEN BEI Bubo Health!",
     "freeShipping": "WELTWEIT KOSTENLOSER VERSAND",
     "installments": "BIS ZU 6 RATEN ZAHLEN"
   },
@@ -59,9 +59,9 @@
     "currency": "Währung"
   },
   "home": {
-    "title": "Kazoom — Alles, was Sie brauchen, an einem Ort",
+    "title": "Bubo Health — Alles, was Sie brauchen, an einem Ort",
     "description": "Von Haushaltswaren bis Elektronik, alles an einem Ort. Kostenloser Versand und bis zu 6 Raten.",
-    "heroTitle": "Entdecken Sie Kazoom",
+    "heroTitle": "Entdecken Sie Bubo Health",
     "heroSubtitle": "Qualitätsprodukte zu unschlagbaren Preisen",
     "shopNow": "Jetzt einkaufen",
     "bestSellers": "Bestseller",
@@ -321,7 +321,7 @@
   },
   "footer": {
     "company": "Unternehmen",
-    "tagline": "Von Haushaltswaren bis Elektronik, alles an einem Ort. Das ist Kazoom!",
+    "tagline": "Von Haushaltswaren bis Elektronik, alles an einem Ort. Das ist Bubo Health!",
     "quickLinks": "Schnelllinks",
     "about": "Über uns",
     "allProducts": "Alle Produkte",
@@ -414,14 +414,14 @@
   },
   "footerExtras": {
     "businessAddress": "Weltweiter Online-Shop",
-    "businessEmail": "support@kazoom.com"
+    "businessEmail": "support@bubohealth.com"
   },
   "pages": {
     "about": {
       "title": "Über uns",
-      "p1": "Wir sind <strong>Kazoom</strong>, ein Online-Shop, der alles, was Sie brauchen, an einem Ort vereint. Von Haushaltswaren bis Elektronik, von Fitnessgeräten bis Werkzeugen, unsere Mission ist es, Qualitätsprodukte zu den besten Preisen und mit hervorragendem Kundenservice zu liefern.",
+      "p1": "Wir sind <strong>Bubo Health</strong>, ein Online-Shop, der alles, was Sie brauchen, an einem Ort vereint. Von Haushaltswaren bis Elektronik, von Fitnessgeräten bis Werkzeugen, unsere Mission ist es, Qualitätsprodukte zu den besten Preisen und mit hervorragendem Kundenservice zu liefern.",
       "p2": "Wir arbeiten mit den besten Marken zusammen und bieten weltweiten Versand mit Ratenzahlung per Kreditkarte.",
-      "p3": "Ihre Zufriedenheit ist unser Engagement. Verlassen Sie sich auf unseren Support Mo–Fr, 8 bis 18 Uhr, bei Fragen oder Bedürfnissen. Das ist Kazoom!",
+      "p3": "Ihre Zufriedenheit ist unser Engagement. Verlassen Sie sich auf unseren Support Mo–Fr, 8 bis 18 Uhr, bei Fragen oder Bedürfnissen. Das ist Bubo Health!",
       "companyData": "Unternehmensdaten",
       "companyName": "Unternehmen",
       "address": "Adresse",
@@ -432,7 +432,7 @@
       "title": "Nutzungsbedingungen",
       "lastUpdate": "Zuletzt aktualisiert:",
       "s1Title": "1. Annahme der Bedingungen",
-      "s1": "Mit dem Zugriff auf und der Nutzung der Kazoom-Website stimmen Sie diesen Nutzungsbedingungen zu. Wenn Sie mit irgendeinem Teil dieser Bedingungen nicht einverstanden sind, nutzen Sie unsere Website nicht.",
+      "s1": "Mit dem Zugriff auf und der Nutzung der Bubo Health-Website stimmen Sie diesen Nutzungsbedingungen zu. Wenn Sie mit irgendeinem Teil dieser Bedingungen nicht einverstanden sind, nutzen Sie unsere Website nicht.",
       "s2Title": "2. Produkte und Preise",
       "s2": "Alle Preise werden in der gewählten Währung angezeigt und enthalten anwendbare Steuern. Wir behalten uns das Recht vor, Preise ohne Vorankündigung zu ändern. Produktbilder dienen nur zur Veranschaulichung und können geringfügig vom tatsächlichen Produkt abweichen.",
       "s3Title": "3. Bestellungen und Zahlung",
@@ -440,9 +440,9 @@
       "s4Title": "4. Lieferung",
       "s4": "Lieferzeiten sind Schätzungen und beginnen mit der Zahlungsbestätigung. Wir bieten weltweiten Versand mit an der Kasse berechneten Tarifen.",
       "s5Title": "5. Geistiges Eigentum",
-      "s5": "Alle Inhalte auf der Website, einschließlich Texte, Bilder, Logos und Layout, sind Eigentum von Kazoom und durch Gesetze zum geistigen Eigentum geschützt. Vervielfältigung ohne vorherige Genehmigung ist verboten.",
+      "s5": "Alle Inhalte auf der Website, einschließlich Texte, Bilder, Logos und Layout, sind Eigentum von Bubo Health und durch Gesetze zum geistigen Eigentum geschützt. Vervielfältigung ohne vorherige Genehmigung ist verboten.",
       "s6Title": "6. Haftungsbeschränkung",
-      "s6": "Kazoom haftet nicht für indirekte Schäden, die aus der Nutzung der Website entstehen. Wir bemühen uns, die Website verfügbar zu halten, garantieren aber keinen ununterbrochenen Zugang.",
+      "s6": "Bubo Health haftet nicht für indirekte Schäden, die aus der Nutzung der Website entstehen. Wir bemühen uns, die Website verfügbar zu halten, garantieren aber keinen ununterbrochenen Zugang.",
       "s7Title": "7. Anwendbares Recht",
       "s7": "Diese Bedingungen unterliegen den Gesetzen des Betriebslandes."
     },
@@ -461,7 +461,7 @@
       "s4Title": "4. Erstattung",
       "s4": "Nach Erhalt und Überprüfung des zurückgegebenen Produkts wird die Erstattung innerhalb von 10 Werktagen bearbeitet. Der Betrag wird über die gleiche Zahlungsmethode erstattet, die für den Kauf verwendet wurde.",
       "s5Title": "5. Versandkosten",
-      "s5": "Im Falle eines Defekts oder Versandfehlers übernimmt Kazoom alle Rücksendekosten. Bei Widerruf trägt der Kunde die Rücksendekosten.",
+      "s5": "Im Falle eines Defekts oder Versandfehlers übernimmt Bubo Health alle Rücksendekosten. Bei Widerruf trägt der Kunde die Rücksendekosten.",
       "s6Title": "6. Ausnahmen",
       "s6": "Maßgefertigte Produkte sind nicht widerrufsfähig. Artikel mit Gebrauchsspuren, Missbrauch oder ohne Originalverpackung können abgelehnt werden."
     },
@@ -487,7 +487,7 @@
       "s6Title": "6. Ihre Rechte",
       "s6": "Sie haben das Recht: auf Ihre persönlichen Daten zuzugreifen, unvollständige oder veraltete Daten zu korrigieren, die Löschung unnötiger Daten zu beantragen, die Zustimmung zu widerrufen und Datenportabilität zu beantragen.",
       "s7Title": "7. Kontakt",
-      "s7": "Um Ihre Rechte auszuüben oder Fragen zu dieser Richtlinie zu klären, kontaktieren Sie uns unter <strong>support@kazoom.com</strong>."
+      "s7": "Um Ihre Rechte auszuüben oder Fragen zu dieser Richtlinie zu klären, kontaktieren Sie uns unter <strong>support@bubohealth.com</strong>."
     },
     "faq": {
       "title": "Häufig gestellte Fragen",
@@ -502,7 +502,7 @@
       "a4": "Sie haben bis zu 14 Tage nach Erhalt des Produkts Zeit, eine Rückgabe oder einen Umtausch zu beantragen. Kontaktieren Sie uns per E-Mail oder WhatsApp und geben Sie Ihre Bestellnummer an.",
       "q5": "Haben Produkte eine Garantie?",
       "a5": "Ja, alle Produkte haben mindestens 30 Tage Garantie auf Herstellungsfehler.",
-      "q6": "Ist es sicher, bei Kazoom einzukaufen?",
+      "q6": "Ist es sicher, bei Bubo Health einzukaufen?",
       "a6": "Absolut sicher! Wir verwenden SSL-Verschlüsselung auf der gesamten Website, Zahlungen werden von zertifizierten Gateways verarbeitet und wir speichern niemals Kartendaten.",
       "q7": "Kann ich ohne Konto einkaufen?",
       "a7": "Ja! Sie können auch ohne Konto zur Kasse gehen. Optional können Sie ein Konto erstellen, um Bestellungen zu verfolgen und Daten zu speichern.",
@@ -512,7 +512,7 @@
     "contact": {
       "title": "Kontaktieren Sie uns",
       "subtitle": "Wir sind hier, um zu helfen. Senden Sie uns eine Nachricht oder erreichen Sie uns über die folgenden Kanäle.",
-      "metaDesc": "Kontaktieren Sie Kazoom. Kundenservice Mo–Fr, 8 bis 18 Uhr.",
+      "metaDesc": "Kontaktieren Sie Bubo Health. Kundenservice Mo–Fr, 8 bis 18 Uhr.",
       "email": "E-Mail",
       "whatsapp": "WhatsApp",
       "hours": "Öffnungszeiten",
@@ -591,7 +591,7 @@
     "empty": "Keine Produkte in dieser Kollektion gefunden.",
     "faqTitle": "Häufig gestellte Fragen zu {{name}}",
     "home": "Startseite",
-    "fallbackDesc": "Entdecken Sie die besten {{name}}-Produkte bei Kazoom. Weltweiter kostenloser Versand und sicherer Checkout.",
+    "fallbackDesc": "Entdecken Sie die besten {{name}}-Produkte bei Bubo Health. Weltweiter kostenloser Versand und sicherer Checkout.",
     "descriptions": {
       "home-kitchen": "Entdecken Sie Utensilien und Zubehör, um Ihr Zuhause zu verwandeln. Von smarter Beleuchtung bis zu praktischen Küchenwerkzeugen, alles mit kostenlosem weltweitem Versand.",
       "electronics": "Elektronik, die einen Unterschied im Alltag macht. Smartwatches, tragbare Konsolen, LED-Uhren und mehr, alles mit 30-Tage-Garantie.",
@@ -604,7 +604,7 @@
     "faqs": {
       "home-kitchen": [
         {
-          "q": "Welche Haus- und Küchenprodukte bietet Kazoom?",
+          "q": "Welche Haus- und Küchenprodukte bietet Bubo Health?",
           "a": "Wir bieten praktische Haushaltsartikel wie Mühlen, Dekorvasen, Wecker und smarte Beleuchtung, alle mit kostenlosem Versand."
         },
         {
@@ -632,7 +632,7 @@
       ],
       "sports": [
         {
-          "q": "Welche Sportprodukte hat Kazoom?",
+          "q": "Welche Sportprodukte hat Bubo Health?",
           "a": "Wir haben Beach-Tennis-Schläger, Schwimmbrillen, Fahrradhelme, Sportbrillen und mehr."
         },
         {

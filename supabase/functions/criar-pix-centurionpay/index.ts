@@ -53,7 +53,7 @@ serve(async (req) => {
       postbackUrl: webhookUrl,
       items: [
         {
-          title: "Pedido Kazoom",
+          title: "Pedido Bubo Health",
           unitPrice: amountCents,
           quantity: 1,
           tangible: false,

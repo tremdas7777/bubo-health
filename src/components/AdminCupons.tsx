@@ -87,7 +87,7 @@ export default function AdminCupons() {
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Código</label>
-            <Input value={newCode} onChange={(e) => setNewCode(e.target.value)} placeholder="EX: KAZOOM10" className="mt-1 text-xs font-mono uppercase" />
+            <Input value={newCode} onChange={(e) => setNewCode(e.target.value)} placeholder="EX: Bubo Health10" className="mt-1 text-xs font-mono uppercase" />
           </div>
           <div>
             <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Tipo</label>

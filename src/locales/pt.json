@@ -33,7 +33,7 @@
     "pause": "Pausar"
   },
   "announcement": {
-    "welcome": "BEM-VINDO À KAZOOM!",
+    "welcome": "BEM-VINDO À Bubo Health!",
     "freeShipping": "FRETE GRÁTIS PARA TODO O MUNDO",
     "installments": "PARCELE EM ATÉ 6X"
   },
@@ -59,9 +59,9 @@
     "currency": "Moeda"
   },
   "home": {
-    "title": "Kazoom — Tudo que você precisa em um só lugar",
+    "title": "Bubo Health — Tudo que você precisa em um só lugar",
     "description": "De utensílios a eletrônicos, tudo o que você precisa em um só lugar. Frete grátis e parcele em até 6x.",
-    "heroTitle": "Descubra a Kazoom",
+    "heroTitle": "Descubra a Bubo Health",
     "heroSubtitle": "Produtos de qualidade, preços imbatíveis",
     "shopNow": "Comprar agora",
     "bestSellers": "Mais Vendidos",
@@ -321,7 +321,7 @@
   },
   "footer": {
     "company": "Empresa",
-    "tagline": "De utensílios a eletrônicos, tudo o que você precisa em um só lugar. É Kazoom!",
+    "tagline": "De utensílios a eletrônicos, tudo o que você precisa em um só lugar. É Bubo Health!",
     "quickLinks": "Links Rápidos",
     "about": "Sobre nós",
     "allProducts": "Todos os produtos",
@@ -414,14 +414,14 @@
   },
   "footerExtras": {
     "businessAddress": "Loja mundial",
-    "businessEmail": "suporte@kazoom.com"
+    "businessEmail": "suporte@bubohealth.com"
   },
   "pages": {
     "about": {
       "title": "Sobre nós",
-      "p1": "Somos a <strong>Kazoom</strong>, uma loja online que reúne tudo o que você precisa em um só lugar. De utensílios a eletrônicos, fitness a ferramentas, nossa missão é entregar produtos de qualidade com os melhores preços e atendimento excepcional.",
+      "p1": "Somos a <strong>Bubo Health</strong>, uma loja online que reúne tudo o que você precisa em um só lugar. De utensílios a eletrônicos, fitness a ferramentas, nossa missão é entregar produtos de qualidade com os melhores preços e atendimento excepcional.",
       "p2": "Trabalhamos com as melhores marcas e oferecemos envio para o mundo todo, com parcelamento no cartão de crédito.",
-      "p3": "Sua satisfação é nosso compromisso. Conte com nosso suporte de segunda a sexta, das 8h às 18h. É Kazoom!",
+      "p3": "Sua satisfação é nosso compromisso. Conte com nosso suporte de segunda a sexta, das 8h às 18h. É Bubo Health!",
       "companyData": "Dados da empresa",
       "companyName": "Empresa",
       "address": "Endereço",
@@ -432,7 +432,7 @@
       "title": "Termos de Uso",
       "lastUpdate": "Última atualização:",
       "s1Title": "1. Aceitação dos Termos",
-      "s1": "Ao acessar e usar o site da Kazoom, você concorda com estes Termos de Uso. Se não concordar, não use o site.",
+      "s1": "Ao acessar e usar o site da Bubo Health, você concorda com estes Termos de Uso. Se não concordar, não use o site.",
       "s2Title": "2. Produtos e Preços",
       "s2": "Todos os preços são exibidos na moeda selecionada e incluem impostos aplicáveis. Reservamo-nos o direito de alterar preços sem aviso prévio. Imagens são ilustrativas.",
       "s3Title": "3. Pedidos e Pagamento",
@@ -440,9 +440,9 @@
       "s4Title": "4. Entrega",
       "s4": "Os prazos de entrega são estimados e contam a partir da confirmação do pagamento. Oferecemos envio mundial com taxas calculadas no checkout.",
       "s5Title": "5. Propriedade Intelectual",
-      "s5": "Todo o conteúdo do site é propriedade da Kazoom e protegido por leis de propriedade intelectual.",
+      "s5": "Todo o conteúdo do site é propriedade da Bubo Health e protegido por leis de propriedade intelectual.",
       "s6Title": "6. Limitação de Responsabilidade",
-      "s6": "A Kazoom não se responsabiliza por danos indiretos resultantes do uso do site.",
+      "s6": "A Bubo Health não se responsabiliza por danos indiretos resultantes do uso do site.",
       "s7Title": "7. Lei Aplicável",
       "s7": "Estes termos são regidos pelas leis do país de operação."
     },
@@ -461,7 +461,7 @@
       "s4Title": "4. Reembolso",
       "s4": "Após receber e verificar o produto, o reembolso é processado em até 10 dias úteis na mesma forma de pagamento.",
       "s5Title": "5. Custos de Envio",
-      "s5": "Em caso de defeito ou erro, a Kazoom cobre os custos. Em caso de arrependimento, o frete de retorno é por conta do cliente.",
+      "s5": "Em caso de defeito ou erro, a Bubo Health cobre os custos. Em caso de arrependimento, o frete de retorno é por conta do cliente.",
       "s6Title": "6. Exceções",
       "s6": "Produtos personalizados não são elegíveis. Itens com sinais de uso podem ter a devolução recusada."
     },
@@ -487,7 +487,7 @@
       "s6Title": "6. Seus direitos",
       "s6": "Você tem direito a acessar, corrigir, excluir e portar seus dados.",
       "s7Title": "7. Contato",
-      "s7": "Para exercer seus direitos, contate-nos em <strong>suporte@kazoom.com</strong>."
+      "s7": "Para exercer seus direitos, contate-nos em <strong>suporte@bubohealth.com</strong>."
     },
     "faq": {
       "title": "Perguntas Frequentes",
@@ -502,7 +502,7 @@
       "a4": "Você tem até 14 dias após o recebimento. Contate-nos por e-mail ou WhatsApp informando o número do pedido.",
       "q5": "Os produtos têm garantia?",
       "a5": "Sim, garantia mínima de 30 dias contra defeitos de fabricação.",
-      "q6": "É seguro comprar na Kazoom?",
+      "q6": "É seguro comprar na Bubo Health?",
       "a6": "Totalmente seguro! Usamos criptografia SSL e gateways certificados. Nunca armazenamos dados de cartão.",
       "q7": "Posso comprar sem criar conta?",
       "a7": "Sim! Você pode finalizar a compra sem conta. Se preferir, crie uma conta para acompanhar pedidos.",
@@ -512,7 +512,7 @@
     "contact": {
       "title": "Fale conosco",
       "subtitle": "Estamos aqui para ajudar. Envie uma mensagem ou use os canais abaixo.",
-      "metaDesc": "Entre em contato com a Kazoom. Atendimento Seg–Sex, 8h às 18h.",
+      "metaDesc": "Entre em contato com a Bubo Health. Atendimento Seg–Sex, 8h às 18h.",
       "email": "E-mail",
       "whatsapp": "WhatsApp",
       "hours": "Horário",
@@ -591,7 +591,7 @@
     "empty": "Nenhum produto encontrado nesta coleção.",
     "faqTitle": "Perguntas Frequentes sobre {{name}}",
     "home": "Início",
-    "fallbackDesc": "Confira os melhores produtos de {{name}} na Kazoom. Frete grátis e checkout seguro.",
+    "fallbackDesc": "Confira os melhores produtos de {{name}} na Bubo Health. Frete grátis e checkout seguro.",
     "descriptions": {
       "home-kitchen": "Descubra utensílios e acessórios para transformar sua casa. De iluminação inteligente a ferramentas práticas, tudo com frete grátis mundial.",
       "electronics": "Eletrônicos que fazem a diferença no seu dia a dia. Smartwatches, consoles portáteis, despertadores LED e mais, tudo com garantia de 30 dias.",
@@ -604,7 +604,7 @@
     "faqs": {
       "home-kitchen": [
         {
-          "q": "Quais produtos de casa e cozinha a Kazoom oferece?",
+          "q": "Quais produtos de casa e cozinha a Bubo Health oferece?",
           "a": "Oferecemos utensílios práticos como trituradores, vasos decorativos, despertadores e iluminação inteligente, todos com frete grátis."
         },
         {
@@ -632,7 +632,7 @@
       ],
       "sports": [
         {
-          "q": "Que tipo de produtos esportivos a Kazoom tem?",
+          "q": "Que tipo de produtos esportivos a Bubo Health tem?",
           "a": "Temos raquetes de beach tennis, óculos de natação, capacetes de ciclismo, óculos esportivos e muito mais."
         },
         {

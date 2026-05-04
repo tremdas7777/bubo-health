@@ -8,7 +8,7 @@ export default function ReturnPolicyPage() {
 
   return (
     <Layout>
-      <PageHead title={`${t("pages.returns.title")} | Kazoom`} description={t("pages.returns.title")} />
+      <PageHead title={`${t("pages.returns.title")} | Bubo Health`} description={t("pages.returns.title")} />
       <div className="container mx-auto max-w-3xl px-4 py-12">
         <h1 className="mb-8 text-3xl font-heading font-bold">{t("pages.returns.title")}</h1>
         <div className="prose prose-sm max-w-none text-muted-foreground space-y-6">

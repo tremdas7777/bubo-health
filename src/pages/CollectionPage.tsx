@@ -49,7 +49,7 @@ export default function CollectionPage() {
   return (
     <Layout>
       <PageHead
-        title={`${collectionName} | Kazoom`}
+        title={`${collectionName} | Bubo Health`}
         description={seoDescription}
         canonical={collectionUrl}
       />

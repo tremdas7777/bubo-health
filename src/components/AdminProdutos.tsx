@@ -185,7 +185,7 @@ export default function AdminProdutos() {
   };
 
   /* ────────────────────────────────────────────────────
-     CSV parser – handles both Kazoom and Shopify formats
+     CSV parser – handles both Bubo Health and Shopify formats
      ──────────────────────────────────────────────────── */
   const parseCsvLine = (line: string): string[] => {
     const result: string[] = [];
@@ -354,7 +354,7 @@ export default function AdminProdutos() {
           return row;
         });
         setCsvPreview(rowsParsed.slice(0, 50));
-        toast.success('Formato Kazoom detectado.');
+        toast.success('Formato Bubo Health detectado.');
       }
     };
     reader.readAsText(file);
@@ -416,7 +416,7 @@ export default function AdminProdutos() {
     const headers = ['nome', 'slug', 'preco', 'preco_original', 'categoria', 'descricao', 'imagem', 'imagens', 'destaque', 'ativo'];
     const rows = products.map(p => [p.name, p.slug, (p.price_cents / 100).toFixed(2), p.original_price_cents ? (p.original_price_cents / 100).toFixed(2) : '', p.category || '', p.description || '', p.image_url || '', (p.images || []).join('|'), p.featured ? 'sim' : 'nao', p.active ? 'sim' : 'nao']);
     const csv = [headers.join(','), ...rows.map(r => r.map(c => `"${(c || '').replace(/"/g, '""')}"`).join(','))].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `produtos_kazoom_${new Date().toISOString().slice(0, 10)}.csv`; a.click(); URL.revokeObjectURL(url); toast.success('CSV exportado!');
+    const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `produtos_bubohealth_${new Date().toISOString().slice(0, 10)}.csv`; a.click(); URL.revokeObjectURL(url); toast.success('CSV exportado!');
   };
 
   const subTabs: { id: SubTab; label: string; icon: React.ReactNode }[] = [{ id: 'produtos', label: 'Produtos', icon: <Package size={14} /> }, { id: 'colecoes', label: 'Coleções', icon: <FolderOpen size={14} /> }, { id: 'importar', label: 'Importar/Exportar', icon: <Upload size={14} /> }];
@@ -498,7 +498,7 @@ export default function AdminProdutos() {
           <Card className="p-4 border border-border">
             <h3 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2"><Upload size={16} /> Importar Produtos via CSV</h3>
             <p className="text-xs text-muted-foreground mb-1">✅ <strong>Shopify CSV</strong>: Detectado automaticamente. Variantes/sabores são agrupados por produto.</p>
-            <p className="text-xs text-muted-foreground mb-2">✅ <strong>Kazoom CSV</strong>: Colunas: <code className="bg-muted px-1 py-0.5 rounded text-[10px]">nome, slug, preco, preco_original, categoria, descricao, imagem, imagens, variantes, destaque, ativo</code></p>
+            <p className="text-xs text-muted-foreground mb-2">✅ <strong>Bubo Health CSV</strong>: Colunas: <code className="bg-muted px-1 py-0.5 rounded text-[10px]">nome, slug, preco, preco_original, categoria, descricao, imagem, imagens, variantes, destaque, ativo</code></p>
             <input ref={fileInputRef} type="file" accept=".csv" onChange={handleCsvSelect} className="hidden" />
             <Button onClick={() => fileInputRef.current?.click()} variant="outline" size="sm" className="text-xs mb-3"><Upload size={14} className="mr-1" /> Selecionar CSV</Button>
             {csvFile && <p className="text-xs text-foreground mb-2">📄 {csvFile.name} — {csvPreview.length} produtos</p>}
