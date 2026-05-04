@@ -5,7 +5,7 @@ import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import { useCart } from "@/contexts/CartContext";
 import { useCurrency } from "@/contexts/LocalizationContext";
 import { useHeroColor } from "@/contexts/HeroColorContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, ShoppingCart, Check, Truck, Shield, Star, Zap, Moon, Leaf, Package } from "lucide-react";
 
 const HERO_COLORS = [
@@ -148,6 +148,15 @@ export default function Index() {
   const { formatPrice } = useCurrency();
   const { setBarColor } = useHeroColor();
   const [current, setCurrent] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     const t = setInterval(() => setCurrent(c => (c + 1) % HERO_SLIDES.length), 5000);
@@ -262,49 +271,71 @@ export default function Index() {
             <h2 className="text-3xl md:text-4xl font-heading font-black text-gray-900 mb-2">Encontre sua Gummie Perfeita</h2>
             <p className="text-gray-500 text-base max-w-md mx-auto">Ciência e sabor em uma só gommie. Cuide da sua saúde de um jeito gostoso!</p>
           </div>
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-4 px-4 sm:mx-0 sm:px-0">
-            {PRODUCTS.map((p) => {
-              const discount = Math.round(((p.compareAtPrice - p.price) / p.compareAtPrice) * 100);
-              const PRODUCT_THEMES: Record<string, string> = {
-                "bubo-sleep": "#7c3aed",
-                "bubo-energy": "#f59e0b",
-                "bubo-slim": "#16a34a",
-                "combo-bubo-health": "#7c3aed",
-              };
-              const accentColor = PRODUCT_THEMES[p.slug] || "#7c3aed";
+          <div className="relative group">
+            {/* Navigation Buttons - Only Desktop */}
+            <button 
+              onClick={() => scroll('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white shadow-xl rounded-full p-3 text-[#7c3aed] hidden lg:flex items-center justify-center hover:scale-110 transition-all opacity-0 group-hover:opacity-100 border border-purple-100"
+              aria-label="Anterior"
+            >
+              <ChevronLeft size={24} />
+            </button>
 
-              return (
-                <div key={p.id} className="min-w-[85vw] sm:min-w-0 snap-center shrink-0 bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border border-gray-100">
-                  <Link to={`/produto/${p.slug}`} className="block relative overflow-hidden bg-gray-50 aspect-square">
-                    <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    <span className={`absolute top-3 left-3 ${p.badgeColor} text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-lg`}>{p.badge}</span>
-                    <span className="absolute top-3 right-3 bg-white text-red-600 text-[11px] font-black px-2.5 py-1 rounded-full shadow-md">-{discount}%</span>
-                  </Link>
-                  <div className="p-5">
-                    <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1">{p.tagline} • {p.flavor}</p>
-                    <Link to={`/produto/${p.slug}`}>
-                      <h3 className="font-black text-lg text-gray-900 transition-colors leading-tight mb-1" style={{ color: accentColor }}>{p.name}</h3>
+            <div 
+              ref={scrollRef}
+              className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 sm:gap-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-4 px-4 sm:mx-0 sm:px-0"
+            >
+              {PRODUCTS.map((p) => {
+                const discount = Math.round(((p.compareAtPrice - p.price) / p.compareAtPrice) * 100);
+                const PRODUCT_THEMES: Record<string, string> = {
+                  "bubo-sleep": "#7c3aed",
+                  "bubo-energy": "#f59e0b",
+                  "bubo-slim": "#16a34a",
+                  "combo-bubo-health": "#7c3aed",
+                };
+                const accentColor = PRODUCT_THEMES[p.slug] || "#7c3aed";
+
+                return (
+                  <div key={p.id} className="min-w-[85vw] sm:min-w-[300px] lg:min-w-[calc(25%-18px)] snap-center shrink-0 bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group/card border border-gray-100 mb-2">
+                    <Link to={`/produto/${p.slug}`} className="block relative overflow-hidden bg-gray-50 aspect-square">
+                      <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
+                      <span className={`absolute top-3 left-3 ${p.badgeColor} text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-lg`}>{p.badge}</span>
+                      <span className="absolute top-3 right-3 bg-white text-red-600 text-[11px] font-black px-2.5 py-1 rounded-full shadow-md">-{discount}%</span>
                     </Link>
-                    <p className="text-xs text-gray-500 mb-4 line-clamp-2">{p.subtitle}</p>
-                    <div className="flex items-baseline gap-2 mb-4">
-                      <span className="text-2xl font-black" style={{ color: accentColor }}>{formatPrice(p.price)}</span>
-                      <span className="text-sm text-gray-400 line-through">{formatPrice(p.compareAtPrice)}</span>
+                    <div className="p-5">
+                      <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1">{p.tagline} • {p.flavor}</p>
+                      <Link to={`/produto/${p.slug}`}>
+                        <h3 className="font-black text-lg text-gray-900 transition-colors leading-tight mb-1" style={{ color: accentColor }}>{p.name}</h3>
+                      </Link>
+                      <p className="text-xs text-gray-500 mb-4 line-clamp-2">{p.subtitle}</p>
+                      <div className="flex items-baseline gap-2 mb-4">
+                        <span className="text-2xl font-black" style={{ color: accentColor }}>{formatPrice(p.price)}</span>
+                        <span className="text-sm text-gray-400 line-through">{formatPrice(p.compareAtPrice)}</span>
+                      </div>
+                      <button
+                        onClick={() => addProduct(p)}
+                        className="w-full text-white font-black text-sm uppercase tracking-wide py-3.5 rounded-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-md"
+                        style={{ backgroundColor: accentColor }}
+                      >
+                        <ShoppingCart size={16} />
+                        ADICIONAR AO CARRINHO
+                      </button>
+                      <Link to={`/produto/${p.slug}`} className="block text-center text-xs hover:underline mt-2 font-medium" style={{ color: accentColor }}>
+                        Ver detalhes →
+                      </Link>
                     </div>
-                    <button
-                      onClick={() => addProduct(p)}
-                      className="w-full text-white font-black text-sm uppercase tracking-wide py-3.5 rounded-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-md"
-                      style={{ backgroundColor: accentColor }}
-                    >
-                      <ShoppingCart size={16} />
-                      ADICIONAR AO CARRINHO
-                    </button>
-                    <Link to={`/produto/${p.slug}`} className="block text-center text-xs hover:underline mt-2 font-medium" style={{ color: accentColor }}>
-                      Ver detalhes →
-                    </Link>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+
+            <button 
+              onClick={() => scroll('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white shadow-xl rounded-full p-3 text-[#7c3aed] hidden lg:flex items-center justify-center hover:scale-110 transition-all opacity-0 group-hover:opacity-100 border border-purple-100"
+              aria-label="Próximo"
+            >
+              <ChevronRight size={24} />
+            </button>
           </div>
         </div>
       </section>
