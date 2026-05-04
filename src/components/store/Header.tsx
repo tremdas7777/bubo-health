@@ -10,9 +10,11 @@ import logoIcon from "@/assets/logo-icon.png";
 import SearchOverlay from "./SearchOverlay";
 import LanguageCurrencySwitcher from "./LanguageCurrencySwitcher";
 import { useTranslation } from "react-i18next";
+import { useHeroColor } from "@/contexts/HeroColorContext";
 
 export default function Header() {
   const { t } = useTranslation();
+  const { barColor } = useHeroColor();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const { totalItems, setIsOpen } = useCart();
@@ -57,7 +59,10 @@ export default function Header() {
 
           {/* Center: Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-2xl md:text-3xl font-heading font-bold text-primary tracking-tight">
+            <span 
+              className="text-2xl md:text-3xl font-heading font-black tracking-tight transition-colors duration-700"
+              style={{ color: barColor }}
+            >
               Bubo Health
             </span>
           </Link>
