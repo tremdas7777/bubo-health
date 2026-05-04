@@ -36,6 +36,77 @@ const kitReviews: Review[] = [
   { name: "Edson M.", rating: 5, date: "2024-11-25", text: "Já é meu segundo kit, comprei outro para um funcionário. Durabilidade excelente, uso diariamente há mais de 6 meses sem problemas.", verified: true },
 ];
 
+const buboReviews: Record<string, Review[]> = {
+  "bubo-sleep": [
+    { name: "Mariana S.", rating: 5, date: "2025-05-10", text: "Minha rotina mudou completamente. Durmo em 15 minutos!", verified: true },
+    { name: "Joana F.", rating: 5, date: "2025-05-08", text: "Acordo muito mais disposta. Recomendo!", verified: true },
+    { name: "Carlos T.", rating: 5, date: "2025-05-05", text: "Finalmente algo que funciona sem deixar grogue no dia seguinte.", verified: true },
+    { name: "Luciana B.", rating: 5, date: "2025-05-02", text: "Sabor de maracujá é delicioso. Amo minhas gummies!", verified: true },
+    { name: "Pedro H.", rating: 4, date: "2025-04-30", text: "Muito bom, entrega rápida e produto lacrado.", verified: true },
+    { name: "Ana Paula R.", rating: 5, date: "2025-04-28", text: "Não vivo mais sem. Melhor melatonina que já tomei.", verified: true },
+    { name: "Ricardo G.", rating: 5, date: "2025-04-25", text: "Minha esposa também está usando e adorando.", verified: true },
+    { name: "Sandra M.", rating: 5, date: "2025-04-22", text: "Ajuda muito a relaxar depois de um dia estressante.", verified: true },
+    { name: "Bruna L.", rating: 5, date: "2025-04-20", text: "Perfeito para quem tem insônia leve.", verified: true },
+    { name: "Felipe J.", rating: 4, date: "2025-04-18", text: "Gostei bastante do resultado.", verified: true },
+    { name: "Tatiana K.", rating: 5, date: "2025-04-15", text: "Produto de altíssima qualidade. Parabéns!", verified: true },
+    { name: "Marcelo D.", rating: 5, date: "2025-04-12", text: "O sono é profundo e reparador.", verified: true },
+    { name: "Gabriela V.", rating: 5, date: "2025-04-10", text: "Adoro o ritual de comer minha gummie antes de dormir.", verified: true },
+    { name: "Juliana O.", rating: 5, date: "2025-04-08", text: "Resultado incrível desde a primeira noite.", verified: true },
+    { name: "Roberto F.", rating: 5, date: "2025-04-05", text: "Entrega super rápida, chegou em 3 dias.", verified: true },
+  ],
+  "bubo-energy": [
+    { name: "Rafael M.", rating: 5, date: "2025-05-12", text: "Energia pura! Tomo antes de ir para o trabalho.", verified: true },
+    { name: "Lucas P.", rating: 5, date: "2025-05-10", text: "Melhor que café, não me deixa ansioso.", verified: true },
+    { name: "Fernanda G.", rating: 5, date: "2025-05-07", text: "Foco total nos estudos. Amei!", verified: true },
+    { name: "Gustavo R.", rating: 5, date: "2025-05-05", text: "Uso como pré-treino e o pump é excelente.", verified: true },
+    { name: "Beatriz S.", rating: 4, date: "2025-05-02", text: "Gostinho de laranja muito bom.", verified: true },
+    { name: "Diego C.", rating: 5, date: "2025-04-29", text: "Me sinto muito mais produtivo durante o dia.", verified: true },
+    { name: "Vanessa A.", rating: 5, date: "2025-04-27", text: "Adeus preguiça matinal!", verified: true },
+    { name: "Rodrigo T.", rating: 5, date: "2025-04-24", text: "Excelente para quem trabalha em home office.", verified: true },
+    { name: "Amanda L.", rating: 5, date: "2025-04-21", text: "Qualidade nota 10.", verified: true },
+    { name: "Igor B.", rating: 5, date: "2025-04-19", text: "Já é meu segundo pote. Recomendo muito.", verified: true },
+    { name: "Clara M.", rating: 4, date: "2025-04-16", text: "Energia duradoura, muito bom.", verified: true },
+    { name: "Matheus F.", rating: 5, date: "2025-04-14", text: "O sabor é surpreendente.", verified: true },
+    { name: "Camila R.", rating: 5, date: "2025-04-11", text: "Me ajuda a manter o pique até o final do dia.", verified: true },
+    { name: "Thiago S.", rating: 5, date: "2025-04-09", text: "Vale cada centavo pela disposição que dá.", verified: true },
+    { name: "Letícia N.", rating: 5, date: "2025-04-06", text: "Chegou antes do prazo, produto excelente.", verified: true },
+  ],
+  "bubo-slim": [
+    { name: "Carla T.", rating: 5, date: "2025-05-15", text: "Já perdi 3kg sem sofrimento. Ajuda muito no controle do apetite.", verified: true },
+    { name: "Juliana R.", rating: 5, date: "2025-05-13", text: "A vontade de comer doce sumiu! Impressionante.", verified: true },
+    { name: "Monique S.", rating: 5, date: "2025-05-11", text: "O sabor de maçã verde é viciante. Adorei!", verified: true },
+    { name: "Patrícia B.", rating: 5, date: "2025-05-08", text: "Sinto meu metabolismo muito mais acelerado.", verified: true },
+    { name: "Renata L.", rating: 4, date: "2025-05-06", text: "Produto de confiança, resultados aparecendo.", verified: true },
+    { name: "Fabiana M.", rating: 5, date: "2025-05-03", text: "Estou me sentindo muito menos inchada.", verified: true },
+    { name: "Daniela G.", rating: 5, date: "2025-05-01", text: "Melhor aliado na minha dieta.", verified: true },
+    { name: "Aline V.", rating: 5, date: "2025-04-28", text: "Resultados reais! Recomendo para todas as amigas.", verified: true },
+    { name: "Cristina O.", rating: 5, date: "2025-04-26", text: "Auxilia muito a segurar a fome à noite.", verified: true },
+    { name: "Sônia F.", rating: 5, date: "2025-04-23", text: "Gostei muito da composição natural.", verified: true },
+    { name: "Milena D.", rating: 4, date: "2025-04-21", text: "Entrega ok, produto conforme o anúncio.", verified: true },
+    { name: "Priscila S.", rating: 5, date: "2025-04-18", text: "Sabor maravilhoso e cumpre o que promete.", verified: true },
+    { name: "Viviane K.", rating: 5, date: "2025-04-15", text: "Minha calça já está mais larga!", verified: true },
+    { name: "Kelly P.", rating: 5, date: "2025-04-13", text: "Perfeito para quem quer emagrecer com saúde.", verified: true },
+    { name: "Lúcia H.", rating: 5, date: "2025-04-10", text: "Estou no segundo pote e muito feliz com o resultado.", verified: true },
+  ],
+  "combo-bubo-health": [
+    { name: "Lucas P.", rating: 5, date: "2025-05-14", text: "O combo é a melhor opção. Cuidado completo!", verified: true },
+    { name: "Marcos V.", rating: 5, date: "2025-05-11", text: "Parei de comprar suplementos separados, esse combo resolve tudo.", verified: true },
+    { name: "Julia B.", rating: 5, date: "2025-05-09", text: "Economizei muito comprando o kit completo.", verified: true },
+    { name: "André S.", rating: 5, date: "2025-05-06", text: "Uso os três e me sinto outra pessoa.", verified: true },
+    { name: "Larissa F.", rating: 5, date: "2025-05-04", text: "Entrega impecável e produtos maravilhosos.", verified: true },
+    { name: "Bruno G.", rating: 5, date: "2025-05-01", text: "Recomendo para quem quer uma transformação real.", verified: true },
+    { name: "Sophia M.", rating: 5, date: "2025-04-29", text: "Minha família toda está usando agora.", verified: true },
+    { name: "Arthur R.", rating: 5, date: "2025-04-26", text: "O melhor investimento em saúde que já fiz.", verified: true },
+    { name: "Elena T.", rating: 5, date: "2025-04-24", text: "Adorei os sabores e os resultados.", verified: true },
+    { name: "Gabriel O.", rating: 5, date: "2025-04-21", text: "Muito prático ter tudo em gummies.", verified: true },
+    { name: "Hugo C.", rating: 4, date: "2025-04-19", text: "Qualidade premium, vale muito a pena.", verified: true },
+    { name: "Isabela D.", rating: 5, date: "2025-04-16", text: "Os potes são lindos e o conteúdo é melhor ainda.", verified: true },
+    { name: "Kevin J.", rating: 5, date: "2025-04-14", text: "Fiz o tratamento de 3 meses e os resultados são visíveis.", verified: true },
+    { name: "Laura N.", rating: 5, date: "2025-04-11", text: "Excelente atendimento e pós-venda.", verified: true },
+    { name: "Nando K.", rating: 5, date: "2025-04-09", text: "Produtos de primeira linha. Bubo é top!", verified: true },
+  ]
+};
+
 const esnReviews: Review[] = [
   { name: "Maximilian W.", rating: 5, date: "2025-04-10", text: "Bestes Bundle, das ich bisher gekauft habe. Das Designer Whey schmeckt in 'Milk Chocolate' einfach überragend und löst sich perfekt auf.", verified: true },
   { name: "Laura S.", rating: 5, date: "2025-04-05", text: "Endlich ein komplettes Set für mein Training. Isoclear ist super erfrischend nach dem Gym. Der Preis für 99€ ist unschlagbar.", verified: true },
@@ -57,7 +128,7 @@ function Stars({ count }: { count: number }) {
 }
 
 const SOURCE_LANG_BY_PRODUCT = (slug: string): string => {
-  if (slug === "kit-ferramentas-refrigeracao") return "pt";
+  if (slug === "kit-ferramentas-refrigeracao" || slug.includes("bubo") || slug.includes("combo")) return "pt";
   if (slug === "esn-elite-leistung-combo-1") return "de";
   return "en";
 };
@@ -96,6 +167,8 @@ export default function ProductReviews({ productSlug, productId }: { productSlug
         baseReviews = kitReviews;
       } else if (productSlug === "esn-elite-leistung-combo-1") {
         baseReviews = esnReviews;
+      } else if (buboReviews[productSlug]) {
+        baseReviews = buboReviews[productSlug];
       } else if (productId) {
         const { data } = await supabase
           .from("product_reviews")

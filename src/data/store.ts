@@ -85,7 +85,27 @@ export const products: Product[] = [
     compareAtPrice: 147.90,
     image: "/products/bubo-sleep.jpg",
     category: "gummies",
-    description: "Gummies do sono profundo. Fórmula exclusiva com melatonina, L-Teanina e Camomila para uma noite de sono revigorante. Sabor maracujá.",
+    description: "Gummies do sono profundo. Fórmula exclusiva com melatonina, L-Teanina e Camomila para uma noite de sono revigorante.",
+    descriptionHtml: `
+      <div class="space-y-6">
+        <p class="text-gray-600">Dormir bem é o pilar fundamental de uma vida saudável. <strong>Bubo Sleep</strong> foi desenvolvido para ajudar você a desligar do estresse diário e entrar em um estado de relaxamento profundo.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
+            <h4 class="font-bold text-purple-900 mb-1">💤 Sono Profundo</h4>
+            <p class="text-sm text-purple-700">Auxilia na regulação do ciclo circadiano para um sono sem interrupções.</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
+            <h4 class="font-bold text-purple-900 mb-1">🌿 Relaxamento Natural</h4>
+            <p class="text-sm text-purple-700">Com extratos de Camomila e Maracujá para acalmar a mente.</p>
+          </div>
+        </div>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li>✨ Zero Açúcar e sem Glúten</li>
+          <li>✨ Sabor delicioso de Maracujá</li>
+          <li>✨ 60 gummies por pote (30 dias de tratamento)</li>
+        </ul>
+      </div>
+    `,
     stock: 50,
     badge: "Mais Vendido",
     bundles: buildBundles(),
@@ -98,7 +118,27 @@ export const products: Product[] = [
     compareAtPrice: 147.90,
     image: "/products/bubo-energy.jpg",
     category: "gummies",
-    description: "Gummies de energia e disposição. Complexo vitamínico B e cafeína natural para dar aquele gás no seu dia a dia. Sabor laranja.",
+    description: "Gummies de energia e disposição. Complexo vitamínico B e cafeína natural para dar aquele gás no seu dia a dia.",
+    descriptionHtml: `
+      <div class="space-y-6">
+        <p class="text-gray-600">Chega de cansaço no meio da tarde. <strong>Bubo Energy</strong> é o combustível natural que seu corpo precisa para manter o foco e a produtividade lá no alto.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+            <h4 class="font-bold text-amber-900 mb-1">⚡ Energia Instantânea</h4>
+            <p class="text-sm text-amber-700">Liberação gradual para energia constante sem o "crash" do café.</p>
+          </div>
+          <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+            <h4 class="font-bold text-amber-900 mb-1">🧠 Foco Mental</h4>
+            <p class="text-sm text-amber-700">Melhora a concentração e o desempenho cognitivo.</p>
+          </div>
+        </div>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li>🔥 Enriquecido com Vitaminas B6 e B12</li>
+          <li>🔥 Sabor vibrante de Laranja</li>
+          <li>🔥 Ideal para pré-treino ou trabalho intenso</li>
+        </ul>
+      </div>
+    `,
     stock: 50,
     bundles: buildBundles(),
   },
@@ -110,7 +150,27 @@ export const products: Product[] = [
     compareAtPrice: 147.90,
     image: "/products/bubo-slim.jpg",
     category: "gummies",
-    description: "Gummies de controle de apetite e perda de peso. Picolinato de cromo, fibras e Garcinia para emagrecimento saudável. Sabor maçã verde.",
+    description: "Gummies de controle de apetite e perda de peso. Picolinato de cromo, fibras e Garcinia para emagrecimento saudável.",
+    descriptionHtml: `
+      <div class="space-y-6">
+        <p class="text-gray-600">Transforme sua jornada de emagrecimento em um momento prazeroso. <strong>Bubo Slim</strong> ajuda a controlar a vontade de doces e acelera o metabolismo de forma natural.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+            <h4 class="font-bold text-green-900 mb-1">🥗 Controle de Apetite</h4>
+            <p class="text-sm text-green-700">Sinta-se saciado por mais tempo e reduza a ingestão calórica.</p>
+          </div>
+          <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+            <h4 class="font-bold text-green-900 mb-1">📉 Metabolismo Ativo</h4>
+            <p class="text-sm text-green-700">Fórmula que auxilia na quebra de gordura e queima calórica.</p>
+          </div>
+        </div>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li>🍏 Rico em Fibras Prebióticas</li>
+          <li>🍏 Sabor refrescante de Maçã Verde</li>
+          <li>🍏 Reduz a retenção de líquidos</li>
+        </ul>
+      </div>
+    `,
     stock: 45,
     bundles: buildBundles(),
   },
@@ -128,9 +188,31 @@ export const products: Product[] = [
       "/products/bubo-slim.jpg"
     ],
     category: "combos",
-    description: "Transforme sua rotina com o combo completo Bubo Health. Inclui 1 Bubo Sleep + 1 Bubo Energy + 1 Bubo Slim. Cuide da sua saúde 24h por dia!",
+    description: "Transforme sua rotina com o combo completo Bubo Health. Inclui 1 Bubo Sleep + 1 Bubo Energy + 1 Bubo Slim.",
+    descriptionHtml: `
+      <div class="space-y-6">
+        <div class="bg-indigo-900 text-white p-6 rounded-2xl shadow-xl">
+          <h3 class="text-xl font-bold mb-2">💎 Experiência Bubo 360°</h3>
+          <p class="text-indigo-100 text-sm">O cuidado que seu corpo merece em todas as fases do dia. Durma melhor, tenha mais energia e mantenha o shape.</p>
+        </div>
+        <div class="grid grid-cols-1 gap-3">
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
+            <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold">1</span>
+            <span class="text-sm font-medium">Bubo Sleep: Noites de rainha/rei</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
+            <span class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold">2</span>
+            <span class="text-sm font-medium">Bubo Energy: Dias de alta performance</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
+            <span class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold">3</span>
+            <span class="text-sm font-medium">Bubo Slim: Corpo em equilíbrio</span>
+          </div>
+        </div>
+      </div>
+    `,
     stock: 100,
-    badge: "Economize 44%",
+    badge: "Economize 34%",
     bundles: [
       {
         qty: 1,
