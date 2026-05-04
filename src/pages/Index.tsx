@@ -265,6 +265,14 @@ export default function Index() {
           <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-4 px-4 sm:mx-0 sm:px-0">
             {PRODUCTS.map((p) => {
               const discount = Math.round(((p.compareAtPrice - p.price) / p.compareAtPrice) * 100);
+              const PRODUCT_THEMES: Record<string, string> = {
+                "bubo-sleep": "#7c3aed",
+                "bubo-energy": "#f59e0b",
+                "bubo-slim": "#16a34a",
+                "combo-bubo-health": "#7c3aed",
+              };
+              const accentColor = PRODUCT_THEMES[p.slug] || "#7c3aed";
+
               return (
                 <div key={p.id} className="min-w-[85vw] sm:min-w-0 snap-center shrink-0 bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group border border-gray-100">
                   <Link to={`/produto/${p.slug}`} className="block relative overflow-hidden bg-gray-50 aspect-square">
@@ -275,21 +283,22 @@ export default function Index() {
                   <div className="p-5">
                     <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1">{p.tagline} • {p.flavor}</p>
                     <Link to={`/produto/${p.slug}`}>
-                      <h3 className="font-black text-lg text-gray-900 hover:text-[#7c3aed] transition-colors leading-tight mb-1">{p.name}</h3>
+                      <h3 className="font-black text-lg text-gray-900 transition-colors leading-tight mb-1" style={{ color: accentColor }}>{p.name}</h3>
                     </Link>
                     <p className="text-xs text-gray-500 mb-4 line-clamp-2">{p.subtitle}</p>
                     <div className="flex items-baseline gap-2 mb-4">
-                      <span className="text-2xl font-black text-[#7c3aed]">{formatPrice(p.price)}</span>
+                      <span className="text-2xl font-black" style={{ color: accentColor }}>{formatPrice(p.price)}</span>
                       <span className="text-sm text-gray-400 line-through">{formatPrice(p.compareAtPrice)}</span>
                     </div>
                     <button
                       onClick={() => addProduct(p)}
-                      className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-black text-sm uppercase tracking-wide py-3.5 rounded-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-md shadow-purple-200"
+                      className="w-full text-white font-black text-sm uppercase tracking-wide py-3.5 rounded-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-md"
+                      style={{ backgroundColor: accentColor }}
                     >
                       <ShoppingCart size={16} />
                       ADICIONAR AO CARRINHO
                     </button>
-                    <Link to={`/produto/${p.slug}`} className="block text-center text-xs text-[#7c3aed] hover:underline mt-2 font-medium">
+                    <Link to={`/produto/${p.slug}`} className="block text-center text-xs hover:underline mt-2 font-medium" style={{ color: accentColor }}>
                       Ver detalhes →
                     </Link>
                   </div>

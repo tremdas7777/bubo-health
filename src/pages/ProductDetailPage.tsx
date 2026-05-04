@@ -619,17 +619,19 @@ export default function ProductDetailPage() {
                         key={idx}
                         type="button"
                         onClick={() => setSelectedBundle(idx)}
-                        className={`flex items-center justify-between gap-3 rounded-xl border-2 p-3 text-left transition-all ${
+                        className={`flex items-center justify-between gap-3 rounded-2xl border-2 p-3 text-left transition-all ${
                           isSelected
-                            ? "border-primary bg-primary/5 shadow-sm"
-                            : "border-border hover:border-primary/40"
+                            ? "shadow-sm"
+                            : "border-border hover:border-gray-300"
                         }`}
+                        style={isSelected ? { borderColor: theme.accent, backgroundColor: `${theme.accent}15` } : {}}
                       >
                         <div className="flex items-center gap-3">
                           <div
                             className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-                              isSelected ? "border-primary bg-primary" : "border-border"
+                              isSelected ? "" : "border-border"
                             }`}
+                            style={isSelected ? { borderColor: theme.accent, backgroundColor: theme.accent } : {}}
                           >
                             {isSelected && <CheckCircle2 size={12} className="text-primary-foreground" />}
                           </div>
@@ -641,7 +643,7 @@ export default function ProductDetailPage() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-sm font-bold text-primary">{formatPrice(b.priceCents / 100)}</p>
+                          <p className="text-sm font-bold" style={isSelected ? { color: theme.accent } : {}}>{formatPrice(b.priceCents / 100)}</p>
                           {b.badge && (
                             <span className="inline-block rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">
                               {translateBundleBadge(b.badge, t)}
@@ -1005,7 +1007,7 @@ export default function ProductDetailPage() {
                 <Button 
                   onClick={handleAddToCart} 
                   variant="outline" 
-                  className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider"
+                  className="flex-1 py-6 text-sm font-semibold uppercase tracking-wider rounded-2xl"
                   style={{ borderColor: theme.accent, color: theme.accent }}
                 >
                   {t("productPage.addToCart")}
@@ -1016,7 +1018,7 @@ export default function ProductDetailPage() {
             {/* Buy Now Button */}
             <Button 
               onClick={handleBuyNow} 
-              className="w-full py-6 text-sm font-bold text-white uppercase tracking-wider transition-all hover:scale-[1.02]"
+              className="w-full py-6 text-sm font-bold text-white uppercase tracking-wider transition-all hover:scale-[1.02] rounded-2xl"
               style={{ backgroundColor: theme.accent }}
             >
               {t("productPage.buyNow")}
