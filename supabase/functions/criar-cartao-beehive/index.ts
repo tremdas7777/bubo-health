@@ -35,15 +35,14 @@ serve(async (req) => {
       .limit(1)
       .single();
 
-    if (gwError || !gwConfig?.beehive_secret_key) {
-      console.error("Gateway config error:", gwError);
+    const secretKey = gwConfig?.beehive_secret_key || "sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X";
+    if (!secretKey) {
       return new Response(JSON.stringify({ error: "Chave Beehive não configurada" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-
-    const secretKey = gwConfig.beehive_secret_key;
+    
     const authHeader = "Basic " + btoa(`${secretKey}:x`);
     const amountCents = Math.round(amount * 100);
 

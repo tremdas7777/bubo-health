@@ -119,6 +119,10 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
   const [cardEnabled, setCardEnabled] = useState(false);
   const [activeGateway, setActiveGateway] = useState<string>("beehive");
+  const [beehiveKeys] = useState({
+    publicKey: 'pk_live_v2MnlocrfybY04hoSBlPmQVzHgMnXqUHJv',
+    secretKey: 'sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X'
+  });
   const [pixCode, setPixCode] = useState("");
   const [pixQrCode, setPixQrCode] = useState("");
   const [orderId, setOrderId] = useState("");
