@@ -119,10 +119,6 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
   const [cardEnabled, setCardEnabled] = useState(false);
   const [activeGateway, setActiveGateway] = useState<string>("beehive");
-  const [beehiveKeys] = useState({
-    publicKey: 'pk_live_v2MnlocrfybY04hoSBlPmQVzHgMnXqUHJv',
-    secretKey: 'sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X'
-  });
   const [pixCode, setPixCode] = useState("");
   const [pixQrCode, setPixQrCode] = useState("");
   const [orderId, setOrderId] = useState("");
@@ -364,7 +360,17 @@ export default function CheckoutPage() {
     setPaymentError("");
 
     try {
-      const gateway = "beehive";
+      const gatewayConfig = await fetchPaymentGatewayConfig();
+      const gateway = gatewayConfig.activeGateway;
+
+      if (gateway === 'stripe') {
+        // Stripe PIX implementation would go here if enabled
+        setPaymentError("PIX não disponível para Stripe neste projeto. Use Cartão.");
+        setGenerating(false);
+        return;
+      }
+      
+      const functionName = gateway === "beehive" ? "criar-pix-beehive" : "criar-pix-beehive"; // Fallback to beehive for others
 
       const bodyBase: Record<string, unknown> = {
         amount: total,
@@ -386,7 +392,7 @@ export default function CheckoutPage() {
         },
       };
 
-      const { data, error } = await supabase.functions.invoke("criar-pix-beehive", {
+      const { data, error } = await supabase.functions.invoke(functionName, {
         body: bodyBase,
       });
 

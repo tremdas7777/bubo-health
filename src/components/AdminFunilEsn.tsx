@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { ArrowDown, CreditCard, DollarSign, Eye, ExternalLink, ShoppingCart, TrendingUp } from "lucide-react";
+import { ArrowDown, CreditCard, DollarSign, Eye, ShoppingCart, TrendingUp } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +8,6 @@ import { getFunnelStatsForProduct, type FunnelStats } from "@/lib/funnelTracking
 
 const ESN_SLUG = "esn-elite-leistung-combo-1";
 const ESN_NAME = "ESN Elite Leistung Combo";
-const ESN_EXTERNAL_CHECKOUT = "https://checkout.flowspays.com/checkout/cmodkt6sb00i31rp0obulz7pa?offer=ZW5X4XQ";
 
 const INITIAL_STATS: FunnelStats = {
   visitors: 0,
@@ -72,12 +71,21 @@ export default function AdminFunilEsn() {
     },
     {
       icon: <CreditCard size={20} className="text-orange-500" />,
-      title: "Iniciaram checkout externo",
-      description: "Clicaram em Comprar Agora (Flowspays)",
+      title: "Iniciaram checkout",
+      description: "Clicaram em Comprar Agora",
       count: stats.checkout,
       conversion: pct(stats.checkout, stats.productViews),
-      dropoff: null as string | null,
+      dropoff: `${pct(stats.purchase, stats.checkout)}% compraram`,
       progressValue: stats.productViews > 0 ? (stats.checkout / stats.productViews) * 100 : 0,
+    },
+    {
+      icon: <DollarSign size={20} className="text-emerald-500" />,
+      title: "Compraram",
+      description: "Finalizaram o pagamento",
+      count: stats.purchase,
+      conversion: pct(stats.purchase, stats.productViews),
+      dropoff: null as string | null,
+      progressValue: stats.productViews > 0 ? (stats.purchase / stats.productViews) * 100 : 0,
     },
   ];
 
@@ -94,23 +102,15 @@ export default function AdminFunilEsn() {
         </span>
       </div>
 
-      <Card className="mb-4 border border-amber-500/30 bg-amber-500/5 p-3">
+      <Card className="mb-4 border border-emerald-500/30 bg-emerald-500/5 p-3">
         <div className="flex items-start gap-2 text-xs">
-          <ExternalLink size={14} className="mt-0.5 text-amber-600" />
+          <ShoppingCart size={14} className="mt-0.5 text-emerald-600" />
           <div className="flex-1">
-            <p className="font-bold text-amber-700 dark:text-amber-400">Checkout externo (Flowspays)</p>
+            <p className="font-bold text-emerald-700 dark:text-emerald-400">Checkout interno (Beehive)</p>
             <p className="text-muted-foreground">
-              Este produto envia o cliente para um checkout fora da loja. O evento de "Compra" não pode ser
-              capturado automaticamente — somente até o clique em <strong>Comprar Agora</strong>.
+              Este produto usa o checkout interno da Bubo Health. Todas as etapas do funil são
+              rastreadas automaticamente, incluindo pagamentos via PIX e Cartão.
             </p>
-            <a
-              href={ESN_EXTERNAL_CHECKOUT}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-1 inline-flex items-center gap-1 text-amber-700 underline dark:text-amber-400"
-            >
-              Abrir checkout externo <ExternalLink size={11} />
-            </a>
           </div>
         </div>
       </Card>
@@ -217,8 +217,8 @@ export default function AdminFunilEsn() {
         <div className="flex items-start gap-2 text-[11px] text-muted-foreground">
           <DollarSign size={14} className="mt-0.5 text-emerald-500" />
           <p>
-            Para ver as vendas <strong>finalizadas</strong> deste combo, acesse o painel do gateway externo
-            <span className="font-mono"> Flowspays</span>. As métricas acima refletem apenas a jornada dentro da loja Bubo Health.
+            As vendas finalizadas deste combo são processadas pelo gateway <strong>Beehive</strong> e registradas
+            automaticamente na aba <strong>Pedidos</strong>. As métricas acima refletem a jornada completa dentro da loja Bubo Health.
           </p>
         </div>
       </Card>

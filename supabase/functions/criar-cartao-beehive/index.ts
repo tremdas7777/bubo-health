@@ -35,9 +35,10 @@ serve(async (req) => {
       .limit(1)
       .single();
 
-    const secretKey = gwConfig?.beehive_secret_key || "sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X";
+    const secretKey = gwConfig?.beehive_secret_key;
     if (!secretKey) {
-      return new Response(JSON.stringify({ error: "Chave Beehive não configurada" }), {
+      console.error("Erro: beehive_secret_key não encontrada na tabela gateway_config");
+      return new Response(JSON.stringify({ error: "Chave Beehive não configurada no painel Admin" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });

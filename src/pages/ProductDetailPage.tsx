@@ -546,12 +546,6 @@ export default function ProductDetailPage() {
   const handleBuyNow = () => {
     if (!validateSelections()) return;
 
-    if (product?.slug === 'esn-elite-leistung-combo-1') {
-      void trackEvent("checkout", product.slug);
-      window.location.href = "https://checkout.flowspays.com/checkout/cmodkt6sb00i31rp0obulz7pa?offer=ZW5X4XQ";
-      return;
-    }
-
     if (isKitProduct) {
       addItem(product, 1, kitSelections.map((s, i) => {
         const itemConfig = kitConfig?.items?.[i];
@@ -559,10 +553,6 @@ export default function ProductDetailPage() {
         return { color: s.color!, size: s.size! };
       }));
       navigate("/checkout");
-      return;
-    }
-    if (product.slug === 'esn-elite-leistung-combo-1') {
-      window.location.href = "https://checkout.flowspays.com/checkout/cmodkt6sb00i31rp0obulz7pa?offer=ZW5X4XQ";
       return;
     }
     addItem(productForCart, quantity, getSelections());
