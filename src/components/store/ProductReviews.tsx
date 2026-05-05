@@ -104,6 +104,23 @@ const buboReviews: Record<string, Review[]> = {
     { name: "Kevin J.", rating: 5, date: "2025-04-14", text: "Fiz o tratamento de 3 meses e os resultados são visíveis.", verified: true },
     { name: "Laura N.", rating: 5, date: "2025-04-11", text: "Excelente atendimento e pós-venda.", verified: true },
     { name: "Nando K.", rating: 5, date: "2025-04-09", text: "Produtos de primeira linha. Bubo é top!", verified: true },
+  ],
+  "bubo-hair": [
+    { name: "Juliana R.", rating: 5, date: "2025-05-15", text: "Meu cabelo estava caindo muito, em 20 dias já notei uma diferença absurda. Amei!", verified: true },
+    { name: "Camila V.", rating: 5, date: "2025-05-12", text: "Minhas unhas pararam de lascar. O sabor de frutas vermelhas é incrível.", verified: true },
+    { name: "Letícia B.", rating: 5, date: "2025-05-10", text: "Gummy deliciosa e realmente funciona. Recomendo!", verified: true },
+    { name: "Mariana L.", rating: 5, date: "2025-05-08", text: "Sinto meu cabelo muito mais brilhante e forte.", verified: true },
+    { name: "Renata S.", rating: 4, date: "2025-05-05", text: "Estou gostando muito dos resultados iniciais.", verified: true },
+    { name: "Beatriz M.", rating: 5, date: "2025-05-02", text: "Melhor vitamina para cabelo que já tomei.", verified: true },
+    { name: "Aline F.", rating: 5, date: "2025-04-30", text: "Além de funcionar, é um prazer comer todo dia.", verified: true },
+    { name: "Patrícia G.", rating: 5, date: "2025-04-28", text: "Minha esteticista perguntou o que eu estava fazendo no cabelo!", verified: true },
+    { name: "Sônia K.", rating: 5, date: "2025-04-25", text: "Unhas crescendo muito rápido e fortes.", verified: true },
+    { name: "Carla D.", rating: 5, date: "2025-04-22", text: "Produto de altíssima qualidade. Bubo é nota 10.", verified: true },
+    { name: "Fernanda O.", rating: 4, date: "2025-04-20", text: "O sabor é muito bom, parece uma bala.", verified: true },
+    { name: "Gabriela T.", rating: 5, date: "2025-04-18", text: "Resultados visíveis no brilho do cabelo em 2 semanas.", verified: true },
+    { name: "Mônica P.", rating: 5, date: "2025-04-15", text: "Vale muito o investimento.", verified: true },
+    { name: "Daniela H.", rating: 5, date: "2025-04-12", text: "Chegou super rápido, bem embalado.", verified: true },
+    { name: "Priscila N.", rating: 5, date: "2025-04-10", text: "Não fico mais sem meu Bubo Hair.", verified: true },
   ]
 };
 

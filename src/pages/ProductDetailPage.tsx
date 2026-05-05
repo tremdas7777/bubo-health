@@ -559,6 +559,7 @@ export default function ProductDetailPage() {
     "bubo-sleep": { bg: "from-purple-900 to-purple-700", accent: "#7c3aed", tag: "🌙 Gummies do Sono" },
     "bubo-energy": { bg: "from-amber-700 to-yellow-500", accent: "#f59e0b", tag: "⚡ Gummies de Energia" },
     "bubo-slim": { bg: "from-green-800 to-green-500", accent: "#16a34a", tag: "🌿 Gummies Emagrecimento" },
+    "bubo-hair": { bg: "from-pink-800 to-rose-500", accent: "#db2777", tag: "💖 Cabelo & Unhas" },
     "combo-bubo-health": { bg: "from-indigo-900 to-purple-700", accent: "#7c3aed", tag: "🔥 Kit Completo" },
   };
   const theme = PRODUCT_THEMES[product.slug] || { bg: "from-purple-900 to-purple-700", accent: "#7c3aed", tag: "✨ Bubo Health" };

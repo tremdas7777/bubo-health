@@ -12,6 +12,7 @@ const HERO_COLORS = [
   { bar: "#4c1d95" },  // sleep — deep purple
   { bar: "#b45309" },  // energy — amber
   { bar: "#15803d" },  // slim — green
+  { bar: "#db2777" },  // hair — pink
   { bar: "#3730a3" },  // combo — indigo
 ];
 
@@ -60,6 +61,21 @@ const PRODUCTS = [
     bg: "from-green-800 to-green-500",
     tagline: "Cromo + Fibras",
     flavor: "Sabor Maçã Verde",
+  },
+  {
+    id: "bubo-hair",
+    slug: "bubo-hair",
+    name: "Bubo Hair",
+    subtitle: "Gummies para Cabelo e Unhas",
+    price: 9700,
+    compareAtPrice: 14790,
+    image: "/products/bubo-hair.jpg",
+    badge: "LANÇAMENTO",
+    badgeColor: "bg-pink-500",
+    accent: "#db2777",
+    bg: "from-pink-700 to-rose-400",
+    tagline: "Biotina + Colágeno",
+    flavor: "Sabor Frutas Vermelhas",
   },
   {
     id: "bubo-combo",
@@ -116,6 +132,18 @@ const HERO_SLIDES = [
     discountBg: "bg-green-400",
   },
   {
+    slug: "bubo-hair",
+    bg: "from-[#831843] via-[#db2777] to-[#fb7185]",
+    tag: "💖 Beleza de dentro para fora",
+    title: "Cabelos e Unhas\nFortes e Brilhantes",
+    desc: "Gummies com Biotina e Colágeno para fortalecer fios e unhas. Sabor Frutas Vermelhas.",
+    cta: "COMPRAR AGORA",
+    ctaColor: "bg-[#db2777] hover:bg-[#be185d]",
+    image: "/products/bubo-hair.jpg",
+    discount: "33% OFF",
+    discountBg: "bg-pink-400",
+  },
+  {
     slug: "combo-bubo-health",
     bg: "from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed]",
     tag: "🔥 Oferta imperdível",
@@ -140,6 +168,7 @@ const REVIEWS = [
   { name: "Mariana S.", stars: 5, text: "O Bubo Sleep mudou minha vida! Durmo muito melhor e acordo disposta.", product: "Bubo Sleep", avatar: "M" },
   { name: "Rafael M.", stars: 5, text: "Bubo Energy é incrível, sem aquele nervosismo do café! Energizado o dia todo.", product: "Bubo Energy", avatar: "R" },
   { name: "Carla T.", stars: 5, text: "Já perdi 4kg em 2 meses com o Bubo Slim. E ainda é gostoso!", product: "Bubo Slim", avatar: "C" },
+  { name: "Juliana R.", stars: 5, text: "Meu cabelo nunca cresceu tão rápido! O Bubo Hair é milagroso.", product: "Bubo Hair", avatar: "J" },
   { name: "Lucas P.", stars: 5, text: "Comprei o combo e foi a melhor decisão. Recomendo demais!", product: "Combo Completo", avatar: "L" },
 ];
 
@@ -271,13 +300,14 @@ export default function Index() {
             <h2 className="text-3xl md:text-4xl font-heading font-black text-gray-900 mb-2">Encontre sua Gummie Perfeita</h2>
             <p className="text-gray-500 text-base max-w-md mx-auto">Ciência e sabor em uma só gommie. Cuide da sua saúde de um jeito gostoso!</p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
             {PRODUCTS.map((p) => {
               const discount = Math.round(((p.compareAtPrice - p.price) / p.compareAtPrice) * 100);
               const PRODUCT_THEMES: Record<string, string> = {
                 "bubo-sleep": "#7c3aed",
                 "bubo-energy": "#f59e0b",
                 "bubo-slim": "#16a34a",
+                "bubo-hair": "#db2777",
                 "combo-bubo-health": "#7c3aed",
               };
               const accentColor = PRODUCT_THEMES[p.slug] || "#7c3aed";

@@ -143,6 +143,39 @@ export const products: Product[] = [
     bundles: buildBundles(),
   },
   {
+    id: "bubo-hair",
+    name: "Bubo Hair",
+    slug: "bubo-hair",
+    price: 97.00,
+    compareAtPrice: 147.90,
+    image: "/products/bubo-hair.jpg",
+    category: "gummies",
+    description: "Gummies para cabelos e unhas. Biotina, colágeno e complexo vitamínico para força e brilho extremo.",
+    descriptionHtml: `
+      <div class="space-y-6">
+        <p class="text-gray-600">O segredo para um cabelo de capa de revista e unhas inquebráveis. <strong>Bubo Hair</strong> nutre de dentro para fora com a dose perfeita de Biotina e Colágeno.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-pink-50 p-4 rounded-xl border border-pink-100">
+            <h4 class="font-bold text-pink-900 mb-1">💇‍♀️ Cabelos Fortes</h4>
+            <p class="text-sm text-pink-700">Reduz a queda e estimula o crescimento de novos fios mais resistentes.</p>
+          </div>
+          <div class="bg-pink-50 p-4 rounded-xl border border-pink-100">
+            <h4 class="font-bold text-pink-900 mb-1">💅 Unhas de Aço</h4>
+            <p class="text-sm text-pink-700">Fortalece a base das unhas, eliminando a quebra e descamação.</p>
+          </div>
+        </div>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li>💖 Alto teor de Biotina e Zinco</li>
+          <li>💖 Sabor irresistível de Frutas Vermelhas</li>
+          <li>💖 Resultados visíveis em 30 dias</li>
+        </ul>
+      </div>
+    `,
+    stock: 60,
+    badge: "Novo",
+    bundles: buildBundles(),
+  },
+  {
     id: "bubo-slim",
     name: "Bubo Slim",
     slug: "bubo-slim",

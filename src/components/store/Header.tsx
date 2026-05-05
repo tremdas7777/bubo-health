@@ -64,7 +64,7 @@ export default function Header() {
               src="/logos/logo-purple.png" 
               alt="Bubo Health" 
               className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ${
-                (barColor !== "#b45309" && barColor !== "#f59e0b" && barColor !== "#15803d" && barColor !== "#16a34a") ? "opacity-100" : "opacity-0"
+                (barColor !== "#b45309" && barColor !== "#f59e0b" && barColor !== "#15803d" && barColor !== "#16a34a" && barColor !== "#db2777" && barColor !== "#be185d") ? "opacity-100" : "opacity-0"
               }`} 
             />
             {/* Logo Amber */}
@@ -81,6 +81,14 @@ export default function Header() {
               alt="Bubo Health" 
               className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ${
                 (barColor === "#15803d" || barColor === "#16a34a") ? "opacity-100" : "opacity-0"
+              }`} 
+            />
+            {/* Logo Pink */}
+            <img 
+              src="/logos/logo-pink.png" 
+              alt="Bubo Health" 
+              className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ${
+                (barColor === "#db2777" || barColor === "#be185d") ? "opacity-100" : "opacity-0"
               }`} 
             />
           </Link>
