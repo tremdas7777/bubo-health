@@ -47,8 +47,9 @@ export const collections: Collection[] = [
 
 // Bundle pricing: R$97 por pote base
 // 1 pote: R$ 97,00 (de R$ 147,90)
-// 3 potes: R$ 267,00 (R$ 89/pote — 8% desc) (de R$ 443,70)
-// 5 potes: R$ 415,00 (R$ 83/pote — 14% desc) (de R$ 739,50)
+// 2 potes: R$ 194,00 (de R$ 294,00)
+// 3 potes: R$ 291,00 (de R$ 443,70)
+// 4 potes: R$ 388,00 (De R$ 588,00)
 const buildBundles = (): ProductBundle[] => [
   {
     qty: 1,
@@ -59,20 +60,28 @@ const buildBundles = (): ProductBundle[] => [
     badge: "PROMOÇÃO",
   },
   {
+    qty: 2,
+    label: "2 Potes — Tratamento Inicial",
+    priceCents: 19400, // 97 * 2
+    originalPriceCents: 29400,
+    perUnitCents: 9700,
+    badge: "97/unid.",
+  },
+  {
     qty: 3,
     label: "3 Potes — Tratamento Médio",
     priceCents: 29100, // 97 * 3
     originalPriceCents: 44370,
     perUnitCents: 9700,
-    badge: "RECOMENDADO",
+    badge: "97/unid.",
   },
   {
-    qty: 5,
-    label: "5 Potes — Tratamento Completo",
-    priceCents: 48500, // 97 * 5
-    originalPriceCents: 73950,
+    qty: 4,
+    label: "4 Potes — Tratamento Completo",
+    priceCents: 38800, // 97 * 4
+    originalPriceCents: 58800,
     perUnitCents: 9700,
-    badge: "MELHOR CUSTO",
+    badge: "MELHOR VALOR",
   },
 ];
 

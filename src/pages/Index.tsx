@@ -78,9 +78,39 @@ const PRODUCTS = [
     flavor: "Sabor Frutas Vermelhas",
   },
   {
+    id: "bubo-combo-2",
+    slug: "combo-2-potes",
+    name: "Combo 2 Potes",
+    subtitle: "Escolha 2 produtos",
+    price: 19400,
+    compareAtPrice: 29400,
+    image: "/products/bubo-combo.png",
+    badge: "OFERTA",
+    badgeColor: "bg-blue-600",
+    accent: "#3b82f6",
+    bg: "from-blue-900 to-blue-700",
+    tagline: "2 potes",
+    flavor: "2 produtos",
+  },
+  {
+    id: "bubo-combo-3",
+    slug: "combo-3-potes",
+    name: "Combo 3 Potes",
+    subtitle: "Escolha 3 produtos",
+    price: 29100,
+    compareAtPrice: 44100,
+    image: "/products/bubo-combo.png",
+    badge: "OFERTA",
+    badgeColor: "bg-indigo-600",
+    accent: "#4f46e5",
+    bg: "from-indigo-900 to-indigo-700",
+    tagline: "3 potes",
+    flavor: "3 produtos",
+  },
+  {
     id: "bubo-combo",
     slug: "combo-bubo-health",
-    name: "Combo Completo",
+    name: "Combo Completo 4 Potes",
     subtitle: "Sleep + Energy + Slim + Hair",
     price: 38800,
     compareAtPrice: 58800,
@@ -144,10 +174,34 @@ const HERO_SLIDES = [
     discountBg: "bg-pink-400",
   },
   {
+    slug: "combo-2-potes",
+    bg: "from-[#1e3a8a] via-[#3b82f6] to-[#60a5fa]",
+    tag: "💙 Escolha 2 produtos",
+    title: "Combo 2 Potes\nLeve 2 por R$ 194",
+    desc: "Monte seu combo com 2 potes de gummies à sua escolha. Aproveite!",
+    cta: "QUERO MEU COMBO",
+    ctaColor: "bg-[#3b82f6] hover:bg-[#2563eb]",
+    image: "/products/bubo-combo.png",
+    discount: "R$ 194,00",
+    discountBg: "bg-blue-400",
+  },
+  {
+    slug: "combo-3-potes",
+    bg: "from-[#312e81] via-[#4f46e5] to-[#818cf8]",
+    tag: "💜 Escolha 3 produtos",
+    title: "Combo 3 Potes\nLeve 3 por R$ 291",
+    desc: "Monte seu combo com 3 potes de gummies à sua escolha. Melhor custo-benefício!",
+    cta: "QUERO MEU COMBO",
+    ctaColor: "bg-[#4f46e5] hover:bg-[#4338ca]",
+    image: "/products/bubo-combo.png",
+    discount: "R$ 291,00",
+    discountBg: "bg-indigo-400",
+  },
+  {
     slug: "combo-bubo-health",
     bg: "from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed]",
     tag: "🔥 Oferta imperdível",
-    title: "Combo Completo\nBubo Health Total",
+    title: "Combo Completo 4 Potes\nBubo Health Total",
     desc: "A experiência máxima: Sleep + Energy + Slim + Hair. O cuidado total que seu corpo merece!",
     cta: "GARANTIR MEU COMBO",
     ctaColor: "bg-[#7c3aed] hover:bg-[#6d28d9]",
@@ -367,8 +421,8 @@ export default function Index() {
                       </Link>
                       <p className="text-xs text-gray-500 mb-4 line-clamp-2">{p.subtitle}</p>
                       <div className="flex items-baseline gap-2 mb-5">
-                        <span className="text-2xl font-black" style={{ color: accentColor }}>{formatPrice(p.price / 100)}</span>
-                        <span className="text-sm text-gray-400 line-through">{formatPrice(p.compareAtPrice / 100)}</span>
+                        <span className="text-2xl font-black" style={{ color: accentColor }}>{formatPrice(p.price)}</span>
+                        <span className="text-sm text-gray-400 line-through">{formatPrice(p.compareAtPrice)}</span>
                       </div>
                       <button
                         onClick={() => addProduct(p)}
@@ -387,43 +441,43 @@ export default function Index() {
         </div>
       </section>
 
-      {/* COMBO BANNER */}
-      <section className="py-6 px-4">
-        <div className="container mx-auto">
-          <Link to="/produto/combo-bubo-health" className="block relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed] shadow-2xl hover:scale-[1.01] transition-transform duration-300">
-            <div className="flex flex-col md:flex-row items-center gap-8 p-10 md:p-14">
-              <div className="flex-1 text-white text-center md:text-left">
-                <span className="inline-block bg-red-500 text-white text-xs font-black px-5 py-2 rounded-full mb-6 uppercase tracking-widest animate-pulse shadow-lg">🔥 Oferta exclusiva</span>
-                <h2 className="text-4xl md:text-6xl font-heading font-black mb-4 leading-tight">
-                  Combo Bubo Health
-                  <br /><span className="text-purple-300">Completo 360°</span>
-                </h2>
-                <p className="text-purple-100 text-xl mb-6">Sleep + Energy + Slim + Hair em um kit especial</p>
-                <div className="flex items-center gap-6 justify-center md:justify-start flex-wrap mb-8">
-                  <div>
-                    <p className="text-purple-300 text-sm md:text-base line-through">De R$ 588,00</p>
-                    <p className="text-white text-5xl md:text-6xl font-black">R$ 388,00</p>
-                  </div>
-                  <span className="bg-red-500 text-white text-2xl font-black px-6 py-3 rounded-2xl shadow-xl">34% OFF</span>
-                </div>
-                <div className="flex gap-4 mb-8 flex-wrap justify-center md:justify-start">
-                  {["✅ Sono", "⚡ Energia", "🌿 Emagreça", "💖 Beleza"].map((item, i) => (
-                    <span key={i} className="text-white text-sm font-bold bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10">{item}</span>
-                  ))}
-                </div>
-                <button className="bg-white text-[#7c3aed] font-black text-base uppercase tracking-widest px-10 py-5 rounded-full hover:scale-105 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] inline-flex items-center gap-3">
-                  <ShoppingCart size={22} />
-                  QUERO O COMBO AGORA
-                </button>
-              </div>
-              <div className="flex-shrink-0 relative">
-                <div className="absolute inset-0 bg-white/20 blur-[100px] rounded-full scale-110" />
-                <img src="/products/bubo-combo.png" alt="Combo Bubo Health" className="w-[300px] md:w-[450px] object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] relative z-10" />
-              </div>
+{/* COMBO BANNER */}
+<section className="py-6 px-4">
+  <div className="container mx-auto">
+    <Link to="/produto/combo-bubo-health" className="block relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed] shadow-2xl hover:scale-[1.01] transition-transform duration-300">
+      <div className="flex flex-col md:flex-row items-center gap-8 p-10 md:p-14">
+        <div className="flex-1 text-white text-center md:text-left">
+          <span className="inline-block bg-red-500 text-white text-xs font-black px-5 py-2 rounded-full mb-6 uppercase tracking-widest animate-pulse shadow-lg">🔥 Oferta exclusiva</span>
+          <h2 className="text-4xl md:text-6xl font-heading font-black mb-4 leading-tight">
+            Combo Bubo Health
+            <br /><span className="text-purple-300">Completo 360°</span>
+          </h2>
+          <p className="text-purple-100 text-xl mb-6">Sleep + Energy + Slim + Hair em um kit especial</p>
+          <div className="flex items-center gap-6 justify-center md:justify-start flex-wrap mb-8">
+            <div>
+              <p className="text-purple-300 text-sm md:text-base line-through">De R$ 588,00</p>
+              <p className="text-white text-5xl md:text-6xl font-black">R$ 388,00</p>
             </div>
-          </Link>
+            <span className="bg-red-500 text-white text-2xl font-black px-6 py-3 rounded-2xl shadow-xl">34% OFF</span>
+          </div>
+          <div className="flex gap-4 mb-8 flex-wrap justify-center md:justify-start">
+            {["✅ 2 Potens R$ 194", "✅ 3 Potens R$ 291", "✅ 4 Potens R$ 388"].map((item, i) => (
+              <span key={i} className="text-white text-sm font-bold bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10">{item}</span>
+            ))}
+          </div>
+          <button className="bg-white text-[#7c3aed] font-black text-base uppercase tracking-widest px-10 py-5 rounded-full hover:scale-105 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] inline-flex items-center gap-3">
+            <ShoppingCart size={22} />
+            QUERO MEU COMBO AGORA
+          </button>
         </div>
-      </section>
+        <div className="flex-shrink-0 relative">
+          <div className="absolute inset-0 bg-white/20 blur-[100px] rounded-full scale-110" />
+          <img src="/products/bubo-combo.png" alt="Combo Bubo Health" className="w-[300px] md:w-[450px] object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] relative z-10" />
+        </div>
+      </div>
+    </Link>
+  </div>
+</section>
 
       {/* WHY BUBO */}
       <section className="py-20 bg-[#f5f3ff]">

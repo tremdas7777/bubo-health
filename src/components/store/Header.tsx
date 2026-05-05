@@ -42,7 +42,7 @@ export default function Header() {
     <header className="bg-background sticky top-0 z-40">
       {/* Main header row */}
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-[80px] md:h-[100px]">
+        <div className="flex items-center justify-between h-[100px] md:h-[130px]">
           {/* Left: search */}
           <div className="flex items-center gap-3 w-[140px]">
             <button
@@ -58,7 +58,7 @@ export default function Header() {
           </div>
 
           {/* Center: Logo */}
-          <Link to="/" className="flex items-center relative h-[60px] md:h-[80px] w-[180px] md:w-[240px] justify-center">
+          <Link to="/" className="flex items-center relative h-[95px] md:h-[110px] w-[260px] md:w-[340px] justify-center scale-110 md:scale-[1.15]">
             {/* Logo Purple (Default) */}
             <img 
               src="/logos/logo-purple.png" 

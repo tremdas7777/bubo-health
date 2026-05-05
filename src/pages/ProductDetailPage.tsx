@@ -153,19 +153,27 @@ export default function ProductDetailPage() {
       const baseBundles = isCombo ? [
         {
           qty: 1,
-          label: "1 Combo (4 produtos)",
+          label: "1 Combo (4 potes) — Experimente",
           priceCents: 38800,
           originalPriceCents: 58800,
-          perUnitCents: 38800,
-          badge: "MELHOR VALOR",
+          perUnitCents: 9700,
+          badge: "PROMOÇÃO",
         },
         {
           qty: 2,
-          label: "2 Combos (8 produtos) 👫",
+          label: "2 Combos (8 potes) 👫 — Tratamento Médio",
           priceCents: 77600,
           originalPriceCents: 117600,
-          perUnitCents: 38800,
+          perUnitCents: 9700,
           badge: "RECOMENDADO",
+        },
+        {
+          qty: 3,
+          label: "3 Combos (12 potes) — Tratamento Completo",
+          priceCents: 116400,
+          originalPriceCents: 176400,
+          perUnitCents: 9700,
+          badge: "MELHOR VALOR",
         }
       ] : [
         {
@@ -177,6 +185,14 @@ export default function ProductDetailPage() {
           badge: "PROMOÇÃO",
         },
         {
+          qty: 2,
+          label: "2 Potes — Tratamento Inicial",
+          priceCents: 19400,
+          originalPriceCents: 29400,
+          perUnitCents: 9700,
+          badge: "97/unid.",
+        },
+        {
           qty: 3,
           label: "3 Potes — Tratamento Médio",
           priceCents: 29100,
@@ -185,18 +201,18 @@ export default function ProductDetailPage() {
           badge: "97/unid.",
         },
         {
-          qty: 5,
-          label: "5 Potes — Tratamento Completo",
-          priceCents: 48500,
-          originalPriceCents: 73950,
+          qty: 4,
+          label: "4 Potes — Tratamento Completo",
+          priceCents: 38800,
+          originalPriceCents: 58800,
           perUnitCents: 9700,
-          badge: "97/unid.",
+          badge: "MELHOR VALOR",
         }
       ];
 
       return {
         ...p,
-        price: isCombo ? 29100 : 9700,
+        price: isCombo ? 38800 : 9700,
         bundles: baseBundles
       };
     }
