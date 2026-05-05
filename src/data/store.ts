@@ -211,56 +211,61 @@ export const products: Product[] = [
     id: "bubo-combo",
     name: "Combo Bubo Health Completo",
     slug: "combo-bubo-health",
-    price: 291.00,
-    compareAtPrice: 441.00,
-    image: "/products/bubo-combo.jpg",
+    price: 388.00,
+    compareAtPrice: 588.00,
+    image: "/products/bubo-combo.png",
     images: [
-      "/products/bubo-combo.jpg",
+      "/products/bubo-combo.png",
       "/products/bubo-sleep.jpg",
       "/products/bubo-energy.jpg",
-      "/products/bubo-slim.jpg"
+      "/products/bubo-slim.jpg",
+      "/products/bubo-hair.png"
     ],
     category: "combos",
-    description: "Transforme sua rotina com o combo completo Bubo Health. Inclui 1 Bubo Sleep + 1 Bubo Energy + 1 Bubo Slim.",
+    description: "Transforme sua rotina com o combo completo Bubo Health. Inclui 1 Bubo Sleep + 1 Bubo Energy + 1 Bubo Slim + 1 Bubo Hair.",
     descriptionHtml: `
       <div class="space-y-6">
         <div class="bg-indigo-900 text-white p-6 rounded-2xl shadow-xl">
-          <h3 class="text-xl font-bold mb-2">💎 Experiência Bubo 360°</h3>
-          <p class="text-indigo-100 text-sm">O cuidado que seu corpo merece em todas as fases do dia. Durma melhor, tenha mais energia e mantenha o shape.</p>
+          <h3 class="text-xl font-bold mb-2">💎 Experiência Bubo 360° Total</h3>
+          <p class="text-indigo-100 text-sm">O cuidado máximo que seu corpo merece. Durma melhor, tenha energia, controle o peso e cuide da beleza de cabelos e unhas.</p>
         </div>
         <div class="grid grid-cols-1 gap-3">
           <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
             <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold">1</span>
-            <span class="text-sm font-medium">Bubo Sleep: Noites de rainha/rei</span>
+            <span class="text-sm font-medium">Bubo Sleep: Noites revigorantes</span>
           </div>
           <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
             <span class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold">2</span>
-            <span class="text-sm font-medium">Bubo Energy: Dias de alta performance</span>
+            <span class="text-sm font-medium">Bubo Energy: Alta performance</span>
           </div>
           <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
             <span class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold">3</span>
             <span class="text-sm font-medium">Bubo Slim: Corpo em equilíbrio</span>
           </div>
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
+            <span class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold">4</span>
+            <span class="text-sm font-medium">Bubo Hair: Cabelos e unhas fortes</span>
+          </div>
         </div>
       </div>
     `,
     stock: 100,
-    badge: "Economize 34%",
+    badge: "OFERTA COMPLETA",
     bundles: [
       {
         qty: 1,
-        label: "1 Combo (3 produtos)",
-        priceCents: 29100, // 97 * 3
-        originalPriceCents: 44100,
-        perUnitCents: 29100,
-        badge: "34% OFF",
+        label: "1 Combo (4 produtos)",
+        priceCents: 38800, // 97 * 4
+        originalPriceCents: 58800,
+        perUnitCents: 38800,
+        badge: "MELHOR VALOR",
       },
       {
         qty: 2,
-        label: "2 Combos (6 produtos) 👫",
-        priceCents: 58200, // 291 * 2
-        originalPriceCents: 88200,
-        perUnitCents: 29100,
+        label: "2 Combos (8 produtos) 👫",
+        priceCents: 77600, // 388 * 2
+        originalPriceCents: 117600,
+        perUnitCents: 38800,
         badge: "97/unid.",
       },
     ],

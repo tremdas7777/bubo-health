@@ -147,18 +147,18 @@ export default function ProductDetailPage() {
       const baseBundles = isCombo ? [
         {
           qty: 1,
-          label: "1 Combo (3 produtos)",
-          priceCents: 29100,
-          originalPriceCents: 44100,
-          perUnitCents: 29100,
-          badge: "34% OFF",
+          label: "1 Combo (4 produtos)",
+          priceCents: 38800,
+          originalPriceCents: 58800,
+          perUnitCents: 38800,
+          badge: "MELHOR VALOR",
         },
         {
           qty: 2,
-          label: "2 Combos (6 produtos) 👫",
-          priceCents: 58200,
-          originalPriceCents: 88200,
-          perUnitCents: 29100,
+          label: "2 Combos (8 produtos) 👫",
+          priceCents: 77600,
+          originalPriceCents: 117600,
+          perUnitCents: 38800,
           badge: "97/unid.",
         }
       ] : [

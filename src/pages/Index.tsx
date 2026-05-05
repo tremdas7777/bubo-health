@@ -81,16 +81,16 @@ const PRODUCTS = [
     id: "bubo-combo",
     slug: "combo-bubo-health",
     name: "Combo Completo",
-    subtitle: "Sleep + Energy + Slim",
-    price: 29100,
-    compareAtPrice: 44100,
-    image: "/products/bubo-combo.jpg",
-    badge: "ECONOMIZE 46%",
+    subtitle: "Sleep + Energy + Slim + Hair",
+    price: 38800,
+    compareAtPrice: 58800,
+    image: "/products/bubo-combo.png",
+    badge: "OFERTA COMPLETA",
     badgeColor: "bg-red-600",
     accent: "#7c3aed",
     bg: "from-purple-900 to-indigo-700",
-    tagline: "Kit Completo",
-    flavor: "3 produtos",
+    tagline: "Kit Total 360°",
+    flavor: "4 produtos",
   },
 ];
 
@@ -147,13 +147,13 @@ const HERO_SLIDES = [
     slug: "combo-bubo-health",
     bg: "from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed]",
     tag: "🔥 Oferta imperdível",
-    title: "Combo Completo\nBubo Health",
-    desc: "Os 3 produtos em 1 kit: Sleep + Energy + Slim. Cuide da sua saúde 24 horas por dia!",
-    cta: "QUERO O COMBO",
+    title: "Combo Completo\nBubo Health Total",
+    desc: "A experiência máxima: Sleep + Energy + Slim + Hair. O cuidado total que seu corpo merece!",
+    cta: "GARANTIR MEU COMBO",
     ctaColor: "bg-[#7c3aed] hover:bg-[#6d28d9]",
-    image: "/products/bubo-combo.jpg",
-    discount: "46% OFF",
-    discountBg: "bg-red-400",
+    image: "/products/bubo-combo.png",
+    discount: "34% OFF",
+    discountBg: "bg-indigo-400",
   },
 ];
 
@@ -361,16 +361,16 @@ export default function Index() {
                   Combo Bubo Health
                   <br /><span className="text-purple-200">Completo</span>
                 </h2>
-                <p className="text-purple-100 text-lg mb-2">Sleep + Energy + Slim em um kit</p>
+                <p className="text-purple-100 text-lg mb-2">Sleep + Energy + Slim + Hair em um kit</p>
                 <div className="flex items-center gap-4 justify-center md:justify-start flex-wrap mt-6">
                   <div>
-                    <p className="text-purple-300 text-sm line-through">De R$ 463,70</p>
-                    <p className="text-white text-4xl font-black">R$ 247,90</p>
+                    <p className="text-purple-300 text-sm line-through">De R$ 588,00</p>
+                    <p className="text-white text-4xl font-black">R$ 388,00</p>
                   </div>
-                  <span className="bg-red-500 text-white text-xl font-black px-5 py-2.5 rounded-full">46% OFF</span>
+                  <span className="bg-red-500 text-white text-xl font-black px-5 py-2.5 rounded-full">34% OFF</span>
                 </div>
                 <div className="flex gap-4 mt-6 flex-wrap justify-center md:justify-start">
-                  {["✅ Sono profundo", "⚡ Mais energia", "🌿 Emagreça"].map((item, i) => (
+                  {["✅ Sono", "⚡ Energia", "🌿 Emagreça", "💖 Beleza"].map((item, i) => (
                     <span key={i} className="text-white text-sm bg-white/15 px-4 py-2 rounded-full">{item}</span>
                   ))}
                 </div>
@@ -380,7 +380,7 @@ export default function Index() {
                 </button>
               </div>
               <div className="flex-shrink-0">
-                <img src="/products/bubo-combo.jpg" alt="Combo Bubo Health" className="w-[260px] md:w-[320px] object-contain drop-shadow-2xl" />
+                <img src="/products/bubo-combo.png" alt="Combo Bubo Health" className="w-[260px] md:w-[320px] object-contain drop-shadow-2xl" />
               </div>
             </div>
           </Link>
