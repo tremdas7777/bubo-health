@@ -52,6 +52,14 @@ export const collections: Collection[] = [
 // 4 potes: R$ 388,00 (De R$ 588,00)
 const buildBundles = (): ProductBundle[] => [
   {
+    qty: 1,
+    label: "1 Pote — Experimente",
+    priceCents: 9700,
+    originalPriceCents: 14790,
+    perUnitCents: 9700,
+    badge: "PROMOÇÃO",
+  },
+  {
     qty: 3,
     label: "3 Potes — Tratamento Médio",
     priceCents: 29100, // 97 * 3

@@ -446,7 +446,7 @@ export default function Index() {
             <span className="bg-red-500 text-white text-2xl font-black px-6 py-3 rounded-2xl shadow-xl">34% OFF</span>
           </div>
           <div className="flex gap-4 mb-8 flex-wrap justify-center md:justify-start">
-            {["✅ 3 Potes R$ 291", "✅ 5 Potes R$ 388"].map((item, i) => (
+            {["✅ 1 Pote R$ 97", "✅ 3 Potes R$ 291", "✅ 5 Potes R$ 388"].map((item, i) => (
               <span key={i} className="text-white text-sm font-bold bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10">{item}</span>
             ))}
           </div>
