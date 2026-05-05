@@ -70,7 +70,7 @@ export default memo(function CollectionsCarousel() {
                     <img
                       src={col.image || fallbackImages[col.slug]}
                       alt={COLLECTION_I18N[col.slug] || col.name}
-                      className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500 rounded-xl"
                       loading="lazy"
                       decoding="async"
                       draggable={false}

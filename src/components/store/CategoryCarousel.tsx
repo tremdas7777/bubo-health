@@ -21,7 +21,7 @@ function ProductCardInline({ product, addItem }: { product: Product; addItem: (p
         <img
           src={product.image}
           alt={product.name}
-          className="w-full aspect-square object-cover group-hover/card:scale-105 transition-transform duration-500"
+          className="w-full aspect-square object-cover group-hover/card:scale-105 transition-transform duration-500 rounded-xl"
           loading="lazy"
           decoding="async"
           width="400"

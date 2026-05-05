@@ -36,7 +36,7 @@ export default function CartDrawer() {
             <div className="space-y-4">
               {items.map(({ product, quantity, selections, lineId }) => (
                 <div key={lineId} className="flex gap-3 border-b border-border pb-4">
-                  <img src={product.image} alt={product.name} className="w-20 h-20 object-cover rounded-lg" />
+                  <img src={product.image} alt={product.name} className="w-20 h-20 object-cover rounded-xl" />
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm font-medium line-clamp-2">{product.name}</h3>
                     {selections && selections.length > 0 && (

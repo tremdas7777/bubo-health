@@ -948,7 +948,7 @@ export default function ProductDetailPage() {
                                         ) : (product.image || displayImages[0])
                                       } 
                                       alt={opt.name}
-                                      className="h-full w-full object-cover"
+                                      className="h-full w-full object-cover rounded-xl"
                                     />
                                   </div>
                                   <div className="min-w-0">
@@ -995,7 +995,7 @@ export default function ProductDetailPage() {
                               {ESN_FIXED_ITEMS.map((item, idx) => (
                                 <div key={idx} className="flex items-center gap-4 p-3 rounded-xl border border-border bg-muted/20">
                                   <div className="h-12 w-12 rounded-xl overflow-hidden shrink-0 border border-border bg-background">
-                                    <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                                    <img src={item.image} alt={item.name} className="h-full w-full object-cover rounded-xl" />
                                   </div>
                                   <p className="text-sm font-semibold text-foreground">{item.name}</p>
                                 </div>

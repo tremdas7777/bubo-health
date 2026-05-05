@@ -457,7 +457,7 @@ export default function Index() {
         </div>
         <div className="flex-shrink-0 relative">
           <div className="absolute inset-0 bg-white/20 blur-[100px] rounded-full scale-110" />
-          <img src="/products/bubo-combo.png" alt="Combo Bubo Health" className="w-[300px] md:w-[450px] object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] relative z-10" />
+          <img src="/products/bubo-combo.png" alt="Combo Bubo Health" className="w-[300px] md:w-[450px] object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] relative z-10 rounded-[2.5rem]" />
         </div>
       </div>
     </Link>

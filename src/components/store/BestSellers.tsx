@@ -50,7 +50,7 @@ function BestSellerCard({ product, addItem, formatPrice, addLabel, stockLeftLabe
         <img
           src={product.image}
           alt={product.name}
-          className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500 rounded-xl"
           loading="lazy"
           decoding="async"
           width="400"

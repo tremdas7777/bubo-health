@@ -1187,7 +1187,7 @@ export default function CheckoutPage() {
                   {items.map(({ product, quantity, selections, lineId }) => (
                     <div key={lineId} className="flex gap-3">
                       <div className="relative">
-                        <img src={product.image} alt={product.name} className="w-14 h-14 rounded-lg object-cover" />
+                        <img src={product.image} alt={product.name} className="w-14 h-14 rounded-xl object-cover" />
                         <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                           {quantity}
                         </span>
