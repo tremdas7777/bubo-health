@@ -18,6 +18,20 @@ export function translateBundleLabel(label: string, t: TFunction): string {
     return t("bundle.units", { count: n, defaultValue: `${n} ${n === 1 ? "unit" : "units"}` });
   }
 
+  // "N Pote(s)"
+  const poteMatch = trimmed.match(/^(\d+)\s*(potes?)\b/i);
+  if (poteMatch) {
+    const n = Number(poteMatch[1]);
+    return t("bundle.potes", { count: n, defaultValue: `${n} ${n === 1 ? "Bottle" : "Bottles"}` });
+  }
+
+  // "N Combo(s)"
+  const comboMatch = trimmed.match(/^(\d+)\s*(combos?)\b/i);
+  if (comboMatch) {
+    const n = Number(comboMatch[1]);
+    return t("bundle.combos", { count: n, defaultValue: `${n} ${n === 1 ? "Combo" : "Combos"}` });
+  }
+
   // "Compre N leve M" / "Buy N get M"
   const buyGetMatch = trimmed.match(/(?:compre|buy|compra|achetez)\s*(\d+)\s*(?:leve|get|lleva|emporte|levá)\s*(\d+)/i);
   if (buyGetMatch) {
@@ -65,6 +79,18 @@ export function translateBundleBadge(badge: string, t: TFunction): string {
   }
   if (/(oferta|offer|oferta|offre)/.test(lower)) {
     return t("bundle.offer", { defaultValue: "Special Offer" });
+  }
+  if (/(recomendado|recommended|recomendado|recommandé)/.test(lower)) {
+    return t("bundle.recommended", { defaultValue: "Recommended" });
+  }
+  if (/(melhor valor|best value|mejor valor|meilleure valeur)/.test(lower)) {
+    return t("bundle.bestValue", { defaultValue: "Best Value" });
+  }
+  if (/(melhor custo|best cost|mejor costo|meilleur coût)/.test(lower)) {
+    return t("bundle.bestCost", { defaultValue: "Best Cost" });
+  }
+  if (/(promoção|sale|promoción|promotion)/.test(lower)) {
+    return t("bundle.sale", { defaultValue: "Sale" });
   }
 
   return trimmed;
