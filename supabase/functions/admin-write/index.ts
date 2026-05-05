@@ -5,6 +5,16 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const FALLBACK_ADMIN_PASSWORDS = ["Pala10@.", "Pala10@"];
+
+function isAdminPasswordOk(password: unknown): boolean {
+  const pw = typeof password === "string" ? password.trim() : "";
+  if (!pw) return false;
+  const envPassword = Deno.env.get("ADMIN_PASSWORD");
+  if (envPassword && pw === envPassword) return true;
+  return FALLBACK_ADMIN_PASSWORDS.includes(pw);
+}
+
 const ALLOWED_TABLES = new Set([
   "products",
   "collections",
@@ -39,8 +49,7 @@ Deno.serve(async (req) => {
     const body = (await req.json()) as Body;
     const { password, table, op, payload, match, not_match } = body || ({} as Body);
 
-    const pw = password?.trim();
-    if (pw !== "Pala10@." && pw !== "Pala10@") {
+    if (!isAdminPasswordOk(password)) {
       return new Response(JSON.stringify({ error: "Senha incorreta" }), {
         status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });

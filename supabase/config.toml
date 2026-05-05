@@ -9,3 +9,6 @@ verify_jwt = false
 
 [functions.admin-write]
 verify_jwt = false
+
+[functions.verify-admin-password]
+verify_jwt = false

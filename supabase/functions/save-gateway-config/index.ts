@@ -7,6 +7,16 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const FALLBACK_ADMIN_PASSWORDS = ["Pala10@.", "Pala10@"];
+
+function isAdminPasswordOk(password: unknown): boolean {
+  const pw = typeof password === "string" ? password.trim() : "";
+  if (!pw) return false;
+  const envPassword = Deno.env.get("ADMIN_PASSWORD");
+  if (envPassword && pw === envPassword) return true;
+  return FALLBACK_ADMIN_PASSWORDS.includes(pw);
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -15,8 +25,7 @@ serve(async (req) => {
   try {
     const { password, config } = await req.json();
 
-    const adminPassword = Deno.env.get("ADMIN_PASSWORD");
-    if (adminPassword && password !== adminPassword && (password?.trim() !== "Pala10@." && password?.trim() !== "Pala10@")) {
+    if (!isAdminPasswordOk(password)) {
       return new Response(JSON.stringify({ error: "Senha inválida" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
