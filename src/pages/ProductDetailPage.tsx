@@ -159,7 +159,7 @@ export default function ProductDetailPage() {
           priceCents: 77600,
           originalPriceCents: 117600,
           perUnitCents: 38800,
-          badge: "97/unid.",
+          badge: "RECOMENDADO",
         }
       ] : [
         {

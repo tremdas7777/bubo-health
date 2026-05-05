@@ -64,7 +64,7 @@ const buildBundles = (): ProductBundle[] => [
     priceCents: 29100, // 97 * 3
     originalPriceCents: 44370,
     perUnitCents: 9700,
-    badge: "97/unid.",
+    badge: "RECOMENDADO",
   },
   {
     qty: 5,
@@ -72,7 +72,7 @@ const buildBundles = (): ProductBundle[] => [
     priceCents: 48500, // 97 * 5
     originalPriceCents: 73950,
     perUnitCents: 9700,
-    badge: "97/unid.",
+    badge: "MELHOR CUSTO",
   },
 ];
 
@@ -271,7 +271,7 @@ export const products: Product[] = [
         priceCents: 77600, // 388 * 2
         originalPriceCents: 117600,
         perUnitCents: 38800,
-        badge: "97/unid.",
+        badge: "MELHOR CUSTO",
       },
     ],
   }
