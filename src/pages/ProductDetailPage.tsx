@@ -614,6 +614,12 @@ export default function ProductDetailPage() {
               <img
                 src={displayImages[0]}
                 alt={product.name}
+                onError={(e) => {
+                  if (product.slug === 'bubo-hair') {
+                    e.currentTarget.src = "/products/bubo-sleep.jpg";
+                    e.currentTarget.style.filter = "hue-rotate(60deg) brightness(1.1)";
+                  }
+                }}
                 className="w-[180px] md:w-[240px] object-contain drop-shadow-2xl"
                 style={{ filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.4))" }}
               />

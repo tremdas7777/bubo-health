@@ -87,6 +87,10 @@ export default function Header() {
             <img 
               src="/logos/logo-pink.png" 
               alt="Bubo Health" 
+              onError={(e) => {
+                e.currentTarget.src = "/logos/logo-purple.png";
+                e.currentTarget.style.filter = "hue-rotate(60deg) brightness(1.2) saturate(1.2)";
+              }}
               className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ${
                 (barColor === "#db2777" || barColor === "#be185d") ? "opacity-100" : "opacity-0"
               }`} 

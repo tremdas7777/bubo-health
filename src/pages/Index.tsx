@@ -219,6 +219,12 @@ export default function Index() {
               <img
                 src={slide.image}
                 alt={slide.title}
+                onError={(e) => {
+                  if (slide.slug === 'bubo-hair') {
+                    e.currentTarget.src = "/products/bubo-sleep.jpg";
+                    e.currentTarget.style.filter = "hue-rotate(60deg) brightness(1.1)";
+                  }
+                }}
                 className="w-[170px] sm:w-[220px] md:w-[300px] lg:w-[380px] object-contain hover:scale-105 transition-transform duration-300"
                 style={{ filter: "drop-shadow(0 16px 36px rgba(0,0,0,0.45))" }}
               />
@@ -315,7 +321,17 @@ export default function Index() {
               return (
                 <div key={p.id} className="bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group/card border border-gray-100 flex flex-col">
                   <Link to={`/produto/${p.slug}`} className="block relative overflow-hidden bg-gray-50 aspect-square">
-                    <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
+                    <img 
+                      src={p.image} 
+                      alt={p.name} 
+                      onError={(e) => {
+                        if (p.slug === 'bubo-hair') {
+                          e.currentTarget.src = "/products/bubo-sleep.jpg";
+                          e.currentTarget.style.filter = "hue-rotate(60deg) brightness(1.1)";
+                        }
+                      }}
+                      className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" 
+                    />
                     <span className={`absolute top-2 left-2 md:top-3 md:left-3 ${p.badgeColor} text-white text-[8px] md:text-[10px] font-black uppercase px-2 py-0.5 md:px-3 md:py-1 rounded-full shadow-lg`}>{p.badge}</span>
                     <span className="absolute top-2 right-2 md:top-3 md:right-3 bg-white text-red-600 text-[9px] md:text-[11px] font-black px-1.5 py-0.5 md:px-2.5 md:py-1 rounded-full shadow-md">-{discount}%</span>
                   </Link>
