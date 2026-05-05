@@ -27,7 +27,7 @@ export default memo(function ProductCard({ product }: Props) {
         <img
           src={product.image}
           alt={product.name}
-          className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500 rounded-2xl"
           loading="lazy"
           decoding="async"
           width="400"

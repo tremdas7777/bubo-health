@@ -78,21 +78,6 @@ const PRODUCTS = [
     flavor: "Sabor Frutas Vermelhas",
   },
   {
-    id: "bubo-combo-2",
-    slug: "combo-2-potes",
-    name: "Combo 2 Potes",
-    subtitle: "Escolha 2 produtos",
-    price: 19400,
-    compareAtPrice: 29400,
-    image: "/products/bubo-combo.png",
-    badge: "OFERTA",
-    badgeColor: "bg-blue-600",
-    accent: "#3b82f6",
-    bg: "from-blue-900 to-blue-700",
-    tagline: "2 potes",
-    flavor: "2 produtos",
-  },
-  {
     id: "bubo-combo-3",
     slug: "combo-3-potes",
     name: "Combo 3 Potes",
@@ -174,16 +159,16 @@ const HERO_SLIDES = [
     discountBg: "bg-pink-400",
   },
   {
-    slug: "combo-2-potes",
-    bg: "from-[#1e3a8a] via-[#3b82f6] to-[#60a5fa]",
-    tag: "💙 Escolha 2 produtos",
-    title: "Combo 2 Potes\nLeve 2 por R$ 194",
-    desc: "Monte seu combo com 2 potes de gummies à sua escolha. Aproveite!",
+    slug: "combo-3-potes",
+    bg: "from-[#312e81] via-[#4f46e5] to-[#818cf8]",
+    tag: "💜 Escolha 3 produtos",
+    title: "Combo 3 Potes\nLeve 3 por R$ 291",
+    desc: "Monte seu combo com 3 potes de gummies à sua escolha. Melhor custo-benefício!",
     cta: "QUERO MEU COMBO",
-    ctaColor: "bg-[#3b82f6] hover:bg-[#2563eb]",
+    ctaColor: "bg-[#4f46e5] hover:bg-[#4338ca]",
     image: "/products/bubo-combo.png",
-    discount: "R$ 194,00",
-    discountBg: "bg-blue-400",
+    discount: "R$ 291,00",
+    discountBg: "bg-indigo-400",
   },
   {
     slug: "combo-3-potes",
@@ -201,8 +186,8 @@ const HERO_SLIDES = [
     slug: "combo-bubo-health",
     bg: "from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed]",
     tag: "🔥 Oferta imperdível",
-    title: "Combo Completo 4 Potes\nBubo Health Total",
-    desc: "A experiência máxima: Sleep + Energy + Slim + Hair. O cuidado total que seu corpo merece!",
+    title: "Combo Completo 5 Potes\nBubo Health Total",
+    desc: "A experiência máxima: Leve 5 e pague apenas 4! O cuidado total que seu corpo merece!",
     cta: "GARANTIR MEU COMBO",
     ctaColor: "bg-[#7c3aed] hover:bg-[#6d28d9]",
     image: "/products/bubo-combo.png",
@@ -292,7 +277,7 @@ export default function Index() {
                 <img
                   src={slide.image}
                   alt={slide.title}
-                  className="w-[280px] sm:w-[380px] md:w-[550px] lg:w-[700px] xl:w-[850px] 2xl:w-[950px] max-w-none object-contain hover:scale-105 transition-all duration-700 cursor-pointer drop-shadow-[0_45px_70px_rgba(0,0,0,0.7)]"
+                  className="w-[280px] sm:w-[380px] md:w-[550px] lg:w-[700px] xl:w-[850px] 2xl:w-[950px] max-w-none object-contain hover:scale-105 transition-all duration-700 cursor-pointer drop-shadow-[0_45px_70px_rgba(0,0,0,0.7)] rounded-[3rem]"
                 />
               </Link>
             </div>
@@ -409,7 +394,7 @@ export default function Index() {
                       <img 
                         src={p.image} 
                         alt={p.name} 
-                        className="absolute inset-0 w-full h-full object-contain p-6 group-hover/card:scale-110 transition-transform duration-700" 
+                        className="absolute inset-0 w-full h-full object-contain p-6 group-hover/card:scale-110 transition-transform duration-700 rounded-[2.5rem]" 
                       />
                       <span className={`absolute top-3 left-3 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg ${p.badgeColor}`}>{p.badge}</span>
                       <span className="absolute top-3 right-3 bg-white text-red-600 text-[10px] font-black px-2 py-1 rounded-full shadow-md">-{discount}%</span>
@@ -450,7 +435,7 @@ export default function Index() {
           <span className="inline-block bg-red-500 text-white text-xs font-black px-5 py-2 rounded-full mb-6 uppercase tracking-widest animate-pulse shadow-lg">🔥 Oferta exclusiva</span>
           <h2 className="text-4xl md:text-6xl font-heading font-black mb-4 leading-tight">
             Combo Bubo Health
-            <br /><span className="text-purple-300">Completo 360°</span>
+            <br /><span className="text-purple-300">Tratamento Completo</span>
           </h2>
           <p className="text-purple-100 text-xl mb-6">Sleep + Energy + Slim + Hair em um kit especial</p>
           <div className="flex items-center gap-6 justify-center md:justify-start flex-wrap mb-8">
@@ -461,7 +446,7 @@ export default function Index() {
             <span className="bg-red-500 text-white text-2xl font-black px-6 py-3 rounded-2xl shadow-xl">34% OFF</span>
           </div>
           <div className="flex gap-4 mb-8 flex-wrap justify-center md:justify-start">
-            {["✅ 2 Potens R$ 194", "✅ 3 Potens R$ 291", "✅ 4 Potens R$ 388"].map((item, i) => (
+            {["✅ 3 Potes R$ 291", "✅ 5 Potes R$ 388"].map((item, i) => (
               <span key={i} className="text-white text-sm font-bold bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10">{item}</span>
             ))}
           </div>

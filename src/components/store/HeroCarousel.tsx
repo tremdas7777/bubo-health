@@ -41,7 +41,7 @@ export default memo(function HeroCarousel() {
                <img
                 src={slide}
                 alt="Bubo Health"
-                className="w-full h-full object-contain md:object-cover mix-blend-multiply md:mix-blend-normal p-4 md:p-0"
+                className="w-full h-full object-contain md:object-cover mix-blend-multiply md:mix-blend-normal p-4 md:p-0 rounded-3xl"
                 loading={i === 0 ? "eager" : "lazy"}
                 decoding={i === 0 ? "sync" : "async"}
                 fetchPriority={i === 0 ? "high" : "low"}

@@ -52,35 +52,19 @@ export const collections: Collection[] = [
 // 4 potes: R$ 388,00 (De R$ 588,00)
 const buildBundles = (): ProductBundle[] => [
   {
-    qty: 1,
-    label: "1 Pote — Experimente",
-    priceCents: 9700,
-    originalPriceCents: 14790,
-    perUnitCents: 9700,
-    badge: "PROMOÇÃO",
-  },
-  {
-    qty: 2,
-    label: "2 Potes — Tratamento Inicial",
-    priceCents: 19400, // 97 * 2
-    originalPriceCents: 29400,
-    perUnitCents: 9700,
-    badge: "97/unid.",
-  },
-  {
     qty: 3,
     label: "3 Potes — Tratamento Médio",
     priceCents: 29100, // 97 * 3
     originalPriceCents: 44370,
     perUnitCents: 9700,
-    badge: "97/unid.",
+    badge: "MAIS VENDIDO",
   },
   {
-    qty: 4,
-    label: "4 Potes — Tratamento Completo",
-    priceCents: 38800, // 97 * 4
-    originalPriceCents: 58800,
-    perUnitCents: 9700,
+    qty: 5,
+    label: "5 Potes — Tratamento Completo",
+    priceCents: 38800, // Compre 4 leve 5 (Incentivo: 77,60/unid)
+    originalPriceCents: 73950,
+    perUnitCents: 7760,
     badge: "MELHOR VALOR",
   },
 ];

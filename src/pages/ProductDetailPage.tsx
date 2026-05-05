@@ -169,28 +169,20 @@ export default function ProductDetailPage() {
         }
       ] : [
         {
-          qty: 1,
-          label: "1 Pote — Experimente",
-          priceCents: 9700,
-          originalPriceCents: 14790,
-          perUnitCents: 9700,
-          badge: "PROMOÇÃO",
-        },
-        {
           qty: 3,
           label: "3 Potes — Tratamento Médio",
           priceCents: 29100,
           originalPriceCents: 44370,
           perUnitCents: 9700,
-          badge: "97/unid.",
+          badge: "MAIS VENDIDO",
         },
         {
           qty: 5,
           label: "5 Potes — Tratamento Completo",
-          priceCents: 48500,
+          priceCents: 38800,
           originalPriceCents: 73950,
-          perUnitCents: 9700,
-          badge: "97/unid.",
+          perUnitCents: 7760,
+          badge: "MELHOR VALOR",
         }
       ];
 
