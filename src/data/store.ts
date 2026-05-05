@@ -133,7 +133,7 @@ export const products: Product[] = [
           </div>
         </div>
         <ul class="space-y-2 text-sm text-gray-600">
-          <li>🔥 Enriquecido com Vitaminas B6 e B12</li>
+          <li>🔥 Zero Açúcar e sem Glúten</li>
           <li>🔥 30 gummies por pote</li>
           <li>🔥 Sabor vibrante de Laranja</li>
           <li>🔥 Ideal para pré-treino ou trabalho intenso</li>
@@ -166,6 +166,7 @@ export const products: Product[] = [
           </div>
         </div>
         <ul class="space-y-2 text-sm text-gray-600">
+          <li>💖 Zero Açúcar e sem Glúten</li>
           <li>💖 30 gummies por pote</li>
           <li>💖 Alto teor de Biotina e Zinco</li>
           <li>💖 Sabor irresistível de Frutas Vermelhas</li>
@@ -200,6 +201,7 @@ export const products: Product[] = [
           </div>
         </div>
         <ul class="space-y-2 text-sm text-gray-600">
+          <li>🍏 Zero Açúcar e sem Glúten</li>
           <li>🍏 30 gummies por pote</li>
           <li>🍏 Rico em Fibras Prebióticas</li>
           <li>🍏 Sabor refrescante de Maçã Verde</li>
