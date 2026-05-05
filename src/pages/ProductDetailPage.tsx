@@ -686,42 +686,44 @@ export default function ProductDetailPage() {
                     const isSelected = selectedBundle === idx;
                     const perUnit = b.perUnitCents ?? b.priceCents / b.qty;
                     return (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setSelectedBundle(idx)}
-                        className={`flex items-center justify-between gap-3 rounded-2xl border-2 p-3 text-left transition-all ${
-                          isSelected
-                            ? "shadow-sm"
-                            : "border-border hover:border-gray-300"
-                        }`}
-                        style={isSelected ? { borderColor: theme.accent, backgroundColor: `${theme.accent}15` } : {}}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-                              isSelected ? "" : "border-border"
-                            }`}
-                            style={isSelected ? { borderColor: theme.accent, backgroundColor: theme.accent } : {}}
-                          >
-                            {isSelected && <CheckCircle2 size={12} className="text-primary-foreground" />}
-                          </div>
-                          <div>
-                            <p className="text-sm font-semibold text-foreground">{translateBundleLabel(b.label, t)}</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm font-bold" style={isSelected ? { color: theme.accent } : {}}>{formatPrice(b.priceCents / 100)}</p>
-                          {b.badge && (
-                            <span 
-                              className="inline-block rounded px-1.5 py-0.5 text-[10px] font-bold text-white shadow-sm"
-                              style={{ backgroundColor: theme.accent }}
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setSelectedBundle(idx)}
+                          className={`flex items-center justify-between gap-3 rounded-[1.8rem] border-2 p-4 text-left transition-all duration-300 ${
+                            isSelected
+                              ? "shadow-lg scale-[1.02]"
+                              : "border-border hover:border-gray-300"
+                          }`}
+                          style={isSelected ? { borderColor: theme.accent, backgroundColor: `${theme.accent}10` } : {}}
+                        >
+                          <div className="flex items-center gap-4">
+                            <div
+                              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
+                                isSelected ? "" : "border-border"
+                              }`}
+                              style={isSelected ? { borderColor: theme.accent, backgroundColor: theme.accent } : {}}
                             >
-                              {translateBundleBadge(b.badge, t)}
-                            </span>
-                          )}
-                        </div>
-                      </button>
+                              {isSelected && <Check size={14} className="text-white" />}
+                            </div>
+                            <div>
+                              <p className={`text-sm font-bold transition-colors ${isSelected ? "text-gray-900" : "text-gray-600"}`}>
+                                {translateBundleLabel(b.label, t)}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-lg font-black" style={{ color: theme.accent }}>{formatPrice(b.priceCents / 100)}</p>
+                            {b.badge && (
+                              <span 
+                                className="inline-block rounded-full px-3 py-1 text-[10px] font-black text-white shadow-md animate-pulse"
+                                style={{ backgroundColor: theme.accent }}
+                              >
+                                {translateBundleBadge(b.badge, t)}
+                              </span>
+                            )}
+                          </div>
+                        </button>
                     );
                   })}
                 </div>
@@ -779,26 +781,27 @@ export default function ProductDetailPage() {
                               <p className="mb-1.5 text-xs font-medium text-muted-foreground">Escolha a opção:</p>
                               <div className="flex flex-wrap gap-1.5">
                                 {itemConfig.options.map((flavor) => (
-                                  <button
-                                    key={flavor}
-                                    type="button"
-                                    onClick={() => {
-                                      updateKitSlot(idx, { flavor });
-                                      const next = kitSelections.findIndex((k, i) => {
-                                        const nextCfg = kitConfig?.items?.[i];
-                                        if (nextCfg?.type === "flavor") return i !== idx && !k.flavor;
-                                        return i !== idx && (!k.color || !k.size);
-                                      });
-                                      if (next !== -1) setActiveKitSlot(next);
-                                    }}
-                                    className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
-                                      slot.flavor === flavor
-                                        ? "bg-primary text-primary-foreground border-primary"
-                                        : "border-primary/40 text-foreground hover:bg-primary/10"
-                                    }`}
-                                  >
-                                    {flavor.replace(/\s*[Ff]lavor/g, '')}
-                                  </button>
+                                    <button
+                                      key={flavor}
+                                      type="button"
+                                      onClick={() => {
+                                        updateKitSlot(idx, { flavor });
+                                        const next = kitSelections.findIndex((k, i) => {
+                                          const nextCfg = kitConfig?.items?.[i];
+                                          if (nextCfg?.type === "flavor") return i !== idx && !k.flavor;
+                                          return i !== idx && (!k.color || !k.size);
+                                        });
+                                        if (next !== -1) setActiveKitSlot(next);
+                                      }}
+                                      className={`rounded-full border px-4 py-2 text-xs font-bold transition-all ${
+                                        slot.flavor === flavor
+                                          ? "text-white"
+                                          : "text-foreground hover:bg-gray-50"
+                                      }`}
+                                      style={slot.flavor === flavor ? { backgroundColor: theme.accent, borderColor: theme.accent } : { borderColor: `${theme.accent}40` }}
+                                    >
+                                      {flavor.replace(/\s*[Ff]lavor/g, '')}
+                                    </button>
                                 ))}
                               </div>
                             </div>
@@ -813,12 +816,12 @@ export default function ProductDetailPage() {
                                       type="button"
                                       onClick={() => updateKitSlot(idx, { color: c.name })}
                                       title={c.name}
-                                      className={`relative h-8 w-8 rounded-full border-2 transition-all ${
+                                      className={`relative h-10 w-10 rounded-full border-2 transition-all ${
                                         slot.color === c.name
-                                          ? "border-primary ring-2 ring-primary/30 scale-110"
-                                          : "border-border hover:border-primary/50"
+                                          ? "scale-110 shadow-lg"
+                                          : "border-border hover:border-gray-400"
                                       }`}
-                                      style={{ backgroundColor: c.hex }}
+                                      style={slot.color === c.name ? { backgroundColor: c.hex, borderColor: theme.accent } : { backgroundColor: c.hex }}
                                     />
                                   ))}
                                 </div>
@@ -1089,9 +1092,10 @@ export default function ProductDetailPage() {
             {/* Buy Now Button */}
             <Button 
               onClick={handleBuyNow} 
-              className="w-full py-6 text-sm font-bold text-white uppercase tracking-wider transition-all hover:scale-[1.02] rounded-2xl"
+              className="w-full py-7 text-base font-black text-white uppercase tracking-widest transition-all hover:scale-[1.03] active:scale-95 rounded-full shadow-xl"
               style={{ backgroundColor: theme.accent }}
             >
+              <ShoppingCart size={20} className="mr-2" />
               {t("productPage.buyNow")}
             </Button>
 

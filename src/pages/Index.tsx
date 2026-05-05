@@ -104,7 +104,7 @@ const HERO_SLIDES = [
     cta: "COMPRAR AGORA",
     ctaColor: "bg-[#7c3aed] hover:bg-[#6d28d9]",
     image: "/products/bubo-sleep.jpg",
-    discount: "33% OFF",
+    discount: "R$ 97,00",
     discountBg: "bg-purple-400",
   },
   {
@@ -116,7 +116,7 @@ const HERO_SLIDES = [
     cta: "COMPRAR AGORA",
     ctaColor: "bg-[#f59e0b] hover:bg-[#d97706]",
     image: "/products/bubo-energy.jpg",
-    discount: "33% OFF",
+    discount: "R$ 97,00",
     discountBg: "bg-amber-400",
   },
   {
@@ -128,7 +128,7 @@ const HERO_SLIDES = [
     cta: "COMPRAR AGORA",
     ctaColor: "bg-[#16a34a] hover:bg-[#15803d]",
     image: "/products/bubo-slim.jpg",
-    discount: "29% OFF",
+    discount: "R$ 97,00",
     discountBg: "bg-green-400",
   },
   {
@@ -140,7 +140,7 @@ const HERO_SLIDES = [
     cta: "COMPRAR AGORA",
     ctaColor: "bg-[#db2777] hover:bg-[#be185d]",
     image: "/products/bubo-hair.png",
-    discount: "33% OFF",
+    discount: "R$ 97,00",
     discountBg: "bg-pink-400",
   },
   {
@@ -152,7 +152,7 @@ const HERO_SLIDES = [
     cta: "GARANTIR MEU COMBO",
     ctaColor: "bg-[#7c3aed] hover:bg-[#6d28d9]",
     image: "/products/bubo-combo.png",
-    discount: "34% OFF",
+    discount: "R$ 388,00",
     discountBg: "bg-indigo-400",
   },
 ];
@@ -199,91 +199,116 @@ export default function Index() {
   const slide = HERO_SLIDES[current];
 
   const addProduct = (p: typeof PRODUCTS[0]) => {
-    addItem({ id: p.id, name: p.name, slug: p.slug, price: p.price / 100, compareAtPrice: p.compareAtPrice / 100, image: p.image, category: "gummies", description: p.subtitle, stock: 50 });
+    addItem({ 
+      id: p.id, 
+      name: p.name, 
+      slug: p.slug, 
+      price: p.price / 100, 
+      compareAtPrice: p.compareAtPrice / 100, 
+      image: p.image, 
+      category: "gummies", 
+      description: p.subtitle, 
+      stock: 50 
+    });
   };
 
   return (
     <Layout>
-      <PageHead title="Bubo Health — Gummies para Sono, Energia e Emagrecimento" description="Transforme sua rotina com as gummies Bubo Health. Sono profundo, mais energia e emagrecimento saudável com sabor irresistível." />
+      <PageHead 
+        title="Bubo Health — Gummies para Sono, Energia e Emagrecimento" 
+        description="Transforme sua rotina com as gummies Bubo Health. Sono profundo, mais energia e emagrecimento saudável com o sabor das nossas vitaminas em goma."
+      />
       <OrganizationJsonLd />
 
-      {/* HERO CAROUSEL — mobile-first */}
-      <div
-        className={`relative w-full overflow-hidden transition-all duration-700 bg-gradient-to-br ${slide.bg}`}
-      >
-        {/* Mobile: image top, text bottom. Desktop: text left, image right */}
-        <div className="container mx-auto px-4 pt-6 pb-10 md:py-14 flex flex-col md:flex-row items-center gap-2 md:gap-8">
-          {/* Image — top on mobile, right on desktop */}
-          <div className="w-full md:flex-1 flex items-center justify-center order-1 md:order-2">
-            <Link to={`/produto/${slide.slug}`}>
-              <img
-                src={slide.image}
-                alt={slide.title}
-                className="w-[170px] sm:w-[220px] md:w-[300px] lg:w-[380px] object-contain hover:scale-105 transition-transform duration-300"
-                style={{ filter: "drop-shadow(0 16px 36px rgba(0,0,0,0.45))" }}
-              />
-            </Link>
-          </div>
-          {/* Text — bottom on mobile, left on desktop */}
-          <div className="flex-1 text-white text-center md:text-left order-2 md:order-1">
-            <span className="inline-block bg-white/25 text-white text-[11px] font-bold px-3 py-1.5 rounded-full mb-3">{slide.tag}</span>
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-black leading-tight mb-3 whitespace-pre-line drop-shadow-lg">
-              {slide.title}
-            </h1>
-            <p className="text-white/85 text-sm md:text-base lg:text-lg mb-5 max-w-sm md:max-w-md leading-relaxed mx-auto md:mx-0">{slide.desc}</p>
-            <div className="flex flex-row gap-2 sm:gap-3 justify-center md:justify-start items-center flex-wrap">
-              <Link
-                to={`/produto/${slide.slug}`}
-                className={`${slide.ctaColor} text-white font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-8 py-3 sm:py-4 rounded-full transition-all hover:scale-105 active:scale-95 shadow-2xl flex items-center gap-2`}
-              >
-                <ShoppingCart size={16} />
-                {slide.cta}
+      {/* HERO CAROUSEL — modern card style */}
+      <div className="container mx-auto px-4 pt-4 pb-2">
+        <div
+          className={`relative w-full overflow-hidden transition-all duration-700 bg-gradient-to-br ${slide.bg} rounded-[2.5rem] md:rounded-[4rem] shadow-2xl`}
+        >
+          {/* Mobile: image top, text bottom. Desktop: text left, image right */}
+          <div className="container mx-auto px-6 sm:px-10 pt-8 pb-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-16 min-h-[550px] md:min-h-[750px]">
+            
+            {/* Image — top on mobile, right on desktop */}
+            <div className="w-full md:flex-[1.2] flex items-center justify-center order-1 md:order-2 relative group">
+              {/* Decorative glows / aurora effect */}
+              <div className="absolute inset-0 bg-white/20 blur-[120px] rounded-full scale-110 animate-pulse opacity-50" />
+              <div className="absolute inset-0 bg-white/10 blur-[60px] rounded-full scale-75 opacity-30" />
+              
+              <Link to={`/produto/${slide.slug}`} className="relative z-10 w-full flex justify-center">
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  className="w-[280px] sm:w-[380px] md:w-[550px] lg:w-[700px] xl:w-[850px] 2xl:w-[950px] max-w-none object-contain hover:scale-105 transition-all duration-700 cursor-pointer drop-shadow-[0_45px_70px_rgba(0,0,0,0.7)]"
+                />
               </Link>
-              <span className={`${slide.discountBg} text-white font-black text-sm sm:text-lg px-4 py-2.5 rounded-full shadow-lg`}>
-                {slide.discount}
-              </span>
+            </div>
+
+            {/* Text — bottom on mobile, left on desktop */}
+            <div className="flex-1 text-white text-center md:text-left order-2 md:order-1 relative z-10">
+              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md text-white text-[12px] md:text-sm font-black px-5 py-2.5 rounded-full mb-6 border border-white/20 shadow-xl">
+                <span className="flex h-2 w-2 rounded-full bg-white animate-ping" />
+                {slide.tag}
+              </div>
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-black leading-[1] mb-6 whitespace-pre-line drop-shadow-[0_5px_15px_rgba(0,0,0,0.3)]">
+                {slide.title}
+              </h1>
+              <p className="text-white/90 text-base md:text-xl lg:text-2xl mb-10 max-w-sm md:max-w-lg leading-relaxed mx-auto md:mx-0 drop-shadow-md">
+                {slide.desc}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
+                <Link
+                  to={`/produto/${slide.slug}`}
+                  className={`${slide.ctaColor} text-white font-black text-sm sm:text-lg uppercase tracking-widest px-10 sm:px-14 py-5 sm:py-6 rounded-full transition-all hover:scale-105 active:scale-95 shadow-[0_25px_60px_rgba(0,0,0,0.4)] flex items-center gap-3 group`}
+                >
+                  <ShoppingCart size={22} className="group-hover:rotate-12 transition-transform" />
+                  {slide.cta}
+                </Link>
+                <div className={`${slide.discountBg} text-white font-black text-xl sm:text-3xl px-8 py-4 rounded-[1.5rem] shadow-2xl border border-white/30 -rotate-3 hover:rotate-0 transition-transform`}>
+                  {slide.discount}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Nav arrows — hidden on small screens */}
-        <button
-          onClick={() => setCurrent(c => (c - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
-          className="hidden sm:block absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 text-white rounded-full p-2 transition-all"
-          aria-label="Anterior"
-        >
-          <ChevronLeft size={22} />
-        </button>
-        <button
-          onClick={() => setCurrent(c => (c + 1) % HERO_SLIDES.length)}
-          className="hidden sm:block absolute right-3 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 text-white rounded-full p-2 transition-all"
-          aria-label="Próximo"
-        >
-          <ChevronRight size={22} />
-        </button>
+          {/* Nav arrows */}
+          <button
+            onClick={() => setCurrent(c => (c - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
+            className="hidden sm:flex absolute left-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/30 backdrop-blur-md border border-white/20 text-white rounded-full p-4 transition-all hover:scale-110 active:scale-90"
+            aria-label="Anterior"
+          >
+            <ChevronLeft size={32} />
+          </button>
+          <button
+            onClick={() => setCurrent(c => (c + 1) % HERO_SLIDES.length)}
+            className="hidden sm:flex absolute right-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/30 backdrop-blur-md border border-white/20 text-white rounded-full p-4 transition-all hover:scale-110 active:scale-90"
+            aria-label="Próximo"
+          >
+            <ChevronRight size={32} />
+          </button>
 
-        {/* Dots */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-          {HERO_SLIDES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`h-2 rounded-full transition-all ${i === current ? "w-8 bg-white" : "w-2 bg-white/40"}`}
-              aria-label={`Slide ${i + 1}`}
-            />
-          ))}
+          {/* Dots */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 z-20 bg-black/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
+            {HERO_SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                className={`h-3 rounded-full transition-all duration-300 ${i === current ? "w-12 bg-white" : "w-3 bg-white/40 hover:bg-white/60"}`}
+                aria-label={`Slide ${i + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
       {/* TRUST BADGES */}
       <div className="bg-white border-b border-gray-100">
-        <div className="container mx-auto px-4 py-5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="container mx-auto px-4 py-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {BENEFITS.map((b, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-xl transition-all" style={{ '--hover-bg': `${HERO_COLORS[current]?.bar}15` } as any}>
+              <div key={i} className="flex items-center gap-4 p-4 rounded-2xl transition-all hover:bg-gray-50">
                 <div className="shrink-0" style={{ color: HERO_COLORS[current]?.bar }}>{b.icon}</div>
                 <div>
-                  <p className="font-bold text-sm text-gray-900">{b.title}</p>
+                  <p className="font-black text-sm md:text-base text-gray-900 leading-tight">{b.title}</p>
                   <p className="text-xs text-gray-500">{b.desc}</p>
                 </div>
               </div>
@@ -296,56 +321,68 @@ export default function Index() {
       <section className="py-14 bg-gradient-to-b from-purple-50 to-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <span className="inline-block bg-purple-100 text-[#7c3aed] text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-3">Nossos Produtos</span>
-            <h2 className="text-3xl md:text-4xl font-heading font-black text-gray-900 mb-2">Encontre sua Gummie Perfeita</h2>
-            <p className="text-gray-500 text-base max-w-md mx-auto">Ciência e sabor em uma só gommie. Cuide da sua saúde de um jeito gostoso!</p>
+            <span className="inline-block bg-purple-100 text-[#7c3aed] text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3">Nossos Produtos</span>
+            <h2 className="text-3xl md:text-5xl font-heading font-black text-gray-900">Encontre sua Gummy</h2>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
-            {PRODUCTS.map((p) => {
-              const discount = Math.round(((p.compareAtPrice - p.price) / p.compareAtPrice) * 100);
-              const PRODUCT_THEMES: Record<string, string> = {
-                "bubo-sleep": "#7c3aed",
-                "bubo-energy": "#f59e0b",
-                "bubo-slim": "#16a34a",
-                "bubo-hair": "#db2777",
-                "combo-bubo-health": "#7c3aed",
-              };
-              const accentColor = PRODUCT_THEMES[p.slug] || "#7c3aed";
 
-              return (
-                <div key={p.id} className="bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group/card border border-gray-100 flex flex-col">
-                  <Link to={`/produto/${p.slug}`} className="block relative overflow-hidden bg-gray-50 aspect-square">
-                    <img 
-                      src={p.image} 
-                      alt={p.name} 
-                      className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" 
-                    />
-                    <span className={`absolute top-2 left-2 md:top-3 md:left-3 ${p.badgeColor} text-white text-[8px] md:text-[10px] font-black uppercase px-2 py-0.5 md:px-3 md:py-1 rounded-full shadow-lg`}>{p.badge}</span>
-                    <span className="absolute top-2 right-2 md:top-3 md:right-3 bg-white text-red-600 text-[9px] md:text-[11px] font-black px-1.5 py-0.5 md:px-2.5 md:py-1 rounded-full shadow-md">-{discount}%</span>
-                  </Link>
-                  <div className="p-3 md:p-5 flex-1 flex flex-col">
-                    <p className="text-[10px] md:text-xs text-gray-400 font-medium uppercase tracking-wide mb-1 line-clamp-1">{p.tagline} • {p.flavor}</p>
-                    <Link to={`/produto/${p.slug}`}>
-                      <h3 className="font-black text-sm md:text-lg text-gray-900 transition-colors leading-tight mb-1 line-clamp-1" style={{ color: accentColor }}>{p.name}</h3>
+          <div className="relative group">
+            {/* Nav Arrows for Product Carousel */}
+            <button 
+              onClick={() => scroll('left')}
+              className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 bg-white text-gray-900 p-3 rounded-full shadow-xl border border-gray-100 hover:scale-110 active:scale-95 transition-all opacity-0 group-hover:opacity-100"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <button 
+              onClick={() => scroll('right')}
+              className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 bg-white text-gray-900 p-3 rounded-full shadow-xl border border-gray-100 hover:scale-110 active:scale-95 transition-all opacity-0 group-hover:opacity-100"
+            >
+              <ChevronRight size={24} />
+            </button>
+
+            {/* Product Carousel / Grid */}
+            <div 
+              ref={scrollRef}
+              className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-8 sm:grid sm:grid-cols-2 lg:grid-cols-5 sm:gap-6 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-4 px-4 sm:mx-0 sm:px-0"
+            >
+              {PRODUCTS.map((p) => {
+                const discount = Math.round(((p.compareAtPrice - p.price) / p.compareAtPrice) * 100);
+                const accentColor = p.accent;
+                
+                return (
+                  <div key={p.id} className="min-w-[85vw] sm:min-w-0 snap-center shrink-0 bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col group/card overflow-hidden">
+                    <Link to={`/produto/${p.slug}`} className="relative block bg-gray-50 pt-[100%] overflow-hidden">
+                      <img 
+                        src={p.image} 
+                        alt={p.name} 
+                        className="absolute inset-0 w-full h-full object-contain p-6 group-hover/card:scale-110 transition-transform duration-700" 
+                      />
+                      <span className={`absolute top-3 left-3 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg ${p.badgeColor}`}>{p.badge}</span>
+                      <span className="absolute top-3 right-3 bg-white text-red-600 text-[10px] font-black px-2 py-1 rounded-full shadow-md">-{discount}%</span>
                     </Link>
-                    <p className="text-[10px] md:text-xs text-gray-500 mb-2 md:mb-4 line-clamp-1 md:line-clamp-2">{p.subtitle}</p>
-                    <div className="flex flex-col md:flex-row md:items-baseline gap-0 md:gap-2 mb-3 md:mb-4">
-                      <span className="text-lg md:text-2xl font-black" style={{ color: accentColor }}>{formatPrice(p.price)}</span>
-                      <span className="text-[10px] md:text-sm text-gray-400 line-through">{formatPrice(p.compareAtPrice)}</span>
+                    <div className="p-5 flex-1 flex flex-col">
+                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">{p.tagline} • {p.flavor}</p>
+                      <Link to={`/produto/${p.slug}`}>
+                        <h3 className="font-black text-lg text-gray-900 transition-colors leading-tight mb-1" style={{ color: accentColor }}>{p.name}</h3>
+                      </Link>
+                      <p className="text-xs text-gray-500 mb-4 line-clamp-2">{p.subtitle}</p>
+                      <div className="flex items-baseline gap-2 mb-5">
+                        <span className="text-2xl font-black" style={{ color: accentColor }}>{formatPrice(p.price / 100)}</span>
+                        <span className="text-sm text-gray-400 line-through">{formatPrice(p.compareAtPrice / 100)}</span>
+                      </div>
+                      <button
+                        onClick={() => addProduct(p)}
+                        className="mt-auto w-full text-white font-black text-xs uppercase tracking-widest py-4 rounded-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-xl"
+                        style={{ backgroundColor: accentColor }}
+                      >
+                        <ShoppingCart size={18} />
+                        ADICIONAR
+                      </button>
                     </div>
-                    <button
-                      onClick={() => addProduct(p)}
-                      className="mt-auto w-full text-white font-black text-[10px] md:text-sm uppercase tracking-wide py-2.5 md:py-3.5 rounded-xl md:rounded-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-1 md:gap-2 shadow-md"
-                      style={{ backgroundColor: accentColor }}
-                    >
-                      <ShoppingCart size={14} className="md:w-4 md:h-4" />
-                      <span className="hidden xs:inline">ADICIONAR</span>
-                      <span className="xs:hidden">COMPRAR</span>
-                    </button>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -353,34 +390,35 @@ export default function Index() {
       {/* COMBO BANNER */}
       <section className="py-6 px-4">
         <div className="container mx-auto">
-          <Link to="/produto/combo-bubo-health" className="block relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed] shadow-2xl hover:scale-[1.01] transition-transform duration-300">
-            <div className="flex flex-col md:flex-row items-center gap-6 p-8 md:p-10">
+          <Link to="/produto/combo-bubo-health" className="block relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed] shadow-2xl hover:scale-[1.01] transition-transform duration-300">
+            <div className="flex flex-col md:flex-row items-center gap-8 p-10 md:p-14">
               <div className="flex-1 text-white text-center md:text-left">
-                <span className="inline-block bg-red-500 text-white text-xs font-black px-4 py-1.5 rounded-full mb-4 uppercase tracking-widest animate-pulse">🔥 Oferta exclusiva</span>
-                <h2 className="text-3xl md:text-5xl font-heading font-black mb-3 leading-tight">
+                <span className="inline-block bg-red-500 text-white text-xs font-black px-5 py-2 rounded-full mb-6 uppercase tracking-widest animate-pulse shadow-lg">🔥 Oferta exclusiva</span>
+                <h2 className="text-4xl md:text-6xl font-heading font-black mb-4 leading-tight">
                   Combo Bubo Health
-                  <br /><span className="text-purple-200">Completo</span>
+                  <br /><span className="text-purple-300">Completo 360°</span>
                 </h2>
-                <p className="text-purple-100 text-lg mb-2">Sleep + Energy + Slim + Hair em um kit</p>
-                <div className="flex items-center gap-4 justify-center md:justify-start flex-wrap mt-6">
+                <p className="text-purple-100 text-xl mb-6">Sleep + Energy + Slim + Hair em um kit especial</p>
+                <div className="flex items-center gap-6 justify-center md:justify-start flex-wrap mb-8">
                   <div>
-                    <p className="text-purple-300 text-sm line-through">De R$ 588,00</p>
-                    <p className="text-white text-4xl font-black">R$ 388,00</p>
+                    <p className="text-purple-300 text-sm md:text-base line-through">De R$ 588,00</p>
+                    <p className="text-white text-5xl md:text-6xl font-black">R$ 388,00</p>
                   </div>
-                  <span className="bg-red-500 text-white text-xl font-black px-5 py-2.5 rounded-full">34% OFF</span>
+                  <span className="bg-red-500 text-white text-2xl font-black px-6 py-3 rounded-2xl shadow-xl">34% OFF</span>
                 </div>
-                <div className="flex gap-4 mt-6 flex-wrap justify-center md:justify-start">
+                <div className="flex gap-4 mb-8 flex-wrap justify-center md:justify-start">
                   {["✅ Sono", "⚡ Energia", "🌿 Emagreça", "💖 Beleza"].map((item, i) => (
-                    <span key={i} className="text-white text-sm bg-white/15 px-4 py-2 rounded-full">{item}</span>
+                    <span key={i} className="text-white text-sm font-bold bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10">{item}</span>
                   ))}
                 </div>
-                <button className="mt-8 bg-white text-[#7c3aed] font-black text-sm uppercase tracking-wider px-8 py-4 rounded-full hover:scale-105 transition-all shadow-xl inline-flex items-center gap-2">
-                  <ShoppingCart size={18} />
+                <button className="bg-white text-[#7c3aed] font-black text-base uppercase tracking-widest px-10 py-5 rounded-full hover:scale-105 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] inline-flex items-center gap-3">
+                  <ShoppingCart size={22} />
                   QUERO O COMBO AGORA
                 </button>
               </div>
-              <div className="flex-shrink-0">
-                <img src="/products/bubo-combo.png" alt="Combo Bubo Health" className="w-[260px] md:w-[320px] object-contain drop-shadow-2xl" />
+              <div className="flex-shrink-0 relative">
+                <div className="absolute inset-0 bg-white/20 blur-[100px] rounded-full scale-110" />
+                <img src="/products/bubo-combo.png" alt="Combo Bubo Health" className="w-[300px] md:w-[450px] object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] relative z-10" />
               </div>
             </div>
           </Link>
@@ -388,21 +426,22 @@ export default function Index() {
       </section>
 
       {/* WHY BUBO */}
-      <section className="py-14 bg-[#f5f3ff]">
+      <section className="py-20 bg-[#f5f3ff]">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-heading font-black text-gray-900 mb-2">Por que escolher a Bubo Health?</h2>
+          <div className="text-center mb-14">
+            <span className="inline-block bg-purple-100 text-[#7c3aed] text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3">Qualidade Premium</span>
+            <h2 className="text-3xl md:text-5xl font-heading font-black text-gray-900 leading-tight">Por que escolher a Bubo Health?</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: <Zap size={36} className="text-amber-500" />, title: "Fórmula Exclusiva", desc: "Desenvolvida com os melhores ingredientes ativos e comprovados cientificamente.", bg: "from-amber-50 to-yellow-50", border: "border-amber-200" },
-              { icon: <Moon size={36} className="text-purple-600" />, title: "Ação 24 horas", desc: "Cuide do seu corpo de dia e à noite com a nossa linha completa de gummies.", bg: "from-purple-50 to-indigo-50", border: "border-purple-200" },
-              { icon: <Leaf size={36} className="text-green-600" />, title: "Natural e Saboroso", desc: "Ingredientes naturais, sem açúcar adicionado e com sabores deliciosos.", bg: "from-green-50 to-emerald-50", border: "border-green-200" },
+              { icon: <Zap size={40} className="text-amber-500" />, title: "Fórmula Exclusiva", desc: "Desenvolvida com os melhores ingredientes ativos e comprovados cientificamente para máxima eficácia.", bg: "from-amber-50 to-yellow-50", border: "border-amber-100" },
+              { icon: <Moon size={40} className="text-purple-600" />, title: "Ação 24 horas", desc: "Cuide do seu corpo em todos os momentos, do despertar ao sono profundo com nossa linha completa.", bg: "from-purple-50 to-indigo-50", border: "border-purple-100" },
+              { icon: <Leaf size={40} className="text-green-600" />, title: "Natural e Saboroso", desc: "Gummies veganas, sem açúcar adicionado, glúten ou corantes artificiais. O sabor real da saúde.", bg: "from-green-50 to-emerald-50", border: "border-green-100" },
             ].map((item, i) => (
-              <div key={i} className={`bg-gradient-to-br ${item.bg} border ${item.border} rounded-3xl p-8 text-center hover:shadow-lg transition-all`}>
-                <div className="flex justify-center mb-4">{item.icon}</div>
-                <h3 className="font-black text-xl text-gray-900 mb-2">{item.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+              <div key={i} className={`bg-gradient-to-br ${item.bg} border ${item.border} rounded-[2.5rem] p-10 text-center hover:shadow-xl transition-all duration-300`}>
+                <div className="flex justify-center mb-6">{item.icon}</div>
+                <h3 className="font-black text-2xl text-gray-900 mb-4">{item.title}</h3>
+                <p className="text-gray-600 leading-relaxed text-lg">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -410,31 +449,31 @@ export default function Index() {
       </section>
 
       {/* REVIEWS */}
-      <section className="py-14 bg-white">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-heading font-black text-gray-900 mb-2">O que nossos clientes dizem</h2>
-            <div className="flex items-center justify-center gap-1 mt-3">
-              {Array(5).fill(null).map((_, i) => <Star key={i} size={20} fill="#f59e0b" className="text-amber-400" />)}
-              <span className="ml-2 text-gray-600 font-semibold">4.9/5 · +10.000 avaliações</span>
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-5xl font-heading font-black text-gray-900 mb-4">O que nossos clientes dizem</h2>
+            <div className="flex items-center justify-center gap-1.5">
+              {Array(5).fill(null).map((_, i) => <Star key={i} size={24} fill="#f59e0b" className="text-amber-400" />)}
+              <span className="ml-3 text-gray-600 font-bold text-lg">4.9/5 · +10.000 avaliações</span>
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {REVIEWS.map((r, i) => (
-              <div key={i} className="bg-[#f5f3ff] rounded-2xl p-6 border border-purple-100 hover:shadow-md transition-all">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-[#7c3aed] text-white font-black flex items-center justify-center text-lg">{r.avatar}</div>
+              <div key={i} className="bg-[#f5f3ff] rounded-3xl p-8 border border-purple-50 hover:shadow-xl transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#7c3aed] to-[#4c1d95] text-white font-black flex items-center justify-center text-xl shadow-lg">{r.avatar}</div>
                   <div>
-                    <p className="font-bold text-sm text-gray-900">{r.name}</p>
-                    <p className="text-xs text-purple-600 font-medium">{r.product}</p>
+                    <p className="font-black text-base text-gray-900 leading-tight">{r.name}</p>
+                    <p className="text-xs text-purple-600 font-bold uppercase tracking-wider">{r.product}</p>
                   </div>
                 </div>
-                <div className="flex gap-0.5 mb-2">
-                  {Array(r.stars).fill(null).map((_, j) => <Star key={j} size={14} fill="#f59e0b" className="text-amber-400" />)}
+                <div className="flex gap-0.5 mb-3">
+                  {Array(r.stars).fill(null).map((_, j) => <Star key={j} size={16} fill="#f59e0b" className="text-amber-400" />)}
                 </div>
-                <p className="text-gray-700 text-sm leading-relaxed">"{r.text}"</p>
-                <div className="flex items-center gap-1 mt-3 text-green-600 text-xs font-semibold">
-                  <Check size={13} /> Compra verificada
+                <p className="text-gray-700 leading-relaxed italic">"{r.text}"</p>
+                <div className="flex items-center gap-1.5 mt-4 text-green-600 text-xs font-black uppercase tracking-widest">
+                  <Check size={14} strokeWidth={3} /> Compra verificada
                 </div>
               </div>
             ))}
