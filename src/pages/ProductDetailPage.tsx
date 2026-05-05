@@ -392,7 +392,8 @@ export default function ProductDetailPage() {
   
   // Formats BRL decimal directly as Brazilian Real
   const formatPrice = (decimal: number) => {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(decimal);
+    const value = Number(decimal) || 0;
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
   };
   const relatedProducts = filterByCategory(dbProducts, product.category).filter((p) => p.id !== product.id).slice(0, 4);
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
