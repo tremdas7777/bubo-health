@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Loader2, Minus, Plus, Trash2, ChevronDown, ChevronUp, CreditCard } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Lock, Truck, Clock, Copy, Check, Loader2, Minus, Plus, Trash2, Tag, ChevronDown, ChevronUp, CreditCard } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLocalization } from "@/contexts/LocalizationContext";
+import { formatPrice, getInstallmentPrice } from "@/data/store";
 import { trackEvent } from "@/lib/funnelTracking";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchPaymentGatewayConfig } from "@/lib/paymentGateway";
@@ -13,10 +13,9 @@ import { notifyUtmifyServerSide } from "@/lib/utmifyManager";
 import { getCampaignParams } from "@/lib/campaignParams";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// installments removed
+import { PIX_DISCOUNT_RATE, PIX_DISCOUNT_PERCENT, getTotalWithInterest, getInstallmentValue } from "@/lib/pricing";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { detectVisitorLocale, getTaxIdLabel, supportsInstallments } from "@/lib/checkoutLocale";
-import PhoneCountryInput from "@/components/store/PhoneCountryInput";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 type Step = "identification" | "shipping" | "payment";
 
@@ -29,83 +28,101 @@ interface ShippingOption {
 }
 
 const DEFAULT_SHIPPING: ShippingOption[] = [
-  { id: "standard", name: "Standard Worldwide", price_cents: 0, days_min: 8, days_max: 15 },
-  { id: "express", name: "Express Worldwide", price_cents: 1990, days_min: 3, days_max: 7 },
+  { id: "pac", name: "PAC - Correios", price_cents: 0, days_min: 8, days_max: 15 },
+  { id: "sedex", name: "SEDEX - Correios", price_cents: 1990, days_min: 3, days_max: 7 },
 ];
 
-const COUNTRIES: { code: string; name: string }[] = [
-  { code: "us", name: "United States" }, { code: "gb", name: "United Kingdom" },
-  { code: "ca", name: "Canada" }, { code: "au", name: "Australia" },
-  { code: "de", name: "Germany" }, { code: "fr", name: "France" },
-  { code: "es", name: "Spain" }, { code: "it", name: "Italy" },
-  { code: "pt", name: "Portugal" }, { code: "nl", name: "Netherlands" },
-  { code: "br", name: "Brazil" }, { code: "mx", name: "Mexico" },
-  { code: "ar", name: "Argentina" }, { code: "jp", name: "Japan" },
-  { code: "ie", name: "Ireland" }, { code: "be", name: "Belgium" },
-  { code: "ch", name: "Switzerland" }, { code: "at", name: "Austria" },
-  { code: "se", name: "Sweden" }, { code: "no", name: "Norway" },
-  { code: "dk", name: "Denmark" }, { code: "fi", name: "Finland" },
-  { code: "pl", name: "Poland" }, { code: "nz", name: "New Zealand" },
-];
+type PaymentMethod = "pix" | "card";
+
+const GATEWAY_LABELS: Record<string, string> = {
+  pagouai: "Pagou.ai",
+  vennox: "Vennox",
+  centurionpay: "Centurion Pay",
+  ironpay: "Iron Pay",
+  simpayout: "Sim Payout",
+  beehive: "Beehive",
+  pagamentosmp: "MP Pagamentos",
+};
 
 async function extractFunctionErrorMessage(error: unknown) {
   if (error && typeof error === "object" && "context" in error) {
     const response = (error as { context?: Response }).context;
+
     if (response instanceof Response) {
       try {
         const payload = await response.clone().json() as { error?: string; details?: { refusedReason?: { description?: string } } };
-        return payload.error || payload.details?.refusedReason?.description || "Payment error";
+        return payload.error || payload.details?.refusedReason?.description || "Erro ao processar pagamento";
       } catch {
-        try { const text = await response.clone().text(); if (text) return text; } catch { /* ignore */ }
+        try {
+          const text = await response.clone().text();
+          if (text) return text;
+        } catch {
+          // ignore
+        }
       }
     }
   }
-  return error instanceof Error ? error.message : "Unknown payment error";
+
+  return error instanceof Error ? error.message : "Erro desconhecido ao processar pagamento";
 }
 
+function maskCPF(v: string) {
+  return v.replace(/\D/g, "").slice(0, 11).replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+}
+
+function maskPhone(v: string) {
+  return v.replace(/\D/g, "").slice(0, 11).replace(/(\d{2})(\d)/, "($1) $2").replace(/(\d{5})(\d)/, "$1-$2");
+}
+
+function maskCEP(v: string) {
+  return v.replace(/\D/g, "").slice(0, 8).replace(/(\d{5})(\d)/, "$1-$2");
+}
 const EMAIL_DOMAINS = [
-  "@gmail.com", "@hotmail.com", "@outlook.com", "@yahoo.com",
-  "@icloud.com", "@live.com", "@msn.com", "@protonmail.com",
+  "@gmail.com",
+  "@hotmail.com",
+  "@outlook.com",
+  "@yahoo.com",
+  "@icloud.com",
+  "@live.com",
+  "@msn.com",
+  "@uol.com.br",
+  "@bol.com.br",
+  "@terra.com.br",
 ];
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
-  const { items, totalPrice, updateQuantity, removeItem } = useCart();
+  const { items, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
   const { user } = useAuth();
-  const { formatPrice: formatCents } = useLocalization();
-  // Local helper: our checkout works in dollars, but formatCents expects cents.
-  const formatPrice = (dollars: number) => formatCents(Math.round(dollars * 100));
   const [step, setStep] = useState<Step>("identification");
   const [showOrderSummary, setShowOrderSummary] = useState(false);
-
-  // Default country from selected language (campaign-driven), then IP overrides if available
-  const LANG_TO_COUNTRY: Record<string, string> = {
-    de: "de", en: "us", es: "es", pt: "br", fr: "fr",
-  };
-  const initialCountry = LANG_TO_COUNTRY[i18n.language?.slice(0, 2) ?? "en"] || "us";
-  const [country, setCountry] = useState<string>(initialCountry);
-  const taxIdLabel = getTaxIdLabel(country);
 
   // Form fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [taxId, setTaxId] = useState(""); // optional everywhere
+  const [cpf, setCpf] = useState("");
 
   // Shipping
-  const [postalCode, setPostalCode] = useState("");
+  const [cep, setCep] = useState("");
   const [address, setAddress] = useState("");
-  const [address2, setAddress2] = useState("");
+  const [addressNumber, setAddressNumber] = useState("");
+  const [complement, setComplement] = useState("");
+  const [neighborhood, setNeighborhood] = useState("");
   const [city, setCity] = useState("");
-  const [stateRegion, setStateRegion] = useState("");
-  const [selectedShipping, setSelectedShipping] = useState("standard");
+  const [state, setState] = useState("");
+  const [selectedShipping, setSelectedShipping] = useState("pac");
   const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>(DEFAULT_SHIPPING);
-  const [loadingZip, setLoadingZip] = useState(false);
+  const [loadingCep, setLoadingCep] = useState(false);
 
   // Payment
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
   const [cardEnabled, setCardEnabled] = useState(false);
   const [activeGateway, setActiveGateway] = useState<string>("stripe");
+  const [pixCode, setPixCode] = useState("");
+  const [pixQrCode, setPixQrCode] = useState("");
+  const [orderId, setOrderId] = useState("");
+  const [copied, setCopied] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
@@ -114,20 +131,25 @@ export default function CheckoutPage() {
   const [cardHolder, setCardHolder] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
-  const installments = 1; // installments removed — pay in full only
+  const [installments, setInstallments] = useState(1);
 
-  // Live checkout tracking
+  // Live checkout tracking (draft order for abandoned cart visibility)
   const [draftOrderId, setDraftOrderId] = useState<string>("");
+
+
+
 
   // Timer urgency
   const [timeLeft, setTimeLeft] = useState(15 * 60);
+  const [pollingPayment, setPollingPayment] = useState(false);
 
   // Email suggestions
   const [emailSuggestions, setEmailSuggestions] = useState<string[]>([]);
   const [showEmailSuggestions, setShowEmailSuggestions] = useState(false);
 
   const updateEmailSuggestions = useCallback((value: string) => {
-    if (!value || (value.includes("@") && value.indexOf("@") < value.length - 1)) {
+    if (!value || value.includes("@") && value.indexOf("@") < value.length - 1) {
+      // User already typed something after @, filter matching domains
       const atIndex = value.indexOf("@");
       if (atIndex > 0) {
         const typed = value.slice(atIndex);
@@ -136,29 +158,20 @@ export default function CheckoutPage() {
         setEmailSuggestions(matches.map((d) => prefix + d));
         setShowEmailSuggestions(matches.length > 0);
       } else {
-        setEmailSuggestions([]); setShowEmailSuggestions(false);
+        setEmailSuggestions([]);
+        setShowEmailSuggestions(false);
       }
       return;
     }
     if (value.includes("@")) {
+      // Just typed @, show all
       const prefix = value.slice(0, value.indexOf("@"));
       setEmailSuggestions(EMAIL_DOMAINS.map((d) => prefix + d));
       setShowEmailSuggestions(true);
       return;
     }
-    setEmailSuggestions([]); setShowEmailSuggestions(false);
-  }, []);
-
-  // Detect visitor country once — but DON'T override if a campaign language is set via URL
-  useEffect(() => {
-    const hasUrlLang = new URLSearchParams(window.location.search).has("lang");
-    detectVisitorLocale().then((loc) => {
-      if (!hasUrlLang) setCountry(loc.countryCode);
-      if (loc.city && !city) setCity(loc.city);
-      if (loc.region && !stateRegion) setStateRegion(loc.region);
-      if (loc.postal && !postalCode) setPostalCode(loc.postal);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setEmailSuggestions([]);
+    setShowEmailSuggestions(false);
   }, []);
 
   useEffect(() => {
@@ -167,18 +180,21 @@ export default function CheckoutPage() {
       setActiveGateway(cfg.activeGateway);
       const methods = cfg.paymentMethods[cfg.activeGateway] || cfg.paymentMethods.default || "card";
       setCardEnabled(methods === "card" || methods === "pix_card");
+      if (cfg.activeGateway === "stripe" || methods === "card") setPaymentMethod("card");
     });
   }, []);
 
   useEffect(() => {
-    if (items.length === 0) navigate("/");
-  }, [items, navigate]);
+    if (items.length === 0 && !pixCode) {
+      navigate("/");
+    }
+  }, [items, pixCode, navigate]);
 
   // Countdown
   useEffect(() => {
     if (timeLeft <= 0) return;
-    const tt = setInterval(() => setTimeLeft((p) => Math.max(0, p - 1)), 1000);
-    return () => clearInterval(tt);
+    const t = setInterval(() => setTimeLeft((p) => Math.max(0, p - 1)), 1000);
+    return () => clearInterval(t);
   }, [timeLeft]);
 
   // Load shipping config from DB
@@ -190,7 +206,7 @@ export default function CheckoutPage() {
     });
   }, []);
 
-  // Pre-fill from profile
+  // Pre-fill from profile when logged in
   useEffect(() => {
     if (!user) return;
     supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle().then(({ data }) => {
@@ -198,105 +214,285 @@ export default function CheckoutPage() {
       if (data.full_name && !name) setName(data.full_name);
       if (data.email && !email) setEmail(data.email);
       if (data.phone && !phone) setPhone(data.phone);
-      if (data.cpf && !taxId) setTaxId(data.cpf);
-      if (data.address_zip && !postalCode) {
-        setPostalCode(data.address_zip);
+      if (data.cpf && !cpf) setCpf(data.cpf);
+      if (data.address_zip && !cep) {
+        setCep(maskCEP(data.address_zip));
         if (data.address_street) setAddress(data.address_street);
-        if (data.address_complement) setAddress2(data.address_complement);
+        if (data.address_number) setAddressNumber(data.address_number);
+        if (data.address_complement) setComplement(data.address_complement);
+        if (data.address_neighborhood) setNeighborhood(data.address_neighborhood);
         if (data.address_city) setCity(data.address_city);
-        if (data.address_state) setStateRegion(data.address_state);
+        if (data.address_state) setState(data.address_state);
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  // Poll for payment status when PIX is generated
+  useEffect(() => {
+    if (!orderId || pollingPayment) return;
+    setPollingPayment(true);
+    const interval = setInterval(async () => {
+      try {
+        const { data } = await supabase
+          .from("orders")
+          .select("status, amount_cents, buyer_name, buyer_email, buyer_phone, buyer_document")
+          .eq("id", orderId)
+          .maybeSingle();
+        if (data?.status === "paid" || data?.status === "approved") {
+          clearInterval(interval);
+          // Utmify: notifica venda aprovada (PIX confirmado)
+          void notifyUtmifyServerSide({
+            orderId,
+            status: "paid",
+            paymentMethod: "pix",
+            customerName: data.buyer_name || "Cliente",
+            customerEmail: data.buyer_email || "",
+            customerPhone: data.buyer_phone || null,
+            customerDocument: data.buyer_document || null,
+            productName: "Pedido Kazoom",
+            priceInCents: data.amount_cents || 0,
+            trackingParameters: getCampaignParams(),
+          });
+          navigate(`/obrigado?pedido=${orderId}&metodo=pix`);
+        }
+      } catch { /* ignore */ }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [orderId, navigate, pollingPayment]);
 
   const selectedShippingOption = shippingOptions.find((s) => s.id === selectedShipping) || shippingOptions[0];
   const shippingCost = selectedShippingOption?.price_cents || 0;
-  // All values in USD cents
-  const subtotalCents = totalPrice;
-  const totalCents = subtotalCents + shippingCost;
-  // Decimal versions kept for gateway calls and legacy props
-  const subtotal = subtotalCents / 100;
-  const total = totalCents / 100;
+  const subtotal = totalPrice;
+  const isPix = paymentMethod === "pix";
+  const pixDiscount = isPix ? subtotal * PIX_DISCOUNT_RATE : 0;
+  const total = subtotal - pixDiscount + shippingCost / 100;
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-  const timerStr = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  const activeGatewayMethods = cardEnabled ? (isPix ? "pix" : "card") : "pix";
 
   const saveOrderItems = async (oid: string) => {
     try {
       const rows = items.map((i) => ({
-        order_id: oid, product_id: i.product.id, product_name: i.product.name,
-        quantity: i.quantity, price_cents: Math.round(i.product.price * 100),
+        order_id: oid,
+        product_id: i.product.id,
+        product_name: i.product.name,
+        quantity: i.quantity,
+        price_cents: Math.round(i.product.price * 100),
       }));
       await supabase.from("order_items").insert(rows);
-    } catch (e) { console.error("Failed to save order items", e); }
+    } catch (e) {
+      console.error("Failed to save order items", e);
+    }
   };
 
-  // Global postal-code lookup (Zippopotam) — fills city/state when possible
-  const handleZipLookup = async (zipValue: string, countryCode: string) => {
-    const cleaned = zipValue.replace(/\s+/g, "").toUpperCase();
-    if (!cleaned) return;
-    setLoadingZip(true);
+  const handleCepLookup = async (cepValue: string) => {
+    const clean = cepValue.replace(/\D/g, "");
+    if (clean.length !== 8) return;
+    setLoadingCep(true);
     try {
-      const res = await fetch(`https://api.zippopotam.us/${countryCode}/${encodeURIComponent(cleaned)}`);
-      if (res.ok) {
-        const data = await res.json();
-        const place = data.places?.[0];
-        if (place) {
-          if (place["place name"]) setCity(place["place name"]);
-          const st = place["state"] || place["state abbreviation"];
-          if (st) setStateRegion(st);
-        }
+      const res = await fetch(`https://viacep.com.br/ws/${clean}/json/`);
+      const data = await res.json();
+      if (!data.erro) {
+        setAddress(data.logradouro || "");
+        setNeighborhood(data.bairro || "");
+        setCity(data.localidade || "");
+        setState(data.uf || "");
       }
     } catch { /* ignore */ }
-    setLoadingZip(false);
+    setLoadingCep(false);
   };
 
   const validateIdentification = () => {
-    if (!name.trim() || !email.trim() || !phone.trim()) return false;
+    if (!name.trim() || !email.trim() || !phone.trim() || !cpf.trim()) return false;
     if (!email.includes("@")) return false;
+    if (cpf.replace(/\D/g, "").length < 11) return false;
     return true;
   };
 
-  const validateShipping = () =>
-    !!postalCode.trim() && !!address.trim() && !!city.trim() && !!stateRegion.trim();
+  const validateShipping = () => {
+    if (!cep.trim() || !address.trim() || !addressNumber.trim() || !neighborhood.trim() || !city.trim() || !state.trim()) return false;
+    return true;
+  };
 
+  // Upsert a draft order so admin can see live progress through checkout
   const upsertDraftOrder = useCallback(async (nextStep: "shipping" | "payment") => {
     try {
       const payload = {
-        buyer_name: name, buyer_email: email,
+        buyer_name: name,
+        buyer_email: email,
         buyer_phone: phone.replace(/\D/g, ""),
-        buyer_document: taxId.replace(/\D/g, "") || null,
-        amount_cents: totalPrice,
-        status: "draft", checkout_step: nextStep,
+        buyer_document: cpf.replace(/\D/g, ""),
+        amount_cents: Math.round(totalPrice * 100),
+        status: "draft",
+        checkout_step: nextStep,
         checkout_step_updated_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       } as Record<string, unknown>;
+
       if (draftOrderId) {
         await supabase.from("orders").update(payload as never).eq("id", draftOrderId);
       } else {
-        const { data } = await supabase.from("orders").insert(payload as never).select("id").maybeSingle();
+        const { data } = await supabase
+          .from("orders")
+          .insert(payload as never)
+          .select("id")
+          .maybeSingle();
         if (data?.id) setDraftOrderId(data.id);
       }
-    } catch (e) { console.warn("draft order upsert failed", e); }
-  }, [draftOrderId, name, email, phone, taxId, totalPrice]);
+    } catch (e) {
+      console.warn("draft order upsert failed", e);
+    }
+  }, [draftOrderId, name, email, phone, cpf, totalPrice]);
 
-  const goToShipping = () => { void upsertDraftOrder("shipping"); setStep("shipping"); };
-  const goToPayment = () => { void upsertDraftOrder("payment"); setStep("payment"); };
+  const goToShipping = () => {
+    void upsertDraftOrder("shipping");
+    setStep("shipping");
+  };
+  const goToPayment = () => {
+    void upsertDraftOrder("payment");
+    setStep("payment");
+  };
+
+
+  const handleGeneratePix = async () => {
+    setGenerating(true);
+    setPaymentError("");
+
+    try {
+      const gateway = "beehive";
+
+      const bodyBase: Record<string, unknown> = {
+        amount: total,
+        buyerName: name,
+        buyerEmail: email,
+        buyerDocument: cpf.replace(/\D/g, ""),
+        buyerPhone: phone.replace(/\D/g, ""),
+        metadata: {
+          address,
+          addressNumber,
+          complement,
+          neighborhood,
+          city,
+          state,
+          cep: cep.replace(/\D/g, ""),
+          shippingMethod: selectedShipping,
+          shippingCostCents: shippingCost,
+          itemsDescription: items.map((i) => `${i.quantity}x ${i.product.name}`).join(", "),
+        },
+      };
+
+      const { data, error } = await supabase.functions.invoke("criar-pix-beehive", {
+        body: bodyBase,
+      });
+
+      if (error) {
+        throw new Error(await extractFunctionErrorMessage(error));
+      }
+
+      const result = data as { pix_code?: string; pix_qr_code?: string; order_id?: string; error?: string } | null;
+
+      if (result?.error) {
+        setPaymentError(result.error);
+        setGenerating(false);
+        return;
+      }
+
+      if (result?.pix_code) {
+        setPixCode(result.pix_code);
+        setPixQrCode(result.pix_qr_code || "");
+        setOrderId(result.order_id || "");
+
+        // Delete draft order now that the real order exists
+        if (draftOrderId) {
+          await supabase.from("orders").delete().eq("id", draftOrderId);
+          setDraftOrderId("");
+        }
+
+        // Save order items
+        if (result.order_id) {
+          await saveOrderItems(result.order_id);
+        }
+
+        // Send order confirmation email (pending)
+        supabase.functions.invoke("send-order-email", {
+          body: {
+            orderId: result.order_id,
+            buyerEmail: email,
+            buyerName: name,
+            status: "pending",
+            amountCents: Math.round(total * 100),
+            type: "status",
+            items: items.map(i => ({ name: i.product.name, quantity: i.quantity, priceCents: Math.round(i.product.price * 100) })),
+          },
+        }).catch(e => console.error("Email error:", e));
+
+        // Fire webhook
+        await fireWebhookEvent("venda_pendente", {
+          source: "checkout",
+          buyerName: name,
+          buyerEmail: email,
+          buyerPhone: phone,
+          amount: total,
+          orderId: result.order_id,
+          gateway,
+        });
+
+        // Utmify: notifica venda pendente (PIX gerado)
+        void notifyUtmifyServerSide({
+          orderId: result.order_id || "",
+          status: "waiting_payment",
+          paymentMethod: "pix",
+          customerName: name,
+          customerEmail: email,
+          customerPhone: phone || null,
+          customerDocument: cpf?.replace(/\D/g, "") || null,
+          productName: items[0]?.product?.name || "Pedido Kazoom",
+          priceInCents: Math.round(total * 100),
+          trackingParameters: getCampaignParams(),
+        });
+
+        void trackEvent("purchase");
+      } else {
+        setPaymentError("Erro ao gerar PIX. Tente novamente.");
+      }
+    } catch (err) {
+      console.error(err);
+      setPaymentError(await extractFunctionErrorMessage(err));
+    }
+
+    setGenerating(false);
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(pixCode);
+      setCopied(true);
+      // Update order qr_code_copied
+      if (orderId) {
+        await supabase.from("orders").update({ qr_code_copied: true }).eq("id", orderId);
+      }
+      setTimeout(() => setCopied(false), 3000);
+    } catch { /* ignore */ }
+  };
 
   const handleCardPayment = async () => {
-    setGenerating(true); setPaymentError("");
+    setGenerating(true);
+    setPaymentError("");
+
     try {
       const gatewayConfig = await fetchPaymentGatewayConfig();
       const gateway = "beehive";
 
+      // Validate card fields
       if (!cardNumber || !cardHolder || !cardExpiry || !cardCvv) {
-        setPaymentError(t("checkout.processing"));
+        setPaymentError("Preencha todos os dados do cartão.");
         setGenerating(false);
         return;
       }
+
+      // Tokenize card using Beehive JS library
       if (typeof BeehivePay === "undefined") {
-        setPaymentError("Payment library not loaded. Please reload.");
+        setPaymentError("Biblioteca de pagamento não carregada. Recarregue a página.");
         setGenerating(false);
         return;
       }
@@ -306,70 +502,134 @@ export default function CheckoutPage() {
 
       const [expMonth, expYear] = cardExpiry.split("/").map((s) => parseInt(s.trim(), 10));
       const fullYear = expYear < 100 ? 2000 + expYear : expYear;
+
       const cardHash = await BeehivePay.encrypt({
-        number: cardNumber.replace(/\D/g, ""), holderName: cardHolder,
-        expMonth, expYear: fullYear, cvv: cardCvv,
+        number: cardNumber.replace(/\D/g, ""),
+        holderName: cardHolder,
+        expMonth,
+        expYear: fullYear,
+        cvv: cardCvv,
       });
 
       const bodyBase: Record<string, unknown> = {
-        amount: total,
-        buyerName: name, buyerEmail: email,
-        buyerDocument: taxId.replace(/\D/g, "") || "00000000000",
+        amount: getTotalWithInterest(total, installments),
+        buyerName: name,
+        buyerEmail: email,
+        buyerDocument: cpf.replace(/\D/g, ""),
         buyerPhone: phone.replace(/\D/g, ""),
-        cardHash, installments,
+        cardHash,
+        installments,
         metadata: {
-          country, address, address2, city, state: stateRegion,
-          cep: postalCode.replace(/\s+/g, ""), shippingMethod: selectedShipping, shippingCostCents: shippingCost,
+          address,
+          addressNumber,
+          complement,
+          neighborhood,
+          city,
+          state,
+          cep: cep.replace(/\D/g, ""),
+          shippingMethod: selectedShipping,
+          shippingCostCents: shippingCost,
         },
       };
 
-      const { data, error } = await supabase.functions.invoke("criar-cartao-beehive", { body: bodyBase });
-      if (error) throw new Error(await extractFunctionErrorMessage(error));
-      const result = data as { order_id?: string; status?: string; error?: string } | null;
-      if (result?.error) { setPaymentError(result.error); setGenerating(false); return; }
+      const { data, error } = await supabase.functions.invoke("criar-cartao-beehive", {
+        body: bodyBase,
+      });
 
+      if (error) {
+        throw new Error(await extractFunctionErrorMessage(error));
+      }
+
+      const result = data as { order_id?: string; status?: string; error?: string } | null;
+
+      if (result?.error) {
+        setPaymentError(result.error);
+        setGenerating(false);
+        return;
+      }
+
+      // Utmify: notifica venda pendente (cartão) — dispara para TODA tentativa de pagamento
       if (result?.order_id) {
         void notifyUtmifyServerSide({
-          orderId: result.order_id, status: "waiting_payment", paymentMethod: "credit_card",
-          customerName: name, customerEmail: email, customerPhone: phone || null,
-          customerDocument: taxId?.replace(/\D/g, "") || null,
-          productName: items[0]?.product?.name || "Bubo Health Order",
-          priceInCents: Math.round(total * 100), trackingParameters: getCampaignParams(),
+          orderId: result.order_id,
+          status: "waiting_payment",
+          paymentMethod: "credit_card",
+          customerName: name,
+          customerEmail: email,
+          customerPhone: phone || null,
+          customerDocument: cpf?.replace(/\D/g, "") || null,
+          productName: items[0]?.product?.name || "Pedido Kazoom",
+          priceInCents: Math.round(total * 100),
+          trackingParameters: getCampaignParams(),
         });
       }
 
       if (result?.status === "paid") {
-        if (result.order_id) await saveOrderItems(result.order_id);
-        if (draftOrderId) { await supabase.from("orders").delete().eq("id", draftOrderId); setDraftOrderId(""); }
+        // Save order items
+        if (result.order_id) {
+          await saveOrderItems(result.order_id);
+        }
+        // Delete draft now that real card order is paid
+        if (draftOrderId) {
+          await supabase.from("orders").delete().eq("id", draftOrderId);
+          setDraftOrderId("");
+        }
+        // Send paid confirmation email
         supabase.functions.invoke("send-order-email", {
           body: {
-            orderId: result.order_id, buyerEmail: email, buyerName: name,
-            status: "paid", amountCents: Math.round(total * 100), type: "status",
+            orderId: result.order_id,
+            buyerEmail: email,
+            buyerName: name,
+            status: "paid",
+            amountCents: Math.round(total * 100),
+            type: "status",
             items: items.map(i => ({ name: i.product.name, quantity: i.quantity, priceCents: Math.round(i.product.price * 100) })),
           },
         }).catch(e => console.error("Email error:", e));
+
         await fireWebhookEvent("venda_aprovada", {
-          source: "checkout", buyerName: name, buyerEmail: email, buyerPhone: phone,
-          amount: total, orderId: result.order_id, gateway,
+          source: "checkout",
+          buyerName: name,
+          buyerEmail: email,
+          buyerPhone: phone,
+          amount: total,
+          orderId: result.order_id,
+          gateway,
         });
+
+        // Utmify: notifica venda aprovada (cartão)
         void notifyUtmifyServerSide({
-          orderId: result.order_id || "", status: "paid", paymentMethod: "credit_card",
-          customerName: name, customerEmail: email, customerPhone: phone || null,
-          customerDocument: taxId?.replace(/\D/g, "") || null,
-          productName: items[0]?.product?.name || "Bubo Health Order",
-          priceInCents: Math.round(total * 100), trackingParameters: getCampaignParams(),
+          orderId: result.order_id || "",
+          status: "paid",
+          paymentMethod: "credit_card",
+          customerName: name,
+          customerEmail: email,
+          customerPhone: phone || null,
+          customerDocument: cpf?.replace(/\D/g, "") || null,
+          productName: items[0]?.product?.name || "Pedido Kazoom",
+          priceInCents: Math.round(total * 100),
+          trackingParameters: getCampaignParams(),
         });
+
         void trackEvent("purchase");
         navigate(`/obrigado?pedido=${result.order_id}&metodo=card`);
       } else {
-        setPaymentError("Payment not approved. Please check your card details.");
+        setOrderId(result?.order_id || "");
+        setPaymentError("Pagamento não aprovado. Verifique os dados do cartão.");
+
+        // Utmify: notifica venda recusada (cartão)
         if (result?.order_id) {
           void notifyUtmifyServerSide({
-            orderId: result.order_id, status: "refused", paymentMethod: "credit_card",
-            customerName: name, customerEmail: email, customerPhone: phone || null,
-            customerDocument: taxId?.replace(/\D/g, "") || null,
-            productName: items[0]?.product?.name || "Bubo Health Order",
-            priceInCents: Math.round(total * 100), trackingParameters: getCampaignParams(),
+            orderId: result.order_id,
+            status: "refused",
+            paymentMethod: "credit_card",
+            customerName: name,
+            customerEmail: email,
+            customerPhone: phone || null,
+            customerDocument: cpf?.replace(/\D/g, "") || null,
+            productName: items[0]?.product?.name || "Pedido Kazoom",
+            priceInCents: Math.round(total * 100),
+            trackingParameters: getCampaignParams(),
           });
         }
       }
@@ -377,36 +637,65 @@ export default function CheckoutPage() {
       console.error(err);
       setPaymentError(await extractFunctionErrorMessage(err));
     }
+
     setGenerating(false);
   };
 
   const handleStripeCheckout = async () => {
-    setGenerating(true); setPaymentError("");
+    setGenerating(true);
+    setPaymentError("");
     try {
       const successUrl = `${window.location.origin}/obrigado`;
       const cancelUrl = `${window.location.origin}/checkout`;
+
       const cartItems = items.map((i) => ({
-        name: i.product.name, quantity: i.quantity,
+        name: i.product.name,
+        quantity: i.quantity,
         amount_cents: Math.round(i.product.price * 100),
         product_id: i.product.id || null,
         image: i.product.image || (i.product.images?.[0] ?? null),
       }));
+
       const { data, error } = await supabase.functions.invoke("stripe-checkout", {
         body: {
-          items: cartItems, buyerName: name, buyerEmail: email,
-          buyerPhone: phone.replace(/\D/g, ""), currency: "usd",
-          shippingCostCents: shippingCost, successUrl, cancelUrl,
+          items: cartItems,
+          buyerName: name,
+          buyerEmail: email,
+          buyerPhone: phone.replace(/\D/g, ""),
+          currency: "usd",
+          shippingCostCents: shippingCost,
+          successUrl,
+          cancelUrl,
           metadata: {
-            country, address: `${address} ${address2}`.trim(), city, state: stateRegion,
-            postal: postalCode, shippingMethod: selectedShipping,
+            address: `${address}, ${addressNumber} ${complement}`.trim(),
+            neighborhood,
+            city,
+            state,
+            cep: cep.replace(/\D/g, ""),
+            shippingMethod: selectedShipping,
           },
         },
       });
-      if (error) throw new Error(await extractFunctionErrorMessage(error));
+
+      if (error) {
+        throw new Error(await extractFunctionErrorMessage(error));
+      }
       const result = data as { url?: string; order_id?: string; error?: string } | null;
-      if (result?.error) { setPaymentError(result.error); setGenerating(false); return; }
-      if (!result?.url) { setPaymentError("Could not start Stripe checkout."); setGenerating(false); return; }
-      if (draftOrderId) { await supabase.from("orders").delete().eq("id", draftOrderId); setDraftOrderId(""); }
+      if (result?.error) {
+        setPaymentError(result.error);
+        setGenerating(false);
+        return;
+      }
+      if (!result?.url) {
+        setPaymentError("Não foi possível iniciar o checkout do Stripe.");
+        setGenerating(false);
+        return;
+      }
+      // Delete draft order since real order is created server-side
+      if (draftOrderId) {
+        await supabase.from("orders").delete().eq("id", draftOrderId);
+        setDraftOrderId("");
+      }
       void trackEvent("purchase");
       window.location.href = result.url;
     } catch (err) {
@@ -417,7 +706,6 @@ export default function CheckoutPage() {
   };
 
   const stepIndex = step === "identification" ? 0 : step === "shipping" ? 1 : 2;
-  const stepLabels = [t("checkout.step1"), t("checkout.step2"), t("checkout.step3")];
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -425,7 +713,7 @@ export default function CheckoutPage() {
       <div className="bg-primary text-primary-foreground text-center py-2 px-4">
         <p className="text-xs font-bold flex items-center justify-center gap-2">
           <Clock size={14} />
-          {t("checkout.urgencyTimer", { time: timerStr })}
+          Oferta expira em {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")} — Finalize agora!
         </p>
       </div>
 
@@ -433,11 +721,11 @@ export default function CheckoutPage() {
       <header className="bg-background border-b border-border">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft size={16} /> {t("checkout.back")}
+            <ArrowLeft size={16} /> Voltar
           </button>
-          <Link to="/" className="text-xl font-heading font-bold text-primary">Bubo Health</Link>
+          <Link to="/" className="text-xl font-heading font-bold text-primary">Kazoom</Link>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Lock size={12} /> {t("checkout.secure")}
+            <Lock size={12} /> Seguro
           </div>
         </div>
       </header>
@@ -446,7 +734,7 @@ export default function CheckoutPage() {
       <div className="bg-background border-b border-border">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-center gap-2">
-            {stepLabels.map((label, i) => (
+            {["Identificação", "Entrega", "Pagamento"].map((label, i) => (
               <div key={label} className="flex items-center gap-2">
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
                   i <= stepIndex ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
@@ -471,28 +759,37 @@ export default function CheckoutPage() {
             {/* Step: Identification */}
             {step === "identification" && (
               <div className="bg-background rounded-xl border border-border p-5 space-y-4">
-                <h2 className="text-lg font-heading font-bold text-foreground">{t("checkout.step1")}</h2>
+                <h2 className="text-lg font-heading font-bold text-foreground">Seus dados</h2>
                 <div className="space-y-3">
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.fullName")} *</label>
-                    <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("checkout.fullNamePh")} />
+                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">Nome completo *</label>
+                    <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Seu nome completo" />
                   </div>
                   <div className="relative">
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.email")} *</label>
+                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">E-mail *</label>
                     <Input
-                      type="email" value={email}
-                      onChange={(e) => { setEmail(e.target.value); updateEmailSuggestions(e.target.value); }}
+                      type="email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        updateEmailSuggestions(e.target.value);
+                      }}
                       onFocus={() => updateEmailSuggestions(email)}
                       onBlur={() => setTimeout(() => setShowEmailSuggestions(false), 200)}
-                      placeholder={t("checkout.emailPh")}
+                      placeholder="seu@email.com"
                     />
                     {showEmailSuggestions && emailSuggestions.length > 0 && (
                       <div className="absolute z-10 w-full mt-1 bg-background border border-border rounded-lg shadow-lg overflow-hidden">
                         {emailSuggestions.slice(0, 5).map((suggestion) => (
                           <button
-                            key={suggestion} type="button"
+                            key={suggestion}
+                            type="button"
                             className="w-full text-left px-3 py-2 text-sm hover:bg-muted transition-colors border-b border-border last:border-0"
-                            onMouseDown={(e) => { e.preventDefault(); setEmail(suggestion); setShowEmailSuggestions(false); }}
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              setEmail(suggestion);
+                              setShowEmailSuggestions(false);
+                            }}
                           >
                             {suggestion}
                           </button>
@@ -500,14 +797,14 @@ export default function CheckoutPage() {
                       </div>
                     )}
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.phone")} *</label>
-                      <PhoneCountryInput value={phone} onChange={setPhone} defaultCountry={country} placeholder={t("checkout.phone")} />
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">Telefone *</label>
+                      <Input value={phone} onChange={(e) => setPhone(maskPhone(e.target.value))} placeholder="(00) 00000-0000" />
                     </div>
                     <div>
-                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">{taxIdLabel}</label>
-                      <Input value={taxId} onChange={(e) => setTaxId(e.target.value)} placeholder={t("checkout.taxIdHint")} />
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">CPF *</label>
+                      <Input value={cpf} onChange={(e) => setCpf(maskCPF(e.target.value))} placeholder="000.000.000-00" />
                     </div>
                   </div>
                 </div>
@@ -516,7 +813,7 @@ export default function CheckoutPage() {
                   disabled={!validateIdentification()}
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                 >
-                  {t("checkout.continueShipping")}
+                  Continuar para Entrega
                 </Button>
               </div>
             )}
@@ -525,59 +822,58 @@ export default function CheckoutPage() {
             {step === "shipping" && (
               <div className="bg-background rounded-xl border border-border p-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-heading font-bold text-foreground">{t("checkout.step2")}</h2>
-                  <button onClick={() => setStep("identification")} className="text-xs text-primary hover:underline">{t("checkout.editData")}</button>
+                  <h2 className="text-lg font-heading font-bold text-foreground">Endereço de entrega</h2>
+                  <button onClick={() => setStep("identification")} className="text-xs text-primary hover:underline">Editar dados</button>
                 </div>
                 <div className="space-y-3">
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.country")} *</label>
-                    <Select value={country} onValueChange={(v) => { setCountry(v); }}>
-                      <SelectTrigger><SelectValue /></SelectTrigger>
-                      <SelectContent className="max-h-72">
-                        {COUNTRIES.map((c) => (
-                          <SelectItem key={c.code} value={c.code}>{c.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.postalCode")} *</label>
-                      <div className="flex gap-2">
-                        <Input
-                          value={postalCode}
-                          onChange={(e) => {
-                            const v = e.target.value;
-                            setPostalCode(v);
-                            if (v.length >= 4) handleZipLookup(v, country);
-                          }}
-                          placeholder={t("checkout.postalCodePh")}
-                          className="flex-1"
-                        />
-                        {loadingZip && <Loader2 size={20} className="animate-spin text-primary mt-2" />}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.city")} *</label>
-                      <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder={t("checkout.city")} />
+                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">CEP *</label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={cep}
+                        onChange={(e) => {
+                          const v = maskCEP(e.target.value);
+                          setCep(v);
+                          if (v.replace(/\D/g, "").length === 8) handleCepLookup(v);
+                        }}
+                        placeholder="00000-000"
+                        className="flex-1"
+                      />
+                      {loadingCep && <Loader2 size={20} className="animate-spin text-primary mt-2" />}
                     </div>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.address1")} *</label>
-                    <Input value={address} onChange={(e) => setAddress(e.target.value)} placeholder={t("checkout.address1Ph")} />
+                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">Endereço *</label>
+                    <Input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Rua, Avenida..." />
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">Número *</label>
+                      <Input value={addressNumber} onChange={(e) => setAddressNumber(e.target.value)} placeholder="123" />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">Complemento</label>
+                      <Input value={complement} onChange={(e) => setComplement(e.target.value)} placeholder="Apto, bloco..." />
+                    </div>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.address2")}</label>
-                    <Input value={address2} onChange={(e) => setAddress2(e.target.value)} placeholder={t("checkout.address2")} />
+                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">Bairro *</label>
+                    <Input value={neighborhood} onChange={(e) => setNeighborhood(e.target.value)} placeholder="Seu bairro" />
                   </div>
-                  <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.state")} *</label>
-                    <Input value={stateRegion} onChange={(e) => setStateRegion(e.target.value)} placeholder={t("checkout.state")} />
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="col-span-2">
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">Cidade *</label>
+                      <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Sua cidade" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">UF *</label>
+                      <Input value={state} onChange={(e) => setState(e.target.value.toUpperCase().slice(0, 2))} placeholder="UF" />
+                    </div>
                   </div>
 
                   {/* Shipping methods */}
                   <div className="pt-2">
-                    <label className="text-xs font-semibold text-muted-foreground mb-2 block">{t("checkout.shippingMethod")}</label>
+                    <label className="text-xs font-semibold text-muted-foreground mb-2 block">Método de envio</label>
                     <div className="space-y-2">
                       {shippingOptions.map((opt) => (
                         <label
@@ -587,7 +883,9 @@ export default function CheckoutPage() {
                           }`}
                         >
                           <input
-                            type="radio" name="shipping" value={opt.id}
+                            type="radio"
+                            name="shipping"
+                            value={opt.id}
                             checked={selectedShipping === opt.id}
                             onChange={(e) => setSelectedShipping(e.target.value)}
                             className="accent-primary"
@@ -595,10 +893,10 @@ export default function CheckoutPage() {
                           <Truck size={16} className="text-primary" />
                           <div className="flex-1">
                             <p className="text-sm font-medium">{opt.name}</p>
-                            <p className="text-[11px] text-muted-foreground">{t("checkout.deliveryDays", { min: opt.days_min, max: opt.days_max })}</p>
+                            <p className="text-[11px] text-muted-foreground">{opt.days_min}-{opt.days_max} dias úteis</p>
                           </div>
                           <span className="text-sm font-bold text-primary">
-                            {opt.price_cents === 0 ? t("checkout.freeLabel") : formatPrice(opt.price_cents / 100)}
+                            {opt.price_cents === 0 ? "Grátis" : formatPrice(opt.price_cents / 100)}
                           </span>
                         </label>
                       ))}
@@ -610,24 +908,72 @@ export default function CheckoutPage() {
                   disabled={!validateShipping()}
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                 >
-                  {t("checkout.continuePayment")}
+                  Continuar para Pagamento
                 </Button>
               </div>
             )}
 
             {/* Step: Payment */}
-            {step === "payment" && (
+            {step === "payment" && !pixCode && (
               <div className="bg-background rounded-xl border border-border p-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-heading font-bold text-foreground">{t("checkout.step3")}</h2>
-                  <button onClick={() => setStep("shipping")} className="text-xs text-primary hover:underline">{t("checkout.editShipping")}</button>
+                  <h2 className="text-lg font-heading font-bold text-foreground">Pagamento</h2>
+                  <button onClick={() => setStep("shipping")} className="text-xs text-primary hover:underline">Editar entrega</button>
                 </div>
 
+                {/* Payment method selector — hidden when Stripe is the active gateway (card only) */}
+                {activeGateway !== "stripe" && cardEnabled && (
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-muted-foreground block">Forma de pagamento</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => setPaymentMethod("pix")}
+                        className={`flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-bold transition-all ${
+                          paymentMethod === "pix"
+                            ? "border-emerald-500 bg-emerald-500/5 text-emerald-600"
+                            : "border-border text-muted-foreground hover:border-muted-foreground/40"
+                        }`}
+                      >
+                        <Tag size={16} /> PIX
+                      </button>
+                      <button
+                        onClick={() => setPaymentMethod("card")}
+                        className={`flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-bold transition-all ${
+                          paymentMethod === "card"
+                            ? "border-primary bg-primary/5 text-primary"
+                            : "border-border text-muted-foreground hover:border-muted-foreground/40"
+                        }`}
+                      >
+                        <CreditCard size={16} /> Cartão
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* PIX benefit highlight */}
+                {isPix && (
+                  <div className="bg-emerald-500/10 rounded-lg p-3 flex items-center gap-2">
+                    <Tag size={14} className="text-emerald-600" />
+                    <span className="text-xs font-medium text-emerald-700">
+                      Você economiza <strong>{formatPrice(subtotal * PIX_DISCOUNT_RATE)}</strong> pagando via PIX!
+                    </span>
+                  </div>
+                )}
+
+
+
+
+
+                {/* Summary */}
+                {/* Summary */}
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between"><span className="text-muted-foreground">{t("checkout.subtotalLabel")}</span><span>{formatPrice(subtotal)}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">{t("checkout.shippingLabel")}</span><span className="text-primary font-bold">{t("checkout.freeLabel")}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatPrice(subtotal)}</span></div>
+                  {isPix && (
+                    <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
+                  )}
+                  <div className="flex justify-between"><span className="text-muted-foreground">Frete ({selectedShippingOption?.name})</span><span>{shippingCost === 0 ? "Grátis" : formatPrice(shippingCost / 100)}</span></div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
-                    <span>{t("checkout.totalLabel")}</span>
+                    <span>Total</span>
                     <span className="text-primary">{formatPrice(total)}</span>
                   </div>
                 </div>
@@ -640,7 +986,9 @@ export default function CheckoutPage() {
                   <div className="space-y-3">
                     <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 flex items-center gap-2">
                       <Lock size={14} className="text-primary" />
-                      <span className="text-xs font-medium text-foreground">{t("checkout.secureNotice")}</span>
+                      <span className="text-xs font-medium text-foreground">
+                        Pagamento 100% seguro processado pela Stripe — aceitamos todas as bandeiras de cartão.
+                      </span>
                     </div>
                     <Button
                       onClick={handleStripeCheckout}
@@ -648,32 +996,45 @@ export default function CheckoutPage() {
                       className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                     >
                       {generating ? (
-                        <><Loader2 size={16} className="animate-spin mr-2" /> {t("checkout.redirecting")}</>
+                        <><Loader2 size={16} className="animate-spin mr-2" /> Redirecionando...</>
                       ) : (
-                        <><CreditCard size={16} className="mr-2" /> {t("checkout.payWithStripe", { amount: formatPrice(total) })}</>
+                        <><CreditCard size={16} className="mr-2" /> Pagar {formatPrice(total)} com Stripe</>
                       )}
                     </Button>
                   </div>
                 )}
 
-                {activeGateway !== "stripe" && cardEnabled && (
+                {activeGateway !== "stripe" && isPix && (
+                  <Button
+                    onClick={handleGeneratePix}
+                    disabled={generating}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 text-sm"
+                  >
+                    {generating ? (
+                      <><Loader2 size={16} className="animate-spin mr-2" /> Processando...</>
+                    ) : (
+                      "Comprar Agora"
+                    )}
+                  </Button>
+                )}
+
+                {activeGateway !== "stripe" && paymentMethod === "card" && (
                   <div className="space-y-3">
                     <div>
-                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.cardNumber")} *</label>
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">Número do cartão *</label>
                       <Input
                         value={cardNumber}
                         onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, "").slice(0, 16).replace(/(\d{4})/g, "$1 ").trim())}
                         placeholder="0000 0000 0000 0000"
-                        inputMode="numeric"
                       />
                     </div>
                     <div>
-                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.cardHolder")} *</label>
-                      <Input value={cardHolder} onChange={(e) => setCardHolder(e.target.value.toUpperCase())} placeholder={t("checkout.cardHolderPh")} />
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">Nome no cartão *</label>
+                      <Input value={cardHolder} onChange={(e) => setCardHolder(e.target.value.toUpperCase())} placeholder="NOME COMO NO CARTÃO" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.expiry")} *</label>
+                        <label className="text-xs font-semibold text-muted-foreground mb-1 block">Validade *</label>
                         <Input
                           value={cardExpiry}
                           onChange={(e) => {
@@ -681,25 +1042,43 @@ export default function CheckoutPage() {
                             if (v.length >= 3) v = v.slice(0, 2) + "/" + v.slice(2);
                             setCardExpiry(v);
                           }}
-                          placeholder="MM/YY"
-                          inputMode="numeric"
+                          placeholder="MM/AA"
                         />
                       </div>
                       <div>
-                        <label className="text-xs font-semibold text-muted-foreground mb-1 block">{t("checkout.cvv")} *</label>
-                        <Input value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="123" inputMode="numeric" />
+                        <label className="text-xs font-semibold text-muted-foreground mb-1 block">CVV *</label>
+                        <Input value={cardCvv} onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="123" />
                       </div>
                     </div>
-                    {/* Installments removed — pay in full only */}
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground mb-1 block">Parcelas *</label>
+                      <Select value={String(installments)} onValueChange={(v) => setInstallments(Number(v))}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Array.from({ length: 6 }, (_, i) => i + 1).map((n) => {
+                            const installmentVal = getInstallmentValue(total, n);
+                            const totalWithInterest = getTotalWithInterest(total, n);
+                            const hasInterest = n > 1;
+                            return (
+                              <SelectItem key={n} value={String(n)}>
+                                {n}x de {formatPrice(installmentVal)} {hasInterest ? `(total ${formatPrice(totalWithInterest)})` : "(à vista)"}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <Button
                       onClick={handleCardPayment}
                       disabled={generating}
                       className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 text-sm"
                     >
                       {generating ? (
-                        <><Loader2 size={16} className="animate-spin mr-2" /> {t("checkout.processing")}</>
+                        <><Loader2 size={16} className="animate-spin mr-2" /> Processando...</>
                       ) : (
-                        t("checkout.payNow", { amount: formatPrice(total) })
+                        "Comprar Agora"
                       )}
                     </Button>
                   </div>
@@ -707,32 +1086,92 @@ export default function CheckoutPage() {
               </div>
             )}
 
+            {/* PIX Generated - Modal Popup */}
+            <Dialog open={!!pixCode} onOpenChange={(open) => { if (!open) { /* keep open until user closes manually via X */ } }}>
+              <DialogContent className="max-w-md max-h-[95vh] overflow-y-auto">
+                <DialogHeader>
+                  <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Check size={32} className="text-emerald-600" />
+                  </div>
+                  <DialogTitle className="text-center text-lg font-heading font-bold">
+                    PIX gerado com sucesso!
+                  </DialogTitle>
+                  <DialogDescription className="text-center">
+                    Escaneie o QR Code ou copie o código para pagar
+                  </DialogDescription>
+                </DialogHeader>
+
+                <div className="space-y-4">
+                  {/* QR Code */}
+                  <div className="flex justify-center">
+                    <div className="bg-white p-3 rounded-lg border border-border">
+                      <QRCodeSVG value={pixCode} size={200} />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-muted-foreground block">
+                      Código PIX Copia e Cola
+                    </label>
+                    <div className="relative">
+                      <Input value={pixCode} readOnly className="pr-20 font-mono text-xs" />
+                      <Button
+                        onClick={handleCopy}
+                        size="sm"
+                        className={`absolute right-1 top-1 h-7 text-xs ${copied ? "bg-emerald-600 hover:bg-emerald-600" : "bg-primary hover:bg-primary/90"}`}
+                      >
+                        {copied ? <><Check size={12} className="mr-1" /> Copiado</> : <><Copy size={12} className="mr-1" /> Copiar</>}
+                      </Button>
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={handleCopy}
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6"
+                  >
+                    {copied ? <><Check size={18} className="mr-2" /> Código Copiado!</> : <><Copy size={18} className="mr-2" /> Copiar Código PIX</>}
+                  </Button>
+
+                  <div className="bg-amber-500/10 rounded-lg p-3 text-center">
+                    <p className="text-xs font-medium text-amber-700">
+                      <Clock size={12} className="inline mr-1" />
+                      Pague em até 30 minutos para garantir seu pedido
+                    </p>
+                  </div>
+
+                  <div className="text-center pt-1 border-t border-border">
+                    <p className="text-lg font-bold text-primary">{formatPrice(total)}</p>
+                    <p className="text-xs text-muted-foreground">Valor total com desconto PIX</p>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+
             {/* Trust badges */}
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-background rounded-lg border border-border p-3 text-center">
                 <ShieldCheck size={20} className="text-primary mx-auto mb-1" />
-                <p className="text-[10px] font-bold text-foreground">{t("checkout.trustSecure")}</p>
+                <p className="text-[10px] font-bold text-foreground">Compra Segura</p>
               </div>
               <div className="bg-background rounded-lg border border-border p-3 text-center">
                 <Lock size={20} className="text-primary mx-auto mb-1" />
-                <p className="text-[10px] font-bold text-foreground">{t("checkout.trustProtected")}</p>
+                <p className="text-[10px] font-bold text-foreground">Dados Protegidos</p>
               </div>
               <div className="bg-background rounded-lg border border-border p-3 text-center">
                 <Truck size={20} className="text-primary mx-auto mb-1" />
-                <p className="text-[10px] font-bold text-foreground">{t("checkout.trustDelivery")}</p>
+                <p className="text-[10px] font-bold text-foreground">Entrega Garantida</p>
               </div>
             </div>
           </div>
 
           {/* Right sidebar — Order summary */}
           <div className="lg:col-span-2">
+            {/* Mobile toggle */}
             <button
               onClick={() => setShowOrderSummary(!showOrderSummary)}
               className="lg:hidden w-full flex items-center justify-between bg-background rounded-lg border border-border p-3 mb-3"
             >
-              <span className="text-sm font-bold">
-                {t("checkout.orderSummary")} ({items.length} {items.length === 1 ? t("checkout.itemsOne") : t("checkout.items")})
-              </span>
+              <span className="text-sm font-bold">Resumo do pedido ({items.length} {items.length === 1 ? "item" : "itens"})</span>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-bold text-primary">{formatPrice(total)}</span>
                 {showOrderSummary ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -741,8 +1180,9 @@ export default function CheckoutPage() {
 
             <div className={`${showOrderSummary ? "block" : "hidden"} lg:block`}>
               <div className="bg-background rounded-xl border border-border p-4 space-y-4 sticky top-4">
-                <h3 className="text-sm font-heading font-bold text-foreground">{t("checkout.orderSummary")}</h3>
+                <h3 className="text-sm font-heading font-bold text-foreground">Resumo do pedido</h3>
 
+                {/* Items */}
                 <div className="space-y-3 max-h-[300px] overflow-y-auto">
                   {items.map(({ product, quantity, selections, lineId }) => (
                     <div key={lineId} className="flex gap-3">
@@ -757,11 +1197,11 @@ export default function CheckoutPage() {
                         {selections && selections.length > 0 && (
                           <ul className="mt-0.5 space-y-0.5 text-[10px] text-muted-foreground">
                             {selections.map((s, i) => (
-                              <li key={i}>{i + 1}: {s.color} · {s.size}</li>
+                              <li key={i}>Camisa {i + 1}: {s.color} · {s.size}</li>
                             ))}
                           </ul>
                         )}
-                        <p className="text-xs text-primary font-bold">{formatPrice(Math.round(product.price * 100 * quantity))}</p>
+                        <p className="text-xs text-primary font-bold">{formatPrice(product.price * quantity)}</p>
                         <div className="flex items-center gap-1 mt-1">
                           <button onClick={() => updateQuantity(lineId, quantity - 1)} className="w-5 h-5 border border-border rounded flex items-center justify-center hover:bg-muted">
                             <Minus size={10} />
@@ -779,19 +1219,32 @@ export default function CheckoutPage() {
                   ))}
                 </div>
 
+                {/* Totals */}
                 <div className="border-t border-border pt-3 space-y-1.5 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t("checkout.subtotalLabel")}</span>
+                    <span className="text-muted-foreground">Subtotal</span>
                     <span>{formatPrice(subtotal)}</span>
                   </div>
+                  {isPix && (
+                    <div className="flex justify-between text-emerald-600">
+                      <span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span>
+                      <span>-{formatPrice(pixDiscount)}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t("checkout.shippingLabel")}</span>
-                    <span>{shippingCost === 0 ? t("checkout.freeLabel") : formatPrice(shippingCost / 100)}</span>
+                    <span className="text-muted-foreground">Frete</span>
+                    <span>{shippingCost === 0 ? "Grátis" : formatPrice(shippingCost / 100)}</span>
                   </div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
-                    <span>{t("checkout.totalLabel")}</span>
+                    <span>Total</span>
                     <span className="text-primary">{formatPrice(total)}</span>
                   </div>
+                  <p className="text-[10px] text-muted-foreground text-center">
+                    {isPix
+                      ? `${PIX_DISCOUNT_PERCENT}% de desconto no PIX`
+                      : `ou em até 6x de ${formatPrice(getInstallmentValue(total, 6))}`
+                    }
+                  </p>
                 </div>
               </div>
             </div>
