@@ -22,21 +22,25 @@ serve(async (req) => {
       });
     }
 
-    let secretKey = payloadSecretKey;
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    let secretKey = typeof payloadSecretKey === "string" ? payloadSecretKey.trim() : payloadSecretKey;
 
     if (!secretKey) {
-      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-      const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-      const supabase = createClient(supabaseUrl, supabaseKey);
-
       // Read secret key from gateway_config (server-side, bypasses RLS with service role)
-      const { data: gwConfig } = await supabase
+      const { data: gwConfig, error: configError } = await supabase
         .from("gateway_config")
         .select("beehive_secret_key")
         .limit(1)
-        .single();
+        .maybeSingle();
 
-      secretKey = gwConfig?.beehive_secret_key;
+      if (configError) {
+        console.error("Erro ao buscar beehive_secret_key:", configError);
+      }
+
+      secretKey = gwConfig?.beehive_secret_key?.trim();
     }
 
     if (!secretKey) {

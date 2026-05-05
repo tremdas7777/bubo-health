@@ -43,66 +43,97 @@ serve(async (req) => {
       "pagamentosmp",
       "stripe",
     ];
-    const activeGateway = allowedGateways.includes(config.activeGateway) ? config.activeGateway : "stripe";
+    const activeGateway = allowedGateways.includes(config.activeGateway) ? config.activeGateway : "beehive";
+    const trimValue = (value: unknown) => typeof value === "string" ? value.trim() : "";
 
     const updateData: Record<string, unknown> = {
       active_gateway: activeGateway,
       updated_at: new Date().toISOString(),
     };
 
-    // Only add fields if they are present in the config
-    if (config.paymentMethods) updateData.payment_methods = config.paymentMethods;
+    // Only add fields if they are present in the config.
+    // Empty values are ignored so a partially loaded admin form does not wipe working credentials.
+    if (config.paymentMethods && typeof config.paymentMethods === "object") updateData.payment_methods = config.paymentMethods;
     
     if (config.beehive) {
-      if (config.beehive.publicKey) updateData.beehive_public_key = config.beehive.publicKey;
-      if (config.beehive.secretKey) updateData.beehive_secret_key = config.beehive.secretKey;
+      const publicKey = trimValue(config.beehive.publicKey);
+      const secretKey = trimValue(config.beehive.secretKey);
+      if (publicKey) updateData.beehive_public_key = publicKey;
+      if (secretKey) updateData.beehive_secret_key = secretKey;
     }
 
     if (config.pagouai) {
-      if (config.pagouai.publicKey) updateData.pagouai_public_key = config.pagouai.publicKey;
-      if (config.pagouai.secretKey) updateData.pagouai_secret_key = config.pagouai.secretKey;
+      const publicKey = trimValue(config.pagouai.publicKey);
+      const secretKey = trimValue(config.pagouai.secretKey);
+      if (publicKey) updateData.pagouai_public_key = publicKey;
+      if (secretKey) updateData.pagouai_secret_key = secretKey;
     }
 
     if (config.vennox) {
-      if (config.vennox.secretKey) updateData.vennox_secret_key = config.vennox.secretKey;
-      if (config.vennox.companyId) updateData.vennox_company_id = config.vennox.companyId;
+      const secretKey = trimValue(config.vennox.secretKey);
+      const companyId = trimValue(config.vennox.companyId);
+      if (secretKey) updateData.vennox_secret_key = secretKey;
+      if (companyId) updateData.vennox_company_id = companyId;
     }
 
     if (config.centurionpay) {
-      if (config.centurionpay.secretKey) updateData.centurionpay_secret_key = config.centurionpay.secretKey;
-      if (config.centurionpay.companyId) updateData.centurionpay_company_id = config.centurionpay.companyId;
+      const secretKey = trimValue(config.centurionpay.secretKey);
+      const companyId = trimValue(config.centurionpay.companyId);
+      if (secretKey) updateData.centurionpay_secret_key = secretKey;
+      if (companyId) updateData.centurionpay_company_id = companyId;
     }
 
-    if (config.ironpay && config.ironpay.apiToken) {
-      updateData.ironpay_api_token = config.ironpay.apiToken;
+    if (config.ironpay) {
+      const apiToken = trimValue(config.ironpay.apiToken);
+      if (apiToken) updateData.ironpay_api_token = apiToken;
     }
 
     if (config.simpayout) {
-      if (config.simpayout.clientId) updateData.simpayout_client_id = config.simpayout.clientId;
-      if (config.simpayout.clientSecret) updateData.simpayout_client_secret = config.simpayout.clientSecret;
+      const clientId = trimValue(config.simpayout.clientId);
+      const clientSecret = trimValue(config.simpayout.clientSecret);
+      if (clientId) updateData.simpayout_client_id = clientId;
+      if (clientSecret) updateData.simpayout_client_secret = clientSecret;
     }
 
     if (config.pagamentosmp) {
-      if (config.pagamentosmp.publicKey) updateData.pagamentosmp_public_key = config.pagamentosmp.publicKey;
-      if (config.pagamentosmp.secretKey) updateData.pagamentosmp_secret_key = config.pagamentosmp.secretKey;
+      const publicKey = trimValue(config.pagamentosmp.publicKey);
+      const secretKey = trimValue(config.pagamentosmp.secretKey);
+      if (publicKey) updateData.pagamentosmp_public_key = publicKey;
+      if (secretKey) updateData.pagamentosmp_secret_key = secretKey;
     }
 
     // Stripe fields - only if present
     if (config.stripe) {
-      if (config.stripe.publishableKey) updateData.stripe_publishable_key = config.stripe.publishableKey;
-      if (config.stripe.secretKey) updateData.stripe_secret_key = config.stripe.secretKey;
-      if (config.stripe.webhookSecret) updateData.stripe_webhook_secret = config.stripe.webhookSecret;
-      if (config.stripe.testPublishableKey) updateData.stripe_test_publishable_key = config.stripe.testPublishableKey;
-      if (config.stripe.testSecretKey) updateData.stripe_test_secret_key = config.stripe.testSecretKey;
-      if (config.stripe.testWebhookSecret) updateData.stripe_test_webhook_secret = config.stripe.testWebhookSecret;
-      if (config.stripe.mode) updateData.stripe_mode = config.stripe.mode;
+      const publishableKey = trimValue(config.stripe.publishableKey);
+      const secretKey = trimValue(config.stripe.secretKey);
+      const webhookSecret = trimValue(config.stripe.webhookSecret);
+      const testPublishableKey = trimValue(config.stripe.testPublishableKey);
+      const testSecretKey = trimValue(config.stripe.testSecretKey);
+      const testWebhookSecret = trimValue(config.stripe.testWebhookSecret);
+      if (publishableKey) updateData.stripe_publishable_key = publishableKey;
+      if (secretKey) updateData.stripe_secret_key = secretKey;
+      if (webhookSecret) updateData.stripe_webhook_secret = webhookSecret;
+      if (testPublishableKey) updateData.stripe_test_publishable_key = testPublishableKey;
+      if (testSecretKey) updateData.stripe_test_secret_key = testSecretKey;
+      if (testWebhookSecret) updateData.stripe_test_webhook_secret = testWebhookSecret;
+      if (activeGateway === "stripe" && (config.stripe.mode === "test" || config.stripe.mode === "live")) {
+        updateData.stripe_mode = config.stripe.mode;
+      }
     }
 
-    const { data: existing } = await supabase
+    const { data: existing, error: existingError } = await supabase
       .from("gateway_config")
       .select("id")
       .limit(1)
-      .single();
+      .maybeSingle();
+
+    if (existingError) {
+      console.error("Read gateway config error:", existingError);
+      return new Response(JSON.stringify({ error: existingError.message }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     let error;
     if (existing?.id) {

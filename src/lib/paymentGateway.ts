@@ -82,7 +82,7 @@ function normalizePaymentMethods(
   const fallbackMethod: GatewayPaymentMethods =
     defaultMethod === 'card' || defaultMethod === 'pix_card' || defaultMethod === 'pix'
       ? (defaultMethod as GatewayPaymentMethods)
-      : 'card';
+      : 'pix_card';
 
   const normalized: Record<string, GatewayPaymentMethods> = {};
 
