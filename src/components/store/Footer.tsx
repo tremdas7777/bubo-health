@@ -1,16 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import logoIcon from "@/assets/logo-icon.png";
 import { useStoreConfig } from "@/hooks/useStoreConfig";
 import LanguageCurrencySwitcher from "./LanguageCurrencySwitcher";
+import { useHeroColor } from "@/contexts/HeroColorContext";
 
 export default function Footer() {
   const { t } = useTranslation();
   const { config } = useStoreConfig();
+  const { barColor } = useHeroColor();
+  const location = useLocation();
   const cleanNumber = config.whatsapp_number?.replace(/\D/g, "") || "";
 
+  const isProductPage = location.pathname.startsWith("/produto/");
+  // On home, default to purple. On product, use active barColor.
+  const bgColor = isProductPage ? barColor : "#4c1d95";
+
   return (
-    <footer className="bg-foreground text-background/80">
+    <footer className="text-white transition-colors duration-700" style={{ backgroundColor: bgColor }}>
       <div className="container mx-auto px-4 py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
