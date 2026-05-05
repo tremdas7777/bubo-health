@@ -51,7 +51,7 @@ export default function WishlistPage() {
                     </h3>
                   </Link>
                   <p className="text-lg font-bold text-primary">
-                    {formatPrice(Math.round(product.price * 100))}
+                    {formatPrice(product.price)}
                   </p>
                   <div className="flex gap-2 mt-3">
                     <Button

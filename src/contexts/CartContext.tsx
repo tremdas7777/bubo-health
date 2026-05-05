@@ -73,9 +73,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const clearCart = useCallback(() => setItems([]), []);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  // totalPrice in BRL cents
+  // totalPrice in BRL decimal
   const totalPrice = items.reduce(
-    (sum, item) => sum + Math.round(item.price * 100) * item.quantity,
+    (sum, item) => sum + (item.price * item.quantity),
     0,
   );
 

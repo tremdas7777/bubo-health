@@ -41,10 +41,10 @@ function ProductCardInline({ product, addItem }: { product: Product; addItem: (p
         </Link>
         <div>
           <div className="flex items-baseline justify-center gap-1.5">
-            <span className="text-primary font-bold text-sm">{formatPrice(Math.round(product.price * 100))}</span>
+            <span className="text-primary font-bold text-sm">{formatPrice(product.price)}</span>
             {hasDiscount && (
               <span className="text-muted-foreground text-[11px] line-through">
-                {formatPrice(Math.round(product.compareAtPrice! * 100))}
+                {formatPrice(product.compareAtPrice!)}
               </span>
             )}
           </div>

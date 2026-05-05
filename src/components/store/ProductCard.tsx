@@ -65,11 +65,11 @@ export default memo(function ProductCard({ product }: Props) {
         <div className="mt-2 space-y-1">
           <div className="flex items-baseline justify-center gap-2">
             <span className="text-primary font-bold text-base">
-              {formatPrice(Math.round(product.price * 100))}
+              {formatPrice(product.price)}
             </span>
             {hasDiscount && (
               <span className="text-muted-foreground text-xs line-through">
-                {formatPrice(Math.round(product.compareAtPrice! * 100))}
+                {formatPrice(product.compareAtPrice!)}
               </span>
             )}
           </div>
