@@ -34,7 +34,7 @@ Deno.serve(async (req) => {
       .from("gateway_config")
       .select("*")
       .limit(1)
-      .single();
+      .maybeSingle();
 
     if (error) {
       return new Response(JSON.stringify({ error: error.message }), {
