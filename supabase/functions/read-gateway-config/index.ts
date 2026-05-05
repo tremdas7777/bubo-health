@@ -33,8 +33,9 @@ Deno.serve(async (req) => {
     const { data, error } = await supabaseAdmin
       .from("gateway_config")
       .select("*")
+      .order("updated_at", { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
     if (error) {
       return new Response(JSON.stringify({ error: error.message }), {
@@ -42,7 +43,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    return new Response(JSON.stringify({ data }), {
+    return new Response(JSON.stringify({ data: data ?? null }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {

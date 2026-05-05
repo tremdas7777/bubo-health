@@ -117,7 +117,12 @@ export function getCachedGatewayConfig(): PaymentGatewayConfig {
 // Public: reads only safe fields from the view (no secrets exposed)
 export async function fetchPaymentGatewayConfig(): Promise<PaymentGatewayConfig> {
   try {
-    const { data, error } = await supabase.from('gateway_config_public' as any).select('*').limit(1).single();
+    const { data, error } = await supabase
+      .from('gateway_config_public' as any)
+      .select('*')
+      .order('id', { ascending: false })
+      .limit(1)
+      .maybeSingle();
     if (error || !data) return defaultConfig;
     const d = data as any;
     const activeGateway = normalizeActiveGateway(d.active_gateway);

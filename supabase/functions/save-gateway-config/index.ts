@@ -53,9 +53,13 @@ serve(async (req) => {
     // Only add fields if they are present in the config
     if (config.paymentMethods) updateData.payment_methods = config.paymentMethods;
     
-    if (config.beehive) {
-      if (config.beehive.publicKey) updateData.beehive_public_key = config.beehive.publicKey;
-      if (config.beehive.secretKey) updateData.beehive_secret_key = config.beehive.secretKey;
+    if (config.beehive && typeof config.beehive === "object") {
+      if (typeof config.beehive.publicKey === "string") {
+        updateData.beehive_public_key = config.beehive.publicKey.trim();
+      }
+      if (typeof config.beehive.secretKey === "string") {
+        updateData.beehive_secret_key = config.beehive.secretKey.trim();
+      }
     }
 
     if (config.pagouai) {
@@ -98,23 +102,31 @@ serve(async (req) => {
       if (config.stripe.mode) updateData.stripe_mode = config.stripe.mode;
     }
 
-    const { data: existing } = await supabase
+    const { count, error: countErr } = await supabase
       .from("gateway_config")
-      .select("id")
-      .limit(1)
-      .single();
+      .select("id", { count: "exact", head: true });
+
+    if (countErr) {
+      console.error("save-gateway-config count:", countErr);
+      return new Response(JSON.stringify({ error: countErr.message }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     let error;
-    if (existing?.id) {
+    if ((count ?? 0) === 0) {
+      const res = await supabase.from("gateway_config").insert([{
+        ...updateData,
+        payment_methods: updateData.payment_methods ?? {},
+      }]);
+      error = res.error;
+    } else {
+      // Atualiza todas as linhas para não ficar chave nova só na última linha enquanto a view/cliente lê outra duplicata.
       const res = await supabase
         .from("gateway_config")
         .update(updateData)
-        .eq("id", existing.id);
-      error = res.error;
-    } else {
-      const res = await supabase
-        .from("gateway_config")
-        .insert([updateData]);
+        .gte("updated_at", "1970-01-01T00:00:00Z");
       error = res.error;
     }
 
