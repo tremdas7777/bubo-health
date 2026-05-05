@@ -1,1 +1,11 @@
 project_id = "eeamjndnoizjretzmneb"
+
+# Invocação pelo browser com anon key — sem sessão JWT válida o invoke falha com 401.
+[functions.save-gateway-config]
+verify_jwt = false
+
+[functions.read-gateway-config]
+verify_jwt = false
+
+[functions.admin-write]
+verify_jwt = false

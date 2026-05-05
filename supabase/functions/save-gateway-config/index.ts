@@ -3,7 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 serve(async (req) => {
@@ -122,11 +123,11 @@ serve(async (req) => {
       }]);
       error = res.error;
     } else {
-      // Atualiza todas as linhas para não ficar chave nova só na última linha enquanto a view/cliente lê outra duplicata.
+      // Atualiza todas as linhas (filtro sempre verdadeiro para UUID reais).
       const res = await supabase
         .from("gateway_config")
         .update(updateData)
-        .gte("updated_at", "1970-01-01T00:00:00Z");
+        .neq("id", "00000000-0000-0000-0000-000000000000");
       error = res.error;
     }
 
@@ -144,7 +145,8 @@ serve(async (req) => {
     });
   } catch (err) {
     console.error("save-gateway-config error:", err);
-    return new Response(JSON.stringify({ error: "Erro interno" }), {
+    const msg = err instanceof Error ? err.message : String(err);
+    return new Response(JSON.stringify({ error: msg || "Erro interno" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

@@ -99,6 +99,71 @@ function normalizePaymentMethods(
   return normalized;
 }
 
+/** Mesmo mapeamento que `save-gateway-config` (fallback via `admin-write`). */
+function gatewayConfigToDbPatch(config: PaymentGatewayConfig): Record<string, unknown> {
+  const allowedGateways = VALID_GATEWAYS;
+  const activeGateway = allowedGateways.includes(config.activeGateway) ? config.activeGateway : 'stripe';
+
+  const updateData: Record<string, unknown> = {
+    active_gateway: activeGateway,
+    updated_at: new Date().toISOString(),
+  };
+
+  if (config.paymentMethods && typeof config.paymentMethods === 'object') {
+    updateData.payment_methods = config.paymentMethods;
+  }
+
+  if (config.beehive && typeof config.beehive === 'object') {
+    if (typeof config.beehive.publicKey === 'string') {
+      updateData.beehive_public_key = config.beehive.publicKey.trim();
+    }
+    if (typeof config.beehive.secretKey === 'string') {
+      updateData.beehive_secret_key = config.beehive.secretKey.trim();
+    }
+  }
+
+  if (config.pagouai) {
+    if (config.pagouai.publicKey) updateData.pagouai_public_key = config.pagouai.publicKey;
+    if (config.pagouai.secretKey) updateData.pagouai_secret_key = config.pagouai.secretKey;
+  }
+
+  if (config.vennox) {
+    if (config.vennox.secretKey) updateData.vennox_secret_key = config.vennox.secretKey;
+    if (config.vennox.companyId) updateData.vennox_company_id = config.vennox.companyId;
+  }
+
+  if (config.centurionpay) {
+    if (config.centurionpay.secretKey) updateData.centurionpay_secret_key = config.centurionpay.secretKey;
+    if (config.centurionpay.companyId) updateData.centurionpay_company_id = config.centurionpay.companyId;
+  }
+
+  if (config.ironpay && config.ironpay.apiToken) {
+    updateData.ironpay_api_token = config.ironpay.apiToken;
+  }
+
+  if (config.simpayout) {
+    if (config.simpayout.clientId) updateData.simpayout_client_id = config.simpayout.clientId;
+    if (config.simpayout.clientSecret) updateData.simpayout_client_secret = config.simpayout.clientSecret;
+  }
+
+  if (config.pagamentosmp) {
+    if (config.pagamentosmp.publicKey) updateData.pagamentosmp_public_key = config.pagamentosmp.publicKey;
+    if (config.pagamentosmp.secretKey) updateData.pagamentosmp_secret_key = config.pagamentosmp.secretKey;
+  }
+
+  if (config.stripe) {
+    if (config.stripe.publishableKey) updateData.stripe_publishable_key = config.stripe.publishableKey;
+    if (config.stripe.secretKey) updateData.stripe_secret_key = config.stripe.secretKey;
+    if (config.stripe.webhookSecret) updateData.stripe_webhook_secret = config.stripe.webhookSecret;
+    if (config.stripe.testPublishableKey) updateData.stripe_test_publishable_key = config.stripe.testPublishableKey;
+    if (config.stripe.testSecretKey) updateData.stripe_test_secret_key = config.stripe.testSecretKey;
+    if (config.stripe.testWebhookSecret) updateData.stripe_test_webhook_secret = config.stripe.testWebhookSecret;
+    if (config.stripe.mode) updateData.stripe_mode = config.stripe.mode;
+  }
+
+  return updateData;
+}
+
 let cachedConfig: PaymentGatewayConfig | null = null;
 let adminPassword: string | null = null;
 
@@ -196,6 +261,60 @@ export interface SaveGatewayConfigResult {
   error?: string;
 }
 
+async function saveGatewayConfigViaAdminWrite(normalizedConfig: PaymentGatewayConfig): Promise<SaveGatewayConfigResult> {
+  const password = adminPassword;
+  if (!password) {
+    return { ok: false, error: 'Senha admin não definida. Faça login novamente.' };
+  }
+
+  const patch = gatewayConfigToDbPatch(normalizedConfig);
+
+  const { data: rows, error: pubErr } = await supabase
+    .from('gateway_config_public' as any)
+    .select('id');
+
+  if (pubErr) return { ok: false, error: pubErr.message };
+
+  const ids = (rows ?? [])
+    .map((r: { id?: string }) => r.id)
+    .filter((id): id is string => typeof id === 'string' && id.length > 0);
+
+  const invokeAdminWrite = async (body: Record<string, unknown>): Promise<SaveGatewayConfigResult> => {
+    const { data, error } = await supabase.functions.invoke('admin-write', { body });
+    if (error) return { ok: false, error: await extractFunctionErrorMessage(error) };
+    const msg =
+      data && typeof data === 'object' && 'error' in data && (data as { error?: string }).error
+        ? String((data as { error: string }).error)
+        : '';
+    if (msg) return { ok: false, error: msg };
+    return { ok: true };
+  };
+
+  if (ids.length === 0) {
+    const ins = await invokeAdminWrite({
+      password,
+      table: 'gateway_config',
+      op: 'insert',
+      payload: { ...patch, payment_methods: patch.payment_methods ?? {} },
+    });
+    if (!ins.ok) return ins;
+  } else {
+    for (const id of ids) {
+      const res = await invokeAdminWrite({
+        password,
+        table: 'gateway_config',
+        op: 'update',
+        payload: patch,
+        match: { id },
+      });
+      if (!res.ok) return res;
+    }
+  }
+
+  cachedConfig = normalizedConfig;
+  return { ok: true };
+}
+
 export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Promise<SaveGatewayConfigResult> {
   if (!adminPassword) {
     return { ok: false, error: 'Senha admin não definida. Faça login novamente.' };
@@ -213,17 +332,21 @@ export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Pr
       body: { password: adminPassword, config: normalizedConfig },
     });
 
-    if (error) {
-      const msg = await extractFunctionErrorMessage(error);
-      return { ok: false, error: msg };
+    const primaryErrMsg =
+      error ? await extractFunctionErrorMessage(error) : (data as { error?: string })?.error || '';
+
+    if (!error && !(data as { error?: string })?.error) {
+      cachedConfig = normalizedConfig;
+      return { ok: true };
     }
 
-    if (data?.error) {
-      return { ok: false, error: data.error };
-    }
+    const fallback = await saveGatewayConfigViaAdminWrite(normalizedConfig);
+    if (fallback.ok) return fallback;
 
-    cachedConfig = normalizedConfig;
-    return { ok: true };
+    return {
+      ok: false,
+      error: fallback.error || primaryErrMsg || 'Erro ao salvar gateway',
+    };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : 'Erro desconhecido ao salvar gateway' };
   }
