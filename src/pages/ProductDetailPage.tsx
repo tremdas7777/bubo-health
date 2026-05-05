@@ -257,6 +257,7 @@ export default function ProductDetailPage() {
     setKitSelections((prev) => prev.map((s, i) => (i === idx ? { ...s, ...patch } : s)));
   };
 
+  const navigate = useNavigate();
   const { addItem } = useCart();
   const { setBarColor } = useHeroColor();
 
@@ -283,7 +284,7 @@ export default function ProductDetailPage() {
       </Layout>
     );
   }
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (product) {
@@ -335,26 +336,7 @@ export default function ProductDetailPage() {
     return () => { cancelled = true; };
   }, [product, language]);
 
-  if (isLoading) {
-    return (
-      <Layout>
-        <div className="container mx-auto px-4 py-20 text-center">
-          <p className="text-muted-foreground">{t("productPage.loading")}</p>
-        </div>
-      </Layout>
-    );
-  }
 
-  if (!product) {
-    return (
-      <Layout>
-        <div className="container mx-auto px-4 py-20 text-center">
-          <h1 className="mb-4 text-2xl font-heading font-bold">{t("productPage.notFound")}</h1>
-          <Link to="/produtos" className="text-primary hover:underline">{t("productPage.viewAllProducts")}</Link>
-        </div>
-      </Layout>
-    );
-  }
 
   // Bundle-aware pricing — when product has bundles, use selected bundle's price
   const activeBundle = product.bundles && product.bundles.length > 0 ? product.bundles[selectedBundle] : null;
