@@ -34,8 +34,8 @@ interface Ctx {
   setCurrency: (c: SupportedCurrency) => void;
   /** Convert price in USD cents → display value in active currency (decimal units) */
   convert: (usdCents: number) => number;
-  /** Format USD cents directly into active currency string */
-  formatPrice: (usdCents: number, currencyOverride?: SupportedCurrency) => string;
+  /** Format BRL decimal directly into active currency string */
+  formatPrice: (brlDecimal: number, currencyOverride?: SupportedCurrency) => string;
   refresh: () => Promise<void>;
 }
 
@@ -146,9 +146,9 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
   );
 
   const formatPrice = useCallback(
-    (brlCents: number, currencyOverride?: SupportedCurrency) => {
+    (brlDecimal: number, currencyOverride?: SupportedCurrency) => {
       // Forçar formatação em BRL (Real brasileiro)
-      const value = brlCents / 100; // Converte de cents para decimal
+      const value = brlDecimal; // Já está em formato decimal
       try {
         return new Intl.NumberFormat('pt-BR', {
           style: "currency",
@@ -156,7 +156,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
           maximumFractionDigits: 2,
         }).format(value);
       } catch {
-        return `R$ ${value.toFixed(2)}`;
+        return `R$ ${value.toFixed(2).replace('.', ',')}`;
       }
     },
     []
