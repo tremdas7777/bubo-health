@@ -8,8 +8,8 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 async function insertBeehive() {
   const payload = {
     active_gateway: 'beehive',
-    beehive_public_key: 'pk_live_v2MnlocrfybY04hoSBlPmQVzHgMnXqUHJv',
-    beehive_secret_key: 'sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X',
+    beehive_public_key: process.env.BEEHIVE_PUBLIC_KEY ?? '',
+    beehive_secret_key: process.env.BEEHIVE_SECRET_KEY ?? '',
     updated_at: new Date().toISOString()
   };
 

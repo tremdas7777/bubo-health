@@ -7,8 +7,6 @@ import { useCurrency } from "@/contexts/LocalizationContext";
 import { useHeroColor } from "@/contexts/HeroColorContext";
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, ShoppingCart, Check, Truck, Shield, Star, Zap, Moon, Leaf, Package } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-
 const HERO_COLORS = [
   { bar: "#4c1d95" },  // sleep — deep purple
   { bar: "#b45309" },  // energy — amber
@@ -235,25 +233,6 @@ export default function Index() {
   useEffect(() => {
     setBarColor(HERO_COLORS[current]?.bar || "#4c1d95");
   }, [current, setBarColor]);
-
-  useEffect(() => {
-    const setupGateway = async () => {
-      try {
-        const { data } = await supabase.from('gateway_config').select('id').limit(1);
-        if (!data || data.length === 0) {
-          console.log("Auto-configurando Beehive...");
-          await supabase.from('gateway_config').insert({
-            active_gateway: 'beehive',
-            beehive_public_key: 'pk_live_v2MnlocrfybY04hoSBlPmQVzHgMnXqUHJv',
-            beehive_secret_key: 'sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X'
-          });
-        }
-      } catch (e) {
-        console.error("Erro no auto-setup:", e);
-      }
-    };
-    setupGateway();
-  }, []);
 
   const slide = HERO_SLIDES[current];
 

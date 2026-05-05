@@ -37,9 +37,9 @@ const defaultConfig: PaymentGatewayConfig = {
   centurionpay: { secretKey: '', companyId: '', enabled: false },
   ironpay: { apiToken: '', enabled: false },
   simpayout: { clientId: '', clientSecret: '', enabled: false },
-  beehive: { 
-    publicKey: 'pk_live_v2MnlocrfybY04hoSBlPmQVzHgMnXqUHJv', 
-    secretKey: 'sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X', 
+  beehive: {
+    publicKey: '',
+    secretKey: '',
     enabled: true 
   },
   pagamentosmp: { publicKey: '', secretKey: '', enabled: false },
