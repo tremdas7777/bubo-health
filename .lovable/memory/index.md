@@ -1,10 +1,9 @@
 # Project Memory
 
 ## Core
-Store: Bubo Health INTERNACIONAL (EN/ES/PT/FR · USD/EUR/GBP/BRL). Base: versatto. Colors: Purple/Lime Green. Light mode default.
+Store: BuboHealth (pt-BR · BRL padrão). Base: versatto. Colors: Purple/Lime Green. Light mode default.
 Supabase (DB/Auth/Storage). RLS on all tables. Gateway keys protected via service_role.
-Gateway: SEMPRE Beehive — nunca trocar active_gateway sem ordem explícita.
-NUNCA usar PIX, R$ hardcoded, ou métodos brasileiros — loja é gringa. Checkout = só cartão. Preços em USD cents no DB; sempre via formatPrice do LocalizationContext.
+Gateway: Beehive — checkout BR completo (PIX + cartão, parcelamento até 6x, 5% desconto PIX, CPF/CEP).
 NO AI IMAGES. Professional real photos only for GMC compliance.
 No coupon field in checkout — user rejected this feature.
 
@@ -14,7 +13,7 @@ No coupon field in checkout — user rejected this feature.
 - [features/admin-panel](mem://features/admin-panel) — Admin route /admin, edge functions bypassing RLS, cache invalidation
 - [tech/backend-stack](mem://tech/backend-stack) — Supabase DB/Auth/Storage structure and React Query
 - [tech/marketing-tracking](mem://tech/marketing-tracking) — FB/TikTok/Google pixels, UTMs, Utmify, 50ms polling
-- [features/checkout-system](mem://features/checkout-system) — 3-step high conversion checkout, gateways, and Beehive specifics
+- [features/checkout-system](mem://features/checkout-system) — 3-step high conversion checkout BR (PIX+cartão), Beehive
 - [project/business-info](mem://project/business-info) — Company details, CNPJ, and contacts for GMC and SEO
 - [features/compliance-seo](mem://features/compliance-seo) — JSON-LD, sitemap, identifier_exists: false, alt tags
 - [tech/pricing-logic](mem://tech/pricing-logic) — Pricing module path, PIX discounts and installment calculation
@@ -29,4 +28,3 @@ No coupon field in checkout — user rejected this feature.
 - [features/banners](mem://features/banners) — HeroCarousel responsive (9:16 mobile, 16:7 desktop)
 - [constraints/product-imagery](mem://constraints/product-imagery) — Strict requirement for real photos, ban on AI-generated images
 - [constraints/no-checkout-coupon](mem://constraints/no-checkout-coupon) — No coupon/discount code field in checkout
-- [marketing/instagram-card-template](mem://marketing/instagram-card-template) — Template padrão card Instagram 1080x1080 (roxo + lima, "MAIS VENDIDO DA SEMANA")
