@@ -390,8 +390,10 @@ export default function ProductDetailPage() {
     : product.compareAtPrice;
   const hasDiscount = activeCompareAt && activeCompareAt > activePrice;
   
-  // Currency-aware formatter — accepts decimal units (e.g. 31.00) and shows in active currency
-  const formatPrice = (decimal: number) => fmt(Math.round(decimal * 100));
+  // Formats BRL decimal directly as Brazilian Real
+  const formatPrice = (decimal: number) => {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(decimal);
+  };
   const relatedProducts = filterByCategory(dbProducts, product.category).filter((p) => p.id !== product.id).slice(0, 4);
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
   const bullets = productBulletPoints[product.slug];
