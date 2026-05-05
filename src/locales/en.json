@@ -797,6 +797,14 @@
     "bestDeal": "Best Deal",
     "mostPopular": "Most Popular",
     "free": "Free",
-    "offer": "Special Offer"
+    "offer": "Special Offer",
+    "potes_one": "{{count}} Bottle",
+    "potes_other": "{{count}} Bottles",
+    "combos_one": "{{count}} Combo",
+    "combos_other": "{{count}} Combos",
+    "recommended": "Recommended",
+    "bestValue": "Best Value",
+    "bestCost": "Best Cost",
+    "sale": "Sale"
   }
 }
