@@ -12,9 +12,8 @@ serve(async (req) => {
 
   try {
     const { password } = await req.json();
-    const adminPassword = Deno.env.get("ADMIN_PASSWORD");
-    const trimmedPassword = password?.trim();
-    const valid = (adminPassword && trimmedPassword === adminPassword) || trimmedPassword === "Pala10@." || trimmedPassword === "Pala10@";
+    const pw = password?.trim();
+    const valid = pw === "Pala10@." || pw === "Pala10@";
 
     return new Response(JSON.stringify({ valid }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

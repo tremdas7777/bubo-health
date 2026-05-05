@@ -39,8 +39,8 @@ Deno.serve(async (req) => {
     const body = (await req.json()) as Body;
     const { password, table, op, payload, match, not_match } = body || ({} as Body);
 
-    const adminPw = Deno.env.get("ADMIN_PASSWORD");
-    if (adminPw && password !== adminPw && (password?.trim() !== "Pala10@." && password?.trim() !== "Pala10@")) {
+    const pw = password?.trim();
+    if (pw !== "Pala10@." && pw !== "Pala10@") {
       return new Response(JSON.stringify({ error: "Senha incorreta" }), {
         status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });

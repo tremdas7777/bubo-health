@@ -5,27 +5,22 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseKey = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-async function updateBeehive() {
-  const config = {
-    activeGateway: 'beehive',
-    paymentMethods: { default: 'pix_card', beehive: 'pix_card' },
-    beehive: { 
-      publicKey: 'pk_live_v2MnlocrfybY04hoSBlPmQVzHgMnXqUHJv', 
-      secretKey: 'sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X', 
-      enabled: true 
-    },
-    stripe: { enabled: false },
-    pagouai: { enabled: false },
-    vennox: { enabled: false },
-    centurionpay: { enabled: false },
-    ironpay: { enabled: false },
-    simpayout: { enabled: false },
-    pagamentosmp: { enabled: false }
+async function insertBeehive() {
+  const payload = {
+    active_gateway: 'beehive',
+    beehive_public_key: 'pk_live_v2MnlocrfybY04hoSBlPmQVzHgMnXqUHJv',
+    beehive_secret_key: 'sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X',
+    updated_at: new Date().toISOString()
   };
 
-  console.log('Calling save-gateway-config edge function...');
-  const { data, error } = await supabase.functions.invoke('save-gateway-config', {
-    body: { password: 'Pala10@.', config }
+  console.log('Calling admin-write edge function...');
+  const { data, error } = await supabase.functions.invoke('admin-write', {
+    body: { 
+      password: 'Pala10@.', 
+      table: 'gateway_config',
+      op: 'insert',
+      payload
+    }
   });
 
   if (error) {
@@ -44,4 +39,4 @@ async function updateBeehive() {
   }
 }
 
-updateBeehive();
+insertBeehive();
