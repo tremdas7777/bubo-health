@@ -380,14 +380,14 @@ export default function ProductDetailPage() {
     ? variantPriceOverride.priceCents / 100
     : activeBundle
     ? activeBundle.priceCents / 100
-    : product.price;
+    : (typeof product.price === 'number' ? product.price : Number(product.price) || 97.00);
   const activeCompareAt = variantPriceOverride
     ? variantPriceOverride.originalPriceCents
       ? variantPriceOverride.originalPriceCents / 100
       : undefined
-    : activeBundle?.originalPriceCents
-    ? activeBundle.originalPriceCents / 100
-    : product.compareAtPrice;
+    : (activeBundle?.originalPriceCents
+      ? activeBundle.originalPriceCents / 100
+      : product.compareAtPrice);
   const hasDiscount = activeCompareAt && activeCompareAt > activePrice;
   
   // Formats BRL decimal directly as Brazilian Real

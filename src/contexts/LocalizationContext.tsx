@@ -146,23 +146,20 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
   );
 
   const formatPrice = useCallback(
-    (usdCents: number, currencyOverride?: SupportedCurrency) => {
-      const cur = currencyOverride ?? currency;
-      const rate = settings.exchange_rates[cur] ?? 1;
-      const value = (usdCents / 100) * rate;
-      const lang = (i18nInst.language as SupportedLanguage) || "en";
-      const locale = LOCALE_BY_LANG[lang] ?? "en-US";
+    (brlCents: number, currencyOverride?: SupportedCurrency) => {
+      // Forçar formatação em BRL (Real brasileiro)
+      const value = brlCents / 100; // Converte de cents para decimal
       try {
-        return new Intl.NumberFormat(locale, {
+        return new Intl.NumberFormat('pt-BR', {
           style: "currency",
-          currency: cur,
+          currency: "BRL",
           maximumFractionDigits: 2,
         }).format(value);
       } catch {
-        return `${cur} ${value.toFixed(2)}`;
+        return `R$ ${value.toFixed(2)}`;
       }
     },
-    [currency, settings.exchange_rates, i18nInst.language]
+    []
   );
 
   useEffect(() => {
