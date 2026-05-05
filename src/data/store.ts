@@ -102,7 +102,7 @@ export const products: Product[] = [
         <ul class="space-y-2 text-sm text-gray-600">
           <li>✨ Zero Açúcar e sem Glúten</li>
           <li>✨ Sabor delicioso de Maracujá</li>
-          <li>✨ 60 gummies por pote (30 dias de tratamento)</li>
+          <li>✨ 30 gummies por pote (Tratamento para 1 mês)</li>
         </ul>
       </div>
     `,
@@ -134,6 +134,7 @@ export const products: Product[] = [
         </div>
         <ul class="space-y-2 text-sm text-gray-600">
           <li>🔥 Enriquecido com Vitaminas B6 e B12</li>
+          <li>🔥 30 gummies por pote</li>
           <li>🔥 Sabor vibrante de Laranja</li>
           <li>🔥 Ideal para pré-treino ou trabalho intenso</li>
         </ul>
@@ -165,6 +166,7 @@ export const products: Product[] = [
           </div>
         </div>
         <ul class="space-y-2 text-sm text-gray-600">
+          <li>💖 30 gummies por pote</li>
           <li>💖 Alto teor de Biotina e Zinco</li>
           <li>💖 Sabor irresistível de Frutas Vermelhas</li>
           <li>💖 Resultados visíveis em 30 dias</li>
@@ -198,6 +200,7 @@ export const products: Product[] = [
           </div>
         </div>
         <ul class="space-y-2 text-sm text-gray-600">
+          <li>🍏 30 gummies por pote</li>
           <li>🍏 Rico em Fibras Prebióticas</li>
           <li>🍏 Sabor refrescante de Maçã Verde</li>
           <li>🍏 Reduz a retenção de líquidos</li>
