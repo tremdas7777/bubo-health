@@ -797,6 +797,14 @@
     "bestDeal": "Mejor Oferta",
     "mostPopular": "Más Popular",
     "free": "Gratis",
-    "offer": "Oferta Especial"
+    "offer": "Oferta Especial",
+    "potes_one": "{{count}} Bote",
+    "potes_other": "{{count}} Botes",
+    "combos_one": "{{count}} Combo",
+    "combos_other": "{{count}} Combos",
+    "recommended": "Recomendado",
+    "bestValue": "Mejor Valor",
+    "bestCost": "Mejor Costo",
+    "sale": "Oferta"
   }
 }

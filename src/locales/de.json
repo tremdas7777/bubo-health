@@ -797,6 +797,14 @@
     "bestDeal": "Bestes Angebot",
     "mostPopular": "Am beliebtesten",
     "free": "Kostenlos",
-    "offer": "Sonderangebot"
+    "offer": "Sonderangebot",
+    "potes_one": "{{count}} Flasche",
+    "potes_other": "{{count}} Flaschen",
+    "combos_one": "{{count}} Combo",
+    "combos_other": "{{count}} Combos",
+    "recommended": "Empfohlen",
+    "bestValue": "Bester Wert",
+    "bestCost": "Bester Preis",
+    "sale": "Angebot"
   }
 }
