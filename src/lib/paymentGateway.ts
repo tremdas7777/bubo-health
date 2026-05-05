@@ -209,7 +209,8 @@ export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Pr
     });
 
     if (error) {
-      return { ok: false, error: error.message || 'Erro ao salvar gateway' };
+      const msg = await extractFunctionErrorMessage(error);
+      return { ok: false, error: msg };
     }
 
     if (data?.error) {
@@ -221,4 +222,22 @@ export async function savePaymentGatewayConfig(config: PaymentGatewayConfig): Pr
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : 'Erro desconhecido ao salvar gateway' };
   }
+}
+
+async function extractFunctionErrorMessage(error: unknown) {
+  if (error && typeof error === "object" && "context" in error) {
+    const response = (error as { context?: Response }).context;
+    if (response instanceof Response) {
+      try {
+        const payload = await response.clone().json();
+        return payload.error || payload.message || "Erro retornado pela função";
+      } catch {
+        try {
+          const text = await response.clone().text();
+          return text || "Erro na resposta da função";
+        } catch { /* ignore */ }
+      }
+    }
+  }
+  return error instanceof Error ? error.message : String(error);
 }

@@ -47,29 +47,56 @@ serve(async (req) => {
 
     const updateData: Record<string, unknown> = {
       active_gateway: activeGateway,
-      payment_methods: config.paymentMethods || {},
-      pagouai_public_key: config.pagouai?.publicKey || "",
-      pagouai_secret_key: config.pagouai?.secretKey || "",
-      vennox_secret_key: config.vennox?.secretKey || "",
-      vennox_company_id: config.vennox?.companyId || "",
-      centurionpay_secret_key: config.centurionpay?.secretKey || "",
-      centurionpay_company_id: config.centurionpay?.companyId || "",
-      ironpay_api_token: config.ironpay?.apiToken || "",
-      simpayout_client_id: config.simpayout?.clientId || "",
-      simpayout_client_secret: config.simpayout?.clientSecret || "",
-      beehive_public_key: config.beehive?.publicKey || "",
-      beehive_secret_key: config.beehive?.secretKey || "",
-      pagamentosmp_public_key: config.pagamentosmp?.publicKey || "",
-      pagamentosmp_secret_key: config.pagamentosmp?.secretKey || "",
-      stripe_publishable_key: config.stripe?.publishableKey || "",
-      stripe_secret_key: config.stripe?.secretKey || "",
-      stripe_webhook_secret: config.stripe?.webhookSecret || "",
-      stripe_test_publishable_key: config.stripe?.testPublishableKey || "",
-      stripe_test_secret_key: config.stripe?.testSecretKey || "",
-      stripe_test_webhook_secret: config.stripe?.testWebhookSecret || "",
-      stripe_mode: config.stripe?.mode === "test" ? "test" : "live",
       updated_at: new Date().toISOString(),
     };
+
+    // Only add fields if they are present in the config
+    if (config.paymentMethods) updateData.payment_methods = config.paymentMethods;
+    
+    if (config.beehive) {
+      if (config.beehive.publicKey) updateData.beehive_public_key = config.beehive.publicKey;
+      if (config.beehive.secretKey) updateData.beehive_secret_key = config.beehive.secretKey;
+    }
+
+    if (config.pagouai) {
+      if (config.pagouai.publicKey) updateData.pagouai_public_key = config.pagouai.publicKey;
+      if (config.pagouai.secretKey) updateData.pagouai_secret_key = config.pagouai.secretKey;
+    }
+
+    if (config.vennox) {
+      if (config.vennox.secretKey) updateData.vennox_secret_key = config.vennox.secretKey;
+      if (config.vennox.companyId) updateData.vennox_company_id = config.vennox.companyId;
+    }
+
+    if (config.centurionpay) {
+      if (config.centurionpay.secretKey) updateData.centurionpay_secret_key = config.centurionpay.secretKey;
+      if (config.centurionpay.companyId) updateData.centurionpay_company_id = config.centurionpay.companyId;
+    }
+
+    if (config.ironpay && config.ironpay.apiToken) {
+      updateData.ironpay_api_token = config.ironpay.apiToken;
+    }
+
+    if (config.simpayout) {
+      if (config.simpayout.clientId) updateData.simpayout_client_id = config.simpayout.clientId;
+      if (config.simpayout.clientSecret) updateData.simpayout_client_secret = config.simpayout.clientSecret;
+    }
+
+    if (config.pagamentosmp) {
+      if (config.pagamentosmp.publicKey) updateData.pagamentosmp_public_key = config.pagamentosmp.publicKey;
+      if (config.pagamentosmp.secretKey) updateData.pagamentosmp_secret_key = config.pagamentosmp.secretKey;
+    }
+
+    // Stripe fields - only if present
+    if (config.stripe) {
+      if (config.stripe.publishableKey) updateData.stripe_publishable_key = config.stripe.publishableKey;
+      if (config.stripe.secretKey) updateData.stripe_secret_key = config.stripe.secretKey;
+      if (config.stripe.webhookSecret) updateData.stripe_webhook_secret = config.stripe.webhookSecret;
+      if (config.stripe.testPublishableKey) updateData.stripe_test_publishable_key = config.stripe.testPublishableKey;
+      if (config.stripe.testSecretKey) updateData.stripe_test_secret_key = config.stripe.testSecretKey;
+      if (config.stripe.testWebhookSecret) updateData.stripe_test_webhook_secret = config.stripe.testWebhookSecret;
+      if (config.stripe.mode) updateData.stripe_mode = config.stripe.mode;
+    }
 
     const { data: existing } = await supabase
       .from("gateway_config")
