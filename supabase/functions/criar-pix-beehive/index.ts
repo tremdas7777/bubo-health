@@ -44,6 +44,8 @@ serve(async (req) => {
     const authHeader = "Basic " + btoa(`${secretKey}:x`);
     const amountCents = Math.round(amount * 100);
 
+    const clientIp = req.headers.get("x-real-ip") || req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "";
+
     const body: Record<string, unknown> = {
       paymentMethod: "pix",
       amount: amountCents,
@@ -63,6 +65,7 @@ serve(async (req) => {
         provider: "Bubo Health",
         order_id: `KZ-${Date.now()}`,
       },
+      ip: clientIp,
     };
 
     if (buyerName || buyerEmail || buyerDocument || buyerPhone) {
@@ -73,6 +76,18 @@ serve(async (req) => {
         ...(buyerDocument && {
           document: { type: "cpf", number: buyerDocument.replace(/\D/g, "") },
         }),
+        ...(metadata?.address && {
+          address: {
+            street: metadata.address,
+            streetNumber: metadata.addressNumber || "S/N",
+            complement: metadata.complement || "",
+            neighborhood: metadata.neighborhood || "",
+            city: metadata.city || "",
+            state: metadata.state || "",
+            zipCode: metadata.cep?.replace(/\D/g, "") || "",
+            country: "BR",
+          }
+        })
       };
     }
 
