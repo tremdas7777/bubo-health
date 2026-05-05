@@ -691,15 +691,15 @@ export default function ProductDetailPage() {
                           </div>
                           <div>
                             <p className="text-sm font-semibold text-foreground">{translateBundleLabel(b.label, t)}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {formatPrice(perUnit / 100)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
-                            </p>
                           </div>
                         </div>
                         <div className="text-right">
                           <p className="text-sm font-bold" style={isSelected ? { color: theme.accent } : {}}>{formatPrice(b.priceCents / 100)}</p>
                           {b.badge && (
-                            <span className="inline-block rounded bg-lime px-1.5 py-0.5 text-[10px] font-bold text-foreground">
+                            <span 
+                              className="inline-block rounded px-1.5 py-0.5 text-[10px] font-bold text-white shadow-sm"
+                              style={{ backgroundColor: theme.accent }}
+                            >
                               {translateBundleBadge(b.badge, t)}
                             </span>
                           )}
