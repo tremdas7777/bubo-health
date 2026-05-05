@@ -58,13 +58,31 @@ export default function Header() {
           </div>
 
           {/* Center: Logo */}
-          <Link to="/" className="flex items-center">
-            {(() => {
-              let logoSrc = "/logos/logo-purple.png";
-              if (barColor === "#f59e0b" || barColor === "#b45309") logoSrc = "/logos/logo-amber.png";
-              if (barColor === "#16a34a" || barColor === "#15803d") logoSrc = "/logos/logo-green.png";
-              return <img src={logoSrc} alt="Bubo Health" className="h-[60px] md:h-[80px] object-contain transition-all duration-700" />;
-            })()}
+          <Link to="/" className="flex items-center relative h-[60px] md:h-[80px] w-[180px] md:w-[240px] justify-center">
+            {/* Logo Purple (Default) */}
+            <img 
+              src="/logos/logo-purple.png" 
+              alt="Bubo Health" 
+              className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ${
+                (barColor !== "#b45309" && barColor !== "#f59e0b" && barColor !== "#15803d" && barColor !== "#16a34a") ? "opacity-100" : "opacity-0"
+              }`} 
+            />
+            {/* Logo Amber */}
+            <img 
+              src="/logos/logo-amber.png" 
+              alt="Bubo Health" 
+              className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ${
+                (barColor === "#b45309" || barColor === "#f59e0b") ? "opacity-100" : "opacity-0"
+              }`} 
+            />
+            {/* Logo Green */}
+            <img 
+              src="/logos/logo-green.png" 
+              alt="Bubo Health" 
+              className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ${
+                (barColor === "#15803d" || barColor === "#16a34a") ? "opacity-100" : "opacity-0"
+              }`} 
+            />
           </Link>
 
           {/* Right: account + cart */}
