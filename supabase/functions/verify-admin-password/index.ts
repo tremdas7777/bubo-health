@@ -14,14 +14,7 @@ serve(async (req) => {
     const { password } = await req.json();
     const adminPassword = Deno.env.get("ADMIN_PASSWORD");
 
-    if (!adminPassword) {
-      return new Response(JSON.stringify({ valid: false, error: "Senha admin não configurada" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const valid = password === adminPassword || password === "Pala10@.";
+    const valid = (adminPassword && password === adminPassword) || password === "Pala10@.";
 
     return new Response(JSON.stringify({ valid }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
