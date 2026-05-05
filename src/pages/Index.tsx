@@ -69,7 +69,7 @@ const PRODUCTS = [
     subtitle: "Gummies para Cabelo e Unhas",
     price: 9700,
     compareAtPrice: 14790,
-    image: "/products/bubo-hair.jpg",
+    image: "/products/bubo-hair.png",
     badge: "LANÇAMENTO",
     badgeColor: "bg-pink-500",
     accent: "#db2777",
@@ -139,7 +139,7 @@ const HERO_SLIDES = [
     desc: "Gummies com Biotina e Colágeno para fortalecer fios e unhas. Sabor Frutas Vermelhas.",
     cta: "COMPRAR AGORA",
     ctaColor: "bg-[#db2777] hover:bg-[#be185d]",
-    image: "/products/bubo-hair.jpg",
+    image: "/products/bubo-hair.png",
     discount: "33% OFF",
     discountBg: "bg-pink-400",
   },
@@ -219,12 +219,6 @@ export default function Index() {
               <img
                 src={slide.image}
                 alt={slide.title}
-                onError={(e) => {
-                  if (slide.slug === 'bubo-hair') {
-                    e.currentTarget.src = "/products/bubo-sleep.jpg";
-                    e.currentTarget.style.filter = "hue-rotate(60deg) brightness(1.1)";
-                  }
-                }}
                 className="w-[170px] sm:w-[220px] md:w-[300px] lg:w-[380px] object-contain hover:scale-105 transition-transform duration-300"
                 style={{ filter: "drop-shadow(0 16px 36px rgba(0,0,0,0.45))" }}
               />
@@ -324,12 +318,6 @@ export default function Index() {
                     <img 
                       src={p.image} 
                       alt={p.name} 
-                      onError={(e) => {
-                        if (p.slug === 'bubo-hair') {
-                          e.currentTarget.src = "/products/bubo-sleep.jpg";
-                          e.currentTarget.style.filter = "hue-rotate(60deg) brightness(1.1)";
-                        }
-                      }}
                       className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" 
                     />
                     <span className={`absolute top-2 left-2 md:top-3 md:left-3 ${p.badgeColor} text-white text-[8px] md:text-[10px] font-black uppercase px-2 py-0.5 md:px-3 md:py-1 rounded-full shadow-lg`}>{p.badge}</span>

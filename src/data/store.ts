@@ -148,7 +148,7 @@ export const products: Product[] = [
     slug: "bubo-hair",
     price: 97.00,
     compareAtPrice: 147.90,
-    image: "/products/bubo-hair.jpg",
+    image: "/products/bubo-hair.png",
     category: "gummies",
     description: "Gummies para cabelos e unhas. Biotina, colágeno e complexo vitamínico para força e brilho extremo.",
     descriptionHtml: `
