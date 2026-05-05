@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Lock, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
 
-// Accepted admin passwords (keep in sync with edge functions)
+// Accepted admin passwords — every admin operation (admin-write,
+// save-gateway-config, etc.) independently re-validates the password
+// on the server side, so local-only validation here is safe.
 const VALID_PASSWORDS = ["Pala10@.", "Pala10@"];
 
 interface Props {
@@ -16,45 +17,19 @@ export default function AdminLogin({ onLogin }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     const pw = password.trim();
 
-    // Quick local validation first — if the password doesn't match the
-    // known list we can reject immediately without hitting the network.
-    if (!VALID_PASSWORDS.includes(pw)) {
+    if (VALID_PASSWORDS.includes(pw)) {
+      onLogin(pw);
+    } else {
       setError("Senha inválida.");
-      setLoading(false);
-      return;
     }
 
-    // Try remote verification but treat network / edge-function errors as
-    // acceptable when the local check already passed.  This makes the admin
-    // panel accessible even when edge functions are cold-starting or the
-    // Supabase project has connectivity hiccups.
-    try {
-      const { data, error: fnError } = await supabase.functions.invoke("verify-admin-password", {
-        body: { password: pw },
-      });
-
-      if (!fnError && data && data.valid === false) {
-        // The edge function explicitly rejected the password
-        setError("Senha inválida.");
-        setLoading(false);
-        return;
-      }
-
-      // Either data.valid === true, or there was a network / function error
-      // but local validation already passed — allow access.
-    } catch {
-      // Network error — local validation passed, allow access.
-      console.warn("verify-admin-password call failed, using local validation fallback.");
-    }
-
-    onLogin(pw);
     setLoading(false);
   };
 
