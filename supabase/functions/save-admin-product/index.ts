@@ -47,7 +47,7 @@ serve(async (req) => {
     const { password, product } = parsed.data;
 
     const adminPassword = Deno.env.get("ADMIN_PASSWORD");
-    if (adminPassword && password !== adminPassword && password !== "Pala10@.") {
+    if (adminPassword && password !== adminPassword && (password?.trim() !== "Pala10@." && password?.trim() !== "Pala10@")) {
       return new Response(JSON.stringify({ error: "Senha inválida" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
