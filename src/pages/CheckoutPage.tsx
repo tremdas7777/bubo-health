@@ -181,7 +181,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     void trackEvent("checkout");
     fetchPaymentGatewayConfig().then((cfg) => {
-      const g = cfg.activeGateway === "stripe" ? "beehive" : cfg.activeGateway;
+      const g = cfg.activeGateway;
       setActiveGateway(g);
       const methods = cfg.paymentMethods[g] || cfg.paymentMethods.default || "pix_card";
       setCardEnabled(methods === "card" || methods === "pix_card");

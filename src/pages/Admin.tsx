@@ -1544,7 +1544,7 @@ export default function Admin() {
         {activeTab === "pagamentos" && (
           <div>
             <h2 className="mb-1 text-xl font-black text-foreground">Gateways de Pagamento</h2>
-            <p className="mb-6 text-xs text-muted-foreground">Configure suas chaves Stripe para aceitar pagamentos com cartão</p>
+            <p className="mb-6 text-xs text-muted-foreground">Configure o gateway de pagamento ativo para processar PIX e Cartão</p>
 
             <Card className="mb-4 border border-border p-4">
               <div className="mb-2 flex items-center gap-2">
@@ -1686,14 +1686,14 @@ export default function Admin() {
             <div className="mt-2 mb-4 rounded-md border border-border bg-muted/30 p-3 text-[11px] text-muted-foreground">
               <p className="font-bold text-foreground mb-1">📌 Webhook URL para configurar no Stripe Dashboard (LIVE e TEST):</p>
               <code className="block break-all rounded bg-background px-2 py-1 text-[10px]">
-                https://skdwgsrckqiqeydlmndj.supabase.co/functions/v1/stripe-webhook
+                https://eeamjndnoizjretzmneb.supabase.co/functions/v1/stripe-webhook
               </code>
               <p className="mt-2">Cadastre o mesmo endpoint nos dois ambientes (Live e Test) do Stripe e cole cada whsec_ no campo correspondente acima. O sistema detecta automaticamente qual chave usar.</p>
               <p className="mt-1">Eventos: <strong>checkout.session.completed</strong>, <strong>checkout.session.async_payment_succeeded</strong>, <strong>checkout.session.async_payment_failed</strong>, <strong>checkout.session.expired</strong></p>
             </div>
 
             <GatewayCard
-              title="Beehive (legado)"
+              title="Beehive"
               isActive={gatewayConfig.activeGateway === "beehive"}
               fields={[
                 {
@@ -1717,6 +1717,14 @@ export default function Admin() {
               paymentMethods={gatewayConfig.paymentMethods.beehive || "pix"}
               onPaymentMethodChange={handlePaymentMethodChange}
             />
+
+            <div className="mt-2 mb-4 rounded-md border border-border bg-muted/30 p-3 text-[11px] text-muted-foreground">
+              <p className="font-bold text-foreground mb-1">📌 Webhook URL para configurar no Beehive Dashboard:</p>
+              <code className="block break-all rounded bg-background px-2 py-1 text-[10px]">
+                https://eeamjndnoizjretzmneb.supabase.co/functions/v1/beehive-webhook
+              </code>
+              <p className="mt-2">Cole essa URL no painel da Beehive em &ldquo;Webhooks&rdquo; ou &ldquo;Postback URL&rdquo; para receber notificações de pagamento confirmado.</p>
+            </div>
           </div>
         )}
 
