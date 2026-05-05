@@ -375,7 +375,7 @@ export default function ProductDetailPage() {
   const hasDiscount = activeCompareAt && activeCompareAt > activePrice;
   
   // Currency-aware formatter — accepts decimal units (e.g. 31.00) and shows in active currency
-  const formatPrice = (decimal: number) => fmt(Math.round(decimal * 100));
+  const formatPrice = (decimal: number) => fmt(decimal);
   const relatedProducts = filterByCategory(dbProducts, product.category).filter((p) => p.id !== product.id).slice(0, 4);
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
   const bullets = productBulletPoints[product.slug];
