@@ -22,7 +22,7 @@ i18n
       fr: { translation: fr },
       de: { translation: de },
     },
-    fallbackLng: "en",
+    fallbackLng: "pt",
     supportedLngs: SUPPORTED_LANGUAGES as unknown as string[],
     nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false },

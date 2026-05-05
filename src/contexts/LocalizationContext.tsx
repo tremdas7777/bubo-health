@@ -17,11 +17,11 @@ export interface StoreSettings {
 
 const DEFAULT_SETTINGS: StoreSettings = {
   id: "",
-  default_language: "en",
+  default_language: "pt",
   available_languages: ["en", "es", "pt", "fr", "de"],
-  default_currency: "USD",
-  available_currencies: ["USD", "EUR", "BRL", "GBP"],
-  exchange_rates: { USD: 1, EUR: 0.92, BRL: 5.1, GBP: 0.79 },
+  default_currency: "BRL",
+  available_currencies: ["BRL", "USD", "EUR", "GBP"],
+  exchange_rates: { BRL: 1, USD: 0.20, EUR: 0.18, GBP: 0.16 },
   auto_detect_by_ip: false,
 };
 
@@ -54,7 +54,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<StoreSettings>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(true);
   const [currency, setCurrencyState] = useState<SupportedCurrency>(() => {
-    return (localStorage.getItem("bubohealth_currency") as SupportedCurrency) || "USD";
+    return (localStorage.getItem("bubohealth_currency") as SupportedCurrency) || "BRL";
   });
 
   const fetchSettings = useCallback(async () => {
