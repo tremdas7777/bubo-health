@@ -660,7 +660,7 @@ export default function ProductDetailPage() {
               </div>
               {activeBundle && activeBundle.perUnitCents && (
                 <p className="text-xs text-muted-foreground">
-                  {formatPrice(activeBundle.perUnitCents / 100)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
+                  {formatPrice(activeBundle.perUnitCents)} {t("productPage.perUnit", { defaultValue: "por unidade" })}
                 </p>
               )}
             </div>
