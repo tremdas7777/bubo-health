@@ -149,54 +149,54 @@ export default function ProductDetailPage() {
     }
     if (p.slug.includes('bubo') || p.slug.includes('combo')) {
       const isCombo = p.slug.includes('combo');
-      const unitPrice = 9700;
+      const unitPrice = 97;
       const baseBundles = isCombo ? [
         {
           qty: 1,
           label: "1 Combo (4 produtos)",
-          priceCents: 38800,
-          originalPriceCents: 58800,
-          perUnitCents: 38800,
+          priceCents: 388,
+          originalPriceCents: 588,
+          perUnitCents: 388,
           badge: "MELHOR VALOR",
         },
         {
           qty: 2,
           label: "2 Combos (8 produtos) 👫",
-          priceCents: 77600,
-          originalPriceCents: 117600,
-          perUnitCents: 38800,
+          priceCents: 77.600,
+          originalPriceCents: 1176,
+          perUnitCents: 388,
           badge: "RECOMENDADO",
         }
       ] : [
         {
           qty: 1,
           label: "1 Pote — Experimente",
-          priceCents: 9700,
-          originalPriceCents: 14790,
-          perUnitCents: 9700,
+          priceCents: 97,
+          originalPriceCents: 147.90,
+          perUnitCents: 97,
           badge: "PROMOÇÃO",
         },
         {
           qty: 3,
           label: "3 Potes — Tratamento Médio",
-          priceCents: 29100,
-          originalPriceCents: 44370,
-          perUnitCents: 9700,
+          priceCents: 291,
+          originalPriceCents: 443.70,
+          perUnitCents: 97,
           badge: "MAIS VENDIDO",
         },
         {
           qty: 5,
           label: "5 Potes — Tratamento Completo",
-          priceCents: 38800,
-          originalPriceCents: 73950,
-          perUnitCents: 7760,
+          priceCents: 388,
+          originalPriceCents: 739.50,
+          perUnitCents: 77.60,
           badge: "MELHOR VALOR",
         }
       ];
 
       return {
         ...p,
-        price: isCombo ? 29100 : 9700,
+        price: isCombo ? 291 : 97,
         bundles: baseBundles
       };
     }
@@ -361,16 +361,14 @@ export default function ProductDetailPage() {
   })();
 
   const activePrice = variantPriceOverride
-    ? variantPriceOverride.priceCents / 100
+    ? variantPriceOverride.priceCents
     : activeBundle
-    ? activeBundle.priceCents / 100
+    ? activeBundle.priceCents
     : product.price;
   const activeCompareAt = variantPriceOverride
     ? variantPriceOverride.originalPriceCents
-      ? variantPriceOverride.originalPriceCents / 100
-      : undefined
     : activeBundle?.originalPriceCents
-    ? activeBundle.originalPriceCents / 100
+    ? activeBundle.originalPriceCents
     : product.compareAtPrice;
   const hasDiscount = activeCompareAt && activeCompareAt > activePrice;
   
@@ -454,16 +452,16 @@ export default function ProductDetailPage() {
   const productForCart = variantPriceOverride
     ? {
         ...product,
-        price: variantPriceOverride.priceCents / 100,
+        price: variantPriceOverride.priceCents,
         compareAtPrice: variantPriceOverride.originalPriceCents
-          ? variantPriceOverride.originalPriceCents / 100
+          ? variantPriceOverride.originalPriceCents
           : product.compareAtPrice,
       }
     : activeBundle
     ? {
         ...product,
-        price: activeBundle.priceCents / 100,
-        compareAtPrice: activeBundle.originalPriceCents ? activeBundle.originalPriceCents / 100 : product.compareAtPrice,
+        price: activeBundle.priceCents,
+        compareAtPrice: activeBundle.originalPriceCents ? activeBundle.originalPriceCents : product.compareAtPrice,
         name: activeBundle.qty > 1 ? `${product.name} (${activeBundle.qty}x)` : product.name,
       }
     : product;
@@ -623,7 +621,7 @@ export default function ProductDetailPage() {
               </div>
               {activeBundle && activeBundle.perUnitCents && (
                 <p className="text-white/70 text-sm mt-1">
-                  {formatPrice(activeBundle.perUnitCents / 100)} por unidade
+                  {formatPrice(activeBundle.perUnitCents)} por unidade
                 </p>
               )}
             </div>
@@ -713,7 +711,7 @@ export default function ProductDetailPage() {
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-lg font-black" style={{ color: theme.accent }}>{formatPrice(b.priceCents / 100)}</p>
+                            <p className="text-lg font-black" style={{ color: theme.accent }}>{formatPrice(b.priceCents)}</p>
                             {b.badge && (
                               <span 
                                 className="inline-block rounded-full px-3 py-1 text-[10px] font-black text-white shadow-md animate-pulse"

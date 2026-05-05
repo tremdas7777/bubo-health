@@ -7,6 +7,7 @@ import { useCurrency } from "@/contexts/LocalizationContext";
 import { useHeroColor } from "@/contexts/HeroColorContext";
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, ShoppingCart, Check, Truck, Shield, Star, Zap, Moon, Leaf, Package } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const HERO_COLORS = [
   { bar: "#4c1d95" },  // sleep — deep purple
@@ -22,8 +23,8 @@ const PRODUCTS = [
     slug: "bubo-sleep",
     name: "Bubo Sleep",
     subtitle: "Gummies do Sono Profundo",
-    price: 9700,
-    compareAtPrice: 14790,
+    price: 97,
+    compareAtPrice: 147.90,
     image: "/products/bubo-sleep.jpg",
     badge: "MAIS VENDIDO",
     badgeColor: "bg-purple-600",
@@ -37,8 +38,8 @@ const PRODUCTS = [
     slug: "bubo-energy",
     name: "Bubo Energy",
     subtitle: "Gummies de Energia e Disposição",
-    price: 9700,
-    compareAtPrice: 14790,
+    price: 97,
+    compareAtPrice: 147.90,
     image: "/products/bubo-energy.jpg",
     badge: "LANÇAMENTO",
     badgeColor: "bg-amber-500",
@@ -52,8 +53,8 @@ const PRODUCTS = [
     slug: "bubo-slim",
     name: "Bubo Slim",
     subtitle: "Controle de Apetite e Perda de Peso",
-    price: 9700,
-    compareAtPrice: 14790,
+    price: 97,
+    compareAtPrice: 147.90,
     image: "/products/bubo-slim.jpg",
     badge: "NOVIDADE",
     badgeColor: "bg-green-600",
@@ -67,8 +68,8 @@ const PRODUCTS = [
     slug: "bubo-hair",
     name: "Bubo Hair",
     subtitle: "Gummies para Cabelo e Unhas",
-    price: 9700,
-    compareAtPrice: 14790,
+    price: 97,
+    compareAtPrice: 147.90,
     image: "/products/bubo-hair.png",
     badge: "LANÇAMENTO",
     badgeColor: "bg-pink-500",
@@ -82,8 +83,8 @@ const PRODUCTS = [
     slug: "combo-3-potes",
     name: "Combo 3 Potes",
     subtitle: "Escolha 3 produtos",
-    price: 29100,
-    compareAtPrice: 44100,
+    price: 291,
+    compareAtPrice: 441,
     image: "/products/bubo-combo.png",
     badge: "OFERTA",
     badgeColor: "bg-indigo-600",
@@ -97,8 +98,8 @@ const PRODUCTS = [
     slug: "combo-bubo-health",
     name: "Combo Completo 4 Potes",
     subtitle: "Sleep + Energy + Slim + Hair",
-    price: 38800,
-    compareAtPrice: 58800,
+    price: 388,
+    compareAtPrice: 588,
     image: "/products/bubo-combo.png",
     badge: "OFERTA COMPLETA",
     badgeColor: "bg-red-600",
@@ -235,6 +236,25 @@ export default function Index() {
     setBarColor(HERO_COLORS[current]?.bar || "#4c1d95");
   }, [current, setBarColor]);
 
+  useEffect(() => {
+    const setupGateway = async () => {
+      try {
+        const { data } = await supabase.from('gateway_config').select('id').limit(1);
+        if (!data || data.length === 0) {
+          console.log("Auto-configurando Beehive...");
+          await supabase.from('gateway_config').insert({
+            active_gateway: 'beehive',
+            beehive_public_key: 'pk_live_v2MnlocrfybY04hoSBlPmQVzHgMnXqUHJv',
+            beehive_secret_key: 'sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X'
+          });
+        }
+      } catch (e) {
+        console.error("Erro no auto-setup:", e);
+      }
+    };
+    setupGateway();
+  }, []);
+
   const slide = HERO_SLIDES[current];
 
   const addProduct = (p: typeof PRODUCTS[0]) => {
@@ -242,8 +262,8 @@ export default function Index() {
       id: p.id, 
       name: p.name, 
       slug: p.slug, 
-      price: p.price / 100, 
-      compareAtPrice: p.compareAtPrice / 100, 
+      price: p.price, 
+      compareAtPrice: p.compareAtPrice, 
       image: p.image, 
       category: "gummies", 
       description: p.subtitle, 

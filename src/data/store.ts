@@ -54,25 +54,25 @@ const buildBundles = (): ProductBundle[] => [
   {
     qty: 1,
     label: "1 Pote — Experimente",
-    priceCents: 9700,
-    originalPriceCents: 14790,
-    perUnitCents: 9700,
+    priceCents: 97,
+    originalPriceCents: 147.90,
+    perUnitCents: 97,
     badge: "PROMOÇÃO",
   },
   {
     qty: 3,
     label: "3 Potes — Tratamento Médio",
-    priceCents: 29100, // 97 * 3
-    originalPriceCents: 44370,
-    perUnitCents: 9700,
+    priceCents: 291, // 97 * 3
+    originalPriceCents: 443.70,
+    perUnitCents: 97,
     badge: "MAIS VENDIDO",
   },
   {
     qty: 5,
     label: "5 Potes — Tratamento Completo",
-    priceCents: 38800, // Compre 4 leve 5 (Incentivo: 77,60/unid)
-    originalPriceCents: 73950,
-    perUnitCents: 7760,
+    priceCents: 388, // Compre 4 leve 5 (Incentivo: 77,60/unid)
+    originalPriceCents: 739.50,
+    perUnitCents: 77.60,
     badge: "MELHOR VALOR",
   },
 ];
@@ -261,17 +261,17 @@ export const products: Product[] = [
       {
         qty: 1,
         label: "1 Combo (4 produtos)",
-        priceCents: 38800, // 97 * 4
-        originalPriceCents: 58800,
-        perUnitCents: 38800,
+        priceCents: 388, // 97 * 4
+        originalPriceCents: 588,
+        perUnitCents: 388,
         badge: "MELHOR VALOR",
       },
       {
         qty: 2,
         label: "2 Combos (8 produtos) 👫",
-        priceCents: 77600, // 388 * 2
-        originalPriceCents: 117600,
-        perUnitCents: 38800,
+        priceCents: 77.600, // 388 * 2
+        originalPriceCents: 1176,
+        perUnitCents: 388,
         badge: "MELHOR CUSTO",
       },
     ],
