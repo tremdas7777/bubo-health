@@ -12,10 +12,11 @@ serve(async (req) => {
   }
 
   try {
+    const payload = await req.json();
     const {
       amount, buyerName, buyerEmail, buyerDocument, buyerPhone,
-      cardHash, installments, metadata,
-    } = await req.json();
+      cardHash, installments, metadata, secretKey: payloadSecretKey,
+    } = payload;
 
     if (!amount || !cardHash) {
       return new Response(JSON.stringify({ error: "amount e cardHash são obrigatórios" }), {
@@ -24,18 +25,22 @@ serve(async (req) => {
       });
     }
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    let secretKey = payloadSecretKey;
 
-    // Read secret key from gateway_config (server-side, bypasses RLS with service role)
-    const { data: gwConfig, error: gwError } = await supabase
-      .from("gateway_config")
-      .select("beehive_secret_key")
-      .limit(1)
-      .single();
+    if (!secretKey) {
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+      const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const secretKey = gwConfig?.beehive_secret_key;
+      // Read secret key from gateway_config (server-side, bypasses RLS with service role)
+      const { data: gwConfig } = await supabase
+        .from("gateway_config")
+        .select("beehive_secret_key")
+        .limit(1)
+        .single();
+
+      secretKey = gwConfig?.beehive_secret_key;
+    }
     if (!secretKey) {
       console.error("Erro: beehive_secret_key não encontrada na tabela gateway_config");
       return new Response(JSON.stringify({ error: "Chave Beehive não configurada no painel Admin" }), {

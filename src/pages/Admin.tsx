@@ -490,7 +490,10 @@ export default function Admin() {
     try {
       const bodyMap = {
         centurionpay: { secretKey: gatewayConfig.centurionpay.secretKey, companyId: gatewayConfig.centurionpay.companyId },
-        beehive: {},
+        beehive: {
+          secretKey: gatewayConfig.beehive.secretKey,
+          publicKey: gatewayConfig.beehive.publicKey,
+        },
         pagamentosmp: {
           publicKey: gatewayConfig.pagamentosmp.publicKey,
           secretKey: gatewayConfig.pagamentosmp.secretKey,
