@@ -1226,7 +1226,7 @@ export default function CheckoutPage() {
                     <span className="text-muted-foreground">Subtotal</span>
                     <span>{formatPrice(subtotal)}</span>
                   </div>
-                  {isPix && (
+                  {isPix && PIX_DISCOUNT_PERCENT > 0 && (
                     <div className="flex justify-between text-emerald-600">
                       <span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span>
                       <span>-{formatPrice(pixDiscount)}</span>
@@ -1242,7 +1242,9 @@ export default function CheckoutPage() {
                   </div>
                   <p className="text-[10px] text-muted-foreground text-center">
                     {isPix
-                      ? `${PIX_DISCOUNT_PERCENT}% de desconto no PIX`
+                      ? PIX_DISCOUNT_PERCENT > 0 
+                        ? `${PIX_DISCOUNT_PERCENT}% de desconto no PIX`
+                        : "Pagamento instantâneo e seguro"
                       : `ou em até 6x de ${formatPrice(getInstallmentValue(total, 6))}`
                     }
                   </p>
