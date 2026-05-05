@@ -300,23 +300,6 @@ function GatewayCard({
   );
 }
 
-async function extractFunctionErrorMessage(error: unknown) {
-  if (error && typeof error === "object" && "context" in error) {
-    const response = (error as { context?: Response }).context;
-    if (response instanceof Response) {
-      try {
-        const payload = await response.clone().json();
-        return payload.error || payload.message || "Erro retornado pela função";
-      } catch {
-        try {
-          const text = await response.clone().text();
-          return text || "Erro na resposta da função";
-        } catch { /* ignore */ }
-      }
-    }
-  }
-  return error instanceof Error ? error.message : String(error);
-}
 
 export default function Admin() {
   const [authed, setAuthed] = useState(false);
