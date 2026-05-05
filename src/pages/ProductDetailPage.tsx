@@ -390,11 +390,8 @@ export default function ProductDetailPage() {
     : product.compareAtPrice;
   const hasDiscount = activeCompareAt && activeCompareAt > activePrice;
   
-  // Formats BRL decimal directly as Brazilian Real
-  const formatPrice = (decimal: number) => {
-    const value = Number(decimal) || 0;
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
-  };
+  // Use the BRL formatter from store.ts
+  const formatPrice = (decimal: number) => formatBRL(decimal);
   const relatedProducts = filterByCategory(dbProducts, product.category).filter((p) => p.id !== product.id).slice(0, 4);
   const productUrl = `${window.location.origin}/produto/${product.slug}`;
   const bullets = productBulletPoints[product.slug];
