@@ -34,7 +34,7 @@ export default function CartDrawer() {
             </div>
           ) : (
             <div className="space-y-4">
-              {items.map(({ product, quantity, selections, lineId }) => (
+              {items.map(({ product, quantity, selections, lineId, price }) => (
                 <div key={lineId} className="flex gap-3 border-b border-border pb-4">
                   <img src={product.image} alt={product.name} className="w-20 h-20 object-cover rounded-xl" />
                   <div className="flex-1 min-w-0">
@@ -53,7 +53,7 @@ export default function CartDrawer() {
                       </ul>
                     )}
                     <p className="text-primary font-semibold text-sm mt-1">
-                      {formatPrice(Math.round(product.price * 100))}
+                      {formatPrice(Math.round(price * 100))}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <button onClick={() => updateQuantity(lineId, quantity - 1)} className="w-7 h-7 border border-border rounded flex items-center justify-center hover:bg-muted">

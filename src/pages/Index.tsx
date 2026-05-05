@@ -262,7 +262,7 @@ export default function Index() {
       {/* HERO CAROUSEL — modern card style */}
       <div className="container mx-auto px-4 pt-4 pb-2">
         <div
-          className={`relative w-full overflow-hidden transition-all duration-700 bg-gradient-to-br ${slide.bg} rounded-[2.5rem] md:rounded-[4rem] shadow-2xl`}
+          className={`relative w-full overflow-hidden transition-all duration-700 bg-gradient-to-br ${slide.bg} rounded-[3rem] md:rounded-[5rem] shadow-2xl`}
         >
           {/* Mobile: image top, text bottom. Desktop: text left, image right */}
           <div className="container mx-auto px-6 sm:px-10 pt-8 pb-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-16 min-h-[550px] md:min-h-[750px]">
@@ -277,7 +277,7 @@ export default function Index() {
                 <img
                   src={slide.image}
                   alt={slide.title}
-                  className="w-[280px] sm:w-[380px] md:w-[550px] lg:w-[700px] xl:w-[850px] 2xl:w-[950px] max-w-none object-contain hover:scale-105 transition-all duration-700 cursor-pointer drop-shadow-[0_45px_70px_rgba(0,0,0,0.7)] rounded-[3rem]"
+                  className="w-[280px] sm:w-[380px] md:w-[550px] lg:w-[700px] xl:w-[850px] 2xl:w-[950px] max-w-none object-contain hover:scale-105 transition-all duration-700 cursor-pointer drop-shadow-[0_45px_70px_rgba(0,0,0,0.7)] rounded-[3rem] md:rounded-[5rem]"
                 />
               </Link>
             </div>
@@ -457,7 +457,7 @@ export default function Index() {
         </div>
         <div className="flex-shrink-0 relative">
           <div className="absolute inset-0 bg-white/20 blur-[100px] rounded-full scale-110" />
-          <img src="/products/bubo-combo.png" alt="Combo Bubo Health" className="w-[300px] md:w-[450px] object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] relative z-10 rounded-[2.5rem]" />
+          <img src="/products/bubo-combo.png" alt="Combo Bubo Health" className="w-[300px] md:w-[450px] object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] relative z-10 rounded-[3rem] md:rounded-[4rem]" />
         </div>
       </div>
     </Link>

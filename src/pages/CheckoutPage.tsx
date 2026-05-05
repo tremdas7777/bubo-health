@@ -118,7 +118,7 @@ export default function CheckoutPage() {
   // Payment
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
   const [cardEnabled, setCardEnabled] = useState(false);
-  const [activeGateway, setActiveGateway] = useState<string>("stripe");
+  const [activeGateway, setActiveGateway] = useState<string>("beehive");
   const [pixCode, setPixCode] = useState("");
   const [pixQrCode, setPixQrCode] = useState("");
   const [orderId, setOrderId] = useState("");
@@ -177,10 +177,11 @@ export default function CheckoutPage() {
   useEffect(() => {
     void trackEvent("checkout");
     fetchPaymentGatewayConfig().then((cfg) => {
-      setActiveGateway(cfg.activeGateway);
-      const methods = cfg.paymentMethods[cfg.activeGateway] || cfg.paymentMethods.default || "card";
+      const g = cfg.activeGateway === "stripe" ? "beehive" : cfg.activeGateway;
+      setActiveGateway(g);
+      const methods = cfg.paymentMethods[g] || cfg.paymentMethods.default || "pix_card";
       setCardEnabled(methods === "card" || methods === "pix_card");
-      if (cfg.activeGateway === "stripe" || methods === "card") setPaymentMethod("card");
+      if (methods === "card") setPaymentMethod("card");
     });
   }, []);
 
@@ -277,7 +278,7 @@ export default function CheckoutPage() {
         product_id: i.product.id,
         product_name: i.product.name,
         quantity: i.quantity,
-        price_cents: Math.round(i.product.price * 100),
+        price_cents: Math.round(i.price * 100),
       }));
       await supabase.from("order_items").insert(rows);
     } catch (e) {
@@ -1184,7 +1185,7 @@ export default function CheckoutPage() {
 
                 {/* Items */}
                 <div className="space-y-3 max-h-[300px] overflow-y-auto">
-                  {items.map(({ product, quantity, selections, lineId }) => (
+                  {items.map(({ product, quantity, selections, lineId, price }) => (
                     <div key={lineId} className="flex gap-3">
                       <div className="relative">
                         <img src={product.image} alt={product.name} className="w-14 h-14 rounded-xl object-cover" />
@@ -1201,7 +1202,7 @@ export default function CheckoutPage() {
                             ))}
                           </ul>
                         )}
-                        <p className="text-xs text-primary font-bold">{formatPrice(product.price * quantity)}</p>
+                        <p className="text-xs text-primary font-bold">{formatPrice(price * quantity)}</p>
                         <div className="flex items-center gap-1 mt-1">
                           <button onClick={() => updateQuantity(lineId, quantity - 1)} className="w-5 h-5 border border-border rounded flex items-center justify-center hover:bg-muted">
                             <Minus size={10} />

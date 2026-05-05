@@ -15,13 +15,15 @@ export interface CartItem {
   selections?: CartItemSelection[];
   /** Stable key used to differentiate same product with different selections */
   lineId: string;
+  /** Price in BRL (decimal) for this item (can be a bundle price) */
+  price: number;
 }
 
 interface CartContextType {
   items: CartItem[];
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  addItem: (product: Product, quantity?: number, selections?: CartItemSelection[]) => void;
+  addItem: (product: Product, quantity?: number, selections?: CartItemSelection[], price?: number) => void;
   removeItem: (lineId: string) => void;
   updateQuantity: (lineId: string, quantity: number) => void;
   clearCart: () => void;
@@ -40,16 +42,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const addItem = useCallback((product: Product, quantity = 1, selections?: CartItemSelection[]) => {
+  const addItem = useCallback((product: Product, quantity = 1, selections?: CartItemSelection[], price?: number) => {
+    const itemPrice = price !== undefined ? price : product.price;
     const lineId = buildLineId(product.id, selections);
     setItems((prev) => {
       const existing = prev.find((item) => item.lineId === lineId);
       if (existing) {
         return prev.map((item) =>
-          item.lineId === lineId ? { ...item, quantity: item.quantity + quantity } : item,
+          item.lineId === lineId ? { ...item, quantity: item.quantity + quantity, price: itemPrice } : item,
         );
       }
-      return [...prev, { product, quantity, selections, lineId }];
+      return [...prev, { product, quantity, selections, lineId, price: itemPrice }];
     });
     setIsOpen(true);
     void trackEvent("add_to_cart", product.slug);
@@ -70,9 +73,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const clearCart = useCallback(() => setItems([]), []);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  // totalPrice in BRL cents (product.price is in decimal BRL)
+  // totalPrice in BRL cents
   const totalPrice = items.reduce(
-    (sum, item) => sum + Math.round(item.product.price * 100) * item.quantity,
+    (sum, item) => sum + Math.round(item.price * 100) * item.quantity,
     0,
   );
 
