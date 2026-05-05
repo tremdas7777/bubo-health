@@ -50,7 +50,7 @@ export default function DeliveryTimeline({ color }: { color?: string }) {
             <div className="flex flex-col items-center text-center flex-1 min-w-0">
               <div 
                 className="w-10 h-10 rounded-full flex items-center justify-center mb-1.5 ring-2"
-                style={{ backgroundColor: `${accentColor}1A`, ringColor: `${accentColor}33` }}
+                style={{ backgroundColor: `${accentColor}1A`, ['--tw-ring-color' as any]: `${accentColor}33` }}
               >
                 <step.icon size={16} style={{ color: accentColor }} />
               </div>
