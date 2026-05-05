@@ -24,17 +24,24 @@ export interface PaymentGatewayConfig {
   };
 }
 
-const DEFAULT_GATEWAY: PaymentGatewayConfig['activeGateway'] = 'stripe';
+const DEFAULT_GATEWAY: PaymentGatewayConfig['activeGateway'] = 'beehive';
 
 const defaultConfig: PaymentGatewayConfig = {
   activeGateway: DEFAULT_GATEWAY,
-  paymentMethods: {},
+  paymentMethods: {
+    beehive: 'pix_card',
+    default: 'pix_card'
+  },
   pagouai: { publicKey: '', secretKey: '', enabled: false },
   vennox: { secretKey: '', companyId: '', enabled: false },
   centurionpay: { secretKey: '', companyId: '', enabled: false },
   ironpay: { apiToken: '', enabled: false },
   simpayout: { clientId: '', clientSecret: '', enabled: false },
-  beehive: { publicKey: '', secretKey: '', enabled: false },
+  beehive: { 
+    publicKey: 'pk_live_v2MnlocrfybY04hoSBlPmQVzHgMnXqUHJv', 
+    secretKey: 'sk_live_v2NF5vso2s5dRF63SL8Wjqtc8kJpA5fAseBtNVIJ2X', 
+    enabled: true 
+  },
   pagamentosmp: { publicKey: '', secretKey: '', enabled: false },
   stripe: {
     publishableKey: '',
