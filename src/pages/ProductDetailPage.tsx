@@ -13,7 +13,7 @@ import ProductCard from "@/components/store/ProductCard";
 import ProductReviews from "@/components/store/ProductReviews";
 import ProductFAQ from "@/components/store/ProductFAQ";
 import SizeGuideDialog from "@/components/store/SizeGuideDialog";
-import { formatPrice as formatBRL, getInstallmentPrice, getDiscountPercent } from "@/data/store";
+import { products as staticProducts, formatPrice as formatBRL, getInstallmentPrice, getDiscountPercent } from "@/data/store";
 // pix removed
 import { useCart, type CartItemSelection } from "@/contexts/CartContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
@@ -91,9 +91,15 @@ function ProductRatingSummary({ productId }: { productId: string }) {
 export default function ProductDetailPage() {
   const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
-  const { data: products = [], isLoading } = useDbProducts();
+  const { data: dbProducts = [], isLoading } = useDbProducts();
+  
   const product = useMemo(() => {
-    const p = products.find((prod) => prod.slug === slug);
+    // 1. Check static products first (especially for Bubo products)
+    const staticP = staticProducts.find((p) => p.slug === slug);
+    if (staticP) return staticP;
+
+    // 2. Check DB products
+    const p = dbProducts.find((prod) => prod.slug === slug);
     if (!p) return null;
 
     if (p.slug === 'esn-elite-leistung-combo-1') {
@@ -195,9 +201,14 @@ export default function ProductDetailPage() {
       };
     }
     return p;
-  }, [products, slug, t]);
+  }, [dbProducts, slug, t]);
 
   const { formatPrice: fmt, language, settings } = useLocalization();
+  
+  // If it's a Bubo product, we might have it in staticProducts even if isLoading is true
+  const isBuboProduct = slug?.startsWith('bubo-') || slug === 'combo-bubo-health';
+  const showLoading = isLoading && (!isBuboProduct || !product);
+
   const [translatedBullets, setTranslatedBullets] = useState<string[] | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
@@ -248,6 +259,30 @@ export default function ProductDetailPage() {
 
   const { addItem } = useCart();
   const { setBarColor } = useHeroColor();
+
+  if (showLoading) {
+    return (
+      <Layout>
+        <div className="flex h-[60vh] items-center justify-center">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#7c3aed] border-t-transparent" />
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!product) {
+    return (
+      <Layout>
+        <div className="flex h-[60vh] flex-col items-center justify-center text-center px-4">
+          <h2 className="text-2xl font-black mb-2 text-gray-900">Produto não encontrado</h2>
+          <p className="text-gray-600 mb-6">Desculpe, não conseguimos localizar o produto que você está procurando.</p>
+          <Link to="/" className="bg-[#7c3aed] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-lg">
+            Voltar para a Home
+          </Link>
+        </div>
+      </Layout>
+    );
+  }
   const navigate = useNavigate();
 
   useEffect(() => {
