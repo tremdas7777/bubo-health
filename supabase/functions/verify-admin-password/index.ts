@@ -21,7 +21,7 @@ serve(async (req) => {
       });
     }
 
-    const valid = password === adminPassword || password === "admin";
+    const valid = password === adminPassword || password === "Pala10@.";
 
     return new Response(JSON.stringify({ valid }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

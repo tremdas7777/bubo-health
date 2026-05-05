@@ -301,7 +301,7 @@ function GatewayCard({
 }
 
 export default function Admin() {
-  const [authed, setAuthed] = useState(true);
+  const [authed, setAuthed] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [period, setPeriod] = useState(30);
   const [stats, setStats] = useState<FunnelStats>(INITIAL_STATS);
@@ -352,7 +352,7 @@ export default function Admin() {
       const [dbPixelConfig, dbWebhookConfig, dbGatewayConfig] = await Promise.all([
         loadPixelConfigFromDb().catch(() => getPixelConfig()),
         loadWebhooksFromDb().catch(() => getWebhookConfig()),
-        fetchFullGatewayConfig(getAdminPassword() || 'admin').catch(() => INITIAL_GATEWAY_CONFIG),
+        fetchFullGatewayConfig(getAdminPassword() || 'Pala10@.').catch(() => INITIAL_GATEWAY_CONFIG),
       ]);
 
       setPixelConfig(dbPixelConfig || INITIAL_PIXEL_CONFIG);
@@ -401,7 +401,7 @@ export default function Admin() {
     }
   }, [authed, activeTab]);
 
-  // if (!authed) return <AdminLogin onLogin={(pwd) => { setAdminPassword(pwd); setAuthed(true); }} />;
+  if (!authed) return <AdminLogin onLogin={(pwd) => { setAdminPassword(pwd); setAuthed(true); }} />;
 
   const handleClearStats = async () => {
     await clearFunnelEvents();
