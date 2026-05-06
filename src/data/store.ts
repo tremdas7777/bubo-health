@@ -182,27 +182,113 @@ export const products: Product[] = [
     compareAtPrice: roundMoney(BUBO_U * STRIKE_RATIO_SINGLE_POTE),
     image: "/products/bubo-slim.jpg",
     category: "gummies",
-    description: "Gummies de controle de apetite e perda de peso. Picolinato de cromo, fibras e Garcinia para emagrecimento saudável.",
+    description:
+      "Gummies para controle de apetite com fibras, extrato de chá verde, cafeína natural e cromo. Apenas 1 gummy por dia.",
     descriptionHtml: `
       <div class="space-y-6">
-        <p class="text-gray-600">Transforme sua jornada de emagrecimento em um momento prazeroso. <strong>Bubo Slim</strong> ajuda a controlar a vontade de doces e acelera o metabolismo de forma natural.</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-green-50 p-4 rounded-xl border border-green-100">
-            <h4 class="font-bold text-green-900 mb-1">🥗 Controle de Apetite</h4>
-            <p class="text-sm text-green-700">Sinta-se saciado por mais tempo e reduza a ingestão calórica.</p>
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+            <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
           </div>
-          <div class="bg-green-50 p-4 rounded-xl border border-green-100">
-            <h4 class="font-bold text-green-900 mb-1">📉 Metabolismo Ativo</h4>
-            <p class="text-sm text-green-700">Fórmula que auxilia na quebra de gordura e queima calórica.</p>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 kcal (1% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,5 g (1% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,5 g</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1 g (4% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Cafeína</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">80 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Cromo</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mcg (571% VD)</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            *%VD com base em uma dieta de 2.000 kcal.
           </div>
         </div>
-        <ul class="space-y-2 text-sm text-gray-600">
-          <li>🍏 Zero Açúcar e sem Glúten</li>
-          <li>🍏 30 gummies por pote</li>
-          <li>🍏 Rico em Fibras Prebióticas</li>
-          <li>🍏 Sabor refrescante de Maçã Verde</li>
-          <li>🍏 Reduz a retenção de líquidos</li>
-        </ul>
+
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Glucomanano</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">800 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de chá verde</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">250 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vinagre de maçã em pó</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">300 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Ashwagandha (extrato)</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Cafeína natural</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">80 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Picolinato de cromo</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mcg</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
+          </div>
+        </div>
       </div>
     `,
     stock: 45,

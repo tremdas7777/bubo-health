@@ -61,6 +61,20 @@ const productBulletPoints: Record<string, { icon: React.ElementType; text: strin
   ],
 };
 
+const PRODUCT_PAGE_THEMES: Record<string, { bg: string; accent: string; tag: string }> = {
+  "bubo-sleep": { bg: "from-purple-900 to-purple-700", accent: "#7c3aed", tag: "🌙 Gummies do Sono" },
+  "bubo-energy": { bg: "from-amber-700 to-yellow-500", accent: "#f59e0b", tag: "⚡ Gummies de Energia" },
+  "bubo-slim": { bg: "from-green-800 to-green-500", accent: "#16a34a", tag: "🌿 Gummies Emagrecimento" },
+  "bubo-hair": { bg: "from-pink-800 to-rose-500", accent: "#db2777", tag: "💖 Cabelo & Unhas" },
+  [COMBO_3_UNIDADES_SLUG]: { bg: "from-indigo-900 to-indigo-600", accent: "#4f46e5", tag: "💜 Combo 3 Unidades" },
+  "combo-bubo-health": { bg: "from-indigo-900 to-purple-700", accent: "#7c3aed", tag: "🔥 Kit Completo" },
+};
+const DEFAULT_PRODUCT_PAGE_THEME = {
+  bg: "from-purple-900 to-purple-700",
+  accent: "#7c3aed",
+  tag: "✨ Bubo Health",
+};
+
 function ProductRatingSummary({ productId }: { productId: string }) {
   const { t } = useTranslation();
   const [avg, setAvg] = useState(0);
@@ -300,6 +314,66 @@ export default function ProductDetailPage() {
   const { addItem } = useCart();
   const { setBarColor } = useHeroColor();
 
+  useEffect(() => {
+    if (product) {
+      void trackEvent("product_view", product.slug);
+    }
+  }, [product]);
+
+  useEffect(() => {
+    if (!product) return;
+    const slug = product.slug;
+    const bulletList = productBulletPoints[slug];
+    if (!bulletList || bulletList.length === 0) {
+      setTranslatedBullets(null);
+      return;
+    }
+    if (language === "pt") {
+      setTranslatedBullets(null);
+      return;
+    }
+    const cacheKey = `bullets-tr:${slug}:${language}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      try {
+        const arr = JSON.parse(cached);
+        if (Array.isArray(arr) && arr.length === bulletList.length) {
+          setTranslatedBullets(arr);
+          return;
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke("translate-texts", {
+          body: { texts: bulletList.map((b) => b.text), targetLang: language },
+        });
+        if (cancelled) return;
+        if (error || !data?.translations) {
+          setTranslatedBullets(null);
+          return;
+        }
+        localStorage.setItem(cacheKey, JSON.stringify(data.translations));
+        setTranslatedBullets(data.translations);
+      } catch {
+        if (!cancelled) setTranslatedBullets(null);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [product, language]);
+
+  useEffect(() => {
+    if (!product) return;
+    const themeAccent =
+      (PRODUCT_PAGE_THEMES[product.slug] ?? DEFAULT_PRODUCT_PAGE_THEME).accent;
+    setBarColor(themeAccent);
+  }, [product?.slug, setBarColor]);
+
   if (showLoading) {
     return (
       <Layout>
@@ -323,58 +397,6 @@ export default function ProductDetailPage() {
       </Layout>
     );
   }
-
-
-  useEffect(() => {
-    if (product) {
-      void trackEvent("product_view", product.slug);
-    }
-  }, [product]);
-
-  // Translate the kit bullet points to the active UI language (cached in localStorage).
-  useEffect(() => {
-    if (!product) return;
-    const slug = product.slug;
-    const bulletList = productBulletPoints[slug];
-    if (!bulletList || bulletList.length === 0) {
-      setTranslatedBullets(null);
-      return;
-    }
-    if (language === "pt") {
-      setTranslatedBullets(null); // use original (already pt-BR)
-      return;
-    }
-    const cacheKey = `bullets-tr:${slug}:${language}`;
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      try {
-        const arr = JSON.parse(cached);
-        if (Array.isArray(arr) && arr.length === bulletList.length) {
-          setTranslatedBullets(arr);
-          return;
-        }
-      } catch { /* ignore */ }
-    }
-    let cancelled = false;
-    (async () => {
-      try {
-        const { data, error } = await supabase.functions.invoke("translate-texts", {
-          body: { texts: bulletList.map((b) => b.text), targetLang: language },
-        });
-        if (cancelled) return;
-        if (error || !data?.translations) {
-          setTranslatedBullets(null);
-          return;
-        }
-        localStorage.setItem(cacheKey, JSON.stringify(data.translations));
-        setTranslatedBullets(data.translations);
-      } catch {
-        if (!cancelled) setTranslatedBullets(null);
-      }
-    })();
-    return () => { cancelled = true; };
-  }, [product, language]);
-
 
 
   // Bundle-aware pricing — when product has bundles, use selected bundle's price
@@ -605,20 +627,7 @@ export default function ProductDetailPage() {
     navigate("/checkout");
   };
 
-  // Map product slugs to color themes
-  const PRODUCT_THEMES: Record<string, { bg: string; accent: string; tag: string }> = {
-    "bubo-sleep": { bg: "from-purple-900 to-purple-700", accent: "#7c3aed", tag: "🌙 Gummies do Sono" },
-    "bubo-energy": { bg: "from-amber-700 to-yellow-500", accent: "#f59e0b", tag: "⚡ Gummies de Energia" },
-    "bubo-slim": { bg: "from-green-800 to-green-500", accent: "#16a34a", tag: "🌿 Gummies Emagrecimento" },
-    "bubo-hair": { bg: "from-pink-800 to-rose-500", accent: "#db2777", tag: "💖 Cabelo & Unhas" },
-    [COMBO_3_UNIDADES_SLUG]: { bg: "from-indigo-900 to-indigo-600", accent: "#4f46e5", tag: "💜 Combo 3 Unidades" },
-    "combo-bubo-health": { bg: "from-indigo-900 to-purple-700", accent: "#7c3aed", tag: "🔥 Kit Completo" },
-  };
-  const theme = PRODUCT_THEMES[product.slug] || { bg: "from-purple-900 to-purple-700", accent: "#7c3aed", tag: "✨ Bubo Health" };
-
-  useEffect(() => {
-    setBarColor(theme.accent);
-  }, [theme.accent, setBarColor]);
+  const theme = PRODUCT_PAGE_THEMES[product.slug] ?? DEFAULT_PRODUCT_PAGE_THEME;
 
   return (
     <Layout>
@@ -1178,42 +1187,46 @@ export default function ProductDetailPage() {
         {/* Bullet Points Description */}
         <div className="mx-auto mt-12 max-w-3xl border-t border-border pt-8">
           <h3 className="mb-4 text-lg font-heading font-semibold">{t("productPage.productDescription")}</h3>
-          {bullets ? (
-            <div className="space-y-3">
-              <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-                {t("productPage.kitIntro")}
-              </p>
-              <ul className="space-y-3">
-                {bullets.map((item, i) => {
-                  const Icon = item.icon;
-                  return (
-                    <li key={i} className="flex items-start gap-3">
-                      <div 
-                        className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
-                        style={{ backgroundColor: `${theme.accent}1A` }}
-                      >
-                        <Icon size={16} style={{ color: theme.accent }} />
-                      </div>
-                      <span className="text-sm leading-relaxed text-muted-foreground">{translatedBullets?.[i] ?? item.text}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-              <div className="mt-4 flex items-center gap-2 rounded-lg bg-lime/10 p-3">
-                <CheckCircle2 size={18} className="shrink-0 text-primary" />
-                <p className="text-sm font-medium text-foreground">
-                  {t("productPage.kitFooter")}
+          <div className="space-y-6">
+            {bullets ? (
+              <div className="space-y-3">
+                <p className="text-sm leading-relaxed text-muted-foreground mb-4">
+                  {t("productPage.kitIntro")}
                 </p>
+                <ul className="space-y-3">
+                  {bullets.map((item, i) => {
+                    const Icon = item.icon;
+                    return (
+                      <li key={i} className="flex items-start gap-3">
+                        <div
+                          className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
+                          style={{ backgroundColor: `${theme.accent}1A` }}
+                        >
+                          <Icon size={16} style={{ color: theme.accent }} />
+                        </div>
+                        <span className="text-sm leading-relaxed text-muted-foreground">{translatedBullets?.[i] ?? item.text}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div className="mt-4 flex items-center gap-2 rounded-lg bg-lime/10 p-3">
+                  <CheckCircle2 size={18} className="shrink-0 text-primary" />
+                  <p className="text-sm font-medium text-foreground">
+                    {t("productPage.kitFooter")}
+                  </p>
+                </div>
               </div>
-            </div>
-          ) : product.descriptionHtml ? (
-            <div
-              className="product-description-html text-sm leading-relaxed text-muted-foreground [&_h1]:text-xl [&_h1]:font-bold [&_h1]:text-foreground [&_h1]:mt-6 [&_h1]:mb-3 [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-foreground [&_h2]:mt-5 [&_h2]:mb-2 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-4 [&_h3]:mb-2 [&_p]:mb-3 [&_ul]:mb-3 [&_ul]:space-y-1.5 [&_li]:flex [&_li]:items-start [&_li]:gap-2 [&_strong]:text-foreground [&_strong]:font-semibold [&_img]:rounded-lg [&_img]:my-4 [&_img]:mx-auto [&_img]:max-w-full [&_img]:h-auto [&_img]:shadow-sm"
-              dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-            />
-          ) : (
-            <p className="text-sm leading-relaxed text-muted-foreground">{product.description}</p>
-          )}
+            ) : null}
+
+            {product.descriptionHtml ? (
+              <div
+                className="product-description-html text-sm leading-relaxed text-muted-foreground [&_h1]:text-xl [&_h1]:font-bold [&_h1]:text-foreground [&_h1]:mt-6 [&_h1]:mb-3 [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-foreground [&_h2]:mt-5 [&_h2]:mb-2 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-4 [&_h3]:mb-2 [&_p]:mb-3 [&_ul]:mb-3 [&_ul]:space-y-1.5 [&_li]:flex [&_li]:items-start [&_li]:gap-2 [&_strong]:text-foreground [&_strong]:font-semibold [&_img]:rounded-lg [&_img]:my-4 [&_img]:mx-auto [&_img]:max-w-full [&_img]:h-auto [&_img]:shadow-sm"
+                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+              />
+            ) : !bullets ? (
+              <p className="text-sm leading-relaxed text-muted-foreground">{product.description}</p>
+            ) : null}
+          </div>
         </div>
 
         {/* Reviews Section */}
