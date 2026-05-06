@@ -633,6 +633,193 @@ export const products: Product[] = [
           <li>✨ Frete calculado no checkout</li>
           <li>✨ Qualidade Bubo Health em cada pote</li>
         </ul>
+
+        <div class="rounded-2xl border border-neutral-200 bg-white p-4">
+          <h3 class="text-base font-bold text-neutral-900">Informação nutricional e composição</h3>
+          <p class="text-sm text-neutral-600 mt-1">Abaixo estão os dados por porção (4 g – 1 gummy) dos gummies que podem compor seu combo.</p>
+        </div>
+
+        <div class="space-y-4">
+          <h4 class="text-base font-semibold text-neutral-900">Bubo Sleep</h4>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+              <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 kcal (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,5 g (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,5 g</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,5 g (2% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Melatonina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,21 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg (100% VD)</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">*%VD com base em uma dieta de 2.000 kcal.</div>
+          </div>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+              <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Melatonina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,21 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">L-Teanina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Extrato de camomila</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Extrato de passiflora</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed"><strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.</div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h4 class="text-base font-semibold text-neutral-900">Bubo Energy</h4>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+              <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">12 kcal (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">3 g (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2 g</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,5 g (2% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Cafeína</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg (100% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B12</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,4 mcg (100% VD)</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">*%VD com base em uma dieta de 2.000 kcal.</div>
+          </div>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+              <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Cafeína natural</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Taurina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">500 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">L-Tirosina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Extrato de guaraná</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B12</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,4 mcg</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed"><strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.</div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h4 class="text-base font-semibold text-neutral-900">Bubo Slim</h4>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+              <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 kcal (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,5 g (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,5 g</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1 g (4% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Cafeína</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">80 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Cromo</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mcg (571% VD)</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">*%VD com base em uma dieta de 2.000 kcal.</div>
+          </div>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+              <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Glucomanano</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">800 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Extrato de chá verde</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">250 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vinagre de maçã em pó</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">300 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Ashwagandha (extrato)</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Cafeína natural</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">80 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Picolinato de cromo</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mcg</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed"><strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.</div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h4 class="text-base font-semibold text-neutral-900">Bubo Hair</h4>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+              <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">12 kcal (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">3 g (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2 g</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,5 g (2% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Biotina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">30 mcg (100% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Zinco</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">7 mg (100% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina C</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">45 mg (100% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina E</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 mg (100% VD)</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">*%VD com base em uma dieta de 2.000 kcal.</div>
+          </div>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+              <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Biotina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">30 mcg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Zinco</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">7 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina C</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">45 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina E</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Colágeno hidrolisado</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">500 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Ácido hialurônico</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">50 mg</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed"><strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.</div>
+          </div>
+        </div>
       </div>
     `,
     stock: 100,
@@ -677,6 +864,187 @@ export const products: Product[] = [
           <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
             <span class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold">4</span>
             <span class="text-sm font-medium">Bubo Hair: Cabelos e unhas fortes</span>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-neutral-200 bg-white p-4">
+          <h3 class="text-base font-bold text-neutral-900">Informação nutricional e composição</h3>
+          <p class="text-sm text-neutral-600 mt-1">Dados por porção (4 g – 1 gummy) de cada gummy incluído no combo.</p>
+        </div>
+
+        <div class="space-y-6">
+          <h4 class="text-base font-semibold text-neutral-900">Bubo Sleep</h4>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+              <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 kcal (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,5 g (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,5 g</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,5 g (2% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Melatonina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,21 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg (100% VD)</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">*%VD com base em uma dieta de 2.000 kcal.</div>
+          </div>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+              <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Melatonina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,21 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">L-Teanina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Extrato de camomila</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Extrato de passiflora</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed"><strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.</div>
+          </div>
+
+          <h4 class="text-base font-semibold text-neutral-900 pt-2">Bubo Energy</h4>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+              <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">12 kcal (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">3 g (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2 g</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,5 g (2% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Cafeína</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg (100% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B12</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,4 mcg (100% VD)</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">*%VD com base em uma dieta de 2.000 kcal.</div>
+          </div>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+              <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Cafeína natural</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Taurina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">500 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">L-Tirosina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Extrato de guaraná</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B12</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,4 mcg</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed"><strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.</div>
+          </div>
+
+          <h4 class="text-base font-semibold text-neutral-900 pt-2">Bubo Slim</h4>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+              <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 kcal (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,5 g (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,5 g</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1 g (4% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Cafeína</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">80 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Cromo</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mcg (571% VD)</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">*%VD com base em uma dieta de 2.000 kcal.</div>
+          </div>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+              <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Glucomanano</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">800 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Extrato de chá verde</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">250 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vinagre de maçã em pó</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">300 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Ashwagandha (extrato)</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Cafeína natural</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">80 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Picolinato de cromo</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mcg</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed"><strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.</div>
+          </div>
+
+          <h4 class="text-base font-semibold text-neutral-900 pt-2">Bubo Hair</h4>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+              <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">12 kcal (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">3 g (1% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2 g</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,5 g (2% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Biotina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">30 mcg (100% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Zinco</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">7 mg (100% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina C</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">45 mg (100% VD)</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina E</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 mg (100% VD)</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">*%VD com base em uma dieta de 2.000 kcal.</div>
+          </div>
+          <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+            <div class="px-4 py-3 bg-white border-b border-neutral-200">
+              <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+              <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+            </div>
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-neutral-200/90">
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Biotina</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">30 mcg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Zinco</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">7 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina C</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">45 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Vitamina E</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Colágeno hidrolisado</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">500 mg</td></tr>
+                <tr><td class="px-4 py-3 text-neutral-700 font-medium">Ácido hialurônico</td><td class="px-4 py-3 text-neutral-600 text-right tabular-nums">50 mg</td></tr>
+              </tbody>
+            </table>
+            <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed"><strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.</div>
           </div>
         </div>
       </div>
