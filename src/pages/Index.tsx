@@ -552,6 +552,34 @@ export default function Index() {
   </div>
 </section>
 
+      {/* INFLUENCERS / SOCIAL PROOF */}
+      <section className="py-16 bg-[#fff1f2]">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <span className="inline-block bg-white/80 text-[#db2777] text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 border border-pink-200/60">
+              Visto nas redes
+            </span>
+            <h2 className="text-3xl md:text-5xl font-heading font-black text-gray-900 leading-tight">
+              Influenciadores usando Bubo
+            </h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              Conteúdo real. Rotina real. Resultados dependem de consistência.
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-6xl">
+            <div className="rounded-[2.5rem] overflow-hidden border border-pink-200/60 bg-white shadow-2xl">
+              <img
+                src="/influencers/influencers-strip.png"
+                alt="Influenciadores usando Bubo"
+                className="w-full h-auto object-cover"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* WHY BUBO */}
       <section className="py-20 bg-[#f5f3ff]">
         <div className="container mx-auto px-4">
