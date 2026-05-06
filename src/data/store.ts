@@ -92,12 +92,12 @@ export const products: Product[] = [
           </div>
           <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
             <h4 class="font-bold text-purple-900 mb-1">🌿 Relaxamento Natural</h4>
-            <p class="text-sm text-purple-700">Com extratos de Camomila e Maracujá para acalmar a mente.</p>
+            <p class="text-sm text-purple-700">Com extratos de Camomila e sabor Uva para acalmar a mente.</p>
           </div>
         </div>
         <ul class="space-y-2 text-sm text-gray-600">
           <li>✨ Zero Açúcar e sem Glúten</li>
-          <li>✨ Sabor delicioso de Maracujá</li>
+          <li>✨ Sabor delicioso de Uva</li>
           <li>✨ 30 gummies por pote (Tratamento para 1 mês)</li>
         </ul>
       </div>

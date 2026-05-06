@@ -5,13 +5,15 @@ import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import { useCart } from "@/contexts/CartContext";
 import { useCurrency } from "@/contexts/LocalizationContext";
 import { useHeroColor } from "@/contexts/HeroColorContext";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { ChevronLeft, ChevronRight, ShoppingCart, Check, Truck, Shield, Star, Zap, Moon, Leaf, Package } from "lucide-react";
 import {
+  COMBO_BUBO_HEALTH_SLUG,
+  COMBO_3_UNIDADES_SLUG,
   DEFAULT_BUBO_UNIT_PRICE,
-  DISCOUNT_3_POTES,
-  DISCOUNT_5_POTES,
   roundMoney,
+  STRIKE_RATIO_COMBO_4,
+  STRIKE_RATIO_SINGLE_POTE,
 } from "@/lib/buboBundlePricing";
 const HERO_COLORS = [
   { bar: "#4c1d95" },  // sleep — deep purple
@@ -21,29 +23,36 @@ const HERO_COLORS = [
   { bar: "#3730a3" },  // combo — indigo
 ];
 
+const BUBO_U = DEFAULT_BUBO_UNIT_PRICE;
+const GUMMY_COMPARE = roundMoney(BUBO_U * STRIKE_RATIO_SINGLE_POTE);
+const PRICE_COMBO_3_KIT = roundMoney(3 * BUBO_U);
+const COMPARE_COMBO_3_KIT = roundMoney(PRICE_COMBO_3_KIT * STRIKE_RATIO_SINGLE_POTE);
+const PRICE_COMBO_FULL_KIT = roundMoney(4 * BUBO_U);
+const COMPARE_COMBO_FULL_KIT = roundMoney(PRICE_COMBO_FULL_KIT * STRIKE_RATIO_COMBO_4);
+
 const PRODUCTS = [
   {
     id: "bubo-sleep",
     slug: "bubo-sleep",
     name: "Bubo Sleep",
     subtitle: "Gummies do Sono Profundo",
-    price: 97,
-    compareAtPrice: 147.90,
+    price: BUBO_U,
+    compareAtPrice: GUMMY_COMPARE,
     image: "/products/bubo-sleep.jpg",
     badge: "MAIS VENDIDO",
     badgeColor: "bg-purple-600",
     accent: "#7c3aed",
     bg: "from-purple-900 to-purple-700",
     tagline: "Melatonina",
-    flavor: "Sabor Maracujá",
+    flavor: "Sabor Uva",
   },
   {
     id: "bubo-energy",
     slug: "bubo-energy",
     name: "Bubo Energy",
     subtitle: "Gummies de Energia e Disposição",
-    price: 97,
-    compareAtPrice: 147.90,
+    price: BUBO_U,
+    compareAtPrice: GUMMY_COMPARE,
     image: "/products/bubo-energy.jpg",
     badge: "LANÇAMENTO",
     badgeColor: "bg-amber-500",
@@ -57,8 +66,8 @@ const PRODUCTS = [
     slug: "bubo-slim",
     name: "Bubo Slim",
     subtitle: "Controle de Apetite e Perda de Peso",
-    price: 97,
-    compareAtPrice: 147.90,
+    price: BUBO_U,
+    compareAtPrice: GUMMY_COMPARE,
     image: "/products/bubo-slim.jpg",
     badge: "NOVIDADE",
     badgeColor: "bg-green-600",
@@ -72,8 +81,8 @@ const PRODUCTS = [
     slug: "bubo-hair",
     name: "Bubo Hair",
     subtitle: "Gummies para Cabelo e Unhas",
-    price: 97,
-    compareAtPrice: 147.90,
+    price: BUBO_U,
+    compareAtPrice: GUMMY_COMPARE,
     image: "/products/bubo-hair.png",
     badge: "LANÇAMENTO",
     badgeColor: "bg-pink-500",
@@ -84,11 +93,11 @@ const PRODUCTS = [
   },
   {
     id: "bubo-combo-3",
-    slug: "combo-3-potes",
+    slug: COMBO_3_UNIDADES_SLUG,
     name: "Combo 3 Unidades",
-    subtitle: "Escolha 3 produtos",
-    price: 291,
-    compareAtPrice: 441,
+    subtitle: "Monte com 3 potes à sua escolha",
+    price: PRICE_COMBO_3_KIT,
+    compareAtPrice: COMPARE_COMBO_3_KIT,
     image: "/products/combo-3-potes.png",
     badge: "OFERTA",
     badgeColor: "bg-indigo-600",
@@ -99,11 +108,11 @@ const PRODUCTS = [
   },
   {
     id: "bubo-combo",
-    slug: "combo-bubo-health",
+    slug: COMBO_BUBO_HEALTH_SLUG,
     name: "Combo Completo 4 Potes",
-    subtitle: "Sleep + Energy + Slim + Hair",
-    price: 388,
-    compareAtPrice: 588,
+    subtitle: "Sleep + Energy + Slim + Hair — kit completo",
+    price: PRICE_COMBO_FULL_KIT,
+    compareAtPrice: COMPARE_COMBO_FULL_KIT,
     image: "/products/bubo-combo.png",
     badge: "OFERTA COMPLETA",
     badgeColor: "bg-red-600",
@@ -114,80 +123,103 @@ const PRODUCTS = [
   },
 ];
 
-const HERO_SLIDES = [
-  {
-    slug: "bubo-sleep",
-    bg: "from-[#2e1065] via-[#4c1d95] to-[#6d28d9]",
-    tag: "🌙 Para uma noite perfeita",
-    title: "Durma Melhor,\nViva Melhor",
-    desc: "Gummies do sono profundo com Melatonina, L-Teanina e Camomila. Sabor Maracujá.",
-    cta: "COMPRAR AGORA",
-    ctaColor: "bg-[#7c3aed] hover:bg-[#6d28d9]",
-    image: "/products/bubo-sleep.jpg",
-    discount: "R$ 97,00",
-    discountBg: "bg-purple-400",
-  },
-  {
-    slug: "bubo-energy",
-    bg: "from-[#78350f] via-[#b45309] to-[#f59e0b]",
-    tag: "⚡ Energia o dia todo",
-    title: "Potencialize\nSeu Dia",
-    desc: "Gummies de energia com Complexo B, Cafeína e Vitamina C. Sabor Laranja.",
-    cta: "COMPRAR AGORA",
-    ctaColor: "bg-[#f59e0b] hover:bg-[#d97706]",
-    image: "/products/bubo-energy.jpg",
-    discount: "R$ 97,00",
-    discountBg: "bg-amber-400",
-  },
-  {
-    slug: "bubo-slim",
-    bg: "from-[#14532d] via-[#15803d] to-[#4ade80]",
-    tag: "🌿 Para seu corpo ideal",
-    title: "Emagreça com\nSaúde e Sabor",
-    desc: "Gummies para controle de apetite com Cromo, Fibras e Garcinia. Sabor Maçã Verde.",
-    cta: "COMPRAR AGORA",
-    ctaColor: "bg-[#16a34a] hover:bg-[#15803d]",
-    image: "/products/bubo-slim.jpg",
-    discount: "R$ 97,00",
-    discountBg: "bg-green-400",
-  },
-  {
-    slug: "bubo-hair",
-    bg: "from-[#831843] via-[#db2777] to-[#fb7185]",
-    tag: "💖 Beleza de dentro para fora",
-    title: "Cabelos e Unhas\nFortes e Brilhantes",
-    desc: "Gummies com Biotina e Colágeno para fortalecer fios e unhas. Sabor Frutas Vermelhas.",
-    cta: "COMPRAR AGORA",
-    ctaColor: "bg-[#db2777] hover:bg-[#be185d]",
-    image: "/products/bubo-hair.png",
-    discount: "R$ 97,00",
-    discountBg: "bg-pink-400",
-  },
-  {
-    slug: "combo-3-potes",
-    bg: "from-[#312e81] via-[#4f46e5] to-[#818cf8]",
-    tag: "💜 Escolha 3 produtos",
-    title: "Combo 3 Unidades\nLeve 3 por R$ 291",
-    desc: "Monte seu combo com 3 potes de gummies à sua escolha. Melhor custo-benefício!",
-    cta: "QUERO MEU COMBO",
-    ctaColor: "bg-[#4f46e5] hover:bg-[#4338ca]",
-    image: "/products/combo-3-potes.png",
-    discount: "R$ 291,00",
-    discountBg: "bg-indigo-400",
-  },
-  {
-    slug: "combo-bubo-health",
-    bg: "from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed]",
-    tag: "🔥 Oferta imperdível",
-    title: "Combo Completo 5 Potes\nBubo Health Total",
-    desc: "A experiência máxima: Leve 5 e pague apenas 4! O cuidado total que seu corpo merece!",
-    cta: "GARANTIR MEU COMBO",
-    ctaColor: "bg-[#7c3aed] hover:bg-[#6d28d9]",
-    image: "/products/bubo-combo.png",
-    discount: "R$ 388,00",
-    discountBg: "bg-indigo-400",
-  },
-];
+type HeroSlide = {
+  slug: string;
+  bg: string;
+  tag: string;
+  title: string;
+  desc: string;
+  cta: string;
+  ctaColor: string;
+  image: string;
+  imageAlt: string;
+  discount: string;
+  discountBg: string;
+};
+
+/** Preços do hero seguem o mesmo cálculo do PDP (`buboBundlePricing`). */
+function buildHeroSlides(fmt: (n: number) => string): HeroSlide[] {
+  return [
+    {
+      slug: "bubo-sleep",
+      bg: "from-[#2e1065] via-[#4c1d95] to-[#6d28d9]",
+      tag: "🌙 Para uma noite perfeita",
+      title: "Durma Melhor,\nViva Melhor",
+      desc: "Gummies do sono profundo com Melatonina, L-Teanina e Camomila. Sabor Uva.",
+      cta: "COMPRAR AGORA",
+      ctaColor: "bg-[#7c3aed] hover:bg-[#6d28d9]",
+      image: "/products/bubo-sleep.jpg",
+      imageAlt: "Bubo Sleep — gummies de sono profundo",
+      discount: fmt(BUBO_U),
+      discountBg: "bg-purple-400",
+    },
+    {
+      slug: "bubo-energy",
+      bg: "from-[#78350f] via-[#b45309] to-[#f59e0b]",
+      tag: "⚡ Energia o dia todo",
+      title: "Potencialize\nSeu Dia",
+      desc: "Gummies de energia com Complexo B, Cafeína e Vitamina C. Sabor Laranja.",
+      cta: "COMPRAR AGORA",
+      ctaColor: "bg-[#f59e0b] hover:bg-[#d97706]",
+      image: "/products/bubo-energy.jpg",
+      imageAlt: "Bubo Energy — gummies de energia",
+      discount: fmt(BUBO_U),
+      discountBg: "bg-amber-400",
+    },
+    {
+      slug: "bubo-slim",
+      bg: "from-[#14532d] via-[#15803d] to-[#4ade80]",
+      tag: "🌿 Para seu corpo ideal",
+      title: "Emagreça com\nSaúde e Sabor",
+      desc: "Gummies para controle de apetite com Cromo, Fibras e Garcinia. Sabor Maçã Verde.",
+      cta: "COMPRAR AGORA",
+      ctaColor: "bg-[#16a34a] hover:bg-[#15803d]",
+      image: "/products/bubo-slim.jpg",
+      imageAlt: "Bubo Slim — gummies para metabolismo",
+      discount: fmt(BUBO_U),
+      discountBg: "bg-green-400",
+    },
+    {
+      slug: "bubo-hair",
+      bg: "from-[#831843] via-[#db2777] to-[#fb7185]",
+      tag: "💖 Beleza de dentro para fora",
+      title: "Cabelos e Unhas\nFortes e Brilhantes",
+      desc: "Gummies com Biotina e Colágeno para fortalecer fios e unhas. Sabor Frutas Vermelhas.",
+      cta: "COMPRAR AGORA",
+      ctaColor: "bg-[#db2777] hover:bg-[#be185d]",
+      image: "/products/bubo-hair.png",
+      imageAlt: "Bubo Hair — gummies para cabelo e unhas",
+      discount: fmt(BUBO_U),
+      discountBg: "bg-pink-400",
+    },
+    {
+      slug: COMBO_3_UNIDADES_SLUG,
+      bg: "from-[#312e81] via-[#4f46e5] to-[#818cf8]",
+      tag: "💜 Combo 3 potes à sua escolha",
+      title: `Combo 3 Unidades\n${fmt(PRICE_COMBO_3_KIT)} · monte seu kit`,
+      desc: "Monte três potes entre Sleep, Energy, Slim e Hair — leva ao produto Combo 3 Unidades.",
+      cta: "QUERO MEU COMBO",
+      ctaColor: "bg-[#4f46e5] hover:bg-[#4338ca]",
+      image: "/products/combo-3-potes.png",
+      imageAlt: "Combo 3 Unidades Bubo — três potes à escolha",
+      discount: fmt(PRICE_COMBO_3_KIT),
+      discountBg: "bg-indigo-400",
+    },
+    {
+      slug: COMBO_BUBO_HEALTH_SLUG,
+      bg: "from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed]",
+      tag: "🔥 Kit completo — 4 sabores",
+      title: "Combo Completo\n4 potes · Bubo Health Total",
+      desc: "Sleep, Energy, Slim e Hair — kit com os quatro sabores (arte com 4 potes). Leva ao Combo Completo.",
+      cta: "GARANTIR MEU COMBO",
+      ctaColor: "bg-[#7c3aed] hover:bg-[#6d28d9]",
+      image: "/products/bubo-combo.png",
+      imageAlt: "Combo Bubo Health completo — quatro sabores",
+      discount: fmt(PRICE_COMBO_FULL_KIT),
+      discountBg: "bg-indigo-400",
+    },
+  ];
+}
 
 const BENEFITS = [
   { icon: <Truck size={28} />, title: "Frete Grátis", desc: "Em compras acima de R$ 199" },
@@ -219,27 +251,32 @@ export default function Index() {
     }
   };
 
+  const heroSlides = useMemo(() => buildHeroSlides(formatPrice), [formatPrice]);
+
   useEffect(() => {
-    const t = setInterval(() => setCurrent(c => (c + 1) % HERO_SLIDES.length), 5000);
+    const n = heroSlides.length;
+    const t = setInterval(() => setCurrent((c) => (c + 1) % n), 5000);
     return () => clearInterval(t);
-  }, []);
+  }, [heroSlides.length]);
 
   useEffect(() => {
     setBarColor(HERO_COLORS[current]?.bar || "#4c1d95");
   }, [current, setBarColor]);
 
-  const slide = HERO_SLIDES[current];
+  const slide = heroSlides[current];
 
-  const bundleBullets = (() => {
-    const u = DEFAULT_BUBO_UNIT_PRICE;
-    const p3 = roundMoney(3 * u * (1 - DISCOUNT_3_POTES));
-    const p5 = roundMoney(5 * u * (1 - DISCOUNT_5_POTES));
-    return [
-      `✅ 1 Pote ${formatPrice(u)}`,
-      `✅ 3 Potes ${formatPrice(p3)}`,
-      `✅ 5 Potes ${formatPrice(p5)}`,
-    ];
-  })();
+  const comboFullBullets = useMemo(
+    () => [
+      "✅ Sleep + Energy + Slim + Hair — 4 sabores",
+      `✅ Kit por ${formatPrice(PRICE_COMBO_FULL_KIT)}`,
+      `✅ Referência ${formatPrice(COMPARE_COMBO_FULL_KIT)}`,
+    ],
+    [formatPrice],
+  );
+
+  const comboFullDiscountPct = Math.round(
+    ((COMPARE_COMBO_FULL_KIT - PRICE_COMBO_FULL_KIT) / COMPARE_COMBO_FULL_KIT) * 100,
+  );
 
   const addProduct = (p: typeof PRODUCTS[0]) => {
     addItem({ 
@@ -280,7 +317,7 @@ export default function Index() {
               <Link to={`/produto/${slide.slug}`} className="relative z-10 w-full flex justify-center">
                 <img
                   src={slide.image}
-                  alt={slide.title}
+                  alt={slide.imageAlt}
                   className="w-[280px] sm:w-[380px] md:w-[550px] lg:w-[700px] xl:w-[850px] 2xl:w-[950px] max-w-none object-contain hover:scale-105 transition-all duration-700 cursor-pointer drop-shadow-[0_45px_70px_rgba(0,0,0,0.7)] rounded-[3rem] md:rounded-[5rem]"
                 />
               </Link>
@@ -315,14 +352,14 @@ export default function Index() {
 
           {/* Nav arrows */}
           <button
-            onClick={() => setCurrent(c => (c - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
+            onClick={() => setCurrent((c) => (c - 1 + heroSlides.length) % heroSlides.length)}
             className="hidden sm:flex absolute left-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/30 backdrop-blur-md border border-white/20 text-white rounded-full p-4 transition-all hover:scale-110 active:scale-90"
             aria-label="Anterior"
           >
             <ChevronLeft size={32} />
           </button>
           <button
-            onClick={() => setCurrent(c => (c + 1) % HERO_SLIDES.length)}
+            onClick={() => setCurrent((c) => (c + 1) % heroSlides.length)}
             className="hidden sm:flex absolute right-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/30 backdrop-blur-md border border-white/20 text-white rounded-full p-4 transition-all hover:scale-110 active:scale-90"
             aria-label="Próximo"
           >
@@ -331,7 +368,7 @@ export default function Index() {
 
           {/* Dots */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 z-20 bg-black/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
-            {HERO_SLIDES.map((_, i) => (
+            {heroSlides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
@@ -430,38 +467,85 @@ export default function Index() {
         </div>
       </section>
 
-{/* COMBO BANNER */}
+{/* COMBO 3 UNIDADES — arte com 3 potes, link correto */}
 <section className="py-6 px-4">
   <div className="container mx-auto">
-    <Link to="/produto/combo-bubo-health" className="block relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed] shadow-2xl hover:scale-[1.01] transition-transform duration-300">
+    <Link
+      to={`/produto/${COMBO_3_UNIDADES_SLUG}`}
+      className="block relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#1e1b4b] via-[#3730a3] to-[#4f46e5] shadow-2xl hover:scale-[1.01] transition-transform duration-300"
+    >
       <div className="flex flex-col md:flex-row items-center gap-8 p-10 md:p-14">
         <div className="flex-1 text-white text-center md:text-left">
-          <span className="inline-block bg-red-500 text-white text-xs font-black px-5 py-2 rounded-full mb-6 uppercase tracking-widest animate-pulse shadow-lg">🔥 Oferta exclusiva</span>
+          <span className="inline-block bg-indigo-400 text-indigo-950 text-xs font-black px-5 py-2 rounded-full mb-6 uppercase tracking-widest shadow-lg">
+            Combo 3 Unidades
+          </span>
           <h2 className="text-4xl md:text-6xl font-heading font-black mb-4 leading-tight">
-            Combo Bubo Health
-            <br /><span className="text-purple-300">Tratamento Completo</span>
+            Três potes
+            <br />
+            <span className="text-indigo-200">do jeito que você quiser</span>
           </h2>
-          <p className="text-purple-100 text-xl mb-6">Sleep + Energy + Slim + Hair em um kit especial</p>
+          <p className="text-indigo-100 text-lg md:text-xl mb-6 max-w-xl">
+            Escolha três potes entre Sleep, Energy, Slim e Hair — mesma página de produto e preço do kit de 3.
+          </p>
           <div className="flex items-center gap-6 justify-center md:justify-start flex-wrap mb-8">
             <div>
-              <p className="text-purple-300 text-sm md:text-base line-through">De R$ 588,00</p>
-              <p className="text-white text-5xl md:text-6xl font-black">R$ 388,00</p>
+              <p className="text-indigo-200 text-sm md:text-base line-through">{formatPrice(COMPARE_COMBO_3_KIT)}</p>
+              <p className="text-white text-4xl md:text-5xl font-black">{formatPrice(PRICE_COMBO_3_KIT)}</p>
             </div>
-            <span className="bg-red-500 text-white text-2xl font-black px-6 py-3 rounded-2xl shadow-xl">34% OFF</span>
           </div>
-          <div className="flex gap-4 mb-8 flex-wrap justify-center md:justify-start">
-            {bundleBullets.map((item, i) => (
-              <span key={i} className="text-white text-sm font-bold bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10">{item}</span>
-            ))}
-          </div>
-          <button className="bg-white text-[#7c3aed] font-black text-base uppercase tracking-widest px-10 py-5 rounded-full hover:scale-105 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] inline-flex items-center gap-3">
+          <span className="bg-white text-[#312e81] font-black text-base uppercase tracking-widest px-10 py-5 rounded-full hover:scale-105 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] inline-flex items-center gap-3">
             <ShoppingCart size={22} />
-            QUERO MEU COMBO AGORA
-          </button>
+            VER COMBO 3 UNIDADES
+          </span>
         </div>
         <div className="flex-shrink-0 relative">
           <div className="absolute inset-0 bg-white/20 blur-[100px] rounded-full scale-110" />
-          <img src="/products/bubo-combo.png" alt="Combo Bubo Health" className="w-[300px] md:w-[450px] object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] relative z-10 rounded-[3rem] md:rounded-[4rem]" />
+          <img
+            src="/products/combo-3-potes.png"
+            alt="Combo 3 Unidades Bubo — três potes à escolha"
+            className="w-[280px] md:w-[400px] object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] relative z-10 rounded-[3rem] md:rounded-[4rem]"
+          />
+        </div>
+      </div>
+    </Link>
+  </div>
+</section>
+
+{/* COMBO COMPLETO — 4 sabores (arte com 4 potes) */}
+<section className="py-6 px-4">
+  <div className="container mx-auto">
+    <Link to={`/produto/${COMBO_BUBO_HEALTH_SLUG}`} className="block relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#1e1b4b] via-[#4c1d95] to-[#7c3aed] shadow-2xl hover:scale-[1.01] transition-transform duration-300">
+      <div className="flex flex-col md:flex-row items-center gap-8 p-10 md:p-14">
+        <div className="flex-1 text-white text-center md:text-left">
+          <span className="inline-block bg-red-500 text-white text-xs font-black px-5 py-2 rounded-full mb-6 uppercase tracking-widest animate-pulse shadow-lg">🔥 Kit completo</span>
+          <h2 className="text-4xl md:text-6xl font-heading font-black mb-4 leading-tight">
+            Combo Bubo Health
+            <br /><span className="text-purple-300">4 sabores completos</span>
+          </h2>
+          <p className="text-purple-100 text-xl mb-6">Sleep + Energy + Slim + Hair — um pote de cada, mesmo produto da página Combo Completo.</p>
+          <div className="flex items-center gap-6 justify-center md:justify-start flex-wrap mb-8">
+            <div>
+              <p className="text-purple-300 text-sm md:text-base line-through">{formatPrice(COMPARE_COMBO_FULL_KIT)}</p>
+              <p className="text-white text-5xl md:text-6xl font-black">{formatPrice(PRICE_COMBO_FULL_KIT)}</p>
+            </div>
+            <span className="bg-red-500 text-white text-2xl font-black px-6 py-3 rounded-2xl shadow-xl">{comboFullDiscountPct}% OFF</span>
+          </div>
+          <div className="flex gap-4 mb-8 flex-wrap justify-center md:justify-start">
+            {comboFullBullets.map((item, i) => (
+              <span key={i} className="text-white text-sm font-bold bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10">{item}</span>
+            ))}
+          </div>
+          <div className="text-purple-200 text-xs mb-4 max-w-lg mx-auto md:mx-0">
+            Pacotes de 1, 3 ou 5 potes do <strong>mesmo sabor</strong> estão em cada produto — este banner é só o kit dos <strong>quatro sabores</strong>.
+          </div>
+          <span className="bg-white text-[#7c3aed] font-black text-base uppercase tracking-widest px-10 py-5 rounded-full hover:scale-105 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] inline-flex items-center gap-3">
+            <ShoppingCart size={22} />
+            QUERO MEU COMBO AGORA
+          </span>
+        </div>
+        <div className="flex-shrink-0 relative">
+          <div className="absolute inset-0 bg-white/20 blur-[100px] rounded-full scale-110" />
+          <img src="/products/bubo-combo.png" alt="Combo Bubo Health completo — quatro sabores" className="w-[300px] md:w-[450px] object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.5)] relative z-10 rounded-[3rem] md:rounded-[4rem]" />
         </div>
       </div>
     </Link>

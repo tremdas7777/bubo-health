@@ -41,7 +41,7 @@ const buboReviews: Record<string, Review[]> = {
     { name: "Mariana S.", rating: 5, date: "2025-05-10", text: "Minha rotina mudou completamente. Durmo em 15 minutos!", verified: true },
     { name: "Joana F.", rating: 5, date: "2025-05-08", text: "Acordo muito mais disposta. Recomendo!", verified: true },
     { name: "Carlos T.", rating: 5, date: "2025-05-05", text: "Finalmente algo que funciona sem deixar grogue no dia seguinte.", verified: true },
-    { name: "Luciana B.", rating: 5, date: "2025-05-02", text: "Sabor de maracujá é delicioso. Amo minhas gummies!", verified: true },
+    { name: "Luciana B.", rating: 5, date: "2025-05-02", text: "Sabor de uva é delicioso. Amo minhas gummies!", verified: true },
     { name: "Pedro H.", rating: 4, date: "2025-04-30", text: "Muito bom, entrega rápida e produto lacrado.", verified: true },
     { name: "Ana Paula R.", rating: 5, date: "2025-04-28", text: "Não vivo mais sem. Melhor melatonina que já tomei.", verified: true },
     { name: "Ricardo G.", rating: 5, date: "2025-04-25", text: "Minha esposa também está usando e adorando.", verified: true },
