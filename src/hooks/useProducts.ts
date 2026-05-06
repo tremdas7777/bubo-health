@@ -94,7 +94,7 @@ function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
   const nameT = (db.name_translations && (db.name_translations[lang] || db.name_translations.en)) || db.name;
   const descT = (db.description_translations && (db.description_translations[lang] || db.description_translations.en)) || db.description || "";
 
-  return {
+  return applyCanonicalProductMedia({
     id: db.id,
     name: nameT,
     slug: db.slug,
@@ -110,7 +110,7 @@ function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
     colors,
     sizes,
     bundles,
-  };
+  });
 }
 
 function mapDbCollection(db: DbCollection): Collection {
@@ -123,11 +123,12 @@ function mapDbCollection(db: DbCollection): Collection {
 }
 
 import { products, collections } from "@/data/store";
+import { applyCanonicalProductMedia } from "@/lib/productCanonicalMedia";
 
 export function useDbProducts() {
   return useQuery({
     queryKey: DB_PRODUCTS_QUERY_KEY,
-    queryFn: () => products,
+    queryFn: () => products.map(applyCanonicalProductMedia),
     staleTime: 1000 * 60 * 2,
   });
 }

@@ -25,6 +25,7 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import PageHead from "@/components/seo/PageHead";
 import { useDbProducts, filterByCategory } from "@/hooks/useProducts";
 import { translateBundleLabel, translateBundleBadge } from "@/lib/bundleI18n";
+import { applyCanonicalProductMedia } from "@/lib/productCanonicalMedia";
 
 const productBulletPoints: Record<string, { icon: React.ElementType; text: string }[]> = {
   "kit-ferramentas-refrigeracao": [
@@ -93,7 +94,7 @@ export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: dbProducts = [], isLoading } = useDbProducts();
   
-  const product = useMemo(() => {
+  const productRaw = useMemo(() => {
     // 1. Check static products first (especially for Bubo products)
     const staticP = staticProducts.find((p) => p.slug === slug);
     if (staticP) return staticP;
@@ -202,6 +203,11 @@ export default function ProductDetailPage() {
     }
     return p;
   }, [dbProducts, slug, t]);
+
+  const product = useMemo(
+    () => (productRaw ? applyCanonicalProductMedia(productRaw) : null),
+    [productRaw],
+  );
 
   const { formatPrice: fmt, language, settings } = useLocalization();
   

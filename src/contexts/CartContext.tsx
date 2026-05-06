@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
 import { Product } from "@/data/store";
+import { applyCanonicalProductMedia } from "@/lib/productCanonicalMedia";
 import { trackEvent } from "@/lib/funnelTracking";
 
 export interface CartItemSelection {
@@ -43,6 +44,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const addItem = useCallback((product: Product, quantity = 1, selections?: CartItemSelection[], price?: number) => {
+    product = applyCanonicalProductMedia(product);
     const itemPrice = price !== undefined ? price : product.price;
     const lineId = buildLineId(product.id, selections);
     setItems((prev) => {

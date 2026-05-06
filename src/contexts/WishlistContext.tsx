@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { Product } from "@/data/store";
+import { applyCanonicalProductMedia } from "@/lib/productCanonicalMedia";
 
 interface WishlistContextType {
   items: Product[];
@@ -16,7 +17,8 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<Product[]>(() => {
     try {
       const saved = localStorage.getItem("bubohealth-wishlist");
-      return saved ? JSON.parse(saved) : [];
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed.map((p: Product) => applyCanonicalProductMedia(p)) : [];
     } catch {
       return [];
     }
@@ -27,9 +29,10 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   }, [items]);
 
   const addItem = useCallback((product: Product) => {
+    const normalized = applyCanonicalProductMedia(product);
     setItems((prev) => {
-      if (prev.find((p) => p.id === product.id)) return prev;
-      return [...prev, product];
+      if (prev.find((p) => p.id === normalized.id)) return prev;
+      return [...prev, normalized];
     });
   }, []);
 
