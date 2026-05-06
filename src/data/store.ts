@@ -85,6 +85,23 @@ export const products: Product[] = [
       "Gummy para apoio ao sono e relaxamento noturno. Fórmula com melatonina, L-teanina e extratos botânicos — 1 gummy por dia.",
     descriptionHtml: `
       <div class="space-y-6">
+        <div class="rounded-2xl border border-neutral-200 bg-white p-5">
+          <p class="text-[11px] font-semibold uppercase tracking-[0.25em] text-emerald-700/90 mb-2">Suplemento alimentar em gummy</p>
+          <h3 class="text-xl md:text-2xl font-semibold tracking-tight text-neutral-950">Menos fome. Mais controle.</h3>
+          <p class="text-sm text-neutral-600 mt-2">Um gummy por dia, com fórmula moderna e linguagem limpa. Apoio ao controle de apetite dentro de uma rotina consistente.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="rounded-2xl border border-neutral-200 bg-white p-4">
+            <p class="text-sm font-semibold text-neutral-900">Controle de apetite</p>
+            <p class="text-sm text-neutral-600 mt-1">Fibras e composição pensadas para apoiar saciedade ao longo do dia.</p>
+          </div>
+          <div class="rounded-2xl border border-neutral-200 bg-white p-4">
+            <p class="text-sm font-semibold text-neutral-900">Rotina simples</p>
+            <p class="text-sm text-neutral-600 mt-1">Uso direto: 1 gummy ao dia. Sem complicação, sem exageros.</p>
+          </div>
+        </div>
+
         <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
           <div class="px-4 py-3 bg-white border-b border-neutral-200">
             <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
@@ -613,8 +630,29 @@ export const products: Product[] = [
         </div>
 
         <div class="rounded-2xl border border-neutral-200 bg-white p-4">
+          <h3 class="text-base font-bold text-neutral-900">Como funciona</h3>
+          <ul class="mt-2 space-y-2 text-sm text-neutral-600">
+            <li><strong class="text-neutral-900">Fibras:</strong> aumentam a sensação de saciedade.</li>
+            <li><strong class="text-neutral-900">Cafeína e chá verde:</strong> auxiliam o metabolismo de forma complementar à rotina.</li>
+            <li><strong class="text-neutral-900">Cromo:</strong> contribui para o controle da compulsão alimentar quando combinado com hábitos saudáveis.</li>
+          </ul>
+        </div>
+
+        <div class="rounded-2xl border border-neutral-200 bg-white p-4">
           <h3 class="text-base font-bold text-neutral-900">Como usar</h3>
           <p class="text-sm text-neutral-600 mt-1">Consumir <strong>1 gummy ao dia</strong>. Melhor resultado vem de consistência — dentro de uma rotina com alimentação equilibrada e hábitos saudáveis.</p>
+        </div>
+
+        <div class="rounded-2xl border border-neutral-200 bg-white p-4">
+          <h3 class="text-base font-bold text-neutral-900">Avisos</h3>
+          <ul class="mt-2 space-y-1.5 text-sm text-neutral-600">
+            <li>Não contém glúten.</li>
+            <li>Contém polióis — o consumo excessivo pode causar efeito laxativo.</li>
+            <li>Contém cafeína.</li>
+            <li>Este produto não é um medicamento.</li>
+            <li>Não exceder a recomendação diária.</li>
+            <li>Manter fora do alcance de crianças.</li>
+          </ul>
         </div>
       </div>
     `,
