@@ -505,6 +505,58 @@ export default function Index() {
         </div>
       </section>
 
+      {/* INFLUENCERS / SOCIAL PROOF */}
+      <section className="py-16 bg-[#fff1f2]">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <span className="inline-block bg-white/80 text-[#db2777] text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 border border-pink-200/60">
+              Visto nas redes
+            </span>
+            <h2 className="text-3xl md:text-5xl font-heading font-black text-gray-900 leading-tight">
+              Influenciadores usando Bubo
+            </h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              Um destaque para cada linha — personalidades que incorporam a rotina Bubo nas redes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {INFLUENCER_SHOWCASE.map((item) => {
+              const product = PRODUCTS.find((p) => p.slug === item.slug);
+              const thumb = product?.image ?? "/products/bubo-sleep.jpg";
+              return (
+                <Link
+                  key={item.slug}
+                  to={`/produto/${item.slug}`}
+                  className="group flex flex-col rounded-[2rem] overflow-hidden bg-white border border-pink-200/60 shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  <div className="relative aspect-[3/4] bg-neutral-100 overflow-hidden">
+                    <img
+                      src={item.heroSrc}
+                      alt={item.heroAlt}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="flex items-start gap-3 p-4 border-t border-pink-100/80">
+                    <img
+                      src={thumb}
+                      alt=""
+                      className="w-12 h-12 rounded-xl object-contain bg-neutral-50 border border-neutral-100 shrink-0"
+                      loading="lazy"
+                    />
+                    <div className="min-w-0">
+                      <p className="font-black text-gray-900 text-sm truncate">{item.influencerHandle}</p>
+                      <p className="text-xs text-gray-600 leading-snug mt-0.5">{item.caption}</p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
 {/* COMBO 3 UNIDADES — arte com 3 potes, link correto */}
 <section className="py-6 px-4">
   <div className="container mx-auto">
@@ -589,58 +641,6 @@ export default function Index() {
     </Link>
   </div>
 </section>
-
-      {/* INFLUENCERS / SOCIAL PROOF */}
-      <section className="py-16 bg-[#fff1f2]">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <span className="inline-block bg-white/80 text-[#db2777] text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 border border-pink-200/60">
-              Visto nas redes
-            </span>
-            <h2 className="text-3xl md:text-5xl font-heading font-black text-gray-900 leading-tight">
-              Influenciadores usando Bubo
-            </h2>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-              Um destaque para cada linha — personalidades que incorporam a rotina Bubo nas redes.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            {INFLUENCER_SHOWCASE.map((item) => {
-              const product = PRODUCTS.find((p) => p.slug === item.slug);
-              const thumb = product?.image ?? "/products/bubo-sleep.jpg";
-              return (
-                <Link
-                  key={item.slug}
-                  to={`/produto/${item.slug}`}
-                  className="group flex flex-col rounded-[2rem] overflow-hidden bg-white border border-pink-200/60 shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300"
-                >
-                  <div className="relative aspect-[3/4] bg-neutral-100 overflow-hidden">
-                    <img
-                      src={item.heroSrc}
-                      alt={item.heroAlt}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="flex items-start gap-3 p-4 border-t border-pink-100/80">
-                    <img
-                      src={thumb}
-                      alt=""
-                      className="w-12 h-12 rounded-xl object-contain bg-neutral-50 border border-neutral-100 shrink-0"
-                      loading="lazy"
-                    />
-                    <div className="min-w-0">
-                      <p className="font-black text-gray-900 text-sm truncate">{item.influencerHandle}</p>
-                      <p className="text-xs text-gray-600 leading-snug mt-0.5">{item.caption}</p>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* WHY BUBO */}
       <section className="py-20 bg-[#f5f3ff]">
