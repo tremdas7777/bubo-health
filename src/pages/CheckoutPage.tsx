@@ -668,11 +668,11 @@ export default function CheckoutPage() {
 
       {/* Header */}
       <header className="bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-4 sm:py-5 flex items-center justify-between min-h-[4.5rem] sm:min-h-[5rem]">
           <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft size={16} /> Voltar
           </button>
-          <Link to="/" className="flex items-center justify-center h-9 w-[120px] sm:h-10 sm:w-[150px] md:h-11 md:w-[170px] shrink-0">
+          <Link to="/" className="flex items-center justify-center h-12 w-[160px] sm:h-14 sm:w-[200px] md:h-[72px] md:w-[260px] shrink-0">
             <img src="/logos/logo-purple.png" alt="Bubo Health" className="h-full w-full object-contain" />
           </Link>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
