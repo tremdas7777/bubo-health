@@ -1,3 +1,14 @@
+import {
+  buildCombo3UnidadesBundles,
+  buildComboBuboHealthBundles,
+  buildStandardGummyBundles,
+  COMBO_3_UNIDADES_SLUG,
+  DEFAULT_BUBO_UNIT_PRICE,
+  roundMoney,
+  STRIKE_RATIO_COMBO_4,
+  STRIKE_RATIO_SINGLE_POTE,
+} from "@/lib/buboBundlePricing";
+
 export interface ProductColor {
   name: string;
   hex: string;
@@ -40,74 +51,34 @@ export interface Collection {
   image: string;
 }
 
+export {
+  COMBO_3_UNIDADES_SLUG,
+  COMBO_BUBO_HEALTH_SLUG,
+  DEFAULT_BUBO_UNIT_PRICE,
+} from "@/lib/buboBundlePricing";
+
+const BUBO_U = DEFAULT_BUBO_UNIT_PRICE;
+
 export const collections: Collection[] = [
   { id: "1", name: "Gummies", slug: "gummies", image: "/collections/gummies.jpg" },
   { id: "2", name: "Combos", slug: "combos", image: "/collections/combos.jpg" },
 ];
 
-// Bundle pricing: R$97 por pote base
-// 1 pote: R$ 97,00 (de R$ 147,90)
-// 2 potes: R$ 194,00 (de R$ 294,00)
-// 3 potes: R$ 291,00 (de R$ 443,70)
-// 4 potes: R$ 388,00 (De R$ 588,00)
+// Preço base por pote (BUBO_U): pacotes e combos são derivados em `buboBundlePricing.ts` e no admin (Supabase).
 
-/** Único SKU com opções “1 combo / 2 combos” (97×3 por combo). Outros produtos usam `buildBundles()` ou o combo completo. */
-export const COMBO_3_UNIDADES_SLUG = "combo-3-potes" as const;
+/** @deprecated use `buildCombo3UnidadesBundles` — mantido para imports antigos */
+export const buildCombo3PotesBundles = () =>
+  buildCombo3UnidadesBundles(BUBO_U, STRIKE_RATIO_SINGLE_POTE);
 
-/** Só para `COMBO_3_UNIDADES_SLUG`: “1 combo” (3 potes = 97×3) ou “2 combos” (6 potes). Sem pote avulso. */
-export const buildCombo3PotesBundles = (): ProductBundle[] => [
-  {
-    qty: 1,
-    label: "1 Combo — 3 potes (R$ 97 × 3)",
-    priceCents: 291,
-    originalPriceCents: 443.70,
-    perUnitCents: 97,
-    badge: "MAIS VENDIDO",
-  },
-  {
-    qty: 2,
-    label: "2 Combos — 6 potes",
-    priceCents: 582,
-    originalPriceCents: 887.40,
-    perUnitCents: 97,
-    badge: "ECONOMIA",
-  },
-];
-
-const buildBundles = (): ProductBundle[] => [
-  {
-    qty: 1,
-    label: "1 Pote — Experimente",
-    priceCents: 97,
-    originalPriceCents: 147.90,
-    perUnitCents: 97,
-    badge: "PROMOÇÃO",
-  },
-  {
-    qty: 3,
-    label: "3 Potes — Tratamento Médio",
-    priceCents: 291, // 97 * 3
-    originalPriceCents: 443.70,
-    perUnitCents: 97,
-    badge: "MAIS VENDIDO",
-  },
-  {
-    qty: 5,
-    label: "5 Potes — Tratamento Completo",
-    priceCents: 388, // Compre 4 leve 5 (Incentivo: 77,60/unid)
-    originalPriceCents: 739.50,
-    perUnitCents: 77.60,
-    badge: "MELHOR VALOR",
-  },
-];
+const buildBundles = (): ProductBundle[] => buildStandardGummyBundles(BUBO_U, STRIKE_RATIO_SINGLE_POTE);
 
 export const products: Product[] = [
   {
     id: "bubo-sleep",
     name: "Bubo Sleep",
     slug: "bubo-sleep",
-    price: 97.00,
-    compareAtPrice: 147.90,
+    price: BUBO_U,
+    compareAtPrice: roundMoney(BUBO_U * STRIKE_RATIO_SINGLE_POTE),
     image: "/products/bubo-sleep.jpg",
     category: "gummies",
     description: "Gummies do sono profundo. Fórmula exclusiva com melatonina, L-Teanina e Camomila para uma noite de sono revigorante.",
@@ -139,8 +110,8 @@ export const products: Product[] = [
     id: "bubo-energy",
     name: "Bubo Energy",
     slug: "bubo-energy",
-    price: 97.00,
-    compareAtPrice: 147.90,
+    price: BUBO_U,
+    compareAtPrice: roundMoney(BUBO_U * STRIKE_RATIO_SINGLE_POTE),
     image: "/products/bubo-energy.jpg",
     category: "gummies",
     description: "Gummies de energia e disposição. Complexo vitamínico B e cafeína natural para dar aquele gás no seu dia a dia.",
@@ -172,8 +143,8 @@ export const products: Product[] = [
     id: "bubo-hair",
     name: "Bubo Hair",
     slug: "bubo-hair",
-    price: 97.00,
-    compareAtPrice: 147.90,
+    price: BUBO_U,
+    compareAtPrice: roundMoney(BUBO_U * STRIKE_RATIO_SINGLE_POTE),
     image: "/products/bubo-hair.png",
     category: "gummies",
     description: "Gummies para cabelos e unhas. Biotina, colágeno e complexo vitamínico para força e brilho extremo.",
@@ -207,8 +178,8 @@ export const products: Product[] = [
     id: "bubo-slim",
     name: "Bubo Slim",
     slug: "bubo-slim",
-    price: 97.00,
-    compareAtPrice: 147.90,
+    price: BUBO_U,
+    compareAtPrice: roundMoney(BUBO_U * STRIKE_RATIO_SINGLE_POTE),
     image: "/products/bubo-slim.jpg",
     category: "gummies",
     description: "Gummies de controle de apetite e perda de peso. Picolinato de cromo, fibras e Garcinia para emagrecimento saudável.",
@@ -241,8 +212,8 @@ export const products: Product[] = [
     id: "bubo-combo-3",
     name: "Combo 3 Unidades",
     slug: COMBO_3_UNIDADES_SLUG,
-    price: 291.0,
-    compareAtPrice: 441.0,
+    price: roundMoney(3 * BUBO_U),
+    compareAtPrice: roundMoney(3 * BUBO_U * STRIKE_RATIO_SINGLE_POTE),
     image: "/products/combo-3-potes.png",
     images: ["/products/combo-3-potes.png"],
     category: "combos",
@@ -260,14 +231,14 @@ export const products: Product[] = [
     `,
     stock: 100,
     badge: "OFERTA",
-    bundles: buildCombo3PotesBundles(),
+    bundles: buildCombo3UnidadesBundles(BUBO_U, STRIKE_RATIO_SINGLE_POTE),
   },
   {
     id: "bubo-combo",
     name: "Combo Bubo Health Completo",
     slug: "combo-bubo-health",
-    price: 388.00,
-    compareAtPrice: 588.00,
+    price: roundMoney(4 * BUBO_U),
+    compareAtPrice: roundMoney(4 * BUBO_U * STRIKE_RATIO_COMBO_4),
     image: "/products/bubo-combo.png",
     images: [
       "/products/bubo-combo.png",
@@ -306,24 +277,7 @@ export const products: Product[] = [
     `,
     stock: 100,
     badge: "OFERTA COMPLETA",
-    bundles: [
-      {
-        qty: 1,
-        label: "1 Combo (4 produtos)",
-        priceCents: 388, // 97 * 4
-        originalPriceCents: 588,
-        perUnitCents: 388,
-        badge: "MELHOR VALOR",
-      },
-      {
-        qty: 2,
-        label: "2 Combos (8 produtos) 👫",
-        priceCents: 77.600, // 388 * 2
-        originalPriceCents: 1176,
-        perUnitCents: 388,
-        badge: "MELHOR CUSTO",
-      },
-    ],
+    bundles: buildComboBuboHealthBundles(BUBO_U, roundMoney(4 * BUBO_U * STRIKE_RATIO_COMBO_4)),
   }
 ];
 

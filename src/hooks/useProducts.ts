@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import type { Product, Collection } from "@/data/store";
+import { products, collections } from "@/data/store";
+import { applyCanonicalProductMedia } from "@/lib/productCanonicalMedia";
+import { mergeCatalogProductWithDbRow } from "@/lib/buboBundlePricing";
 
 export const DB_PRODUCTS_QUERY_KEY = ["db-products"] as const;
 export const DB_COLLECTIONS_QUERY_KEY = ["db-collections"] as const;
 
-interface DbProduct {
+export interface DbProduct {
   id: string;
   name: string;
   slug: string;
@@ -36,16 +38,15 @@ interface DbCollection {
   active: boolean | null;
 }
 
-function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
+export function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
   let variants: any[] = [];
   let colors: Product["colors"];
   let sizes: string[] | undefined;
   let bundles: Product["bundles"];
 
   if (Array.isArray(db.variants)) {
-    // Named-options structured format: [{ name: "Stil", values: ["10KG", "20KG"] }]
     const namedOptions = db.variants.filter(
-      (v: any) => v && typeof v === "object" && typeof v.name === "string" && Array.isArray(v.values)
+      (v: any) => v && typeof v === "object" && typeof v.name === "string" && Array.isArray(v.values),
     );
     if (namedOptions.length > 0) {
       variants = namedOptions.map((v: any) => ({
@@ -55,9 +56,11 @@ function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
       }));
     }
 
-    // Structured format: [{ colors: [...], sizes: [...], bundles: [...] }]
     const structured = db.variants.find(
-      (v: any) => v && typeof v === "object" && (Array.isArray(v.colors) || Array.isArray(v.sizes) || Array.isArray(v.bundles))
+      (v: any) =>
+        v &&
+        typeof v === "object" &&
+        (Array.isArray(v.colors) || Array.isArray(v.sizes) || Array.isArray(v.bundles)),
     );
     if (structured) {
       if (Array.isArray(structured.colors)) {
@@ -81,7 +84,6 @@ function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
           }));
       }
     } else if (variants.length === 0) {
-      // Legacy: array of strings or { name } / { options: [...] }
       variants = db.variants.flatMap((v: any) => {
         if (typeof v === "string") return [v];
         if (v?.options && Array.isArray(v.options)) return v.options.map(String);
@@ -92,7 +94,10 @@ function mapDbProduct(db: DbProduct, lang: string = "en"): Product {
   }
 
   const nameT = (db.name_translations && (db.name_translations[lang] || db.name_translations.en)) || db.name;
-  const descT = (db.description_translations && (db.description_translations[lang] || db.description_translations.en)) || db.description || "";
+  const descT =
+    (db.description_translations && (db.description_translations[lang] || db.description_translations.en)) ||
+    db.description ||
+    "";
 
   return applyCanonicalProductMedia({
     id: db.id,
@@ -122,13 +127,37 @@ function mapDbCollection(db: DbCollection): Collection {
   };
 }
 
-import { products, collections } from "@/data/store";
-import { applyCanonicalProductMedia } from "@/lib/productCanonicalMedia";
-
 export function useDbProducts() {
   return useQuery({
     queryKey: DB_PRODUCTS_QUERY_KEY,
-    queryFn: () => products.map(applyCanonicalProductMedia),
+    queryFn: async (): Promise<Product[]> => {
+      try {
+        const { data, error } = await supabase.from("products").select("*");
+        if (error) throw error;
+        const rows = (data || []) as DbProduct[];
+        const bySlug = new Map(rows.map((r) => [r.slug, r]));
+        const staticSlugs = new Set(products.map((p) => p.slug));
+
+        const mergedCatalog = products.map((p) =>
+          applyCanonicalProductMedia(mergeCatalogProductWithDbRow(p, bySlug.get(p.slug))),
+        );
+
+        const extras = rows
+          .filter((r) => !staticSlugs.has(r.slug))
+          .map((r) => {
+            const staticTemplate = products.find((sp) => sp.slug === r.slug);
+            if (staticTemplate) {
+              return applyCanonicalProductMedia(mergeCatalogProductWithDbRow(staticTemplate, r));
+            }
+            return applyCanonicalProductMedia(mapDbProduct(r));
+          });
+
+        return [...mergedCatalog, ...extras];
+      } catch (e) {
+        console.warn("[useDbProducts] fallback static catalog", e);
+        return products.map((p) => applyCanonicalProductMedia(p));
+      }
+    },
     staleTime: 1000 * 60 * 2,
   });
 }
@@ -141,7 +170,6 @@ export function useDbCollections() {
   });
 }
 
-// Helper: filter products by category
-export function filterByCategory(products: Product[], category: string): Product[] {
-  return products.filter((p) => p.category === category);
+export function filterByCategory(productsList: Product[], category: string): Product[] {
+  return productsList.filter((p) => p.category === category);
 }

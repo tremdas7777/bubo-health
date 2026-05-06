@@ -18,7 +18,6 @@ import {
   formatPrice as formatBRL,
   getInstallmentPrice,
   getDiscountPercent,
-  buildCombo3PotesBundles,
   COMBO_3_UNIDADES_SLUG,
 } from "@/data/store";
 // pix removed
@@ -102,27 +101,102 @@ export default function ProductDetailPage() {
   const { data: dbProducts = [], isLoading } = useDbProducts();
   
   const productRaw = useMemo(() => {
-    // 1. Check static products first (especially for Bubo products)
-    const staticP = staticProducts.find((p) => p.slug === slug);
-    if (staticP) return staticP;
-
-    // 2. Check DB products
-    const p = dbProducts.find((prod) => prod.slug === slug);
-    if (!p) return null;
-
-    if (p.slug === 'esn-elite-leistung-combo-1') {
-      return {
-        ...p,
-        image: "/esn-combo-main.jpg",
-        images: ["/esn-combo-main.jpg"],
-        variants: [
-          { name: "Designer Whey Protein Flavor", values: ["Honey Cereal", "Apple Strudel", "Germknödel", "Peanutbutter Cup", "Birthday Cake", "Almond Coconut", "Vanilla Speculoos", "Banana Milk", "Cherry Yogurt", "Chicken Waffle", "Cinnamon Cereal", "Dark Cookies & Cream", "KiBa", "Leons Cereal", "Milk Chocolate", "Milky Hazelnut", "Neutral", "Peach Yogurt", "Salted Dark Chocolate", "Stracciatella", "Strawberry Cream", "Stroopwafel", "Vanilla Ice Cream", "Vanilla Milk", "Vanilla Speculoos V2", "White Chocolate Pistachio", "Blueberry Cheesecake"] },
-          { name: "Isoclear Whey Protein Isolate Flavor", values: ["Royal Candy", "Pina Colada", "Tropical Punch", "Mojito", "Cactus Ice", "Icy Pear", "Peach Rings", "Blackberry", "Bloody Orange", "Spiced Orange", "Fresh Orange", "Fresh Lemon", "Cactus Fruit", "Cherry Lemonade", "Cola Orange", "Green Apple", "Green Tea Honey", "Lemon Iced Tea", "Mango Peach Iced Tea", "Peach Iced Tea", "Pink Grapefruit", "Red Apple Lime", "Sour Power", "Strawberry Lime", "Gummy Bear (limited)"] },
-          { name: "Crank Pre-Workout Flavor", values: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola", "Blackberry", "Sour Power"] },
-          { name: "Designer Protein Bar Flavor", values: ["Dark Chocolate Raspberry", "White Chocolate Raspberry", "Almond Coconut", "Cinnamon Cereal", "Dark Cookie White Choc", "Fudge Brownie", "Hazelnut Nougat", "Peanut Caramel", "Salted Caramel", "White Chocolate Almond", "White Chocolate Pistachio"] },
-          { name: "ESN Daily Flavor", values: ["Cactus Fruit", "Apple Cranberry", "Green Apple", "Raspberry Iced Tea", "Sour Power"] }
-        ] as any,
-        descriptionHtml: `
+    const fromCatalog = dbProducts.find((prod) => prod.slug === slug);
+    if (fromCatalog) {
+      if (fromCatalog.slug === "esn-elite-leistung-combo-1") {
+        return {
+          ...fromCatalog,
+          image: "/esn-combo-main.jpg",
+          images: ["/esn-combo-main.jpg"],
+          variants: [
+            {
+              name: "Designer Whey Protein Flavor",
+              values: [
+                "Honey Cereal",
+                "Apple Strudel",
+                "Germknödel",
+                "Peanutbutter Cup",
+                "Birthday Cake",
+                "Almond Coconut",
+                "Vanilla Speculoos",
+                "Banana Milk",
+                "Cherry Yogurt",
+                "Chicken Waffle",
+                "Cinnamon Cereal",
+                "Dark Cookies & Cream",
+                "KiBa",
+                "Leons Cereal",
+                "Milk Chocolate",
+                "Milky Hazelnut",
+                "Neutral",
+                "Peach Yogurt",
+                "Salted Dark Chocolate",
+                "Stracciatella",
+                "Strawberry Cream",
+                "Stroopwafel",
+                "Vanilla Ice Cream",
+                "Vanilla Milk",
+                "Vanilla Speculoos V2",
+                "White Chocolate Pistachio",
+                "Blueberry Cheesecake",
+              ],
+            },
+            {
+              name: "Isoclear Whey Protein Isolate Flavor",
+              values: [
+                "Royal Candy",
+                "Pina Colada",
+                "Tropical Punch",
+                "Mojito",
+                "Cactus Ice",
+                "Icy Pear",
+                "Peach Rings",
+                "Blackberry",
+                "Bloody Orange",
+                "Spiced Orange",
+                "Fresh Orange",
+                "Fresh Lemon",
+                "Cactus Fruit",
+                "Cherry Lemonade",
+                "Cola Orange",
+                "Green Apple",
+                "Green Tea Honey",
+                "Lemon Iced Tea",
+                "Mango Peach Iced Tea",
+                "Peach Iced Tea",
+                "Pink Grapefruit",
+                "Red Apple Lime",
+                "Sour Power",
+                "Strawberry Lime",
+                "Gummy Bear (limited)",
+              ],
+            },
+            {
+              name: "Crank Pre-Workout Flavor",
+              values: ["Fresh Berry Juice", "Tropical Punch", "Cola", "Cherry Cola", "Blackberry", "Sour Power"],
+            },
+            {
+              name: "Designer Protein Bar Flavor",
+              values: [
+                "Dark Chocolate Raspberry",
+                "White Chocolate Raspberry",
+                "Almond Coconut",
+                "Cinnamon Cereal",
+                "Dark Cookie White Choc",
+                "Fudge Brownie",
+                "Hazelnut Nougat",
+                "Peanut Caramel",
+                "Salted Caramel",
+                "White Chocolate Almond",
+                "White Chocolate Pistachio",
+              ],
+            },
+            {
+              name: "ESN Daily Flavor",
+              values: ["Cactus Fruit", "Apple Cranberry", "Green Apple", "Raspberry Iced Tea", "Sour Power"],
+            },
+          ] as any,
+          descriptionHtml: `
 <div class="space-y-6">
   <div class="bg-primary/5 border border-primary/20 rounded-2xl p-6">
     <h3 class="text-lg font-bold text-primary mb-3">🚀 Hol dir das ultimative Performance-Paket!</h3>
@@ -152,72 +226,15 @@ export default function ProductDetailPage() {
     * Nur für begrenzte Zeit zum Vorteilspreis von 99€ verfügbar. Wähle jetzt deine Lieblingsgeschmacksrichtungen aus und starte durch!
   </div>
 </div>
-`
-      };
+`,
+        };
+      }
+      return fromCatalog;
     }
-    if (p.slug === COMBO_3_UNIDADES_SLUG) {
-      return {
-        ...p,
-        price: 291,
-        compareAtPrice: 441,
-        bundles: buildCombo3PotesBundles(),
-      };
-    }
-    if (p.slug.includes('bubo') || p.slug.includes('combo')) {
-      const isCombo = p.slug === "combo-bubo-health";
-      const unitPrice = 97;
-      const baseBundles = isCombo ? [
-        {
-          qty: 1,
-          label: "1 Combo (4 produtos)",
-          priceCents: 388,
-          originalPriceCents: 588,
-          perUnitCents: 388,
-          badge: "MELHOR VALOR",
-        },
-        {
-          qty: 2,
-          label: "2 Combos (8 produtos) 👫",
-          priceCents: 77.600,
-          originalPriceCents: 1176,
-          perUnitCents: 388,
-          badge: "RECOMENDADO",
-        }
-      ] : [
-        {
-          qty: 1,
-          label: "1 Pote — Experimente",
-          priceCents: 97,
-          originalPriceCents: 147.90,
-          perUnitCents: 97,
-          badge: "PROMOÇÃO",
-        },
-        {
-          qty: 3,
-          label: "3 Potes — Tratamento Médio",
-          priceCents: 291,
-          originalPriceCents: 443.70,
-          perUnitCents: 97,
-          badge: "MAIS VENDIDO",
-        },
-        {
-          qty: 5,
-          label: "5 Potes — Tratamento Completo",
-          priceCents: 388,
-          originalPriceCents: 739.50,
-          perUnitCents: 77.60,
-          badge: "MELHOR VALOR",
-        }
-      ];
 
-      return {
-        ...p,
-        price: isCombo ? 388 : 97,
-        bundles: baseBundles
-      };
-    }
-    return p;
-  }, [dbProducts, slug, t]);
+    const staticP = staticProducts.find((p) => p.slug === slug);
+    return staticP ?? null;
+  }, [dbProducts, slug]);
 
   const product = useMemo(
     () => (productRaw ? applyCanonicalProductMedia(productRaw) : null),

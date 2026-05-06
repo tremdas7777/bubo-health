@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { supabase } from '@/integrations/supabase/client';
 import { DB_PRODUCTS_QUERY_KEY } from '@/hooks/useProducts';
 import { getAdminPassword } from '@/lib/paymentGateway';
+import { isBuboUnitPricedSlug, normalizeBuboUnitFromRow } from '@/lib/buboBundlePricing';
 import { toast } from 'sonner';
 import { Plus, Trash2, Edit, Upload, Download, Search, GripVertical, Image as ImageIcon, Loader2, RefreshCw, Eye, EyeOff, Star, StarOff, Copy, FolderOpen, Package, X, FileText, Save } from 'lucide-react';
 
@@ -110,7 +111,29 @@ export default function AdminProdutos() {
     if (!adminPassword) { toast.error('Sua sessão do admin expirou. Entre novamente.'); return; }
 
     setSaving(true);
-    const payload = { name: editProduct.name, slug: editProduct.slug, price_cents: editProduct.price_cents || 0, original_price_cents: editProduct.original_price_cents || null, image_url: editProduct.image_url || null, images: editProduct.images || [], category: editProduct.category || 'Geral', description: editProduct.description || '', description_html: editProduct.description_html || '', variants: editProduct.variants || [], featured: editProduct.featured || false, active: editProduct.active !== false, sort_order: editProduct.sort_order || 0, gtin: editProduct.gtin || null };
+    const slug = editProduct.slug || '';
+    const rawCents = editProduct.price_cents || 0;
+    const unitCents =
+      slug && isBuboUnitPricedSlug(slug)
+        ? Math.round(normalizeBuboUnitFromRow(slug, rawCents) * 100)
+        : rawCents;
+
+    const payload = {
+      name: editProduct.name,
+      slug: editProduct.slug,
+      price_cents: unitCents,
+      original_price_cents: editProduct.original_price_cents || null,
+      image_url: editProduct.image_url || null,
+      images: editProduct.images || [],
+      category: editProduct.category || 'Geral',
+      description: editProduct.description || '',
+      description_html: editProduct.description_html || '',
+      variants: editProduct.variants || [],
+      featured: editProduct.featured || false,
+      active: editProduct.active !== false,
+      sort_order: editProduct.sort_order || 0,
+      gtin: editProduct.gtin || null,
+    };
 
     const { data, error } = await supabase.functions.invoke('save-admin-product', {
       body: {
@@ -431,6 +454,12 @@ export default function AdminProdutos() {
 
       {subTab === 'produtos' && (
         <div>
+          <Card className="p-4 mb-4 border border-primary/25 bg-primary/5">
+            <h3 className="text-sm font-bold text-foreground mb-1">Meus produtos Bubo — preço base</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              O cadastro no Supabase precisa usar o <strong>mesmo slug</strong> do catálogo (<strong className="font-mono text-[10px]">bubo-sleep</strong>, <strong className="font-mono text-[10px]">combo-3-potes</strong>, <strong className="font-mono text-[10px]">combo-bubo-health</strong>, etc.). Campo <strong>Preço base / pote</strong> (ex.: 97) recalcula 3/5 potes, Combo 3 unidades e Combo completo. <strong>Valor riscado</strong> é opcional.
+            </p>
+          </Card>
           <div className="flex flex-wrap gap-2 mb-4">
             <Button onClick={() => setEditProduct({ ...defaultProduct })} size="sm" className="text-xs"><Plus size={14} className="mr-1" /> Novo Produto</Button>
             <div className="flex-1 min-w-[200px]"><div className="relative"><Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" /><Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar..." className="pl-9 text-xs h-9" /></div></div>
@@ -517,8 +546,18 @@ export default function AdminProdutos() {
                 <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Slug *</label><Input value={editProduct.slug || ''} onChange={e => setEditProduct(p => ({ ...p, slug: e.target.value }))} className="text-sm mt-1 font-mono" /></div>
               </div>
               <div className="grid grid-cols-3 gap-3">
-                <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Preço (R$) *</label><Input type="number" step="0.01" value={editProduct.price_cents ? (editProduct.price_cents / 100).toFixed(2) : ''} onChange={e => setEditProduct(p => ({ ...p, price_cents: Math.round(parseFloat(e.target.value || '0') * 100) }))} className="text-sm mt-1" /></div>
-                <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Preço Original (R$)</label><Input type="number" step="0.01" value={editProduct.original_price_cents ? (editProduct.original_price_cents / 100).toFixed(2) : ''} onChange={e => setEditProduct(p => ({ ...p, original_price_cents: e.target.value ? Math.round(parseFloat(e.target.value) * 100) : null }))} className="text-sm mt-1" /></div>
+                <div>
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase">
+                    {editProduct.slug && isBuboUnitPricedSlug(editProduct.slug) ? 'Preço base / pote (R$) *' : 'Preço (R$) *'}
+                  </label>
+                  <Input type="number" step="0.01" value={editProduct.price_cents ? (editProduct.price_cents / 100).toFixed(2) : ''} onChange={e => setEditProduct(p => ({ ...p, price_cents: Math.round(parseFloat(e.target.value || '0') * 100) }))} className="text-sm mt-1" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase">
+                    {editProduct.slug && isBuboUnitPricedSlug(editProduct.slug) ? 'Valor riscado (pacote principal)' : 'Preço Original (R$)'}
+                  </label>
+                  <Input type="number" step="0.01" value={editProduct.original_price_cents ? (editProduct.original_price_cents / 100).toFixed(2) : ''} onChange={e => setEditProduct(p => ({ ...p, original_price_cents: e.target.value ? Math.round(parseFloat(e.target.value) * 100) : null }))} className="text-sm mt-1" />
+                </div>
                 <div><label className="text-[10px] font-bold text-muted-foreground uppercase">Categoria</label><Input value={editProduct.category || ''} onChange={e => setEditProduct(p => ({ ...p, category: e.target.value }))} className="text-sm mt-1" /></div>
               </div>
               <div className="grid grid-cols-2 gap-3">

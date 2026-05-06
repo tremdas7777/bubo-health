@@ -7,6 +7,12 @@ import { useCurrency } from "@/contexts/LocalizationContext";
 import { useHeroColor } from "@/contexts/HeroColorContext";
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, ShoppingCart, Check, Truck, Shield, Star, Zap, Moon, Leaf, Package } from "lucide-react";
+import {
+  DEFAULT_BUBO_UNIT_PRICE,
+  DISCOUNT_3_POTES,
+  DISCOUNT_5_POTES,
+  roundMoney,
+} from "@/lib/buboBundlePricing";
 const HERO_COLORS = [
   { bar: "#4c1d95" },  // sleep — deep purple
   { bar: "#b45309" },  // energy — amber
@@ -224,6 +230,17 @@ export default function Index() {
 
   const slide = HERO_SLIDES[current];
 
+  const bundleBullets = (() => {
+    const u = DEFAULT_BUBO_UNIT_PRICE;
+    const p3 = roundMoney(3 * u * (1 - DISCOUNT_3_POTES));
+    const p5 = roundMoney(5 * u * (1 - DISCOUNT_5_POTES));
+    return [
+      `✅ 1 Pote ${formatPrice(u)}`,
+      `✅ 3 Potes ${formatPrice(p3)}`,
+      `✅ 5 Potes ${formatPrice(p5)}`,
+    ];
+  })();
+
   const addProduct = (p: typeof PRODUCTS[0]) => {
     addItem({ 
       id: p.id, 
@@ -433,7 +450,7 @@ export default function Index() {
             <span className="bg-red-500 text-white text-2xl font-black px-6 py-3 rounded-2xl shadow-xl">34% OFF</span>
           </div>
           <div className="flex gap-4 mb-8 flex-wrap justify-center md:justify-start">
-            {["✅ 1 Pote R$ 97", "✅ 3 Potes R$ 291", "✅ 5 Potes R$ 388"].map((item, i) => (
+            {bundleBullets.map((item, i) => (
               <span key={i} className="text-white text-sm font-bold bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10">{item}</span>
             ))}
           </div>
