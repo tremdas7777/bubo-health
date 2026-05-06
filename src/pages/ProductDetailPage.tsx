@@ -13,7 +13,14 @@ import ProductCard from "@/components/store/ProductCard";
 import ProductReviews from "@/components/store/ProductReviews";
 import ProductFAQ from "@/components/store/ProductFAQ";
 import SizeGuideDialog from "@/components/store/SizeGuideDialog";
-import { products as staticProducts, formatPrice as formatBRL, getInstallmentPrice, getDiscountPercent } from "@/data/store";
+import {
+  products as staticProducts,
+  formatPrice as formatBRL,
+  getInstallmentPrice,
+  getDiscountPercent,
+  buildCombo3PotesBundles,
+  COMBO_3_UNIDADES_SLUG,
+} from "@/data/store";
 // pix removed
 import { useCart, type CartItemSelection } from "@/contexts/CartContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
@@ -148,8 +155,16 @@ export default function ProductDetailPage() {
 `
       };
     }
+    if (p.slug === COMBO_3_UNIDADES_SLUG) {
+      return {
+        ...p,
+        price: 291,
+        compareAtPrice: 441,
+        bundles: buildCombo3PotesBundles(),
+      };
+    }
     if (p.slug.includes('bubo') || p.slug.includes('combo')) {
-      const isCombo = p.slug.includes('combo');
+      const isCombo = p.slug === "combo-bubo-health";
       const unitPrice = 97;
       const baseBundles = isCombo ? [
         {
@@ -197,7 +212,7 @@ export default function ProductDetailPage() {
 
       return {
         ...p,
-        price: isCombo ? 291 : 97,
+        price: isCombo ? 388 : 97,
         bundles: baseBundles
       };
     }
@@ -212,7 +227,8 @@ export default function ProductDetailPage() {
   const { formatPrice: fmt, language, settings } = useLocalization();
   
   // If it's a Bubo product, we might have it in staticProducts even if isLoading is true
-  const isBuboProduct = slug?.startsWith('bubo-') || slug === 'combo-bubo-health' || slug === 'combo-3-potes';
+  const isBuboProduct =
+    slug?.startsWith("bubo-") || slug === "combo-bubo-health" || slug === COMBO_3_UNIDADES_SLUG;
   const showLoading = isLoading && (!isBuboProduct || !product);
 
   const [translatedBullets, setTranslatedBullets] = useState<string[] | null>(null);
@@ -468,7 +484,14 @@ export default function ProductDetailPage() {
         ...product,
         price: activeBundle.priceCents,
         compareAtPrice: activeBundle.originalPriceCents ? activeBundle.originalPriceCents : product.compareAtPrice,
-        name: activeBundle.qty > 1 ? `${product.name} (${activeBundle.qty}x)` : product.name,
+        name:
+          product.slug === COMBO_3_UNIDADES_SLUG
+            ? activeBundle.qty >= 2
+              ? `${product.name} — 2 Combos`
+              : product.name
+            : activeBundle.qty > 1
+              ? `${product.name} (${activeBundle.qty}x)`
+              : product.name,
       }
     : product;
 
@@ -571,7 +594,7 @@ export default function ProductDetailPage() {
     "bubo-energy": { bg: "from-amber-700 to-yellow-500", accent: "#f59e0b", tag: "⚡ Gummies de Energia" },
     "bubo-slim": { bg: "from-green-800 to-green-500", accent: "#16a34a", tag: "🌿 Gummies Emagrecimento" },
     "bubo-hair": { bg: "from-pink-800 to-rose-500", accent: "#db2777", tag: "💖 Cabelo & Unhas" },
-    "combo-3-potes": { bg: "from-indigo-900 to-indigo-600", accent: "#4f46e5", tag: "💜 Combo 3 Potes" },
+    [COMBO_3_UNIDADES_SLUG]: { bg: "from-indigo-900 to-indigo-600", accent: "#4f46e5", tag: "💜 Combo 3 Unidades" },
     "combo-bubo-health": { bg: "from-indigo-900 to-purple-700", accent: "#7c3aed", tag: "🔥 Kit Completo" },
   };
   const theme = PRODUCT_THEMES[product.slug] || { bg: "from-purple-900 to-purple-700", accent: "#7c3aed", tag: "✨ Bubo Health" };

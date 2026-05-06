@@ -50,6 +50,30 @@ export const collections: Collection[] = [
 // 2 potes: R$ 194,00 (de R$ 294,00)
 // 3 potes: R$ 291,00 (de R$ 443,70)
 // 4 potes: R$ 388,00 (De R$ 588,00)
+
+/** Único SKU com opções “1 combo / 2 combos” (97×3 por combo). Outros produtos usam `buildBundles()` ou o combo completo. */
+export const COMBO_3_UNIDADES_SLUG = "combo-3-potes" as const;
+
+/** Só para `COMBO_3_UNIDADES_SLUG`: “1 combo” (3 potes = 97×3) ou “2 combos” (6 potes). Sem pote avulso. */
+export const buildCombo3PotesBundles = (): ProductBundle[] => [
+  {
+    qty: 1,
+    label: "1 Combo — 3 potes (R$ 97 × 3)",
+    priceCents: 291,
+    originalPriceCents: 443.70,
+    perUnitCents: 97,
+    badge: "MAIS VENDIDO",
+  },
+  {
+    qty: 2,
+    label: "2 Combos — 6 potes",
+    priceCents: 582,
+    originalPriceCents: 887.40,
+    perUnitCents: 97,
+    badge: "ECONOMIA",
+  },
+];
+
 const buildBundles = (): ProductBundle[] => [
   {
     qty: 1,
@@ -215,8 +239,8 @@ export const products: Product[] = [
   },
   {
     id: "bubo-combo-3",
-    name: "Combo 3 Potes",
-    slug: "combo-3-potes",
+    name: "Combo 3 Unidades",
+    slug: COMBO_3_UNIDADES_SLUG,
     price: 291.0,
     compareAtPrice: 441.0,
     image: "/products/combo-3-potes.png",
@@ -236,7 +260,7 @@ export const products: Product[] = [
     `,
     stock: 100,
     badge: "OFERTA",
-    bundles: buildBundles(),
+    bundles: buildCombo3PotesBundles(),
   },
   {
     id: "bubo-combo",

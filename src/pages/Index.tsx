@@ -79,7 +79,7 @@ const PRODUCTS = [
   {
     id: "bubo-combo-3",
     slug: "combo-3-potes",
-    name: "Combo 3 Potes",
+    name: "Combo 3 Unidades",
     subtitle: "Escolha 3 produtos",
     price: 291,
     compareAtPrice: 441,
@@ -161,7 +161,7 @@ const HERO_SLIDES = [
     slug: "combo-3-potes",
     bg: "from-[#312e81] via-[#4f46e5] to-[#818cf8]",
     tag: "💜 Escolha 3 produtos",
-    title: "Combo 3 Potes\nLeve 3 por R$ 291",
+    title: "Combo 3 Unidades\nLeve 3 por R$ 291",
     desc: "Monte seu combo com 3 potes de gummies à sua escolha. Melhor custo-benefício!",
     cta: "QUERO MEU COMBO",
     ctaColor: "bg-[#4f46e5] hover:bg-[#4338ca]",
