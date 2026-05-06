@@ -214,6 +214,31 @@ export const products: Product[] = [
     bundles: buildBundles(),
   },
   {
+    id: "bubo-combo-3",
+    name: "Combo 3 Potes",
+    slug: "combo-3-potes",
+    price: 291.0,
+    compareAtPrice: 441.0,
+    image: "/products/combo-3-potes.png",
+    images: ["/products/combo-3-potes.png"],
+    category: "combos",
+    description:
+      "Monte seu combo com 3 potes de gummies à sua escolha — Sleep, Energy, Slim ou Hair. Melhor custo-benefício para o seu tratamento.",
+    descriptionHtml: `
+      <div class="space-y-6">
+        <p class="text-gray-600">Escolha <strong>três potes</strong> dos nossos gummies Bubo Health e personalize sua rotina de bem-estar com o melhor preço por unidade.</p>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li>✨ Combine os sabores que mais combinam com você</li>
+          <li>✨ Frete calculado no checkout</li>
+          <li>✨ Qualidade Bubo Health em cada pote</li>
+        </ul>
+      </div>
+    `,
+    stock: 100,
+    badge: "OFERTA",
+    bundles: buildBundles(),
+  },
+  {
     id: "bubo-combo",
     name: "Combo Bubo Health Completo",
     slug: "combo-bubo-health",
