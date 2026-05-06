@@ -28,8 +28,9 @@ interface ShippingOption {
 }
 
 const DEFAULT_SHIPPING: ShippingOption[] = [
-  { id: "pac", name: "PAC - Correios", price_cents: 0, days_min: 8, days_max: 15 },
-  { id: "sedex", name: "SEDEX - Correios", price_cents: 1990, days_min: 3, days_max: 7 },
+  { id: "gratis", name: "Frete Grátis", price_cents: 0, days_min: 8, days_max: 15 },
+  { id: "pac", name: "PAC - Correios", price_cents: 1990, days_min: 8, days_max: 15 },
+  { id: "sedex", name: "SEDEX - Correios", price_cents: 2990, days_min: 3, days_max: 7 },
 ];
 
 type PaymentMethod = "pix" | "card";
@@ -111,7 +112,7 @@ export default function CheckoutPage() {
   const [neighborhood, setNeighborhood] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [selectedShipping, setSelectedShipping] = useState("pac");
+  const [selectedShipping, setSelectedShipping] = useState("gratis");
   const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>(DEFAULT_SHIPPING);
   const [loadingCep, setLoadingCep] = useState(false);
 
