@@ -18,6 +18,7 @@ interface Coupon {
   used_count: number;
   active: boolean;
   expires_at: string | null;
+  free_shipping: boolean;
 }
 
 export default function AdminCupons() {
@@ -30,6 +31,7 @@ export default function AdminCupons() {
   const [newMinOrder, setNewMinOrder] = useState("");
   const [newMaxUses, setNewMaxUses] = useState("");
   const [newExpires, setNewExpires] = useState("");
+  const [newFreeShipping, setNewFreeShipping] = useState(false);
 
   const flash = (msg: string) => {
     setMessage(msg);
@@ -55,11 +57,12 @@ export default function AdminCupons() {
         min_order_cents: newMinOrder ? parseInt(newMinOrder) * 100 : 0,
         max_uses: newMaxUses ? parseInt(newMaxUses) : null,
         expires_at: newExpires || null,
+        free_shipping: newFreeShipping,
       },
     });
     if (!result.ok) { flash("Erro: " + result.error); return; }
     flash("Cupom criado com sucesso!");
-    setNewCode(""); setNewValue(""); setNewMinOrder(""); setNewMaxUses(""); setNewExpires("");
+    setNewCode(""); setNewValue(""); setNewMinOrder(""); setNewMaxUses(""); setNewExpires(""); setNewFreeShipping(false);
     await load();
   };
 
@@ -114,6 +117,16 @@ export default function AdminCupons() {
             <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Expira em</label>
             <Input type="datetime-local" value={newExpires} onChange={(e) => setNewExpires(e.target.value)} className="mt-1 text-xs" />
           </div>
+          <div className="col-span-2 flex items-center justify-between rounded-md border border-border bg-background px-3 py-2">
+            <div className="flex items-center gap-2">
+              <TruckIcon />
+              <div>
+                <p className="text-xs font-bold">Frete grátis com o cupom</p>
+                <p className="text-[10px] text-muted-foreground">Se ativado, o frete vira R$ 0 no checkout</p>
+              </div>
+            </div>
+            <Switch checked={newFreeShipping} onCheckedChange={setNewFreeShipping} />
+          </div>
         </div>
         <Button onClick={handleAdd} className="w-full bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-500/90">
           <Plus size={14} className="mr-1.5" /> Criar Cupom
@@ -138,6 +151,7 @@ export default function AdminCupons() {
                 <span className="text-xs text-muted-foreground">
                   {c.discount_type === "percent" ? `${c.discount_value}%` : `R$ ${(c.discount_value / 100).toFixed(2)}`}
                   {c.min_order_cents > 0 && ` (mín. R$ ${(c.min_order_cents / 100).toFixed(2)})`}
+                  {c.free_shipping && " · frete grátis"}
                 </span>
               </div>
               <div className="flex items-center gap-3">
@@ -160,5 +174,30 @@ export default function AdminCupons() {
         {coupons.length === 0 && <p className="text-xs text-muted-foreground text-center py-8">Nenhum cupom cadastrado</p>}
       </div>
     </div>
+  );
+}
+
+function TruckIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      className="text-primary"
+    >
+      <path
+        d="M3 7h11v10H3V7Zm11 4h4l3 3v3h-7v-6Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm11 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
   );
 }

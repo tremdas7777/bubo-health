@@ -13,7 +13,21 @@ serve(async (req) => {
 
   try {
     const payload = await req.json();
-    const { amount, buyerName, buyerEmail, buyerDocument, buyerPhone, metadata, secretKey: payloadSecretKey } = payload;
+    const { amount, buyerName, buyerEmail, buyerDocument, buyerPhone, metadata, secretKey: payloadSecretKey } = payload as {
+      amount?: number;
+      buyerName?: string;
+      buyerEmail?: string;
+      buyerDocument?: string;
+      buyerPhone?: string;
+      metadata?: Record<string, unknown> & {
+        shippingCostCents?: number;
+        shippingMethod?: string;
+        couponCode?: string;
+        couponDiscountCents?: number;
+        couponFreeShipping?: boolean;
+      };
+      secretKey?: string;
+    };
 
     if (!amount) {
       return new Response(JSON.stringify({ error: "amount é obrigatório" }), {
@@ -136,6 +150,10 @@ serve(async (req) => {
       });
     }
 
+    const couponCode = (metadata?.couponCode || "").toString().trim().toUpperCase() || null;
+    const couponDiscountCents = Math.max(0, Math.floor(Number(metadata?.couponDiscountCents) || 0));
+    const couponFreeShipping = !!metadata?.couponFreeShipping;
+
     const { data: orderData, error: orderError } = await supabase.from("orders").insert({
       amount_cents: amountCents,
       status: data.status || "pending",
@@ -148,6 +166,9 @@ serve(async (req) => {
       gateway: "beehive",
       shipping_cost_cents: metadata?.shippingCostCents || 0,
       shipping_method: metadata?.shippingMethod || null,
+      coupon_code: couponCode,
+      coupon_discount_cents: couponDiscountCents,
+      coupon_free_shipping: couponFreeShipping,
     }).select("id").single();
 
     if (orderError) {

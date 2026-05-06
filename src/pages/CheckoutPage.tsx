@@ -115,6 +115,17 @@ export default function CheckoutPage() {
   const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>(DEFAULT_SHIPPING);
   const [loadingCep, setLoadingCep] = useState(false);
 
+  // Coupon
+  const [couponCode, setCouponCode] = useState("");
+  const [couponStatus, setCouponStatus] = useState<{
+    ok: boolean;
+    code?: string;
+    discountCents?: number;
+    freeShipping?: boolean;
+    error?: string;
+  } | null>(null);
+  const [applyingCoupon, setApplyingCoupon] = useState(false);
+
   // Payment
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
   const [cardEnabled, setCardEnabled] = useState(false);
@@ -266,10 +277,38 @@ export default function CheckoutPage() {
   const subtotal = totalPrice;
   const isPix = paymentMethod === "pix";
   const pixDiscount = isPix ? subtotal * PIX_DISCOUNT_RATE : 0;
-  const total = subtotal - pixDiscount + shippingCost / 100;
+  const couponDiscount = couponStatus?.ok ? (couponStatus.discountCents || 0) / 100 : 0;
+  const couponFreeShipping = !!(couponStatus?.ok && couponStatus.freeShipping);
+  const effectiveShippingCost = couponFreeShipping ? 0 : shippingCost;
+  const total = Math.max(0, subtotal - pixDiscount - couponDiscount + effectiveShippingCost / 100);
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
   const activeGatewayMethods = cardEnabled ? (isPix ? "pix" : "card") : "pix";
+
+  const applyCoupon = async () => {
+    const code = couponCode.trim().toUpperCase();
+    if (!code) return;
+    setApplyingCoupon(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("validate-coupon", {
+        body: { code, subtotalCents: Math.round(subtotal * 100) },
+      });
+      if (error) {
+        setCouponStatus({ ok: false, error: "Erro ao validar cupom" });
+      } else {
+        const payload = data as { ok: boolean; code?: string; discountCents?: number; freeShipping?: boolean; error?: string };
+        setCouponStatus(payload);
+      }
+    } catch {
+      setCouponStatus({ ok: false, error: "Erro ao validar cupom" });
+    }
+    setApplyingCoupon(false);
+  };
+
+  const removeCoupon = () => {
+    setCouponCode("");
+    setCouponStatus(null);
+  };
 
   const saveOrderItems = async (oid: string) => {
     try {
@@ -323,7 +362,7 @@ export default function CheckoutPage() {
         buyer_email: email,
         buyer_phone: phone.replace(/\D/g, ""),
         buyer_document: cpf.replace(/\D/g, ""),
-        amount_cents: Math.round(totalPrice * 100),
+          amount_cents: Math.round(total * 100),
         status: "draft",
         checkout_step: nextStep,
         checkout_step_updated_at: new Date().toISOString(),
@@ -387,8 +426,11 @@ export default function CheckoutPage() {
           state,
           cep: cep.replace(/\D/g, ""),
           shippingMethod: selectedShipping,
-          shippingCostCents: shippingCost,
+          shippingCostCents: effectiveShippingCost,
           itemsDescription: items.map((i) => `${i.quantity}x ${i.product.name}`).join(", "),
+          couponCode: couponStatus?.ok ? (couponStatus.code || couponCode.trim().toUpperCase()) : null,
+          couponDiscountCents: couponStatus?.ok ? (couponStatus.discountCents || 0) : 0,
+          couponFreeShipping,
         },
       };
 
@@ -539,7 +581,10 @@ export default function CheckoutPage() {
           state,
           cep: cep.replace(/\D/g, ""),
           shippingMethod: selectedShipping,
-          shippingCostCents: shippingCost,
+          shippingCostCents: effectiveShippingCost,
+          couponCode: couponStatus?.ok ? (couponStatus.code || couponCode.trim().toUpperCase()) : null,
+          couponDiscountCents: couponStatus?.ok ? (couponStatus.discountCents || 0) : 0,
+          couponFreeShipping,
         },
       };
 
@@ -915,14 +960,51 @@ export default function CheckoutPage() {
 
 
 
+                {/* Coupon */}
+                <div className="rounded-lg border border-border p-3 space-y-2">
+                  <p className="text-xs font-semibold text-muted-foreground">Cupom de desconto</p>
+                  <div className="flex gap-2">
+                    <Input
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                      placeholder="EX: BUBO10"
+                      className="font-mono uppercase"
+                      disabled={!!couponStatus?.ok}
+                    />
+                    {couponStatus?.ok ? (
+                      <Button type="button" variant="outline" onClick={removeCoupon}>
+                        Remover
+                      </Button>
+                    ) : (
+                      <Button type="button" onClick={applyCoupon} disabled={applyingCoupon || !couponCode.trim()}>
+                        {applyingCoupon ? "Validando..." : "Aplicar"}
+                      </Button>
+                    )}
+                  </div>
+                  {couponStatus?.ok === false && couponStatus.error && (
+                    <p className="text-xs text-destructive font-medium">{couponStatus.error}</p>
+                  )}
+                  {couponStatus?.ok === true && (
+                    <p className="text-xs text-emerald-600 font-medium">
+                      Cupom <strong>{couponStatus.code}</strong> aplicado{couponFreeShipping ? " (frete grátis)" : ""}.
+                    </p>
+                  )}
+                </div>
+
                 {/* Summary */}
                 {/* Summary */}
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatPrice(subtotal)}</span></div>
+                  {couponStatus?.ok && (couponDiscount > 0 || couponFreeShipping) && (
+                    <div className="flex justify-between text-emerald-600">
+                      <span>Cupom {couponStatus.code}</span>
+                      <span>{couponDiscount > 0 ? `-${formatPrice(couponDiscount)}` : "Aplicado"}</span>
+                    </div>
+                  )}
                   {isPix && (
                     <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
                   )}
-                  <div className="flex justify-between"><span className="text-muted-foreground">Frete ({selectedShippingOption?.name})</span><span>{shippingCost === 0 ? "Grátis" : formatPrice(shippingCost / 100)}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Frete ({selectedShippingOption?.name})</span><span>{effectiveShippingCost === 0 ? "Grátis" : formatPrice(effectiveShippingCost / 100)}</span></div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
                     <span>Total</span>
                     <span className="text-primary">{formatPrice(total)}</span>

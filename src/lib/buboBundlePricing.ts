@@ -21,13 +21,19 @@ export const BUBO_GUMMY_SLUGS = new Set([
 ]);
 
 /** Preço base por pote usado como referência quando não há linha no admin (R$). */
-export const DEFAULT_BUBO_UNIT_PRICE = 97;
+export const DEFAULT_BUBO_UNIT_PRICE = 67.9;
 
-/** Razão “valor riscado / valor à vista” para 1 pote (147,90 / 97). */
-export const STRIKE_RATIO_SINGLE_POTE = 147.9 / 97;
+/** Valor riscado para 1 pote (R$). */
+export const STRIKE_PRICE_SINGLE_POTE = 147.9;
 
-/** Para o combo 4 produtos: mesmo storytelling do catálogo fixo (588 / 388). */
-export const STRIKE_RATIO_COMBO_4 = 588 / 388;
+/** Razão “valor riscado / valor à vista” para 1 pote. */
+export const STRIKE_RATIO_SINGLE_POTE = STRIKE_PRICE_SINGLE_POTE / DEFAULT_BUBO_UNIT_PRICE;
+
+/** Valor riscado do combo completo (4 produtos) (R$). */
+export const STRIKE_PRICE_COMBO_4 = 588;
+
+/** Para o combo 4 produtos: mantém o valor riscado do storytelling do catálogo fixo. */
+export const STRIKE_RATIO_COMBO_4 = STRIKE_PRICE_COMBO_4 / (4 * DEFAULT_BUBO_UNIT_PRICE);
 
 export function roundMoney(n: number): number {
   return Math.round(n * 100) / 100;
