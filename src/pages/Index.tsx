@@ -123,7 +123,7 @@ const PRODUCTS = [
   },
 ];
 
-/** Um card por gummy principal — troque `heroSrc` por JPG/WebP quando tiver as fotos. */
+/** Um card por linha de gummy + foto da campanha. */
 const INFLUENCER_SHOWCASE: Array<{
   slug: string;
   influencerHandle: string;
@@ -154,10 +154,10 @@ const INFLUENCER_SHOWCASE: Array<{
   },
   {
     slug: "bubo-hair",
-    influencerHandle: "@handle_hair",
+    influencerHandle: "@jadepicon",
     caption: "Bubo Hair · beleza",
-    heroSrc: "/influencers/bubo-hair.svg",
-    heroAlt: "Influenciador com Bubo Hair",
+    heroSrc: "/influencers/bubo-hair-jade.png",
+    heroAlt: "Jade Picon com Bubo Hair",
   },
 ];
 
@@ -601,7 +601,7 @@ export default function Index() {
               Influenciadores usando Bubo
             </h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-              Um destaque para cada linha. Falta só o card do Bubo Hair — quando tiver a arte, substituímos o placeholder.
+              Um destaque para cada linha — personalidades que incorporam a rotina Bubo nas redes.
             </p>
           </div>
 
