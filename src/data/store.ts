@@ -358,6 +358,118 @@ export const products: Product[] = [
     description: "Gummies para cabelos e unhas. Biotina, colágeno e complexo vitamínico para força e brilho extremo.",
     descriptionHtml: `
       <div class="space-y-6">
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+            <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">12 kcal (1% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">3 g (1% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2 g</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,5 g (2% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Biotina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">30 mcg (100% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Zinco</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">7 mg (100% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina C</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">45 mg (100% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina E</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 mg (100% VD)</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            *%VD com base em uma dieta de 2.000 kcal.
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Biotina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">30 mcg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Zinco</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">7 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina C</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">45 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina E</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Colágeno hidrolisado</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">500 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Ácido hialurônico</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">50 mg</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
+          </div>
+        </div>
+
         <p class="text-gray-600">O segredo para um cabelo de capa de revista e unhas inquebráveis. <strong>Bubo Hair</strong> nutre de dentro para fora com a dose perfeita de Biotina e Colágeno.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-pink-50 p-4 rounded-xl border border-pink-100">
