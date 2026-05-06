@@ -117,6 +117,114 @@ export const products: Product[] = [
     description: "Gummies de energia e disposição. Complexo vitamínico B e cafeína natural para dar aquele gás no seu dia a dia.",
     descriptionHtml: `
       <div class="space-y-6">
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+            <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">12 kcal (1% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">3 g (1% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2 g</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,5 g (2% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Cafeína</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg (100% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B12</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,4 mcg (100% VD)</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            *%VD com base em uma dieta de 2.000 kcal.
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Cafeína natural</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Taurina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">500 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">L-Tirosina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de guaraná</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B12</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,4 mcg</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
+          </div>
+        </div>
+
         <p class="text-gray-600">Chega de cansaço no meio da tarde. <strong>Bubo Energy</strong> é o combustível natural que seu corpo precisa para manter o foco e a produtividade lá no alto.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
