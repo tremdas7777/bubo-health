@@ -275,8 +275,8 @@ async function saveGatewayConfigViaAdminWrite(normalizedConfig: PaymentGatewayCo
 
   if (pubErr) return { ok: false, error: pubErr.message };
 
-  const ids = (rows ?? [])
-    .map((r: { id?: string }) => r.id)
+  const ids = ((rows ?? []) as Array<{ id?: string }>)
+    .map((r) => r.id)
     .filter((id): id is string => typeof id === 'string' && id.length > 0);
 
   const invokeAdminWrite = async (body: Record<string, unknown>): Promise<SaveGatewayConfigResult> => {
