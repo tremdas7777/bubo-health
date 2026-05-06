@@ -25,14 +25,13 @@ serve(async (req) => {
       });
     }
 
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
     let secretKey = payloadSecretKey;
 
     if (!secretKey) {
-      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-      const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-      const supabase = createClient(supabaseUrl, supabaseKey);
-
-      // Read secret key from gateway_config (server-side, bypasses RLS with service role)
       const { data: gwConfig } = await supabase
         .from("gateway_config")
         .select("beehive_secret_key")
