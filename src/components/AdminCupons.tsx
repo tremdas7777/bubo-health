@@ -31,7 +31,6 @@ export default function AdminCupons() {
   const [newMinOrder, setNewMinOrder] = useState("");
   const [newMaxUses, setNewMaxUses] = useState("");
   const [newExpires, setNewExpires] = useState("");
-  const [newFreeShipping, setNewFreeShipping] = useState(false);
 
   const flash = (msg: string) => {
     setMessage(msg);
@@ -57,12 +56,11 @@ export default function AdminCupons() {
         min_order_cents: newMinOrder ? parseInt(newMinOrder) * 100 : 0,
         max_uses: newMaxUses ? parseInt(newMaxUses) : null,
         expires_at: newExpires || null,
-        free_shipping: newFreeShipping,
       },
     });
     if (!result.ok) { flash("Erro: " + result.error); return; }
     flash("Cupom criado com sucesso!");
-    setNewCode(""); setNewValue(""); setNewMinOrder(""); setNewMaxUses(""); setNewExpires(""); setNewFreeShipping(false);
+    setNewCode(""); setNewValue(""); setNewMinOrder(""); setNewMaxUses(""); setNewExpires("");
     await load();
   };
 
@@ -116,16 +114,6 @@ export default function AdminCupons() {
           <div>
             <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Expira em</label>
             <Input type="datetime-local" value={newExpires} onChange={(e) => setNewExpires(e.target.value)} className="mt-1 text-xs" />
-          </div>
-          <div className="col-span-2 flex items-center justify-between rounded-md border border-border bg-background px-3 py-2">
-            <div className="flex items-center gap-2">
-              <TruckIcon />
-              <div>
-                <p className="text-xs font-bold">Frete grátis com o cupom</p>
-                <p className="text-[10px] text-muted-foreground">Se ativado, o frete vira R$ 0 no checkout</p>
-              </div>
-            </div>
-            <Switch checked={newFreeShipping} onCheckedChange={setNewFreeShipping} />
           </div>
         </div>
         <Button onClick={handleAdd} className="w-full bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-500/90">
