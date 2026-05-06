@@ -29,7 +29,7 @@ interface ShippingOption {
 
 const DEFAULT_SHIPPING: ShippingOption[] = [
   { id: "gratis", name: "Frete Grátis", price_cents: 0, days_min: 6, days_max: 12 },
-  { id: "pac", name: "PAC - Correios", price_cents: 1990, days_min: 7, days_max: 13 },
+  { id: "pac", name: "PAC - Correios", price_cents: 1990, days_min: 7, days_max: 10 },
   { id: "sedex", name: "SEDEX - Correios", price_cents: 2990, days_min: 3, days_max: 7 },
 ];
 
