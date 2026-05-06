@@ -23,6 +23,21 @@ export const BUBO_GUMMY_SLUGS = new Set([
 /** Preço base por pote usado como referência quando não há linha no admin (R$). */
 export const DEFAULT_BUBO_UNIT_PRICE = 67.9;
 
+/** Preço do produto Combo 3 Unidades (kit fechado com 3 potes) (R$). */
+export const DEFAULT_COMBO_3_KIT_PRICE = 183.33;
+
+/** Unitário implícito usado para exibir “R$ x × 3” no combo 3. */
+export const DEFAULT_COMBO_3_IMPLIED_UNIT_PRICE = roundMoney(DEFAULT_COMBO_3_KIT_PRICE / 3);
+
+/** Desconto aplicado no kit do combo completo (4 produtos) quando não há preço no admin. */
+export const DEFAULT_COMBO_4_KIT_DISCOUNT_RATE = 0.1;
+
+/** Preço do produto Combo completo (kit fechado com 4 produtos) (R$). */
+export const DEFAULT_COMBO_4_KIT_PRICE = roundMoney(4 * DEFAULT_BUBO_UNIT_PRICE * (1 - DEFAULT_COMBO_4_KIT_DISCOUNT_RATE));
+
+/** Unitário implícito do combo completo (para referências de “por unidade”). */
+export const DEFAULT_COMBO_4_IMPLIED_UNIT_PRICE = roundMoney(DEFAULT_COMBO_4_KIT_PRICE / 4);
+
 /** Valor riscado para 1 pote (R$). */
 export const STRIKE_PRICE_SINGLE_POTE = 147.9;
 
@@ -46,7 +61,9 @@ function moneyLabel(n: number): string {
 /** Aceita linhas antigas onde o preço era o pacote inteiro, não o pote. */
 export function normalizeBuboUnitFromRow(slug: string, priceCents: number): number {
   const brl = priceCents / 100;
-  if (slug === COMBO_3_UNIDADES_SLUG && brl > 200) return roundMoney(brl / 3);
+  // Para combos, alguns cadastros antigos salvavam o preço do kit inteiro.
+  // Com o unitário atual (67,90) o kit do combo 3 pode ficar < 200, então usamos um limiar relativo.
+  if (slug === COMBO_3_UNIDADES_SLUG && brl > DEFAULT_BUBO_UNIT_PRICE * 2) return roundMoney(brl / 3);
   if (slug === COMBO_BUBO_HEALTH_SLUG && brl > 300) return roundMoney(brl / 4);
   return roundMoney(brl);
 }
@@ -182,7 +199,8 @@ export function mergeCatalogProductWithDbRow<T extends { slug: string; price: nu
   }
 
   if (slug === COMBO_3_UNIDADES_SLUG) {
-    const saleMain = roundMoney(3 * unit);
+    // O produto "Combo 3 Unidades" tem preço próprio (kit), não necessariamente 3×unit.
+    const saleMain = row?.price_cents != null ? roundMoney(3 * unit) : DEFAULT_COMBO_3_KIT_PRICE;
     const R =
       row.original_price_cents != null
         ? (row.original_price_cents / 100) / saleMain
@@ -191,21 +209,22 @@ export function mergeCatalogProductWithDbRow<T extends { slug: string; price: nu
       ...staticProduct,
       price: saleMain,
       compareAtPrice: roundMoney(saleMain * R),
-      bundles: buildCombo3UnidadesBundles(unit, R),
+      bundles: buildCombo3UnidadesBundles(row?.price_cents != null ? unit : DEFAULT_COMBO_3_IMPLIED_UNIT_PRICE, R),
     };
   }
 
   if (slug === COMBO_BUBO_HEALTH_SLUG) {
-    const saleMain = roundMoney(4 * unit);
+    // O produto "Combo completo" tem preço próprio (kit), não necessariamente 4×unit.
+    const saleMain = row?.price_cents != null ? roundMoney(4 * unit) : DEFAULT_COMBO_4_KIT_PRICE;
     const compareMain =
       row.original_price_cents != null
         ? row.original_price_cents / 100
-        : roundMoney(saleMain * STRIKE_RATIO_COMBO_4);
+        : STRIKE_PRICE_COMBO_4;
     return {
       ...staticProduct,
       price: saleMain,
       compareAtPrice: compareMain,
-      bundles: buildComboBuboHealthBundles(unit, compareMain),
+      bundles: buildComboBuboHealthBundles(row?.price_cents != null ? unit : DEFAULT_COMBO_4_IMPLIED_UNIT_PRICE, compareMain),
     };
   }
 
@@ -216,10 +235,10 @@ export function mergeCatalogProductWithDbRow<T extends { slug: string; price: nu
 export function defaultBundlesForStaticProduct(slug: string): BuboBundleRow[] | undefined {
   const u = DEFAULT_BUBO_UNIT_PRICE;
   if (BUBO_GUMMY_SLUGS.has(slug)) return buildStandardGummyBundles(u, STRIKE_RATIO_SINGLE_POTE);
-  if (slug === COMBO_3_UNIDADES_SLUG) return buildCombo3UnidadesBundles(u, STRIKE_RATIO_SINGLE_POTE);
+  if (slug === COMBO_3_UNIDADES_SLUG) return buildCombo3UnidadesBundles(DEFAULT_COMBO_3_IMPLIED_UNIT_PRICE, STRIKE_RATIO_SINGLE_POTE);
   if (slug === COMBO_BUBO_HEALTH_SLUG) {
-    const compare = roundMoney(4 * u * STRIKE_RATIO_COMBO_4);
-    return buildComboBuboHealthBundles(u, compare);
+    const compare = STRIKE_PRICE_COMBO_4;
+    return buildComboBuboHealthBundles(DEFAULT_COMBO_4_IMPLIED_UNIT_PRICE, compare);
   }
   return undefined;
 }

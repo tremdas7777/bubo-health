@@ -3,9 +3,14 @@ import {
   buildComboBuboHealthBundles,
   buildStandardGummyBundles,
   COMBO_3_UNIDADES_SLUG,
+  DEFAULT_COMBO_3_KIT_PRICE,
   DEFAULT_BUBO_UNIT_PRICE,
+  DEFAULT_COMBO_3_IMPLIED_UNIT_PRICE,
+  DEFAULT_COMBO_4_IMPLIED_UNIT_PRICE,
+  DEFAULT_COMBO_4_KIT_PRICE,
   roundMoney,
   STRIKE_RATIO_COMBO_4,
+  STRIKE_PRICE_COMBO_4,
   STRIKE_RATIO_SINGLE_POTE,
 } from "@/lib/buboBundlePricing";
 
@@ -663,8 +668,8 @@ export const products: Product[] = [
     id: "bubo-combo-3",
     name: "Combo 3 Unidades",
     slug: COMBO_3_UNIDADES_SLUG,
-    price: roundMoney(3 * BUBO_U),
-    compareAtPrice: roundMoney(3 * BUBO_U * STRIKE_RATIO_SINGLE_POTE),
+    price: DEFAULT_COMBO_3_KIT_PRICE,
+    compareAtPrice: roundMoney(DEFAULT_COMBO_3_KIT_PRICE * STRIKE_RATIO_SINGLE_POTE),
     image: "/products/combo-3-potes.png",
     images: ["/products/combo-3-potes.png"],
     category: "combos",
@@ -869,14 +874,14 @@ export const products: Product[] = [
     `,
     stock: 100,
     badge: "OFERTA",
-    bundles: buildCombo3UnidadesBundles(BUBO_U, STRIKE_RATIO_SINGLE_POTE),
+    bundles: buildCombo3UnidadesBundles(DEFAULT_COMBO_3_IMPLIED_UNIT_PRICE, STRIKE_RATIO_SINGLE_POTE),
   },
   {
     id: "bubo-combo",
     name: "Combo Bubo Health Completo",
     slug: "combo-bubo-health",
-    price: roundMoney(4 * BUBO_U),
-    compareAtPrice: roundMoney(4 * BUBO_U * STRIKE_RATIO_COMBO_4),
+    price: DEFAULT_COMBO_4_KIT_PRICE,
+    compareAtPrice: STRIKE_PRICE_COMBO_4,
     image: "/products/bubo-combo.png",
     images: [
       "/products/bubo-combo.png",
@@ -1097,7 +1102,7 @@ export const products: Product[] = [
     `,
     stock: 100,
     badge: "OFERTA COMPLETA",
-    bundles: buildComboBuboHealthBundles(BUBO_U, roundMoney(4 * BUBO_U * STRIKE_RATIO_COMBO_4)),
+    bundles: buildComboBuboHealthBundles(DEFAULT_COMBO_4_IMPLIED_UNIT_PRICE, STRIKE_PRICE_COMBO_4),
   }
 ];
 
