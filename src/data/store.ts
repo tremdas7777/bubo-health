@@ -84,6 +84,106 @@ export const products: Product[] = [
     description: "Gummies do sono profundo. Fórmula exclusiva com melatonina, L-Teanina e Camomila para uma noite de sono revigorante.",
     descriptionHtml: `
       <div class="space-y-6">
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
+            <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Valor energético</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 kcal (1% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Carboidratos</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,5 g (1% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Açúcares totais</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Açúcares adicionados</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Polióis</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,5 g</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Fibras alimentares</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,5 g (2% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Proteínas</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras totais</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras saturadas</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Gorduras trans</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0 g (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Sódio</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">5 mg (0% VD)</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Melatonina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,21 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg (100% VD)</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            *%VD com base em uma dieta de 2.000 kcal.
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Melatonina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,21 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">L-Teanina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de camomila</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de passiflora</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
+          </div>
+        </div>
+
         <p class="text-gray-600">Dormir bem é o pilar fundamental de uma vida saudável. <strong>Bubo Sleep</strong> foi desenvolvido para ajudar você a desligar do estresse diário e entrar em um estado de relaxamento profundo.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
