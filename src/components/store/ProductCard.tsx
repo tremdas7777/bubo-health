@@ -12,6 +12,13 @@ interface Props {
   product: Product;
 }
 
+const ACCENT_BY_SLUG: Record<string, string> = {
+  "bubo-sleep": "#7c3aed",
+  "bubo-energy": "#f59e0b",
+  "bubo-slim": "#16a34a",
+  "bubo-hair": "#db2777",
+};
+
 export default memo(function ProductCard({ product }: Props) {
   const { addItem } = useCart();
   const { isInWishlist, toggleItem } = useWishlist();
@@ -20,6 +27,7 @@ export default memo(function ProductCard({ product }: Props) {
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const wishlisted = isInWishlist(product.id);
   const salesCount = ((product.id.charCodeAt(0) * 7 + product.id.charCodeAt(1) * 13) % 80) + 20;
+  const accent = ACCENT_BY_SLUG[product.slug] ?? "hsl(var(--primary))";
 
   return (
     <div className="group bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col">
@@ -64,7 +72,7 @@ export default memo(function ProductCard({ product }: Props) {
 
         <div className="mt-2 space-y-1">
           <div className="flex items-baseline justify-center gap-2">
-            <span className="text-primary font-bold text-base">
+            <span className="font-bold text-base" style={{ color: accent }}>
               {formatPrice(product.price)}
             </span>
             {hasDiscount && (
@@ -77,7 +85,8 @@ export default memo(function ProductCard({ product }: Props) {
 
         <Button
           onClick={() => addItem(product)}
-          className="w-full mt-3 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-medium rounded-md py-2.5"
+          className="w-full mt-3 text-primary-foreground text-xs font-medium rounded-md py-2.5 hover:brightness-95 transition-[filter]"
+          style={{ backgroundColor: accent }}
         >
           {t("product.addToCart")}
         </Button>
