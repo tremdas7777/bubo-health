@@ -123,6 +123,44 @@ const PRODUCTS = [
   },
 ];
 
+/** Um card por gummy principal — troque `heroSrc` por JPG/WebP quando tiver as fotos. */
+const INFLUENCER_SHOWCASE: Array<{
+  slug: string;
+  influencerHandle: string;
+  caption: string;
+  heroSrc: string;
+  heroAlt: string;
+}> = [
+  {
+    slug: "bubo-sleep",
+    influencerHandle: "@virginiafonseca",
+    caption: "Bubo Sleep · sono",
+    heroSrc: "/influencers/bubo-sleep-virginia.png",
+    heroAlt: "Virginia Fonseca com Bubo Sleep",
+  },
+  {
+    slug: "bubo-energy",
+    influencerHandle: "@carlinhosmaia",
+    caption: "Bubo Energy · energia",
+    heroSrc: "/influencers/bubo-energy-carlinhos.png",
+    heroAlt: "Carlinhos Maia com Bubo Energy",
+  },
+  {
+    slug: "bubo-slim",
+    influencerHandle: "@jojotodynho",
+    caption: "Bubo Slim · apetite",
+    heroSrc: "/influencers/bubo-slim-jojo.png",
+    heroAlt: "Jojo Todynho com Bubo Slim",
+  },
+  {
+    slug: "bubo-hair",
+    influencerHandle: "@handle_hair",
+    caption: "Bubo Hair · beleza",
+    heroSrc: "/influencers/bubo-hair.svg",
+    heroAlt: "Influenciador com Bubo Hair",
+  },
+];
+
 type HeroSlide = {
   slug: string;
   bg: string;
@@ -563,19 +601,43 @@ export default function Index() {
               Influenciadores usando Bubo
             </h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-              Conteúdo real. Rotina real. Resultados dependem de consistência.
+              Um destaque para cada linha. Falta só o card do Bubo Hair — quando tiver a arte, substituímos o placeholder.
             </p>
           </div>
 
-          <div className="mx-auto max-w-6xl">
-            <div className="rounded-[2.5rem] overflow-hidden border border-pink-200/60 bg-white shadow-2xl">
-              <img
-                src="/influencers/influencers-strip.png"
-                alt="Influenciadores usando Bubo"
-                className="w-full h-auto object-cover"
-                loading="lazy"
-              />
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {INFLUENCER_SHOWCASE.map((item) => {
+              const product = PRODUCTS.find((p) => p.slug === item.slug);
+              const thumb = product?.image ?? "/products/bubo-sleep.jpg";
+              return (
+                <Link
+                  key={item.slug}
+                  to={`/produto/${item.slug}`}
+                  className="group flex flex-col rounded-[2rem] overflow-hidden bg-white border border-pink-200/60 shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  <div className="relative aspect-[3/4] bg-neutral-100 overflow-hidden">
+                    <img
+                      src={item.heroSrc}
+                      alt={item.heroAlt}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="flex items-start gap-3 p-4 border-t border-pink-100/80">
+                    <img
+                      src={thumb}
+                      alt=""
+                      className="w-12 h-12 rounded-xl object-contain bg-neutral-50 border border-neutral-100 shrink-0"
+                      loading="lazy"
+                    />
+                    <div className="min-w-0">
+                      <p className="font-black text-gray-900 text-sm truncate">{item.influencerHandle}</p>
+                      <p className="text-xs text-gray-600 leading-snug mt-0.5">{item.caption}</p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
