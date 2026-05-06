@@ -81,7 +81,8 @@ export const products: Product[] = [
     compareAtPrice: roundMoney(BUBO_U * STRIKE_RATIO_SINGLE_POTE),
     image: "/products/bubo-sleep.jpg",
     category: "gummies",
-    description: "Gummies do sono profundo. Fórmula exclusiva com melatonina, L-Teanina e Camomila para uma noite de sono revigorante.",
+    description:
+      "Gummy para apoio ao sono e relaxamento noturno. Fórmula com melatonina, L-teanina e extratos botânicos — 1 gummy por dia.",
     descriptionHtml: `
       <div class="space-y-6">
         <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
@@ -184,21 +185,21 @@ export const products: Product[] = [
           </div>
         </div>
 
-        <p class="text-gray-600">Dormir bem é o pilar fundamental de uma vida saudável. <strong>Bubo Sleep</strong> foi desenvolvido para ajudar você a desligar do estresse diário e entrar em um estado de relaxamento profundo.</p>
+        <p class="text-gray-600"><strong>Bubo Sleep</strong> foi pensado para sua rotina noturna: linguagem simples, fórmula objetiva e uso prático. Um gummy por dia, antes de dormir, para apoiar o relaxamento e a qualidade do sono dentro de uma rotina consistente.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
             <h4 class="font-bold text-purple-900 mb-1">💤 Sono Profundo</h4>
-            <p class="text-sm text-purple-700">Auxilia na regulação do ciclo circadiano para um sono sem interrupções.</p>
+            <p class="text-sm text-purple-700">Suporte ao descanso noturno com uma composição pensada para o fim do dia.</p>
           </div>
           <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
             <h4 class="font-bold text-purple-900 mb-1">🌿 Relaxamento Natural</h4>
-            <p class="text-sm text-purple-700">Com extratos de Camomila e sabor Uva para acalmar a mente.</p>
+            <p class="text-sm text-purple-700">Extratos botânicos + L-teanina para um ritual mais leve antes de deitar.</p>
           </div>
         </div>
         <ul class="space-y-2 text-sm text-gray-600">
-          <li>✨ Zero Açúcar e sem Glúten</li>
-          <li>✨ Sabor delicioso de Uva</li>
-          <li>✨ 30 gummies por pote (Tratamento para 1 mês)</li>
+          <li>✨ Zero açúcar e sem glúten</li>
+          <li>✨ Sabor uva</li>
+          <li>✨ 30 gummies por pote (30 dias)</li>
         </ul>
       </div>
     `,
@@ -214,7 +215,8 @@ export const products: Product[] = [
     compareAtPrice: roundMoney(BUBO_U * STRIKE_RATIO_SINGLE_POTE),
     image: "/products/bubo-energy.jpg",
     category: "gummies",
-    description: "Gummies de energia e disposição. Complexo vitamínico B e cafeína natural para dar aquele gás no seu dia a dia.",
+    description:
+      "Gummy de energia e foco para o dia a dia. Cafeína natural + taurina + vitaminas do complexo B — 1 gummy por dia.",
     descriptionHtml: `
       <div class="space-y-6">
         <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
@@ -325,22 +327,22 @@ export const products: Product[] = [
           </div>
         </div>
 
-        <p class="text-gray-600">Chega de cansaço no meio da tarde. <strong>Bubo Energy</strong> é o combustível natural que seu corpo precisa para manter o foco e a produtividade lá no alto.</p>
+        <p class="text-gray-600"><strong>Bubo Energy</strong> é feito para rotina — trabalho, treino e dias longos. Fórmula objetiva com cafeína natural, taurina e vitaminas do complexo B para apoiar energia e foco quando você precisa.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
             <h4 class="font-bold text-amber-900 mb-1">⚡ Energia Instantânea</h4>
-            <p class="text-sm text-amber-700">Liberação gradual para energia constante sem o "crash" do café.</p>
+            <p class="text-sm text-amber-700">Apoio à disposição ao longo do dia, com uso simples e consistente.</p>
           </div>
           <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
             <h4 class="font-bold text-amber-900 mb-1">🧠 Foco Mental</h4>
-            <p class="text-sm text-amber-700">Melhora a concentração e o desempenho cognitivo.</p>
+            <p class="text-sm text-amber-700">Para momentos de demanda: estudar, trabalhar ou treinar com mais presença.</p>
           </div>
         </div>
         <ul class="space-y-2 text-sm text-gray-600">
-          <li>🔥 Zero Açúcar e sem Glúten</li>
-          <li>🔥 30 gummies por pote</li>
-          <li>🔥 Sabor vibrante de Laranja</li>
-          <li>🔥 Ideal para pré-treino ou trabalho intenso</li>
+          <li>🔥 Zero açúcar e sem glúten</li>
+          <li>🔥 30 gummies por pote (30 dias)</li>
+          <li>🔥 Sabor laranja</li>
+          <li>🔥 Ideal para treinos e dias intensos</li>
         </ul>
       </div>
     `,
@@ -355,7 +357,8 @@ export const products: Product[] = [
     compareAtPrice: roundMoney(BUBO_U * STRIKE_RATIO_SINGLE_POTE),
     image: "/products/bubo-hair.png",
     category: "gummies",
-    description: "Gummies para cabelos e unhas. Biotina, colágeno e complexo vitamínico para força e brilho extremo.",
+    description:
+      "Gummy de beleza diária para suporte de cabelos e unhas. Biotina + zinco + vitaminas + colágeno — 1 gummy por dia.",
     descriptionHtml: `
       <div class="space-y-6">
         <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
@@ -470,23 +473,22 @@ export const products: Product[] = [
           </div>
         </div>
 
-        <p class="text-gray-600">O segredo para um cabelo de capa de revista e unhas inquebráveis. <strong>Bubo Hair</strong> nutre de dentro para fora com a dose perfeita de Biotina e Colágeno.</p>
+        <p class="text-gray-600"><strong>Bubo Hair</strong> foi feito para constância. Uma fórmula completa com biotina, zinco, vitaminas antioxidantes, colágeno e ácido hialurônico — em um gummy prático para o dia a dia.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-pink-50 p-4 rounded-xl border border-pink-100">
             <h4 class="font-bold text-pink-900 mb-1">💇‍♀️ Cabelos Fortes</h4>
-            <p class="text-sm text-pink-700">Reduz a queda e estimula o crescimento de novos fios mais resistentes.</p>
+            <p class="text-sm text-pink-700">Suporte nutricional para sua rotina de cuidados com fios.</p>
           </div>
           <div class="bg-pink-50 p-4 rounded-xl border border-pink-100">
             <h4 class="font-bold text-pink-900 mb-1">💅 Unhas de Aço</h4>
-            <p class="text-sm text-pink-700">Fortalece a base das unhas, eliminando a quebra e descamação.</p>
+            <p class="text-sm text-pink-700">Apoio ao fortalecimento e aparência das unhas com uso contínuo.</p>
           </div>
         </div>
         <ul class="space-y-2 text-sm text-gray-600">
-          <li>💖 Zero Açúcar e sem Glúten</li>
-          <li>💖 30 gummies por pote</li>
-          <li>💖 Alto teor de Biotina e Zinco</li>
-          <li>💖 Sabor irresistível de Frutas Vermelhas</li>
-          <li>💖 Resultados visíveis em 30 dias</li>
+          <li>💖 Zero açúcar e sem glúten</li>
+          <li>💖 30 gummies por pote (30 dias)</li>
+          <li>💖 Biotina + zinco + vitaminas C e E</li>
+          <li>💖 Sabor frutas vermelhas</li>
         </ul>
       </div>
     `,
@@ -503,7 +505,7 @@ export const products: Product[] = [
     image: "/products/bubo-slim.jpg",
     category: "gummies",
     description:
-      "Gummies para controle de apetite com fibras, extrato de chá verde, cafeína natural e cromo. Apenas 1 gummy por dia.",
+      "Gummy para apoio ao controle de apetite. Fibras + extratos botânicos + cromo — uso simples: 1 gummy por dia.",
     descriptionHtml: `
       <div class="space-y-6">
         <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
@@ -609,6 +611,11 @@ export const products: Product[] = [
             <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
           </div>
         </div>
+
+        <div class="rounded-2xl border border-neutral-200 bg-white p-4">
+          <h3 class="text-base font-bold text-neutral-900">Como usar</h3>
+          <p class="text-sm text-neutral-600 mt-1">Consumir <strong>1 gummy ao dia</strong>. Melhor resultado vem de consistência — dentro de uma rotina com alimentação equilibrada e hábitos saudáveis.</p>
+        </div>
       </div>
     `,
     stock: 45,
@@ -624,14 +631,14 @@ export const products: Product[] = [
     images: ["/products/combo-3-potes.png"],
     category: "combos",
     description:
-      "Monte seu combo com 3 potes de gummies à sua escolha — Sleep, Energy, Slim ou Hair. Melhor custo-benefício para o seu tratamento.",
+      "Monte seu combo com 3 potes à escolha (Sleep, Energy, Slim ou Hair). Ideal para manter consistência e economizar no kit.",
     descriptionHtml: `
       <div class="space-y-6">
-        <p class="text-gray-600">Escolha <strong>três potes</strong> dos nossos gummies Bubo Health e personalize sua rotina de bem-estar com o melhor preço por unidade.</p>
+        <p class="text-gray-600">O <strong>Combo 3 Unidades</strong> é a forma mais simples de montar sua rotina: escolha três potes entre Sleep, Energy, Slim e Hair e leve o kit com melhor custo por unidade.</p>
         <ul class="space-y-2 text-sm text-gray-600">
-          <li>✨ Combine os sabores que mais combinam com você</li>
+          <li>✨ Você escolhe os 3 potes (pode repetir sabores)</li>
           <li>✨ Frete calculado no checkout</li>
-          <li>✨ Qualidade Bubo Health em cada pote</li>
+          <li>✨ 30 gummies por pote (90 gummies no total)</li>
         </ul>
 
         <div class="rounded-2xl border border-neutral-200 bg-white p-4">
@@ -841,12 +848,13 @@ export const products: Product[] = [
       "/products/bubo-hair.png"
     ],
     category: "combos",
-    description: "Transforme sua rotina com o combo completo Bubo Health. Inclui 1 Bubo Sleep + 1 Bubo Energy + 1 Bubo Slim + 1 Bubo Hair.",
+    description:
+      "Kit completo com 4 potes (Sleep + Energy + Slim + Hair). Uma rotina diária completa — sono, energia, controle de apetite e beleza.",
     descriptionHtml: `
       <div class="space-y-6">
         <div class="bg-indigo-900 text-white p-6 rounded-2xl shadow-xl">
           <h3 class="text-xl font-bold mb-2">💎 Experiência Bubo 360° Total</h3>
-          <p class="text-indigo-100 text-sm">O cuidado máximo que seu corpo merece. Durma melhor, tenha energia, controle o peso e cuide da beleza de cabelos e unhas.</p>
+          <p class="text-indigo-100 text-sm">Um pote de cada: Sleep, Energy, Slim e Hair. Quatro fórmulas, uma rotina — com linguagem limpa, uso prático e foco em consistência.</p>
         </div>
         <div class="grid grid-cols-1 gap-3">
           <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
