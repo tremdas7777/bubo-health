@@ -125,7 +125,21 @@ serve(async (req) => {
       body: JSON.stringify(body),
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
+    let data: any;
+    try {
+      data = responseText ? JSON.parse(responseText) : null;
+    } catch {
+      console.error("Beehive PIX returned non-JSON:", response.status, responseText.slice(0, 500));
+      return new Response(JSON.stringify({
+        error: "Beehive retornou uma resposta inválida (não-JSON).",
+        status: response.status,
+        details: responseText.slice(0, 500),
+      }), {
+        status: 502,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     if (!response.ok) {
       console.error("Beehive PIX error:", JSON.stringify(data));
@@ -218,8 +232,10 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("criar-pix-beehive error:", error);
-    return new Response(JSON.stringify({ error: "Erro interno do servidor" }), {
+    const msg = error instanceof Error ? error.message : String(error);
+    const stack = error instanceof Error ? error.stack : undefined;
+    console.error("criar-pix-beehive error:", msg, stack);
+    return new Response(JSON.stringify({ error: msg || "Erro interno do servidor" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
