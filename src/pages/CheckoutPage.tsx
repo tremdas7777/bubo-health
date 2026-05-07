@@ -399,6 +399,12 @@ export default function CheckoutPage() {
     setPaymentError("");
 
     try {
+      if (!Number.isFinite(total) || total <= 0) {
+        setPaymentError("O total do pedido ficou inválido (R$ 0,00). Remova o cupom ou altere frete/itens e tente novamente.");
+        setGenerating(false);
+        return;
+      }
+
       const gatewayConfig = await fetchPaymentGatewayConfig();
       const gateway = gatewayConfig.activeGateway;
 
@@ -533,6 +539,12 @@ export default function CheckoutPage() {
     setPaymentError("");
 
     try {
+      if (!Number.isFinite(total) || total <= 0) {
+        setPaymentError("O total do pedido ficou inválido (R$ 0,00). Remova o cupom ou altere frete/itens e tente novamente.");
+        setGenerating(false);
+        return;
+      }
+
       const gatewayConfig = await fetchPaymentGatewayConfig();
       const gateway = "beehive";
 
