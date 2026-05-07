@@ -12,6 +12,10 @@ serve(async (req) => {
   }
 
   try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     const payload = await req.json();
     const { amount, buyerName, buyerEmail, buyerDocument, buyerPhone, metadata, secretKey: payloadSecretKey } = payload as {
       amount?: number;
@@ -39,10 +43,6 @@ serve(async (req) => {
     let secretKey = payloadSecretKey;
 
     if (!secretKey) {
-      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-      const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-      const supabase = createClient(supabaseUrl, supabaseKey);
-
       // Read secret key from gateway_config (server-side, bypasses RLS with service role)
       const { data: gwConfig } = await supabase
         .from("gateway_config")
@@ -85,8 +85,11 @@ serve(async (req) => {
         provider: "Bubo Health",
         order_id: `KZ-${Date.now()}`,
       },
-      ip: clientIp,
     };
+
+    if (clientIp) {
+      body.ip = clientIp;
+    }
 
     if (buyerName || buyerEmail || buyerDocument || buyerPhone) {
       body.customer = {
