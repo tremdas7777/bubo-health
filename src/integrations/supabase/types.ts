@@ -124,7 +124,6 @@ export type Database = {
           discount_type: string
           discount_value: number
           expires_at: string | null
-          free_shipping: boolean
           id: string
           max_uses: number | null
           min_order_cents: number
@@ -138,7 +137,6 @@ export type Database = {
           discount_type?: string
           discount_value?: number
           expires_at?: string | null
-          free_shipping?: boolean
           id?: string
           max_uses?: number | null
           min_order_cents?: number
@@ -152,7 +150,6 @@ export type Database = {
           discount_type?: string
           discount_value?: number
           expires_at?: string | null
-          free_shipping?: boolean
           id?: string
           max_uses?: number | null
           min_order_cents?: number
@@ -330,9 +327,6 @@ export type Database = {
           buyer_phone: string | null
           checkout_step: string | null
           checkout_step_updated_at: string | null
-          coupon_code: string | null
-          coupon_discount_cents: number
-          coupon_free_shipping: boolean
           created_at: string
           gateway: string | null
           id: string
@@ -357,9 +351,6 @@ export type Database = {
           buyer_phone?: string | null
           checkout_step?: string | null
           checkout_step_updated_at?: string | null
-          coupon_code?: string | null
-          coupon_discount_cents?: number
-          coupon_free_shipping?: boolean
           created_at?: string
           gateway?: string | null
           id?: string
@@ -384,9 +375,6 @@ export type Database = {
           buyer_phone?: string | null
           checkout_step?: string | null
           checkout_step_updated_at?: string | null
-          coupon_code?: string | null
-          coupon_discount_cents?: number
-          coupon_free_shipping?: boolean
           created_at?: string
           gateway?: string | null
           id?: string
