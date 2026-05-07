@@ -415,7 +415,13 @@ export default function CheckoutPage() {
         return;
       }
       
-      const functionName = gateway === "beehive" ? "criar-pix-beehive" : "criar-pix-beehive"; // Fallback to beehive for others
+      const PIX_FUNCTION_BY_GATEWAY: Partial<Record<string, string>> = {
+        beehive: "criar-pix-beehive",
+        centurionpay: "criar-pix-centurionpay",
+        pagamentosmp: "criar-pix-pagamentosmp",
+      };
+
+      const functionName = PIX_FUNCTION_BY_GATEWAY[gateway] || "criar-pix-beehive";
 
       const bodyBase: Record<string, unknown> = {
         amount: total,
