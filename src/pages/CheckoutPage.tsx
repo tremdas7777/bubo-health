@@ -13,7 +13,7 @@ import { notifyUtmifyServerSide } from "@/lib/utmifyManager";
 import { getCampaignParams } from "@/lib/campaignParams";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PIX_DISCOUNT_RATE, PIX_DISCOUNT_PERCENT, getTotalWithInterest, getInstallmentValue } from "@/lib/pricing";
+import { getTotalWithInterest, getInstallmentValue } from "@/lib/pricing";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
@@ -277,11 +277,10 @@ export default function CheckoutPage() {
   const shippingCost = selectedShippingOption?.price_cents || 0;
   const subtotal = totalPrice;
   const isPix = paymentMethod === "pix";
-  const pixDiscount = isPix ? subtotal * PIX_DISCOUNT_RATE : 0;
   const couponDiscount = couponStatus?.ok ? (couponStatus.discountCents || 0) / 100 : 0;
   const couponFreeShipping = !!(couponStatus?.ok && couponStatus.freeShipping);
   const effectiveShippingCost = couponFreeShipping ? 0 : shippingCost;
-  const total = Math.max(0, subtotal - pixDiscount - couponDiscount + effectiveShippingCost / 100);
+  const total = Math.max(0, subtotal - couponDiscount + effectiveShippingCost / 100);
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
   const activeGatewayMethods = cardEnabled ? (isPix ? "pix" : "card") : "pix";
@@ -947,20 +946,6 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                {/* PIX benefit highlight */}
-                {isPix && (
-                  <div className="bg-emerald-500/10 rounded-lg p-3 flex items-center gap-2">
-                    <Tag size={14} className="text-emerald-600" />
-                    <span className="text-xs font-medium text-emerald-700">
-                      Você economiza <strong>{formatPrice(subtotal * PIX_DISCOUNT_RATE)}</strong> pagando via PIX!
-                    </span>
-                  </div>
-                )}
-
-
-
-
-
                 {/* Coupon */}
                 <div className="rounded-lg border border-border p-3 space-y-2">
                   <p className="text-xs font-semibold text-muted-foreground">Cupom de desconto</p>
@@ -1001,9 +986,6 @@ export default function CheckoutPage() {
                       <span>Cupom {couponStatus.code}</span>
                       <span>{couponDiscount > 0 ? `-${formatPrice(couponDiscount)}` : "Aplicado"}</span>
                     </div>
-                  )}
-                  {isPix && (
-                    <div className="flex justify-between text-emerald-600"><span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span><span>-{formatPrice(pixDiscount)}</span></div>
                   )}
                   <div className="flex justify-between"><span className="text-muted-foreground">Frete ({selectedShippingOption?.name})</span><span>{effectiveShippingCost === 0 ? "Grátis" : formatPrice(effectiveShippingCost / 100)}</span></div>
                   <div className="flex justify-between font-bold text-base pt-2 border-t border-border">
@@ -1155,7 +1137,7 @@ export default function CheckoutPage() {
 
                   <div className="text-center pt-1 border-t border-border">
                     <p className="text-lg font-bold text-primary">{formatPrice(total)}</p>
-                    <p className="text-xs text-muted-foreground">Valor total com desconto PIX</p>
+                    <p className="text-xs text-muted-foreground">Valor total do pedido</p>
                   </div>
                 </div>
               </DialogContent>
@@ -1239,12 +1221,6 @@ export default function CheckoutPage() {
                     <span className="text-muted-foreground">Subtotal</span>
                     <span>{formatPrice(subtotal)}</span>
                   </div>
-                  {isPix && PIX_DISCOUNT_PERCENT > 0 && (
-                    <div className="flex justify-between text-emerald-600">
-                      <span>Desconto PIX ({PIX_DISCOUNT_PERCENT}%)</span>
-                      <span>-{formatPrice(pixDiscount)}</span>
-                    </div>
-                  )}
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Frete</span>
                     <span>{shippingCost === 0 ? "Grátis" : formatPrice(shippingCost / 100)}</span>
@@ -1255,9 +1231,7 @@ export default function CheckoutPage() {
                   </div>
                   <p className="text-[10px] text-muted-foreground text-center">
                     {isPix
-                      ? PIX_DISCOUNT_PERCENT > 0 
-                        ? `${PIX_DISCOUNT_PERCENT}% de desconto no PIX`
-                        : "Pagamento instantâneo e seguro"
+                      ? "Pagamento instantâneo e seguro"
                       : `ou em até 6x de ${formatPrice(getInstallmentValue(total, 6))}`
                     }
                   </p>
