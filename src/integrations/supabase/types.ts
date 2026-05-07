@@ -124,6 +124,7 @@ export type Database = {
           discount_type: string
           discount_value: number
           expires_at: string | null
+          free_shipping: boolean
           id: string
           max_uses: number | null
           min_order_cents: number
@@ -137,6 +138,7 @@ export type Database = {
           discount_type?: string
           discount_value?: number
           expires_at?: string | null
+          free_shipping?: boolean
           id?: string
           max_uses?: number | null
           min_order_cents?: number
@@ -150,6 +152,7 @@ export type Database = {
           discount_type?: string
           discount_value?: number
           expires_at?: string | null
+          free_shipping?: boolean
           id?: string
           max_uses?: number | null
           min_order_cents?: number
