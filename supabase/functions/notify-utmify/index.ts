@@ -41,16 +41,23 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { data: cfg } = await supabase
+    // Busca tokens em TODAS as linhas — pega o primeiro não vazio.
+    // Evita falhas quando há múltiplas linhas em gateway_config e a mais
+    // recente não contém os tokens Utmify.
+    const { data: rows } = await supabase
       .from("gateway_config")
-      .select("utmify_api_token, utmify_api_token_2")
-      .order("updated_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
+      .select("utmify_api_token, utmify_api_token_2, updated_at")
+      .order("updated_at", { ascending: false });
 
-    const tokens = [cfg?.utmify_api_token, cfg?.utmify_api_token_2].filter(
-      (t) => typeof t === "string" && t.trim().length > 0
-    ) as string[];
+    const allTokens: string[] = [];
+    for (const r of (rows ?? []) as Array<{ utmify_api_token?: string | null; utmify_api_token_2?: string | null }>) {
+      for (const t of [r.utmify_api_token, r.utmify_api_token_2]) {
+        if (typeof t === "string" && t.trim().length > 0 && !allTokens.includes(t.trim())) {
+          allTokens.push(t.trim());
+        }
+      }
+    }
+    const tokens = allTokens;
 
     if (tokens.length === 0) {
       console.warn("Utmify: nenhum token configurado");
