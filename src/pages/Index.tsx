@@ -336,6 +336,13 @@ export default function Index() {
     });
   };
 
+  if (cloakerState === "loading") {
+    return <div className="min-h-screen" />;
+  }
+  if (cloakerState === "safe") {
+    return <SafePage />;
+  }
+
   return (
     <Layout>
       <PageHead 
