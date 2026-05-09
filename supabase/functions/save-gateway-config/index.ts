@@ -64,10 +64,13 @@ serve(async (req) => {
     if (config.paymentMethods) updateData.payment_methods = config.paymentMethods;
     
     if (config.beehive && typeof config.beehive === "object") {
-      if (typeof config.beehive.publicKey === "string") {
+      // Só sobrescreve as chaves Beehive se vierem valores NÃO-VAZIOS.
+      // Isso garante que as chaves salvas nunca sejam apagadas por engano,
+      // só substituídas quando o admin digitar novas chaves explicitamente.
+      if (typeof config.beehive.publicKey === "string" && config.beehive.publicKey.trim() !== "") {
         updateData.beehive_public_key = config.beehive.publicKey.trim();
       }
-      if (typeof config.beehive.secretKey === "string") {
+      if (typeof config.beehive.secretKey === "string" && config.beehive.secretKey.trim() !== "") {
         updateData.beehive_secret_key = config.beehive.secretKey.trim();
       }
     }
