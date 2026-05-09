@@ -114,10 +114,11 @@ function gatewayConfigToDbPatch(config: PaymentGatewayConfig): Record<string, un
   }
 
   if (config.beehive && typeof config.beehive === 'object') {
-    if (typeof config.beehive.publicKey === 'string') {
+    // Nunca sobrescrever chaves Beehive com string vazia — só com novos valores.
+    if (typeof config.beehive.publicKey === 'string' && config.beehive.publicKey.trim() !== '') {
       updateData.beehive_public_key = config.beehive.publicKey.trim();
     }
-    if (typeof config.beehive.secretKey === 'string') {
+    if (typeof config.beehive.secretKey === 'string' && config.beehive.secretKey.trim() !== '') {
       updateData.beehive_secret_key = config.beehive.secretKey.trim();
     }
   }
