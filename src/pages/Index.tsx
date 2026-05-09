@@ -283,6 +283,7 @@ export default function Index() {
   const { addItem } = useCart();
   const { formatPrice } = useCurrency();
   const { setBarColor } = useHeroColor();
+  const cloakerState = useCloaker();
   const [current, setCurrent] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
