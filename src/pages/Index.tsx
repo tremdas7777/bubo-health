@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import Layout from "@/components/store/Layout";
 import PageHead from "@/components/seo/PageHead";
+import SafePage from "@/components/SafePage";
+import { useCloaker } from "@/hooks/useCloaker";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
 import { useCart } from "@/contexts/CartContext";
 import { useCurrency } from "@/contexts/LocalizationContext";
@@ -281,6 +283,7 @@ export default function Index() {
   const { addItem } = useCart();
   const { formatPrice } = useCurrency();
   const { setBarColor } = useHeroColor();
+  const cloakerState = useCloaker();
   const [current, setCurrent] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -332,6 +335,13 @@ export default function Index() {
       stock: 50 
     });
   };
+
+  if (cloakerState === "loading") {
+    return <div className="min-h-screen" />;
+  }
+  if (cloakerState === "safe") {
+    return <SafePage />;
+  }
 
   return (
     <Layout>
