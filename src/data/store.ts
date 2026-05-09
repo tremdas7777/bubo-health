@@ -109,6 +109,40 @@ export const products: Product[] = [
 
         <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
           <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Melatonina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,21 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">L-Teanina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de camomila</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de passiflora</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
             <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
             <p class="text-sm text-neutral-500">Porção: 4 g (1 gummy)</p>
           </div>
@@ -173,40 +207,6 @@ export const products: Product[] = [
           </div>
         </div>
 
-        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
-          <div class="px-4 py-3 bg-white border-b border-neutral-200">
-            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
-            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
-          </div>
-          <table class="w-full text-sm">
-            <tbody class="divide-y divide-neutral-200/90">
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Melatonina</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">0,21 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">L-Teanina</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de camomila</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de passiflora</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
-            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
-          </div>
-        </div>
-
         <p class="text-gray-600"><strong>Bubo Sleep</strong> foi pensado para sua rotina noturna: linguagem simples, fórmula objetiva e uso prático. Um gummy por dia, antes de dormir, para apoiar o relaxamento e a qualidade do sono dentro de uma rotina consistente.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
@@ -241,6 +241,44 @@ export const products: Product[] = [
       "Gummy de energia e foco para o dia a dia. Cafeína natural + taurina + vitaminas do complexo B — 1 gummy por dia.",
     descriptionHtml: `
       <div class="space-y-6">
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Cafeína natural</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Taurina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">500 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">L-Tirosina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de guaraná</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B12</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,4 mcg</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
+          </div>
+        </div>
+
         <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
           <div class="px-4 py-3 bg-white border-b border-neutral-200">
             <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
@@ -311,44 +349,6 @@ export const products: Product[] = [
           </div>
         </div>
 
-        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
-          <div class="px-4 py-3 bg-white border-b border-neutral-200">
-            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
-            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
-          </div>
-          <table class="w-full text-sm">
-            <tbody class="divide-y divide-neutral-200/90">
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Cafeína natural</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">100 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Taurina</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">500 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">L-Tirosina</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de guaraná</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B6</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">1,3 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina B12</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">2,4 mcg</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
-            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
-          </div>
-        </div>
-
         <p class="text-gray-600"><strong>Bubo Energy</strong> é feito para rotina — trabalho, treino e dias longos. Fórmula objetiva com cafeína natural, taurina e vitaminas do complexo B para apoiar energia e foco quando você precisa.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
@@ -383,6 +383,44 @@ export const products: Product[] = [
       "Gummy de beleza diária para suporte de cabelos e unhas. Biotina + zinco + vitaminas + colágeno — 1 gummy por dia.",
     descriptionHtml: `
       <div class="space-y-6">
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Biotina</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">30 mcg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Zinco</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">7 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina C</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">45 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina E</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Colágeno hidrolisado</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">500 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Ácido hialurônico</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">50 mg</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
+          </div>
+        </div>
+
         <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
           <div class="px-4 py-3 bg-white border-b border-neutral-200">
             <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
@@ -457,44 +495,6 @@ export const products: Product[] = [
           </div>
         </div>
 
-        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
-          <div class="px-4 py-3 bg-white border-b border-neutral-200">
-            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
-            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
-          </div>
-          <table class="w-full text-sm">
-            <tbody class="divide-y divide-neutral-200/90">
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Biotina</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">30 mcg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Zinco</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">7 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina C</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">45 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Vitamina E</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">10 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Colágeno hidrolisado</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">500 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Ácido hialurônico</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">50 mg</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
-            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
-          </div>
-        </div>
-
         <p class="text-gray-600"><strong>Bubo Hair</strong> foi feito para constância. Uma fórmula completa com biotina, zinco, vitaminas antioxidantes, colágeno e ácido hialurônico — em um gummy prático para o dia a dia.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-pink-50 p-4 rounded-xl border border-pink-100">
@@ -530,6 +530,44 @@ export const products: Product[] = [
       "Gummy para apoio ao controle de apetite. Fibras + extratos botânicos + cromo — uso simples: 1 gummy por dia.",
     descriptionHtml: `
       <div class="space-y-6">
+        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
+          <div class="px-4 py-3 bg-white border-b border-neutral-200">
+            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
+            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-neutral-200/90">
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Glucomanano</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">800 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de chá verde</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">250 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Vinagre de maçã em pó</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">300 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Ashwagandha (extrato)</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Cafeína natural</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">80 mg</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-neutral-700 font-medium">Picolinato de cromo</td>
+                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mcg</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
+            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
+          </div>
+        </div>
+
         <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
           <div class="px-4 py-3 bg-white border-b border-neutral-200">
             <h3 class="text-base font-bold text-neutral-900">INFORMAÇÃO NUTRICIONAL</h3>
@@ -593,44 +631,6 @@ export const products: Product[] = [
           </table>
           <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
             *%VD com base em uma dieta de 2.000 kcal.
-          </div>
-        </div>
-
-        <div class="rounded-2xl border border-neutral-200 overflow-hidden bg-[#fafbf9]">
-          <div class="px-4 py-3 bg-white border-b border-neutral-200">
-            <h3 class="text-base font-bold text-neutral-900">COMPOSIÇÃO</h3>
-            <p class="text-sm text-neutral-500">Por porção de 4 g (1 gummy)</p>
-          </div>
-          <table class="w-full text-sm">
-            <tbody class="divide-y divide-neutral-200/90">
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Glucomanano</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">800 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Extrato de chá verde</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">250 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Vinagre de maçã em pó</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">300 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Ashwagandha (extrato)</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">150 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Cafeína natural</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">80 mg</td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3 text-neutral-700 font-medium">Picolinato de cromo</td>
-                <td class="px-4 py-3 text-neutral-600 text-right tabular-nums">200 mcg</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="px-4 py-3 border-t border-neutral-200 text-xs text-neutral-500 leading-relaxed">
-            <strong>Excipientes:</strong> eritritol, pectina, aroma natural, ácido cítrico, edulcorante stevia, corante natural.
           </div>
         </div>
 
